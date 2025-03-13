@@ -15,7 +15,8 @@ void Page::init(MODE mode) {
     head = MyRec(0,0,screenWidth,screenHeight*0.1, getMODE(mode).c_str(), PURPLE, RED);
     bottom = {0,screenHeight*0.9f,(float)screenWidth,screenHeight*0.1f};
     side = {0,screenHeight*0.3f,screenWidth*0.3f,screenHeight*0.6f};
-
+    home.image = LoadTexture("res\\back_home.png");
+    
 }
 
 void Page::draw() {
@@ -23,7 +24,7 @@ void Page::draw() {
     head.Draw();
     DrawRectangleRec(bottom, GREEN);
     DrawRectangleRec(side, PINK);
-    home.DrawText2D("res\\turn_back_icon.png");
+    home.DrawText2D();
     for(auto &button : functions) {
         button.Draw();
     }
