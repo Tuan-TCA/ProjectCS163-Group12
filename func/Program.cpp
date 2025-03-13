@@ -42,9 +42,7 @@ void Program::event() {
 
     if (mode == MODE::LL) {
         // Linked List event
-         if(page.home.IsClicked()) {
-            mode = MODE::MENU;
-        }
+        page.actions();
     }
     if(mode == MODE::HASHTB) {
         // Hash Table
