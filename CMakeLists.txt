@@ -2,7 +2,7 @@
 # set(CMAKE_CXX_COMPILER g++)
 
 cmake_minimum_required(VERSION 3.10)
-project(AppName)
+project(ProjectCS163)
 
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)

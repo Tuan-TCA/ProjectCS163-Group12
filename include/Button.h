@@ -1,5 +1,7 @@
 #pragma once
 #include "raylib.h"
+#include<bits/stdc++.h>
+using namespace std;
 
 class MyRec {
 private:
@@ -24,8 +26,6 @@ public:
     }
 
 };  
-
-
 
 class Button {
 private:
@@ -62,8 +62,8 @@ public:
     void DrawText2D (string link) {
         Texture2D image = LoadTexture(link.c_str());
         Rectangle sourceRec = {0,0, (float) image.width, (float) image.height};
-        Rectangle destRec = {}
-        DrawText
+        Vector2 origin = {0,0};
+        DrawTexturePro(image, sourceRec, bounds, origin, 0.0f, WHITE);
     }
 
     bool IsClicked() {

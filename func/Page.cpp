@@ -1,5 +1,6 @@
 #include "Page.h"
 #include <raylib.h>
+#include<bits/stdc++.h>
 using namespace std;
 
 string getMODE(MODE mode) {
@@ -22,7 +23,7 @@ void Page::draw() {
     head.Draw();
     DrawRectangleRec(bottom, GREEN);
     DrawRectangleRec(side, PINK);
-    home.Draw();
+    home.DrawText2D("res\\turn_back_icon.png");
     for(auto &button : functions) {
         button.Draw();
     }
