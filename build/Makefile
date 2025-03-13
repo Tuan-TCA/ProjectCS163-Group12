@@ -128,149 +128,101 @@ main/fast:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles\main.dir\build.make CMakeFiles/main.dir/build
 .PHONY : main/fast
 
-func/CircularLL/Animation.obj: func/CircularLL/Animation.cpp.obj
-.PHONY : func/CircularLL/Animation.obj
+func/Menu.obj: func/Menu.cpp.obj
+.PHONY : func/Menu.obj
 
 # target to build an object file
-func/CircularLL/Animation.cpp.obj:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles\main.dir\build.make CMakeFiles/main.dir/func/CircularLL/Animation.cpp.obj
-.PHONY : func/CircularLL/Animation.cpp.obj
+func/Menu.cpp.obj:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\main.dir\build.make CMakeFiles/main.dir/func/Menu.cpp.obj
+.PHONY : func/Menu.cpp.obj
 
-func/CircularLL/Animation.i: func/CircularLL/Animation.cpp.i
-.PHONY : func/CircularLL/Animation.i
+func/Menu.i: func/Menu.cpp.i
+.PHONY : func/Menu.i
 
 # target to preprocess a source file
-func/CircularLL/Animation.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles\main.dir\build.make CMakeFiles/main.dir/func/CircularLL/Animation.cpp.i
-.PHONY : func/CircularLL/Animation.cpp.i
+func/Menu.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\main.dir\build.make CMakeFiles/main.dir/func/Menu.cpp.i
+.PHONY : func/Menu.cpp.i
 
-func/CircularLL/Animation.s: func/CircularLL/Animation.cpp.s
-.PHONY : func/CircularLL/Animation.s
+func/Menu.s: func/Menu.cpp.s
+.PHONY : func/Menu.s
 
 # target to generate assembly for a file
-func/CircularLL/Animation.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles\main.dir\build.make CMakeFiles/main.dir/func/CircularLL/Animation.cpp.s
-.PHONY : func/CircularLL/Animation.cpp.s
+func/Menu.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\main.dir\build.make CMakeFiles/main.dir/func/Menu.cpp.s
+.PHONY : func/Menu.cpp.s
 
-func/CircularLL/Draw.obj: func/CircularLL/Draw.cpp.obj
-.PHONY : func/CircularLL/Draw.obj
+func/Page.obj: func/Page.cpp.obj
+.PHONY : func/Page.obj
 
 # target to build an object file
-func/CircularLL/Draw.cpp.obj:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles\main.dir\build.make CMakeFiles/main.dir/func/CircularLL/Draw.cpp.obj
-.PHONY : func/CircularLL/Draw.cpp.obj
+func/Page.cpp.obj:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\main.dir\build.make CMakeFiles/main.dir/func/Page.cpp.obj
+.PHONY : func/Page.cpp.obj
 
-func/CircularLL/Draw.i: func/CircularLL/Draw.cpp.i
-.PHONY : func/CircularLL/Draw.i
+func/Page.i: func/Page.cpp.i
+.PHONY : func/Page.i
 
 # target to preprocess a source file
-func/CircularLL/Draw.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles\main.dir\build.make CMakeFiles/main.dir/func/CircularLL/Draw.cpp.i
-.PHONY : func/CircularLL/Draw.cpp.i
+func/Page.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\main.dir\build.make CMakeFiles/main.dir/func/Page.cpp.i
+.PHONY : func/Page.cpp.i
 
-func/CircularLL/Draw.s: func/CircularLL/Draw.cpp.s
-.PHONY : func/CircularLL/Draw.s
+func/Page.s: func/Page.cpp.s
+.PHONY : func/Page.s
 
 # target to generate assembly for a file
-func/CircularLL/Draw.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles\main.dir\build.make CMakeFiles/main.dir/func/CircularLL/Draw.cpp.s
-.PHONY : func/CircularLL/Draw.cpp.s
+func/Page.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\main.dir\build.make CMakeFiles/main.dir/func/Page.cpp.s
+.PHONY : func/Page.cpp.s
 
-func/CircularLL/Global.obj: func/CircularLL/Global.cpp.obj
-.PHONY : func/CircularLL/Global.obj
+func/Program.obj: func/Program.cpp.obj
+.PHONY : func/Program.obj
 
 # target to build an object file
-func/CircularLL/Global.cpp.obj:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles\main.dir\build.make CMakeFiles/main.dir/func/CircularLL/Global.cpp.obj
-.PHONY : func/CircularLL/Global.cpp.obj
+func/Program.cpp.obj:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\main.dir\build.make CMakeFiles/main.dir/func/Program.cpp.obj
+.PHONY : func/Program.cpp.obj
 
-func/CircularLL/Global.i: func/CircularLL/Global.cpp.i
-.PHONY : func/CircularLL/Global.i
+func/Program.i: func/Program.cpp.i
+.PHONY : func/Program.i
 
 # target to preprocess a source file
-func/CircularLL/Global.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles\main.dir\build.make CMakeFiles/main.dir/func/CircularLL/Global.cpp.i
-.PHONY : func/CircularLL/Global.cpp.i
+func/Program.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\main.dir\build.make CMakeFiles/main.dir/func/Program.cpp.i
+.PHONY : func/Program.cpp.i
 
-func/CircularLL/Global.s: func/CircularLL/Global.cpp.s
-.PHONY : func/CircularLL/Global.s
+func/Program.s: func/Program.cpp.s
+.PHONY : func/Program.s
 
 # target to generate assembly for a file
-func/CircularLL/Global.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles\main.dir\build.make CMakeFiles/main.dir/func/CircularLL/Global.cpp.s
-.PHONY : func/CircularLL/Global.cpp.s
+func/Program.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\main.dir\build.make CMakeFiles/main.dir/func/Program.cpp.s
+.PHONY : func/Program.cpp.s
 
-func/CircularLL/Objects.obj: func/CircularLL/Objects.cpp.obj
-.PHONY : func/CircularLL/Objects.obj
+func/Variables.obj: func/Variables.cpp.obj
+.PHONY : func/Variables.obj
 
 # target to build an object file
-func/CircularLL/Objects.cpp.obj:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles\main.dir\build.make CMakeFiles/main.dir/func/CircularLL/Objects.cpp.obj
-.PHONY : func/CircularLL/Objects.cpp.obj
+func/Variables.cpp.obj:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\main.dir\build.make CMakeFiles/main.dir/func/Variables.cpp.obj
+.PHONY : func/Variables.cpp.obj
 
-func/CircularLL/Objects.i: func/CircularLL/Objects.cpp.i
-.PHONY : func/CircularLL/Objects.i
-
-# target to preprocess a source file
-func/CircularLL/Objects.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles\main.dir\build.make CMakeFiles/main.dir/func/CircularLL/Objects.cpp.i
-.PHONY : func/CircularLL/Objects.cpp.i
-
-func/CircularLL/Objects.s: func/CircularLL/Objects.cpp.s
-.PHONY : func/CircularLL/Objects.s
-
-# target to generate assembly for a file
-func/CircularLL/Objects.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles\main.dir\build.make CMakeFiles/main.dir/func/CircularLL/Objects.cpp.s
-.PHONY : func/CircularLL/Objects.cpp.s
-
-func/CircularLL/Operations.obj: func/CircularLL/Operations.cpp.obj
-.PHONY : func/CircularLL/Operations.obj
-
-# target to build an object file
-func/CircularLL/Operations.cpp.obj:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles\main.dir\build.make CMakeFiles/main.dir/func/CircularLL/Operations.cpp.obj
-.PHONY : func/CircularLL/Operations.cpp.obj
-
-func/CircularLL/Operations.i: func/CircularLL/Operations.cpp.i
-.PHONY : func/CircularLL/Operations.i
+func/Variables.i: func/Variables.cpp.i
+.PHONY : func/Variables.i
 
 # target to preprocess a source file
-func/CircularLL/Operations.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles\main.dir\build.make CMakeFiles/main.dir/func/CircularLL/Operations.cpp.i
-.PHONY : func/CircularLL/Operations.cpp.i
+func/Variables.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\main.dir\build.make CMakeFiles/main.dir/func/Variables.cpp.i
+.PHONY : func/Variables.cpp.i
 
-func/CircularLL/Operations.s: func/CircularLL/Operations.cpp.s
-.PHONY : func/CircularLL/Operations.s
-
-# target to generate assembly for a file
-func/CircularLL/Operations.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles\main.dir\build.make CMakeFiles/main.dir/func/CircularLL/Operations.cpp.s
-.PHONY : func/CircularLL/Operations.cpp.s
-
-func/CircularLL/Utils.obj: func/CircularLL/Utils.cpp.obj
-.PHONY : func/CircularLL/Utils.obj
-
-# target to build an object file
-func/CircularLL/Utils.cpp.obj:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles\main.dir\build.make CMakeFiles/main.dir/func/CircularLL/Utils.cpp.obj
-.PHONY : func/CircularLL/Utils.cpp.obj
-
-func/CircularLL/Utils.i: func/CircularLL/Utils.cpp.i
-.PHONY : func/CircularLL/Utils.i
-
-# target to preprocess a source file
-func/CircularLL/Utils.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles\main.dir\build.make CMakeFiles/main.dir/func/CircularLL/Utils.cpp.i
-.PHONY : func/CircularLL/Utils.cpp.i
-
-func/CircularLL/Utils.s: func/CircularLL/Utils.cpp.s
-.PHONY : func/CircularLL/Utils.s
+func/Variables.s: func/Variables.cpp.s
+.PHONY : func/Variables.s
 
 # target to generate assembly for a file
-func/CircularLL/Utils.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles\main.dir\build.make CMakeFiles/main.dir/func/CircularLL/Utils.cpp.s
-.PHONY : func/CircularLL/Utils.cpp.s
+func/Variables.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\main.dir\build.make CMakeFiles/main.dir/func/Variables.cpp.s
+.PHONY : func/Variables.cpp.s
 
 src/main.obj: src/main.cpp.obj
 .PHONY : src/main.obj
@@ -305,24 +257,18 @@ help:
 	@echo ... edit_cache
 	@echo ... rebuild_cache
 	@echo ... main
-	@echo ... func/CircularLL/Animation.obj
-	@echo ... func/CircularLL/Animation.i
-	@echo ... func/CircularLL/Animation.s
-	@echo ... func/CircularLL/Draw.obj
-	@echo ... func/CircularLL/Draw.i
-	@echo ... func/CircularLL/Draw.s
-	@echo ... func/CircularLL/Global.obj
-	@echo ... func/CircularLL/Global.i
-	@echo ... func/CircularLL/Global.s
-	@echo ... func/CircularLL/Objects.obj
-	@echo ... func/CircularLL/Objects.i
-	@echo ... func/CircularLL/Objects.s
-	@echo ... func/CircularLL/Operations.obj
-	@echo ... func/CircularLL/Operations.i
-	@echo ... func/CircularLL/Operations.s
-	@echo ... func/CircularLL/Utils.obj
-	@echo ... func/CircularLL/Utils.i
-	@echo ... func/CircularLL/Utils.s
+	@echo ... func/Menu.obj
+	@echo ... func/Menu.i
+	@echo ... func/Menu.s
+	@echo ... func/Page.obj
+	@echo ... func/Page.i
+	@echo ... func/Page.s
+	@echo ... func/Program.obj
+	@echo ... func/Program.i
+	@echo ... func/Program.s
+	@echo ... func/Variables.obj
+	@echo ... func/Variables.i
+	@echo ... func/Variables.s
 	@echo ... src/main.obj
 	@echo ... src/main.i
 	@echo ... src/main.s

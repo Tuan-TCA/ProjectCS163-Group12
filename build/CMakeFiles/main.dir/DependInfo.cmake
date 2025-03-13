@@ -8,12 +8,10 @@ set(CMAKE_DEPENDS_LANGUAGES
 
 # The set of dependency files which are needed:
 set(CMAKE_DEPENDS_DEPENDENCY_FILES
-  "C:/Users/Tuan TCA/OneDrive/Desktop/ProjectCS163/func/CircularLL/Animation.cpp" "CMakeFiles/main.dir/func/CircularLL/Animation.cpp.obj" "gcc" "CMakeFiles/main.dir/func/CircularLL/Animation.cpp.obj.d"
-  "C:/Users/Tuan TCA/OneDrive/Desktop/ProjectCS163/func/CircularLL/Draw.cpp" "CMakeFiles/main.dir/func/CircularLL/Draw.cpp.obj" "gcc" "CMakeFiles/main.dir/func/CircularLL/Draw.cpp.obj.d"
-  "C:/Users/Tuan TCA/OneDrive/Desktop/ProjectCS163/func/CircularLL/Global.cpp" "CMakeFiles/main.dir/func/CircularLL/Global.cpp.obj" "gcc" "CMakeFiles/main.dir/func/CircularLL/Global.cpp.obj.d"
-  "C:/Users/Tuan TCA/OneDrive/Desktop/ProjectCS163/func/CircularLL/Objects.cpp" "CMakeFiles/main.dir/func/CircularLL/Objects.cpp.obj" "gcc" "CMakeFiles/main.dir/func/CircularLL/Objects.cpp.obj.d"
-  "C:/Users/Tuan TCA/OneDrive/Desktop/ProjectCS163/func/CircularLL/Operations.cpp" "CMakeFiles/main.dir/func/CircularLL/Operations.cpp.obj" "gcc" "CMakeFiles/main.dir/func/CircularLL/Operations.cpp.obj.d"
-  "C:/Users/Tuan TCA/OneDrive/Desktop/ProjectCS163/func/CircularLL/Utils.cpp" "CMakeFiles/main.dir/func/CircularLL/Utils.cpp.obj" "gcc" "CMakeFiles/main.dir/func/CircularLL/Utils.cpp.obj.d"
+  "C:/Users/Tuan TCA/OneDrive/Desktop/ProjectCS163/func/Menu.cpp" "CMakeFiles/main.dir/func/Menu.cpp.obj" "gcc" "CMakeFiles/main.dir/func/Menu.cpp.obj.d"
+  "C:/Users/Tuan TCA/OneDrive/Desktop/ProjectCS163/func/Page.cpp" "CMakeFiles/main.dir/func/Page.cpp.obj" "gcc" "CMakeFiles/main.dir/func/Page.cpp.obj.d"
+  "C:/Users/Tuan TCA/OneDrive/Desktop/ProjectCS163/func/Program.cpp" "CMakeFiles/main.dir/func/Program.cpp.obj" "gcc" "CMakeFiles/main.dir/func/Program.cpp.obj.d"
+  "C:/Users/Tuan TCA/OneDrive/Desktop/ProjectCS163/func/Variables.cpp" "CMakeFiles/main.dir/func/Variables.cpp.obj" "gcc" "CMakeFiles/main.dir/func/Variables.cpp.obj.d"
   "C:/Users/Tuan TCA/OneDrive/Desktop/ProjectCS163/src/main.cpp" "CMakeFiles/main.dir/src/main.cpp.obj" "gcc" "CMakeFiles/main.dir/src/main.cpp.obj.d"
   )
 
