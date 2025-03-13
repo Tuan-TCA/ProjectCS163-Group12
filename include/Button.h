@@ -28,15 +28,15 @@ public:
 };  
 
 class Button {
-private:
+public:
     Rectangle bounds;
     Color color;
     Color hoverColor;
     Color textColor;
     const char* label;
     bool isHovered;
+    Texture2D image;
 
-public:
     Button(float x, float y, float width, float height, const char* labelText, Color buttonColor, Color hoverCol, Color textCol) {
         bounds = {x, y, width, height};
         label = labelText;
@@ -59,14 +59,15 @@ public:
         DrawText(label, bounds.x + (bounds.width - textWidth) / 2, bounds.y + (bounds.height - 20) / 2, 20, textColor);
     }
 
-    void DrawText2D (string link) {
-        Texture2D image = LoadTexture(link.c_str());
+    void DrawText2D () {
+        Update();
         Rectangle sourceRec = {0,0, (float) image.width, (float) image.height};
         Vector2 origin = {0,0};
         DrawTexturePro(image, sourceRec, bounds, origin, 0.0f, WHITE);
     }
 
     bool IsClicked() {
+        Update();
         return isHovered && IsMouseButtonPressed(MOUSE_LEFT_BUTTON);
     }
 };

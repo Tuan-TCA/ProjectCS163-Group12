@@ -11,7 +11,6 @@ Program::Program () {
 void Program::run() {
     while(!WindowShouldClose()) {
         BeginDrawing();
-        
         ClearBackground(RAYWHITE);
         event();
         draw();
@@ -27,31 +26,54 @@ void Program::event() {
         x = menu.modeRetrieve();
         if(x == 1) {
             mode = MODE::LL;
-            cout<<"Linked list";
-            
+            page.init(mode);
         }
         else if(x == 2) {
             mode = MODE::HASHTB;
+            page.init(mode);
         }
         else if(x == 3) {
             mode = MODE::AVL;
+            page.init(mode);
         }
         else if(x == 4) {
             mode = MODE::GRAPH;
+            page.init(mode);
         }
     }
-    else if(mode == MODE::LL) {
-        // Linked List
+
+    if (mode == MODE::LL) {
+        // Linked List event
+         if(page.home.IsClicked()) {
+            mode = MODE::MENU;
+        }
     }
-    else if(mode == MODE::HASHTB) {
+    if(mode == MODE::HASHTB) {
         // Hash Table
+        if(page.home.IsClicked()) {
+            mode = MODE::MENU;
+        }
     }
-    else if(mode == MODE::AVL) {
+    if(mode == MODE::AVL) {
         // AVL Tree
+        if(page.home.IsClicked()) {
+            mode = MODE::MENU;
+        }
     }
-    else if(mode == MODE::GRAPH) {
-        // Graph    
+    if(mode == MODE::GRAPH) {
+        // Graph   
+        if(page.home.IsClicked()) {
+            mode = MODE::MENU;
+        }
     }
+}
+
+string getMODE2(MODE mode) {
+    if(mode == MODE::LL) return "Linked List";
+    if(mode == MODE::HASHTB) return "Hash Table";
+    if(mode == MODE::AVL) return "AVL Tree";
+    if(mode == MODE::GRAPH) return "Graph";
+    return "";
 }
 
 void Program::draw() {
@@ -60,10 +82,21 @@ void Program::draw() {
     } 
     if (mode == MODE::LL) {
         //LL.draw();
-        page.init(mode);
-        page.draw();
+        page.draw();       
     }
-
+    if (mode == MODE::HASHTB) {
+        //LL.draw();
+        page.draw();       
+    }
+    if (mode == MODE::AVL) {
+        //LL.draw();
+        page.draw();       
+    }
+    if (mode == MODE::GRAPH) {
+        //LL.draw();
+        page.draw();       
+    }
+     
 }
 
 
