@@ -1,4 +1,4 @@
-#include <AllLibrary.h>
+#include "LinkedList.h"
 
 void insertNode(LinkedListNode* &head, int key) {
     if (!head) {

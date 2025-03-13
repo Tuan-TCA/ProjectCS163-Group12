@@ -42,6 +42,11 @@ void Program::event() {
     }
     else if(mode == MODE::LL) {
         // Linked List
+        LinkedListNode * head;
+        insertNode(head, 5);
+        insertNode(head, 6);
+        insertNode(head, 7);
+        DrawLinkedList(head);
     }
     else if(mode == MODE::HASHTB) {
         // Hash Table

@@ -1,4 +1,4 @@
-// #include <AllLibrary.h>
+#include "LinkedList.h"
 
 void DrawArrow(Vector2 start, Vector2 end, float arrowSize, Color color) {
     float arrowAngle = PI/6;
@@ -34,7 +34,7 @@ void DrawLinkedList(LinkedListNode* head) {
 
     // Tính center
     int totalWidth = total * (2 * r + spacing) - spacing;
-    Vector2 center = {screenWidth / 2 - totalWidth / 2 + r, screenHeight / 2};
+    Vector2 center = {(int)(screenWidth/2 - totalWidth/2 + r), (int)(screenHeight / 2)};
 
     while (head) {
 
