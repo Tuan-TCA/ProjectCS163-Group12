@@ -3,12 +3,14 @@
 #include <iostream>
 
 Program::Program () {
+
     InitWindow(screenWidth, screenHeight, "Visualization App - CS 163 - Group 12");
     SetTargetFPS(60);
     mode = MODE::MENU;
 }
 
 void Program::run() {
+    page.init();
     while(!WindowShouldClose()) {
         BeginDrawing();
         
@@ -59,7 +61,7 @@ void Program::draw() {
     } 
     if (mode == MODE::LL) {
         //LL.draw();
-        page.init(mode);
+        
         page.Update();
         page.draw();
         page.actions();
