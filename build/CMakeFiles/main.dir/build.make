@@ -68,20 +68,20 @@ include CMakeFiles/main.dir/progress.make
 # Include the compile flags for this target's objects.
 include CMakeFiles/main.dir/flags.make
 
-CMakeFiles/main.dir/func/Input_Field.cpp.obj: CMakeFiles/main.dir/flags.make
-CMakeFiles/main.dir/func/Input_Field.cpp.obj: CMakeFiles/main.dir/includes_CXX.rsp
-CMakeFiles/main.dir/func/Input_Field.cpp.obj: D:/Project/ProjectCS163/func/Input_Field.cpp
-CMakeFiles/main.dir/func/Input_Field.cpp.obj: CMakeFiles/main.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=D:\Project\ProjectCS163\build\CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building CXX object CMakeFiles/main.dir/func/Input_Field.cpp.obj"
-	C:\SFML\mingw64\bin\c++.exe $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/main.dir/func/Input_Field.cpp.obj -MF CMakeFiles\main.dir\func\Input_Field.cpp.obj.d -o CMakeFiles\main.dir\func\Input_Field.cpp.obj -c D:\Project\ProjectCS163\func\Input_Field.cpp
+CMakeFiles/main.dir/func/InputField.cpp.obj: CMakeFiles/main.dir/flags.make
+CMakeFiles/main.dir/func/InputField.cpp.obj: CMakeFiles/main.dir/includes_CXX.rsp
+CMakeFiles/main.dir/func/InputField.cpp.obj: D:/Project/ProjectCS163/func/InputField.cpp
+CMakeFiles/main.dir/func/InputField.cpp.obj: CMakeFiles/main.dir/compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=D:\Project\ProjectCS163\build\CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building CXX object CMakeFiles/main.dir/func/InputField.cpp.obj"
+	C:\SFML\mingw64\bin\c++.exe $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/main.dir/func/InputField.cpp.obj -MF CMakeFiles\main.dir\func\InputField.cpp.obj.d -o CMakeFiles\main.dir\func\InputField.cpp.obj -c D:\Project\ProjectCS163\func\InputField.cpp
 
-CMakeFiles/main.dir/func/Input_Field.cpp.i: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/main.dir/func/Input_Field.cpp.i"
-	C:\SFML\mingw64\bin\c++.exe $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E D:\Project\ProjectCS163\func\Input_Field.cpp > CMakeFiles\main.dir\func\Input_Field.cpp.i
+CMakeFiles/main.dir/func/InputField.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/main.dir/func/InputField.cpp.i"
+	C:\SFML\mingw64\bin\c++.exe $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E D:\Project\ProjectCS163\func\InputField.cpp > CMakeFiles\main.dir\func\InputField.cpp.i
 
-CMakeFiles/main.dir/func/Input_Field.cpp.s: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/main.dir/func/Input_Field.cpp.s"
-	C:\SFML\mingw64\bin\c++.exe $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S D:\Project\ProjectCS163\func\Input_Field.cpp -o CMakeFiles\main.dir\func\Input_Field.cpp.s
+CMakeFiles/main.dir/func/InputField.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/main.dir/func/InputField.cpp.s"
+	C:\SFML\mingw64\bin\c++.exe $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S D:\Project\ProjectCS163\func\InputField.cpp -o CMakeFiles\main.dir\func\InputField.cpp.s
 
 CMakeFiles/main.dir/func/Menu.cpp.obj: CMakeFiles/main.dir/flags.make
 CMakeFiles/main.dir/func/Menu.cpp.obj: CMakeFiles/main.dir/includes_CXX.rsp
@@ -160,7 +160,7 @@ CMakeFiles/main.dir/src/main.cpp.s: cmake_force
 
 # Object files for target main
 main_OBJECTS = \
-"CMakeFiles/main.dir/func/Input_Field.cpp.obj" \
+"CMakeFiles/main.dir/func/InputField.cpp.obj" \
 "CMakeFiles/main.dir/func/Menu.cpp.obj" \
 "CMakeFiles/main.dir/func/Page.cpp.obj" \
 "CMakeFiles/main.dir/func/Program.cpp.obj" \
@@ -170,7 +170,7 @@ main_OBJECTS = \
 # External object files for target main
 main_EXTERNAL_OBJECTS =
 
-main.exe: CMakeFiles/main.dir/func/Input_Field.cpp.obj
+main.exe: CMakeFiles/main.dir/func/InputField.cpp.obj
 main.exe: CMakeFiles/main.dir/func/Menu.cpp.obj
 main.exe: CMakeFiles/main.dir/func/Page.cpp.obj
 main.exe: CMakeFiles/main.dir/func/Program.cpp.obj

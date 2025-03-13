@@ -20,7 +20,7 @@ public:
         Button(screenWidth*0.2, screenHeight*0.75, screenWidth*0.05, screenHeight*0.02, "Delete", DARKGRAY, LIGHTGRAY, WHITE)
     };
 
-    void init(MODE mode);
+    void init();
     void draw();
     void Update();
     void actions();

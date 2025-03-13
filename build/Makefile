@@ -128,29 +128,29 @@ main/fast:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles\main.dir\build.make CMakeFiles/main.dir/build
 .PHONY : main/fast
 
-func/Input_Field.obj: func/Input_Field.cpp.obj
-.PHONY : func/Input_Field.obj
+func/InputField.obj: func/InputField.cpp.obj
+.PHONY : func/InputField.obj
 
 # target to build an object file
-func/Input_Field.cpp.obj:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles\main.dir\build.make CMakeFiles/main.dir/func/Input_Field.cpp.obj
-.PHONY : func/Input_Field.cpp.obj
+func/InputField.cpp.obj:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\main.dir\build.make CMakeFiles/main.dir/func/InputField.cpp.obj
+.PHONY : func/InputField.cpp.obj
 
-func/Input_Field.i: func/Input_Field.cpp.i
-.PHONY : func/Input_Field.i
+func/InputField.i: func/InputField.cpp.i
+.PHONY : func/InputField.i
 
 # target to preprocess a source file
-func/Input_Field.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles\main.dir\build.make CMakeFiles/main.dir/func/Input_Field.cpp.i
-.PHONY : func/Input_Field.cpp.i
+func/InputField.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\main.dir\build.make CMakeFiles/main.dir/func/InputField.cpp.i
+.PHONY : func/InputField.cpp.i
 
-func/Input_Field.s: func/Input_Field.cpp.s
-.PHONY : func/Input_Field.s
+func/InputField.s: func/InputField.cpp.s
+.PHONY : func/InputField.s
 
 # target to generate assembly for a file
-func/Input_Field.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles\main.dir\build.make CMakeFiles/main.dir/func/Input_Field.cpp.s
-.PHONY : func/Input_Field.cpp.s
+func/InputField.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\main.dir\build.make CMakeFiles/main.dir/func/InputField.cpp.s
+.PHONY : func/InputField.cpp.s
 
 func/Menu.obj: func/Menu.cpp.obj
 .PHONY : func/Menu.obj
@@ -281,9 +281,9 @@ help:
 	@echo ... edit_cache
 	@echo ... rebuild_cache
 	@echo ... main
-	@echo ... func/Input_Field.obj
-	@echo ... func/Input_Field.i
-	@echo ... func/Input_Field.s
+	@echo ... func/InputField.obj
+	@echo ... func/InputField.i
+	@echo ... func/InputField.s
 	@echo ... func/Menu.obj
 	@echo ... func/Menu.i
 	@echo ... func/Menu.s

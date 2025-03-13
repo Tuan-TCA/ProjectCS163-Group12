@@ -4,9 +4,9 @@
 //Constructors
 InputField::InputField() {
     x = 5;
-    y = screenHeight / 2;
+    y = screenHeight / 2 - screenHeight*0.63f * 0.15f;
     width = screenWidth*0.25f - 10;
-    height = screenHeight*0.63f * 0.25f;
+    height = screenHeight*0.63f * 0.15f;
     bgColor = WHITE;
     textColor = BLACK;
     label = "v = ";

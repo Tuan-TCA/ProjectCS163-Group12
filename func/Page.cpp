@@ -11,10 +11,10 @@ string getMODE(MODE mode) {
     return "";
 }
 
-void Page::init(MODE mode) {
-    home = ButtonFromImage("res/back.png", "res/back-isOver.png", screenWidth*0.016f, screenHeight*0.027, screenWidth*0.05, screenWidth*0.05); 
-    background = resizedImage("res/BackGround.png", screenWidth, screenHeight);
-    head = MyRec(0, 20, screenWidth, screenHeight*0.08, getMODE(mode).c_str(), BLUE2, WHITE);
+void Page::init() {
+    home = ButtonFromImage("res/back.png", "res/back-isOver.png", screenWidth*0.016f, screenHeight*0.016f, screenWidth*0.05f, screenWidth*0.05f); 
+    background = resizedImage("res/BackGround.png", screenWidth, screenHeight);     
+    head = MyRec(0, 10, screenWidth, screenHeight*0.08, getMODE(mode).c_str(), BLUE2, WHITE);
     bottom = {0,screenHeight*0.88f,(float)screenWidth,screenHeight*0.12f};
     side = {0,screenHeight / 2 - screenHeight * 0.63f / 2,screenWidth*0.25f,screenHeight*0.63f};
 }
@@ -39,6 +39,10 @@ void Page::Update(){
             TraceLog(LOG_INFO, input.text);
             //Do linked list,.. action
         }
+        input.textLength = 0;
+        input.text[0] = '\0';
+    }
+    if(mode == MODE::MENU){
         input.textLength = 0;
         input.text[0] = '\0';
     }
