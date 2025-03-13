@@ -1,4 +1,6 @@
 file(REMOVE_RECURSE
+  "CMakeFiles/main.dir/func/Input_Field.cpp.obj"
+  "CMakeFiles/main.dir/func/Input_Field.cpp.obj.d"
   "CMakeFiles/main.dir/func/Menu.cpp.obj"
   "CMakeFiles/main.dir/func/Menu.cpp.obj.d"
   "CMakeFiles/main.dir/func/Page.cpp.obj"

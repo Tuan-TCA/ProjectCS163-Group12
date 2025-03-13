@@ -1,11 +1,11 @@
 #include "Program.h"
 #include <raylib.h>
+#include <iostream>
 
 Program::Program () {
     InitWindow(screenWidth, screenHeight, "Visualization App - CS 163 - Group 12");
     SetTargetFPS(60);
     mode = MODE::MENU;
-
 }
 
 void Program::run() {
@@ -27,8 +27,7 @@ void Program::event() {
         x = menu.modeRetrieve();
         if(x == 1) {
             mode = MODE::LL;
-            cout<<"Linked list";
-            
+            std::cout<<"Linked list"; 
         }
         else if(x == 2) {
             mode = MODE::HASHTB;
@@ -61,7 +60,9 @@ void Program::draw() {
     if (mode == MODE::LL) {
         //LL.draw();
         page.init(mode);
+        page.Update();
         page.draw();
+        page.actions();
     }
 
 }

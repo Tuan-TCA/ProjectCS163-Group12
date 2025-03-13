@@ -1,3 +1,3 @@
-C:/Users/Tuan TCA/OneDrive/Desktop/ProjectCS163/build/CMakeFiles/main.dir
-C:/Users/Tuan TCA/OneDrive/Desktop/ProjectCS163/build/CMakeFiles/edit_cache.dir
-C:/Users/Tuan TCA/OneDrive/Desktop/ProjectCS163/build/CMakeFiles/rebuild_cache.dir
+D:/Project/ProjectCS163/build/CMakeFiles/main.dir
+D:/Project/ProjectCS163/build/CMakeFiles/edit_cache.dir
+D:/Project/ProjectCS163/build/CMakeFiles/rebuild_cache.dir

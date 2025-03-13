@@ -9,7 +9,7 @@ void Menu::init() {
 void Menu::draw() {
     ClearBackground(RAYWHITE);
     string title = "Visualization App";
-    DrawText(title.c_str(), screenWidth*0.2, screenHeight*0.1, 128, GRAY);
+    DrawText(title.c_str(), screenWidth*0.2, screenHeight*0.1, screenWidth * 0.0667f, GRAY);
 
     for(auto &button : buttons) {
         button.Draw();

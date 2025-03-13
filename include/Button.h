@@ -87,9 +87,6 @@ public:
         : Button(x, y, width, height, "", RAYWHITE, RAYWHITE, RAYWHITE) {
         texture = resizedImage(imagePath, width, height);
         textureOver = resizedImage(imageOverPath, width, height);
-                if (texture.id == 0 || textureOver.id == 0){
-            TraceLog(LOG_ERROR, "Failed to load image texture.");
-        }
     }
 
     void Draw() override {

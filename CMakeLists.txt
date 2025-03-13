@@ -31,7 +31,12 @@ endforeach()
 file(GLOB_RECURSE SOURCES "src/*.cpp" "func/*.cpp")  # Đệ quy tìm trong các thư mục con
 
 add_executable(main ${SOURCES})
-
+add_custom_command(
+    TARGET main POST_BUILD
+    COMMAND ${CMAKE_COMMAND} -E copy_directory
+            ${CMAKE_SOURCE_DIR}/res
+            ${CMAKE_BINARY_DIR}/res
+)
 target_link_libraries(main raylib -lopengl32 -lgdi32 -lwinmm)
 
 target_include_directories(main PRIVATE ${PROJECT_SOURCE_DIR}/include)
