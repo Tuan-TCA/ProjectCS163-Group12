@@ -5,7 +5,6 @@ Program::Program () {
     InitWindow(screenWidth, screenHeight, "Visualization App - CS 163 - Group 12");
     SetTargetFPS(60);
     mode = MODE::MENU;
-
 }
 
 void Program::run() {
@@ -15,7 +14,6 @@ void Program::run() {
         event();
         draw();
         EndDrawing();
-
     }
     CloseWindow();
 }
@@ -66,14 +64,6 @@ void Program::event() {
             mode = MODE::MENU;
         }
     }
-}
-
-string getMODE2(MODE mode) {
-    if(mode == MODE::LL) return "Linked List";
-    if(mode == MODE::HASHTB) return "Hash Table";
-    if(mode == MODE::AVL) return "AVL Tree";
-    if(mode == MODE::GRAPH) return "Graph";
-    return "";
 }
 
 void Program::draw() {

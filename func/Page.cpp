@@ -11,17 +11,18 @@ string getMODE(MODE mode) {
     return "";
 }
 
-void Page::init(MODE mode) {
-    head = MyRec(0,0,screenWidth,screenHeight*0.1, getMODE(mode).c_str(), PURPLE, RED);
+void Page::init(MODE newmode) {
+    head = MyRec(0,0,(float) screenWidth,screenHeight*0.1f, getMODE(mode).c_str(), YELLOW, RED);
     bottom = {0,screenHeight*0.9f,(float)screenWidth,screenHeight*0.1f};
     side = {0,screenHeight*0.3f,screenWidth*0.3f,screenHeight*0.6f};
-    home.image = LoadTexture("res\\back_home.png");
+    home.image = LoadTexture("res/back_home.png");
     
 }
 
 void Page::draw() {
     ClearBackground(RAYWHITE);
     head.Draw();
+    
     DrawRectangleRec(bottom, GREEN);
     DrawRectangleRec(side, PINK);
     home.DrawText2D();
