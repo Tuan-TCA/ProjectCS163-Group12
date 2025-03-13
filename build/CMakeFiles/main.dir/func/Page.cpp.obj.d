@@ -1,6 +1,6 @@
 CMakeFiles/main.dir/func/Page.cpp.obj: \
- C:\Users\Tuan\ TCA\OneDrive\Desktop\ProjectCS163\func\Page.cpp \
- C:/Users/TUANTC~1/OneDrive/Desktop/PROJEC~1/include/Page.h \
+ C:\Users\Tuan\ TCA\OneDrive\Desktop\New\ folder\func\Page.cpp \
+ C:/Users/TUANTC~1/OneDrive/Desktop/NEWFOL~1/include/Page.h \
  C:/raylib/include/raylib.h \
  C:/msys64/ucrt64/lib/gcc/x86_64-w64-mingw32/14.2.0/include/stdarg.h \
  C:/msys64/ucrt64/include/stdarg.h \
@@ -9,8 +9,7 @@ CMakeFiles/main.dir/func/Page.cpp.obj: \
  C:/msys64/ucrt64/include/_mingw_mac.h \
  C:/msys64/ucrt64/include/_mingw_secapi.h \
  C:/msys64/ucrt64/include/sdks/_mingw_ddk.h \
- C:/Users/TUANTC~1/OneDrive/Desktop/PROJEC~1/include/Button.h \
- C:/Users/TUANTC~1/OneDrive/Desktop/PROJEC~1/include/Variables.h \
+ C:/Users/TUANTC~1/OneDrive/Desktop/NEWFOL~1/include/Button.h \
  C:/msys64/ucrt64/include/c++/14.2.0/x86_64-w64-mingw32/bits/stdc++.h \
  C:/msys64/ucrt64/include/c++/14.2.0/cassert \
  C:/msys64/ucrt64/include/c++/14.2.0/x86_64-w64-mingw32/bits/c++config.h \
@@ -337,4 +336,5 @@ CMakeFiles/main.dir/func/Page.cpp.obj: \
  C:/msys64/ucrt64/include/c++/14.2.0/bits/fs_path.h \
  C:/msys64/ucrt64/include/c++/14.2.0/bits/fs_dir.h \
  C:/msys64/ucrt64/include/c++/14.2.0/bits/fs_ops.h \
- C:/msys64/ucrt64/include/c++/14.2.0/memory_resource
+ C:/msys64/ucrt64/include/c++/14.2.0/memory_resource \
+ C:/Users/TUANTC~1/OneDrive/Desktop/NEWFOL~1/include/Variables.h

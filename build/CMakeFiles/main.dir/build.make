@@ -52,10 +52,10 @@ RM = "C:\Program Files\CMake\bin\cmake.exe" -E rm -f
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = "C:\Users\Tuan TCA\OneDrive\Desktop\ProjectCS163"
+CMAKE_SOURCE_DIR = "C:\Users\Tuan TCA\OneDrive\Desktop\New folder"
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = "C:\Users\Tuan TCA\OneDrive\Desktop\ProjectCS163\build"
+CMAKE_BINARY_DIR = "C:\Users\Tuan TCA\OneDrive\Desktop\New folder\build"
 
 # Include any dependencies generated for this target.
 include CMakeFiles/main.dir/depend.make
@@ -73,78 +73,78 @@ CMakeFiles/main.dir/codegen:
 
 CMakeFiles/main.dir/func/Menu.cpp.obj: CMakeFiles/main.dir/flags.make
 CMakeFiles/main.dir/func/Menu.cpp.obj: CMakeFiles/main.dir/includes_CXX.rsp
-CMakeFiles/main.dir/func/Menu.cpp.obj: C:/Users/Tuan\ TCA/OneDrive/Desktop/ProjectCS163/func/Menu.cpp
+CMakeFiles/main.dir/func/Menu.cpp.obj: C:/Users/Tuan\ TCA/OneDrive/Desktop/New\ folder/func/Menu.cpp
 CMakeFiles/main.dir/func/Menu.cpp.obj: CMakeFiles/main.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="C:\Users\Tuan TCA\OneDrive\Desktop\ProjectCS163\build\CMakeFiles" --progress-num=$(CMAKE_PROGRESS_1) "Building CXX object CMakeFiles/main.dir/func/Menu.cpp.obj"
-	C:\msys64\ucrt64\bin\c++.exe $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/main.dir/func/Menu.cpp.obj -MF CMakeFiles\main.dir\func\Menu.cpp.obj.d -o CMakeFiles\main.dir\func\Menu.cpp.obj -c "C:\Users\Tuan TCA\OneDrive\Desktop\ProjectCS163\func\Menu.cpp"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="C:\Users\Tuan TCA\OneDrive\Desktop\New folder\build\CMakeFiles" --progress-num=$(CMAKE_PROGRESS_1) "Building CXX object CMakeFiles/main.dir/func/Menu.cpp.obj"
+	C:\msys64\ucrt64\bin\c++.exe $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/main.dir/func/Menu.cpp.obj -MF CMakeFiles\main.dir\func\Menu.cpp.obj.d -o CMakeFiles\main.dir\func\Menu.cpp.obj -c "C:\Users\Tuan TCA\OneDrive\Desktop\New folder\func\Menu.cpp"
 
 CMakeFiles/main.dir/func/Menu.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/main.dir/func/Menu.cpp.i"
-	C:\msys64\ucrt64\bin\c++.exe $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E "C:\Users\Tuan TCA\OneDrive\Desktop\ProjectCS163\func\Menu.cpp" > CMakeFiles\main.dir\func\Menu.cpp.i
+	C:\msys64\ucrt64\bin\c++.exe $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E "C:\Users\Tuan TCA\OneDrive\Desktop\New folder\func\Menu.cpp" > CMakeFiles\main.dir\func\Menu.cpp.i
 
 CMakeFiles/main.dir/func/Menu.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/main.dir/func/Menu.cpp.s"
-	C:\msys64\ucrt64\bin\c++.exe $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S "C:\Users\Tuan TCA\OneDrive\Desktop\ProjectCS163\func\Menu.cpp" -o CMakeFiles\main.dir\func\Menu.cpp.s
+	C:\msys64\ucrt64\bin\c++.exe $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S "C:\Users\Tuan TCA\OneDrive\Desktop\New folder\func\Menu.cpp" -o CMakeFiles\main.dir\func\Menu.cpp.s
 
 CMakeFiles/main.dir/func/Page.cpp.obj: CMakeFiles/main.dir/flags.make
 CMakeFiles/main.dir/func/Page.cpp.obj: CMakeFiles/main.dir/includes_CXX.rsp
-CMakeFiles/main.dir/func/Page.cpp.obj: C:/Users/Tuan\ TCA/OneDrive/Desktop/ProjectCS163/func/Page.cpp
+CMakeFiles/main.dir/func/Page.cpp.obj: C:/Users/Tuan\ TCA/OneDrive/Desktop/New\ folder/func/Page.cpp
 CMakeFiles/main.dir/func/Page.cpp.obj: CMakeFiles/main.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="C:\Users\Tuan TCA\OneDrive\Desktop\ProjectCS163\build\CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2) "Building CXX object CMakeFiles/main.dir/func/Page.cpp.obj"
-	C:\msys64\ucrt64\bin\c++.exe $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/main.dir/func/Page.cpp.obj -MF CMakeFiles\main.dir\func\Page.cpp.obj.d -o CMakeFiles\main.dir\func\Page.cpp.obj -c "C:\Users\Tuan TCA\OneDrive\Desktop\ProjectCS163\func\Page.cpp"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="C:\Users\Tuan TCA\OneDrive\Desktop\New folder\build\CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2) "Building CXX object CMakeFiles/main.dir/func/Page.cpp.obj"
+	C:\msys64\ucrt64\bin\c++.exe $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/main.dir/func/Page.cpp.obj -MF CMakeFiles\main.dir\func\Page.cpp.obj.d -o CMakeFiles\main.dir\func\Page.cpp.obj -c "C:\Users\Tuan TCA\OneDrive\Desktop\New folder\func\Page.cpp"
 
 CMakeFiles/main.dir/func/Page.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/main.dir/func/Page.cpp.i"
-	C:\msys64\ucrt64\bin\c++.exe $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E "C:\Users\Tuan TCA\OneDrive\Desktop\ProjectCS163\func\Page.cpp" > CMakeFiles\main.dir\func\Page.cpp.i
+	C:\msys64\ucrt64\bin\c++.exe $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E "C:\Users\Tuan TCA\OneDrive\Desktop\New folder\func\Page.cpp" > CMakeFiles\main.dir\func\Page.cpp.i
 
 CMakeFiles/main.dir/func/Page.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/main.dir/func/Page.cpp.s"
-	C:\msys64\ucrt64\bin\c++.exe $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S "C:\Users\Tuan TCA\OneDrive\Desktop\ProjectCS163\func\Page.cpp" -o CMakeFiles\main.dir\func\Page.cpp.s
+	C:\msys64\ucrt64\bin\c++.exe $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S "C:\Users\Tuan TCA\OneDrive\Desktop\New folder\func\Page.cpp" -o CMakeFiles\main.dir\func\Page.cpp.s
 
 CMakeFiles/main.dir/func/Program.cpp.obj: CMakeFiles/main.dir/flags.make
 CMakeFiles/main.dir/func/Program.cpp.obj: CMakeFiles/main.dir/includes_CXX.rsp
-CMakeFiles/main.dir/func/Program.cpp.obj: C:/Users/Tuan\ TCA/OneDrive/Desktop/ProjectCS163/func/Program.cpp
+CMakeFiles/main.dir/func/Program.cpp.obj: C:/Users/Tuan\ TCA/OneDrive/Desktop/New\ folder/func/Program.cpp
 CMakeFiles/main.dir/func/Program.cpp.obj: CMakeFiles/main.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="C:\Users\Tuan TCA\OneDrive\Desktop\ProjectCS163\build\CMakeFiles" --progress-num=$(CMAKE_PROGRESS_3) "Building CXX object CMakeFiles/main.dir/func/Program.cpp.obj"
-	C:\msys64\ucrt64\bin\c++.exe $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/main.dir/func/Program.cpp.obj -MF CMakeFiles\main.dir\func\Program.cpp.obj.d -o CMakeFiles\main.dir\func\Program.cpp.obj -c "C:\Users\Tuan TCA\OneDrive\Desktop\ProjectCS163\func\Program.cpp"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="C:\Users\Tuan TCA\OneDrive\Desktop\New folder\build\CMakeFiles" --progress-num=$(CMAKE_PROGRESS_3) "Building CXX object CMakeFiles/main.dir/func/Program.cpp.obj"
+	C:\msys64\ucrt64\bin\c++.exe $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/main.dir/func/Program.cpp.obj -MF CMakeFiles\main.dir\func\Program.cpp.obj.d -o CMakeFiles\main.dir\func\Program.cpp.obj -c "C:\Users\Tuan TCA\OneDrive\Desktop\New folder\func\Program.cpp"
 
 CMakeFiles/main.dir/func/Program.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/main.dir/func/Program.cpp.i"
-	C:\msys64\ucrt64\bin\c++.exe $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E "C:\Users\Tuan TCA\OneDrive\Desktop\ProjectCS163\func\Program.cpp" > CMakeFiles\main.dir\func\Program.cpp.i
+	C:\msys64\ucrt64\bin\c++.exe $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E "C:\Users\Tuan TCA\OneDrive\Desktop\New folder\func\Program.cpp" > CMakeFiles\main.dir\func\Program.cpp.i
 
 CMakeFiles/main.dir/func/Program.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/main.dir/func/Program.cpp.s"
-	C:\msys64\ucrt64\bin\c++.exe $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S "C:\Users\Tuan TCA\OneDrive\Desktop\ProjectCS163\func\Program.cpp" -o CMakeFiles\main.dir\func\Program.cpp.s
+	C:\msys64\ucrt64\bin\c++.exe $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S "C:\Users\Tuan TCA\OneDrive\Desktop\New folder\func\Program.cpp" -o CMakeFiles\main.dir\func\Program.cpp.s
 
 CMakeFiles/main.dir/func/Variables.cpp.obj: CMakeFiles/main.dir/flags.make
 CMakeFiles/main.dir/func/Variables.cpp.obj: CMakeFiles/main.dir/includes_CXX.rsp
-CMakeFiles/main.dir/func/Variables.cpp.obj: C:/Users/Tuan\ TCA/OneDrive/Desktop/ProjectCS163/func/Variables.cpp
+CMakeFiles/main.dir/func/Variables.cpp.obj: C:/Users/Tuan\ TCA/OneDrive/Desktop/New\ folder/func/Variables.cpp
 CMakeFiles/main.dir/func/Variables.cpp.obj: CMakeFiles/main.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="C:\Users\Tuan TCA\OneDrive\Desktop\ProjectCS163\build\CMakeFiles" --progress-num=$(CMAKE_PROGRESS_4) "Building CXX object CMakeFiles/main.dir/func/Variables.cpp.obj"
-	C:\msys64\ucrt64\bin\c++.exe $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/main.dir/func/Variables.cpp.obj -MF CMakeFiles\main.dir\func\Variables.cpp.obj.d -o CMakeFiles\main.dir\func\Variables.cpp.obj -c "C:\Users\Tuan TCA\OneDrive\Desktop\ProjectCS163\func\Variables.cpp"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="C:\Users\Tuan TCA\OneDrive\Desktop\New folder\build\CMakeFiles" --progress-num=$(CMAKE_PROGRESS_4) "Building CXX object CMakeFiles/main.dir/func/Variables.cpp.obj"
+	C:\msys64\ucrt64\bin\c++.exe $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/main.dir/func/Variables.cpp.obj -MF CMakeFiles\main.dir\func\Variables.cpp.obj.d -o CMakeFiles\main.dir\func\Variables.cpp.obj -c "C:\Users\Tuan TCA\OneDrive\Desktop\New folder\func\Variables.cpp"
 
 CMakeFiles/main.dir/func/Variables.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/main.dir/func/Variables.cpp.i"
-	C:\msys64\ucrt64\bin\c++.exe $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E "C:\Users\Tuan TCA\OneDrive\Desktop\ProjectCS163\func\Variables.cpp" > CMakeFiles\main.dir\func\Variables.cpp.i
+	C:\msys64\ucrt64\bin\c++.exe $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E "C:\Users\Tuan TCA\OneDrive\Desktop\New folder\func\Variables.cpp" > CMakeFiles\main.dir\func\Variables.cpp.i
 
 CMakeFiles/main.dir/func/Variables.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/main.dir/func/Variables.cpp.s"
-	C:\msys64\ucrt64\bin\c++.exe $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S "C:\Users\Tuan TCA\OneDrive\Desktop\ProjectCS163\func\Variables.cpp" -o CMakeFiles\main.dir\func\Variables.cpp.s
+	C:\msys64\ucrt64\bin\c++.exe $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S "C:\Users\Tuan TCA\OneDrive\Desktop\New folder\func\Variables.cpp" -o CMakeFiles\main.dir\func\Variables.cpp.s
 
 CMakeFiles/main.dir/src/main.cpp.obj: CMakeFiles/main.dir/flags.make
 CMakeFiles/main.dir/src/main.cpp.obj: CMakeFiles/main.dir/includes_CXX.rsp
-CMakeFiles/main.dir/src/main.cpp.obj: C:/Users/Tuan\ TCA/OneDrive/Desktop/ProjectCS163/src/main.cpp
+CMakeFiles/main.dir/src/main.cpp.obj: C:/Users/Tuan\ TCA/OneDrive/Desktop/New\ folder/src/main.cpp
 CMakeFiles/main.dir/src/main.cpp.obj: CMakeFiles/main.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="C:\Users\Tuan TCA\OneDrive\Desktop\ProjectCS163\build\CMakeFiles" --progress-num=$(CMAKE_PROGRESS_5) "Building CXX object CMakeFiles/main.dir/src/main.cpp.obj"
-	C:\msys64\ucrt64\bin\c++.exe $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/main.dir/src/main.cpp.obj -MF CMakeFiles\main.dir\src\main.cpp.obj.d -o CMakeFiles\main.dir\src\main.cpp.obj -c "C:\Users\Tuan TCA\OneDrive\Desktop\ProjectCS163\src\main.cpp"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="C:\Users\Tuan TCA\OneDrive\Desktop\New folder\build\CMakeFiles" --progress-num=$(CMAKE_PROGRESS_5) "Building CXX object CMakeFiles/main.dir/src/main.cpp.obj"
+	C:\msys64\ucrt64\bin\c++.exe $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/main.dir/src/main.cpp.obj -MF CMakeFiles\main.dir\src\main.cpp.obj.d -o CMakeFiles\main.dir\src\main.cpp.obj -c "C:\Users\Tuan TCA\OneDrive\Desktop\New folder\src\main.cpp"
 
 CMakeFiles/main.dir/src/main.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/main.dir/src/main.cpp.i"
-	C:\msys64\ucrt64\bin\c++.exe $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E "C:\Users\Tuan TCA\OneDrive\Desktop\ProjectCS163\src\main.cpp" > CMakeFiles\main.dir\src\main.cpp.i
+	C:\msys64\ucrt64\bin\c++.exe $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E "C:\Users\Tuan TCA\OneDrive\Desktop\New folder\src\main.cpp" > CMakeFiles\main.dir\src\main.cpp.i
 
 CMakeFiles/main.dir/src/main.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/main.dir/src/main.cpp.s"
-	C:\msys64\ucrt64\bin\c++.exe $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S "C:\Users\Tuan TCA\OneDrive\Desktop\ProjectCS163\src\main.cpp" -o CMakeFiles\main.dir\src\main.cpp.s
+	C:\msys64\ucrt64\bin\c++.exe $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S "C:\Users\Tuan TCA\OneDrive\Desktop\New folder\src\main.cpp" -o CMakeFiles\main.dir\src\main.cpp.s
 
 # Object files for target main
 main_OBJECTS = \
@@ -166,8 +166,9 @@ main.exe: CMakeFiles/main.dir/build.make
 main.exe: CMakeFiles/main.dir/linkLibs.rsp
 main.exe: CMakeFiles/main.dir/objects1.rsp
 main.exe: CMakeFiles/main.dir/link.txt
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --bold --progress-dir="C:\Users\Tuan TCA\OneDrive\Desktop\ProjectCS163\build\CMakeFiles" --progress-num=$(CMAKE_PROGRESS_6) "Linking CXX executable main.exe"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --bold --progress-dir="C:\Users\Tuan TCA\OneDrive\Desktop\New folder\build\CMakeFiles" --progress-num=$(CMAKE_PROGRESS_6) "Linking CXX executable main.exe"
 	$(CMAKE_COMMAND) -E cmake_link_script CMakeFiles\main.dir\link.txt --verbose=$(VERBOSE)
+	"C:\Program Files\CMake\bin\cmake.exe" -E copy_directory "C:/Users/Tuan TCA/OneDrive/Desktop/New folder/res" "C:/Users/Tuan TCA/OneDrive/Desktop/New folder/build/res"
 
 # Rule to build all files generated by this target.
 CMakeFiles/main.dir/build: main.exe
@@ -178,6 +179,6 @@ CMakeFiles/main.dir/clean:
 .PHONY : CMakeFiles/main.dir/clean
 
 CMakeFiles/main.dir/depend:
-	$(CMAKE_COMMAND) -E cmake_depends "MinGW Makefiles" "C:\Users\Tuan TCA\OneDrive\Desktop\ProjectCS163" "C:\Users\Tuan TCA\OneDrive\Desktop\ProjectCS163" "C:\Users\Tuan TCA\OneDrive\Desktop\ProjectCS163\build" "C:\Users\Tuan TCA\OneDrive\Desktop\ProjectCS163\build" "C:\Users\Tuan TCA\OneDrive\Desktop\ProjectCS163\build\CMakeFiles\main.dir\DependInfo.cmake" "--color=$(COLOR)"
+	$(CMAKE_COMMAND) -E cmake_depends "MinGW Makefiles" "C:\Users\Tuan TCA\OneDrive\Desktop\New folder" "C:\Users\Tuan TCA\OneDrive\Desktop\New folder" "C:\Users\Tuan TCA\OneDrive\Desktop\New folder\build" "C:\Users\Tuan TCA\OneDrive\Desktop\New folder\build" "C:\Users\Tuan TCA\OneDrive\Desktop\New folder\build\CMakeFiles\main.dir\DependInfo.cmake" "--color=$(COLOR)"
 .PHONY : CMakeFiles/main.dir/depend
 
