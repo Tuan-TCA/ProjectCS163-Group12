@@ -8,11 +8,11 @@ private:
     Rectangle bounds;
     Color color;
     Color textColor;
-    const char* label;
+    string label;
 
 public:
     MyRec() {};
-    MyRec(float x, float y, float width, float height, const char* labelText, Color buttonColor, Color textCol) {
+    MyRec(float x, float y, float width, float height, string labelText, Color buttonColor, Color textCol) {
         bounds = {x, y, width, height};
         label = labelText;
         color = buttonColor;
@@ -21,8 +21,8 @@ public:
 
     void Draw() {
         DrawRectangleRec(bounds, color);
-        int textWidth = MeasureText(label, 40);
-        DrawText(label, bounds.x + (bounds.width - textWidth) / 2, bounds.y + (bounds.height - 40) / 2, 40, textColor);
+        int textWidth = MeasureText(label.c_str(), 40);
+        DrawText(label.c_str(), bounds.x + (bounds.width - textWidth) / 2, bounds.y + (bounds.height - 40) / 2, 40, textColor);
     }
 
 };  
@@ -63,7 +63,7 @@ public:
         Update();
         Rectangle sourceRec = {0,0, (float) image.width, (float) image.height};
         Vector2 origin = {0,0};
-        DrawTexturePro(image, sourceRec, bounds, origin, 0.0f, WHITE);
+        DrawTexturePro(image, sourceRec, bounds, origin, 0.0f, isHovered ? LIGHTGRAY : YELLOW);
     }
 
     bool IsClicked() {

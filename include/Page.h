@@ -9,7 +9,7 @@ public:
     MyRec head;
     Rectangle bottom;
     Rectangle side;
-    Button home = Button(screenWidth*0.9f, screenHeight*0.1, screenHeight*0.1, screenHeight*0.1, "Home", DARKGRAY, LIGHTGRAY, WHITE);
+    Button home = Button(screenWidth*0.9f, 0, screenHeight*0.1, screenHeight*0.1, "Home", DARKGRAY, LIGHTGRAY, WHITE);
     vector <Button> functions {
         Button(screenWidth*0.2, screenHeight*0.60, screenWidth*0.05, screenHeight*0.02, "Create", DARKGRAY, LIGHTGRAY, WHITE),
         Button(screenWidth*0.2, screenHeight*0.65, screenWidth*0.05, screenHeight*0.02, "Insert", DARKGRAY, LIGHTGRAY, WHITE),
