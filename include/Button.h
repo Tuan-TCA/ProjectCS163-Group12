@@ -1,5 +1,6 @@
 #pragma once
 #include "raylib.h"
+#include "Variables.h"
 #include<bits/stdc++.h>
 using namespace std;
 
@@ -37,6 +38,15 @@ public:
     bool isHovered;
     Texture2D image;
 
+    Button() {
+        bounds = {0,0,0,0};
+        label = "";
+        color = WHITE;
+        hoverColor = WHITE;
+        textColor = WHITE;
+        isHovered = false;
+    }
+
     Button(float x, float y, float width, float height, const char* labelText, Color buttonColor, Color hoverCol, Color textCol) {
         bounds = {x, y, width, height};
         label = labelText;
@@ -45,14 +55,13 @@ public:
         textColor = textCol;
         isHovered = false;
     }
-        
 
     void Update() {
         Vector2 mousePoint = GetMousePosition();
         isHovered = CheckCollisionPointRec(mousePoint, bounds);
     }
 
-    void Draw() {
+    virtual void Draw() {
         Update();
         DrawRectangleRec(bounds, isHovered ? hoverColor : color);
         int textWidth = MeasureText(label, 20);
@@ -66,8 +75,83 @@ public:
         DrawTexturePro(image, sourceRec, bounds, origin, 0.0f, isHovered ? LIGHTGRAY : YELLOW);
     }
 
+    Rectangle getBound(){
+        return bounds;
+    }
+    bool isOver(){
+        return isHovered;
+    }
     bool IsClicked() {
         Update();
         return isHovered && IsMouseButtonPressed(MOUSE_LEFT_BUTTON);
     }
 };
+
+class TextBox: public Button {
+public:
+    Button box;
+    string inputText;
+    bool active;
+    vector<int> nums;
+    
+    void Draw() override {
+        box.Draw();
+        string displayText = inputText;
+        if (active && ((int)(GetTime() * 2) % 2 == 0)) { // Nhấp nháy con trỏ
+            displayText += "|";
+        }
+        DrawText(displayText.c_str(), box.bounds.x+ 5, box.bounds.y + 5, 20, textColor);
+    }
+
+    void HandleInput(bool Add, bool Del) {
+        if (box.IsClicked()) {
+            active = true;
+        }
+        if (active) {
+            int key = GetCharPressed();
+            while (key > 0) {
+                if (key >= '0' && key <= '9') {
+                    inputText += (char)key;
+                }
+                key = GetCharPressed();
+            }
+
+            if (IsKeyPressed(KEY_BACKSPACE) && !inputText.empty()) {
+                inputText.pop_back();
+            }
+
+            if ((Add || IsKeyPressed(KEY_ENTER)) && !inputText.empty()) {
+                nums.push_back(stoi(inputText));
+                inputText = "";
+                active = false;
+            }
+            else
+            if ((Del) && !inputText.empty()) {
+                auto it = find(nums.begin(), nums.end(), stoi(inputText));
+                if(it!=nums.end())
+                    nums.erase(it);
+                inputText = "";
+                active = false;
+            }
+        }
+    }
+};
+
+class ButtonFromImage : public Button {
+private:
+    Texture2D texture;
+    Texture2D textureOver;
+public:
+    ButtonFromImage() : Button(0, 0, 0, 0, "", RAYWHITE, RAYWHITE, RAYWHITE), texture({ 0 }), textureOver({ 0 }) {}
+    ButtonFromImage(const char* imagePath, const char* imageOverPath, float x, float y, float width, float height)
+        : Button(x, y, width, height, "", RAYWHITE, RAYWHITE, RAYWHITE) {
+        texture = resizedImage(imagePath, width, height);
+        textureOver = resizedImage(imageOverPath, width, height);
+    }
+
+    void Draw() override {
+        Update();
+        DrawTexture(!isOver() ? texture : textureOver, bounds.x, bounds.y, WHITE);
+    }
+};
+

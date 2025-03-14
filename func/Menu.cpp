@@ -3,13 +3,14 @@
 #include<bits/stdc++.h>
 
 void Menu::init() {
-    DrawRectangle(0, 0, screenWidth, screenHeight, BLUE);
+    //initialize variables
 }
 
 void Menu::draw() {
     ClearBackground(RAYWHITE);
     string title = "Visualization App";
-    DrawText(title.c_str(), screenWidth*0.2, screenHeight*0.1, 128, GRAY);
+    DrawRectangle(0, 0, screenWidth, screenHeight, WHITE);
+    DrawText(title.c_str(), screenWidth*0.2, screenHeight*0.1, screenWidth * 0.0667f, GRAY);
 
     for(auto &button : buttons) {
         button.Draw();

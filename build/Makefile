@@ -56,10 +56,10 @@ RM = "C:\Program Files\CMake\bin\cmake.exe" -E rm -f
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = "C:\Users\Tuan TCA\OneDrive\Desktop\New folder"
+CMAKE_SOURCE_DIR = "C:\Users\Tuan TCA\OneDrive\Desktop\New folder (2)"
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = "C:\Users\Tuan TCA\OneDrive\Desktop\New folder\build"
+CMAKE_BINARY_DIR = "C:\Users\Tuan TCA\OneDrive\Desktop\New folder (2)\build"
 
 #=============================================================================
 # Targets provided globally by CMake.
@@ -86,9 +86,9 @@ rebuild_cache/fast: rebuild_cache
 
 # The main all target
 all: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start "C:\Users\Tuan TCA\OneDrive\Desktop\New folder\build\CMakeFiles" "C:\Users\Tuan TCA\OneDrive\Desktop\New folder\build\\CMakeFiles\progress.marks"
+	$(CMAKE_COMMAND) -E cmake_progress_start "C:\Users\Tuan TCA\OneDrive\Desktop\New folder (2)\build\CMakeFiles" "C:\Users\Tuan TCA\OneDrive\Desktop\New folder (2)\build\\CMakeFiles\progress.marks"
 	$(MAKE) $(MAKESILENT) -f CMakeFiles\Makefile2 all
-	$(CMAKE_COMMAND) -E cmake_progress_start "C:\Users\Tuan TCA\OneDrive\Desktop\New folder\build\CMakeFiles" 0
+	$(CMAKE_COMMAND) -E cmake_progress_start "C:\Users\Tuan TCA\OneDrive\Desktop\New folder (2)\build\CMakeFiles" 0
 .PHONY : all
 
 # The main clean target
@@ -127,6 +127,30 @@ main: cmake_check_build_system
 main/fast:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles\main.dir\build.make CMakeFiles/main.dir/build
 .PHONY : main/fast
+
+func/InputField.obj: func/InputField.cpp.obj
+.PHONY : func/InputField.obj
+
+# target to build an object file
+func/InputField.cpp.obj:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\main.dir\build.make CMakeFiles/main.dir/func/InputField.cpp.obj
+.PHONY : func/InputField.cpp.obj
+
+func/InputField.i: func/InputField.cpp.i
+.PHONY : func/InputField.i
+
+# target to preprocess a source file
+func/InputField.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\main.dir\build.make CMakeFiles/main.dir/func/InputField.cpp.i
+.PHONY : func/InputField.cpp.i
+
+func/InputField.s: func/InputField.cpp.s
+.PHONY : func/InputField.s
+
+# target to generate assembly for a file
+func/InputField.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\main.dir\build.make CMakeFiles/main.dir/func/InputField.cpp.s
+.PHONY : func/InputField.cpp.s
 
 func/Menu.obj: func/Menu.cpp.obj
 .PHONY : func/Menu.obj
@@ -257,6 +281,9 @@ help:
 	@echo ... edit_cache
 	@echo ... rebuild_cache
 	@echo ... main
+	@echo ... func/InputField.obj
+	@echo ... func/InputField.i
+	@echo ... func/InputField.s
 	@echo ... func/Menu.obj
 	@echo ... func/Menu.i
 	@echo ... func/Menu.s

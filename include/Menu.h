@@ -2,7 +2,7 @@
 #include <raylib.h>
 #include "Button.h"
 #include "Variables.h"
-#include<bits/stdc++.h>
+#include <bits/stdc++.h>
 using namespace std;
 
 class Menu
@@ -14,6 +14,7 @@ public:
         Button(screenWidth*0.4, screenHeight*0.60, screenWidth*0.2, screenHeight*0.1, "Tree", DARKGRAY, LIGHTGRAY, WHITE),
         Button(screenWidth*0.4, screenHeight*0.75, screenWidth*0.2, screenHeight*0.1, "Graph", DARKGRAY, LIGHTGRAY, WHITE)
     };
+
     void init();
     void draw();
     int modeRetrieve();
