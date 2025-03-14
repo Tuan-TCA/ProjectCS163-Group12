@@ -73,6 +73,13 @@ public:
         DrawText(label, bounds.x + (bounds.width - textWidth) / 2, bounds.y + (bounds.height - 20) / 2, 20, textColor);
     }
 
+    void DrawRounded(){
+        Update();
+        DrawRectangleRounded(bounds, 20, 0,isHovered ? BLUE2 : BLUE1);
+        int textWidth = MeasureText(label, 20);
+        DrawText(label, bounds.x + (bounds.width - textWidth) / 2, bounds.y + (bounds.height - 20) / 2, 20, textColor);
+    }
+
     void DrawText2D () {
         Update();
         Rectangle sourceRec = {0,0, (float) image.width, (float) image.height};
