@@ -31,7 +31,7 @@ void Program::event() {
         x = menu.modeRetrieve();
         if(x == 1) {
             mode = MODE::LL;
-            std::cout<<"Linked list"; 
+            // std::cout<<"Linked list"; 
         }
         else if(x == 2) {
             mode = MODE::HASHTB;
@@ -54,21 +54,15 @@ void Program::event() {
     }
     if(mode == MODE::HASHTB) {
         // Hash Table
-        if(page.home.IsClicked()) {
-            mode = MODE::MENU;
-        }
+        page.event();
     }
     if(mode == MODE::AVL) {
         // AVL Tree
-        if(page.home.IsClicked()) {
-            mode = MODE::MENU;
-        }
+        page.event();
     }
     if(mode == MODE::GRAPH) {
         // Graph   
-        if(page.home.IsClicked()) {
-            mode = MODE::MENU;
-        }
+        page.event();
     }
 }
 
