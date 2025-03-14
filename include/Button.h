@@ -24,7 +24,7 @@ public:
     void Draw() {
         DrawRectangleRec(bounds, color);
         int textWidth = MeasureText(label.c_str(), 40);
-        DrawText(label.c_str(), bounds.x + (bounds.width - textWidth) / 2, bounds.y + (bounds.height - 40) / 2, 40, textColor);
+        DrawText(label.c_str(), bounds.x + (bounds.width - textWidth) / 2, bounds.y + (bounds.height - 40) / 2, 30, textColor);
     }
 
     void DrawRounded(){

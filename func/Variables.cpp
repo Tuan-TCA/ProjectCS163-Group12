@@ -1,7 +1,7 @@
 #include "Variables.h"
 
 MODE mode; //pointer của trang 
-const int screenWidth = 1200, screenHeight = 900;
+const float screenWidth = 1200, screenHeight = 900;
 
 //MyCorlor
 //Theme 1:
