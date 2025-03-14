@@ -2,6 +2,7 @@
 #include "raylib.h"
 #include "Variables.h"
 #include<bits/stdc++.h>
+#include <string>
 using namespace std;
 
 class MyRec {
@@ -26,7 +27,11 @@ public:
         DrawText(label.c_str(), bounds.x + (bounds.width - textWidth) / 2, bounds.y + (bounds.height - 40) / 2, 40, textColor);
     }
 
-};  
+    void DrawRounded(){
+        DrawRectangleRounded(bounds, 20, 0, BLUE2);
+        DrawText(label.c_str(), bounds.x + (bounds.width - MeasureText(label.c_str(), 40)) / 2, bounds.y + (bounds.height - 40) / 2, 40, textColor);
+    }
+};
 
 class Button {
 public:
@@ -43,7 +48,7 @@ public:
         label = "";
         color = WHITE;
         hoverColor = WHITE;
-        textColor = WHITE;
+        textColor = BLACK;
         isHovered = false;
     }
 
@@ -56,7 +61,7 @@ public:
         isHovered = false;
     }
 
-    void Update() {
+    virtual void Update() {
         Vector2 mousePoint = GetMousePosition();
         isHovered = CheckCollisionPointRec(mousePoint, bounds);
     }
@@ -64,6 +69,13 @@ public:
     virtual void Draw() {
         Update();
         DrawRectangleRec(bounds, isHovered ? hoverColor : color);
+        int textWidth = MeasureText(label, 20);
+        DrawText(label, bounds.x + (bounds.width - textWidth) / 2, bounds.y + (bounds.height - 20) / 2, 20, textColor);
+    }
+
+    void DrawRounded(){
+        Update();
+        DrawRectangleRounded(bounds, 20, 0,isHovered ? BLUE2 : BLUE1);
         int textWidth = MeasureText(label, 20);
         DrawText(label, bounds.x + (bounds.width - textWidth) / 2, bounds.y + (bounds.height - 20) / 2, 20, textColor);
     }
@@ -155,3 +167,67 @@ public:
     }
 };
 
+class AnimatedButton : public Button {
+public:
+    bool isScaling;
+    float scaleFactor;
+    float scaleSpeed;
+    float colorAlpha;
+    float colorAlphaSpeed;
+
+    AnimatedButton(float x, float y, float width, float height, const char* labelText, Color buttonColor, Color hoverCol, Color textCol)
+        : Button(x, y, width, height, labelText, buttonColor, hoverCol, textCol) {
+        isScaling = false;
+        scaleFactor = 1.0f;
+        scaleSpeed = 1.0f;
+        colorAlpha = 1.0f;
+        colorAlphaSpeed = 1.0f;
+    }
+
+    void Update() override {
+        Button::Update(); 
+
+        float deltaTime = GetFrameTime();
+        if (isHovered && !isScaling) {
+            isScaling = true;
+        } else if (!isHovered && isScaling) {
+            isScaling = true;
+        }
+
+        if (isScaling) {
+            if (isHovered) {
+                scaleFactor += scaleSpeed * deltaTime;
+                colorAlpha -= colorAlphaSpeed * deltaTime;
+                if (scaleFactor > 1.2f) scaleFactor = 1.2f;
+                if (colorAlpha < 0.5f) colorAlpha = 0.5f;
+            } else {
+                scaleFactor -= scaleSpeed * deltaTime;
+                colorAlpha += colorAlphaSpeed * deltaTime;
+                if (scaleFactor < 1.0f) {
+                    scaleFactor = 1.0f;
+                    isScaling = false;
+                }
+                if (colorAlpha > 1.0f) {
+                    colorAlpha = 1.0f;
+                    isScaling = false;
+                }
+            }
+        }
+    }
+
+    void Draw() override {
+        Rectangle scaledBounds = {
+            bounds.x - (bounds.width * (scaleFactor - 1.0f) / 2.0f),
+            bounds.y - (bounds.height * (scaleFactor - 1.0f) / 2.0f),
+            bounds.width * scaleFactor,
+            bounds.height * scaleFactor
+        };
+
+        Color drawColor = color;
+        drawColor.a = static_cast<unsigned char>(colorAlpha * 255);
+
+        DrawRectangleRounded(scaledBounds, 17, 2, drawColor);
+        int textWidth = MeasureText(label, 20);
+        DrawText(label, bounds.x - (bounds.width * (scaleFactor - 1.0f) / 2.0f) + (bounds.width * scaleFactor - textWidth ) / 2, bounds.y  - (bounds.height * (scaleFactor - 1.0f) / 2.0f) + (bounds.height * scaleFactor - 20) / 2, 20 * scaleFactor, textColor);
+    }
+};
