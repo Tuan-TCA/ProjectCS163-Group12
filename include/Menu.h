@@ -9,7 +9,7 @@ class Menu
 {
 public:
     vector<Button> buttons;
-
+    Font font; 
     void init();
     void draw();
     int modeRetrieve();

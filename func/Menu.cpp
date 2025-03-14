@@ -3,6 +3,7 @@
 #include<bits/stdc++.h>
 
 void Menu::init() {
+    font = LoadFont("res/font/romulus.png");
     buttons = {
         Button(screenWidth*0.4, screenHeight*0.3, screenWidth*0.2, screenHeight*0.1, "Linked List", DARKGRAY, LIGHTGRAY, WHITE),
         Button(screenWidth*0.4, screenHeight*0.45, screenWidth*0.2, screenHeight*0.1, "Hash Table", DARKGRAY, LIGHTGRAY, WHITE),
@@ -12,11 +13,11 @@ void Menu::init() {
 }
 
 void Menu::draw() {
-    ClearBackground(RAYWHITE);
-    string title = "Visualization App";
-    DrawRectangle(0, 0, screenWidth, screenHeight, WHITE);
-    DrawText(title.c_str(), screenWidth*0.2, screenHeight*0.1, screenWidth * 0.0667f, GRAY);
-
+    ClearBackground(BLUE1);
+    string title = "Visualization App\n";
+    DrawRectangle(0, 0, screenWidth, screenHeight, BLUE3);
+    DrawTextEx(font, title.c_str(), {screenWidth*0.2f, screenHeight*0.1f}, screenWidth * 0.0667, 5, BLUE4);
+    DrawTextEx(font, "\n\nCS163 - GROUP 6", {screenWidth*0.3f, screenHeight*0.1f}, screenWidth * 0.04, 5, BLUE4);
     for(auto &button : buttons) {
         button.DrawRounded();
     }

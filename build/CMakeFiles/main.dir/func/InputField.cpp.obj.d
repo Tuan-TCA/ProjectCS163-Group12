@@ -1,6 +1,6 @@
 CMakeFiles/main.dir/func/InputField.cpp.obj: \
- D:\Project\VisualizationProject\func\InputField.cpp \
- D:/Project/VisualizationProject/include/InputField.h \
+ D:\Project\PJ-Visualization\func\InputField.cpp \
+ D:/Project/PJ-Visualization/include/InputField.h \
  C:/raylib/include/raylib.h \
  C:/SFML/mingw64/lib/gcc/x86_64-w64-mingw32/14.2.0/include/stdarg.h \
  C:/SFML/mingw64/x86_64-w64-mingw32/include/stdarg.h \
@@ -10,7 +10,7 @@ CMakeFiles/main.dir/func/InputField.cpp.obj: \
  C:/SFML/mingw64/x86_64-w64-mingw32/include/_mingw_mac.h \
  C:/SFML/mingw64/x86_64-w64-mingw32/include/_mingw_secapi.h \
  C:/SFML/mingw64/x86_64-w64-mingw32/include/sdks/_mingw_ddk.h \
- D:/Project/VisualizationProject/include/Variables.h \
+ D:/Project/PJ-Visualization/include/Variables.h \
  C:/SFML/mingw64/include/c++/14.2.0/x86_64-w64-mingw32/bits/stdc++.h \
  C:/SFML/mingw64/include/c++/14.2.0/cassert \
  C:/SFML/mingw64/include/c++/14.2.0/x86_64-w64-mingw32/bits/c++config.h \

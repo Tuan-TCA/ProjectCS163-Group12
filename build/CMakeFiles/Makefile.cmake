@@ -110,7 +110,7 @@ set(CMAKE_MAKEFILE_DEPENDS
   "C:/SFML/mingw64/share/cmake-3.30/Modules/Platform/Windows-windres.cmake"
   "C:/SFML/mingw64/share/cmake-3.30/Modules/Platform/Windows.cmake"
   "C:/SFML/mingw64/share/cmake-3.30/Modules/Platform/WindowsPaths.cmake"
-  "D:/Project/VisualizationProject/CMakeLists.txt"
+  "D:/Project/PJ-Visualization/CMakeLists.txt"
   "CMakeFiles/3.30.4/CMakeCCompiler.cmake"
   "CMakeFiles/3.30.4/CMakeCXXCompiler.cmake"
   "CMakeFiles/3.30.4/CMakeRCCompiler.cmake"

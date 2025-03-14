@@ -8,12 +8,12 @@ set(CMAKE_DEPENDS_LANGUAGES
 
 # The set of dependency files which are needed:
 set(CMAKE_DEPENDS_DEPENDENCY_FILES
-  "D:/Project/VisualizationProject/func/InputField.cpp" "CMakeFiles/main.dir/func/InputField.cpp.obj" "gcc" "CMakeFiles/main.dir/func/InputField.cpp.obj.d"
-  "D:/Project/VisualizationProject/func/Menu.cpp" "CMakeFiles/main.dir/func/Menu.cpp.obj" "gcc" "CMakeFiles/main.dir/func/Menu.cpp.obj.d"
-  "D:/Project/VisualizationProject/func/Page.cpp" "CMakeFiles/main.dir/func/Page.cpp.obj" "gcc" "CMakeFiles/main.dir/func/Page.cpp.obj.d"
-  "D:/Project/VisualizationProject/func/Program.cpp" "CMakeFiles/main.dir/func/Program.cpp.obj" "gcc" "CMakeFiles/main.dir/func/Program.cpp.obj.d"
-  "D:/Project/VisualizationProject/func/Variables.cpp" "CMakeFiles/main.dir/func/Variables.cpp.obj" "gcc" "CMakeFiles/main.dir/func/Variables.cpp.obj.d"
-  "D:/Project/VisualizationProject/src/main.cpp" "CMakeFiles/main.dir/src/main.cpp.obj" "gcc" "CMakeFiles/main.dir/src/main.cpp.obj.d"
+  "D:/Project/PJ-Visualization/func/InputField.cpp" "CMakeFiles/main.dir/func/InputField.cpp.obj" "gcc" "CMakeFiles/main.dir/func/InputField.cpp.obj.d"
+  "D:/Project/PJ-Visualization/func/Menu.cpp" "CMakeFiles/main.dir/func/Menu.cpp.obj" "gcc" "CMakeFiles/main.dir/func/Menu.cpp.obj.d"
+  "D:/Project/PJ-Visualization/func/Page.cpp" "CMakeFiles/main.dir/func/Page.cpp.obj" "gcc" "CMakeFiles/main.dir/func/Page.cpp.obj.d"
+  "D:/Project/PJ-Visualization/func/Program.cpp" "CMakeFiles/main.dir/func/Program.cpp.obj" "gcc" "CMakeFiles/main.dir/func/Program.cpp.obj.d"
+  "D:/Project/PJ-Visualization/func/Variables.cpp" "CMakeFiles/main.dir/func/Variables.cpp.obj" "gcc" "CMakeFiles/main.dir/func/Variables.cpp.obj.d"
+  "D:/Project/PJ-Visualization/src/main.cpp" "CMakeFiles/main.dir/src/main.cpp.obj" "gcc" "CMakeFiles/main.dir/src/main.cpp.obj.d"
   )
 
 # Targets to which this target links which contain Fortran sources.
