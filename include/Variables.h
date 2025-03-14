@@ -9,7 +9,7 @@ enum class MODE {
 
 extern MODE mode;
 
-extern const int screenWidth, screenHeight;
+extern const float screenWidth, screenHeight;
 
 extern Color BLUE1;
 extern Color BLUE2;

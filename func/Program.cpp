@@ -9,12 +9,7 @@ Program::Program () {
     mode = MODE::MENU;
 }
 
-void Program::init(){
-    menu.init();
-    page.init();
-}
 void Program::run() {
-    init();
     while(!WindowShouldClose()) {
         BeginDrawing();
         ClearBackground(RAYWHITE);
@@ -27,23 +22,27 @@ void Program::run() {
 
 void Program::event() {
     if(mode == MODE::MENU) {
+        menu.init();
         int x;
         x = menu.modeRetrieve();
         if(x == 1) {
             mode = MODE::LL;
+            page.init();
             // std::cout<<"Linked list"; 
         }
         else if(x == 2) {
             mode = MODE::HASHTB;
+            page.init();
             
         }
         else if(x == 3) {
             mode = MODE::AVL;
+            page.init();
             
         }
         else if(x == 4) {
             mode = MODE::GRAPH;
-            
+            page.init();
         }
     }
 
@@ -76,15 +75,15 @@ void Program::draw() {
     }
      
     if (mode == MODE::HASHTB) {
-        //LL.draw();
+        //Hash.draw();
         page.draw();
     }
     if (mode == MODE::AVL) {
-        //LL.draw();
+        //Tree.draw();
         page.draw();
     }
     if (mode == MODE::GRAPH) {
-        //LL.draw();
+        //Graph.draw();
         page.draw();
     }
 }
