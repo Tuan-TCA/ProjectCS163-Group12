@@ -1,4 +1,4 @@
-### Hãy thoải mái hỏi trong group bất cứ khi nào có thắc mắc
+### Hãy thoải mái hỏi trong group ngay khi có thắc mắc
 
 ## Cách lấy repo này về máy local để code
 - Tạo thư mục mới
