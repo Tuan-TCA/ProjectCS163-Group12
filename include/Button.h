@@ -1,5 +1,6 @@
 #pragma once
 #include "raylib.h"
+#include "Variables.h"
 #include<bits/stdc++.h>
 using namespace std;
 
@@ -54,7 +55,6 @@ public:
         textColor = textCol;
         isHovered = false;
     }
-        
 
     void Update() {
         Vector2 mousePoint = GetMousePosition();
@@ -75,6 +75,12 @@ public:
         DrawTexturePro(image, sourceRec, bounds, origin, 0.0f, isHovered ? LIGHTGRAY : YELLOW);
     }
 
+    Rectangle getBound(){
+        return bounds;
+    }
+    bool isOver(){
+        return isHovered;
+    }
     bool IsClicked() {
         Update();
         return isHovered && IsMouseButtonPressed(MOUSE_LEFT_BUTTON);
@@ -130,3 +136,22 @@ public:
         }
     }
 };
+
+class ButtonFromImage : public Button {
+private:
+    Texture2D texture;
+    Texture2D textureOver;
+public:
+    ButtonFromImage() : Button(0, 0, 0, 0, "", RAYWHITE, RAYWHITE, RAYWHITE), texture({ 0 }), textureOver({ 0 }) {}
+    ButtonFromImage(const char* imagePath, const char* imageOverPath, float x, float y, float width, float height)
+        : Button(x, y, width, height, "", RAYWHITE, RAYWHITE, RAYWHITE) {
+        texture = resizedImage(imagePath, width, height);
+        textureOver = resizedImage(imageOverPath, width, height);
+    }
+
+    void Draw() override {
+        Update();
+        DrawTexture(!isOver() ? texture : textureOver, bounds.x, bounds.y, WHITE);
+    }
+};
+

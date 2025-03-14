@@ -1,9 +1,10 @@
 #include "Page.h"
+#include "Variables.h"
 #include <raylib.h>
 #include<bits/stdc++.h>
 using namespace std;
 
-string getMODE(MODE mode) {
+string getMODE() {
     if(mode == MODE::LL) return "Linked List";
     if(mode == MODE::HASHTB) return "Hash Table";
     if(mode == MODE::AVL) return "AVL Tree";
@@ -11,12 +12,14 @@ string getMODE(MODE mode) {
     return "";
 }
 
-void Page::init(MODE newmode) {
-    head = MyRec(0,0,(float) screenWidth,screenHeight*0.1f, getMODE(mode).c_str(), YELLOW, RED);
-    bottom = {0,screenHeight*0.9f,(float)screenWidth,screenHeight*0.1f};
-    side = {0,screenHeight*0.3f,screenWidth*0.3f,screenHeight*0.6f};
+
+void Page::init() {
+    head = MyRec(0, 10, (float) screenWidth, screenHeight*0.08f, getMODE().c_str(), BLUE2, WHITE);
+    home = ButtonFromImage("res/button/back.png", "res/button/back-isOver.png", screenWidth*0.016f, screenHeight*0.016f, screenWidth*0.05f, screenWidth*0.05f); 
+    background = resizedImage("res/BackGround.png", screenWidth, screenHeight);     
+    bottom = {0,screenHeight*0.88f,(float)screenWidth,screenHeight*0.12f};
+    side = {0,screenHeight / 2 - screenHeight * 0.63f / 2,screenWidth*0.25f,screenHeight*0.63f};
     textbox.box = {0.1f*screenWidth, 0.7f*screenHeight, 0.1f*screenWidth, 0.05f*screenHeight, "", RED, BLUE,YELLOW};
-    home.image = LoadTexture("res/back_home.png");
     functions = vector<Button> { 
         Button(screenWidth*0.2, screenHeight*0.60, screenWidth*0.05, screenHeight*0.02, "Create", DARKGRAY, LIGHTGRAY, WHITE),
         Button(screenWidth*0.2, screenHeight*0.65, screenWidth*0.05, screenHeight*0.02, "Insert", DARKGRAY, LIGHTGRAY, WHITE),
@@ -27,12 +30,13 @@ void Page::init(MODE newmode) {
 
 void Page::draw() {
     ClearBackground(RAYWHITE);
+    DrawTexture(background, 0, 0, WHITE);
     head.Draw();
-    
-    DrawRectangleRec(bottom, GREEN);
-    DrawRectangleRec(side, PINK);
+
+    DrawRectangleRec(bottom, BLUE2);
+    DrawRectangleRec(side, BLUE3);
     textbox.Draw();
-    home.DrawText2D();
+    home.Draw();
     for(auto &button : functions) {
         button.Draw();
     }
@@ -40,7 +44,7 @@ void Page::draw() {
 
 
 
-void Page::actions() {
+void Page::event() {
     if(home.IsClicked()) {
         mode = MODE::MENU;
         return;

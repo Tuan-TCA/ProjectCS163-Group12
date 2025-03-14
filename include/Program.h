@@ -13,6 +13,7 @@ public:
     Program();
     void run();
 
+    void init();
     void draw();
     void event();
 };
