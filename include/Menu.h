@@ -8,7 +8,7 @@ using namespace std;
 class Menu
 {
 public:
-    vector<Button> buttons;
+    vector<AnimatedButton> buttons;
     Font font; 
     void init();
     void draw();

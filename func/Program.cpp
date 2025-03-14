@@ -31,7 +31,7 @@ void Program::event() {
         x = menu.modeRetrieve();
         if(x == 1) {
             mode = MODE::LL;
-            std::cout<<"Linked list"; 
+            // std::cout<<"Linked list"; 
         }
         else if(x == 2) {
             mode = MODE::HASHTB;
