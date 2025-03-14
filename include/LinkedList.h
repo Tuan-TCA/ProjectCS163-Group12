@@ -1,4 +1,9 @@
+#pragma once
 #include <raylib.h>
+#include <math.h>
+#include <string>
+#include <iostream>
+using namespace std;
 
 struct LinkedListNode {
     int val;

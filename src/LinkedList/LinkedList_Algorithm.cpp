@@ -1,4 +1,5 @@
-#include <AllLibrary.h>
+#include <raylib.h>
+#include <LinkedList.h>
 
 void insertNode(LinkedListNode* &head, int key) {
     if (!head) {
