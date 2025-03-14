@@ -9,11 +9,14 @@ Program::Program () {
     mode = MODE::MENU;
 }
 
-void Program::run() {
+void Program::init(){
+    menu.init();
     page.init();
+}
+void Program::run() {
+    init();
     while(!WindowShouldClose()) {
         BeginDrawing();
-        
         ClearBackground(RAYWHITE);
         event();
         draw();
@@ -43,6 +46,8 @@ void Program::event() {
     }
     else if(mode == MODE::LL) {
         // Linked List
+         page.Update();
+        page.actions();
     }
     else if(mode == MODE::HASHTB) {
         // Hash Table
@@ -60,11 +65,9 @@ void Program::draw() {
         menu.draw();
     } 
     if (mode == MODE::LL) {
-        //LL.draw();
-        
-        page.Update();
+        //LL.draw();    
         page.draw();
-        page.actions();
+        
     }
 
 }

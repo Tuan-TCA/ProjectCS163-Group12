@@ -12,7 +12,7 @@ string getMODE(MODE mode) {
 }
 
 void Page::init() {
-    home = ButtonFromImage("res/back.png", "res/back-isOver.png", screenWidth*0.016f, screenHeight*0.016f, screenWidth*0.05f, screenWidth*0.05f); 
+    home = ButtonFromImage("res/button/back.png", "res/button/back-isOver.png", screenWidth*0.016f, screenHeight*0.016f, screenWidth*0.05f, screenWidth*0.05f); 
     background = resizedImage("res/BackGround.png", screenWidth, screenHeight);     
     head = MyRec(0, 10, screenWidth, screenHeight*0.08, getMODE(mode).c_str(), BLUE2, WHITE);
     bottom = {0,screenHeight*0.88f,(float)screenWidth,screenHeight*0.12f};

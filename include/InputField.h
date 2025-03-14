@@ -13,9 +13,9 @@ class InputField{
         InputField();
         ~InputField();
         int textLength;
-        char text[5];
+        char text[5]; //max input value = 5
 
-        InputField(int x, int y, int width, int height, const char* label, int textLength);
+        InputField(int x, int y, int width, int height, const char* label);
         void Draw();
          void Update();
         bool isFocus();

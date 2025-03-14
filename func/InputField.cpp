@@ -15,8 +15,8 @@ InputField::InputField() {
     focus = false;
 }
 
-InputField::InputField(int x, int y, int width, int height, const char* label, int textLength):
-        x(x), y(y), width(width), height(height), bgColor(WHITE), textColor(BLACK), focus(false), label(label), textLength(textLength){ text[0] = '\0';}
+InputField::InputField(int x, int y, int width, int height, const char* label):
+        x(x), y(y), width(width), height(height), bgColor(WHITE), textColor(BLACK), focus(false), label(label), textLength(0){ text[0] = '\0';}
 
 InputField::~InputField(){
     text[0] = '\0';
