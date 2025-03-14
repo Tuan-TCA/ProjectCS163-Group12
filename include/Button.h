@@ -27,7 +27,11 @@ public:
         DrawText(label.c_str(), bounds.x + (bounds.width - textWidth) / 2, bounds.y + (bounds.height - 40) / 2, 40, textColor);
     }
 
-};  
+    void DrawRounded(){
+        DrawRectangleRounded(bounds, 20, 0, BLUE2);
+        DrawText(label.c_str(), bounds.x + (bounds.width - MeasureText(label.c_str(), 40)) / 2, bounds.y + (bounds.height - 40) / 2, 40, textColor);
+    }
+};
 
 class Button {
 public:
