@@ -55,5 +55,7 @@ void Page::event() {
     bool del = functions[3].IsClicked();
     textbox.HandleInput(add, del);
     add = 0;del=0;
-    for (auto x: textbox.nums) cout<<x<<" ";std::cout<<endl;
+    if(textbox.nums.size() !=0 ) {
+        for (auto x: textbox.nums) cout<<x<<" ";std::cout<<endl;
+    }
 }

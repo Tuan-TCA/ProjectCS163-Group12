@@ -2,11 +2,11 @@
 #include <raylib.h>
 #include <iostream>
 
-Program::Program () {
-
+Program::Program () {  //constructor của Program
     InitWindow(screenWidth, screenHeight, "Visualization App - CS 163 - Group 12");
     SetTargetFPS(60);
     mode = MODE::MENU;
+    menu.init();
 }
 
 void Program::run() {
@@ -22,7 +22,6 @@ void Program::run() {
 
 void Program::event() {
     if(mode == MODE::MENU) {
-        menu.init();
         int x;
         x = menu.modeRetrieve();
         if(x == 1) {
