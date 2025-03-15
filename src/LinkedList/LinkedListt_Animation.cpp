@@ -184,7 +184,7 @@ void traverseSearch(LinkedListNode* head, int key){
     }
 }
 
-void traverseDelete(LinkedListNode* head, int key){
+void traverseDelete(LinkedListNode* &head, int key){
     if(!head) return;
     Vector2 preCen;
     Vector2 center = GetPosition(head);
