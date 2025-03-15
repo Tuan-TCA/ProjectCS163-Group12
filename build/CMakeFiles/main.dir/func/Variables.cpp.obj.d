@@ -1,6 +1,6 @@
 CMakeFiles/main.dir/func/Variables.cpp.obj: \
- D:\Project\PJ-Visualization\func\Variables.cpp \
- D:/Project/PJ-Visualization/include/Variables.h \
+ D:\Project\PROJECT163\project1\func\Variables.cpp \
+ D:/Project/PROJECT163/project1/include/Variables.h \
  C:/raylib/include/raylib.h \
  C:/SFML/mingw64/lib/gcc/x86_64-w64-mingw32/14.2.0/include/stdarg.h \
  C:/SFML/mingw64/x86_64-w64-mingw32/include/stdarg.h \

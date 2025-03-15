@@ -101,22 +101,35 @@ public:
 
 class TextBox: public Button {
 public:
-    Button box;
     string inputText;
     bool active;
     vector<int> nums;
-    
+
+    TextBox() : Button() {
+        inputText = "";
+        active = false;
+        nums.clear();
+    }
+
+    TextBox(float x, float y, float width, float height, const char* labelText, 
+            Color buttonColor, Color hoverCol, Color textCol)
+        : Button(x, y, width, height, labelText, buttonColor, hoverCol, textCol) { 
+        inputText = "";  
+        active = false;  
+        nums.clear();    
+    }
+
     void Draw() override {
-        box.Draw();
+        Button::Draw();
         string displayText = inputText;
         if (active && ((int)(GetTime() * 2) % 2 == 0)) { // Nhấp nháy con trỏ
             displayText += "|";
         }
-        DrawText(displayText.c_str(), box.bounds.x+ 5, box.bounds.y + 5, 20, textColor);
+        DrawText(displayText.c_str(), bounds.x+ 5, bounds.y + 5, 20, textColor);
     }
 
     void HandleInput(bool Add, bool Del) {
-        if (box.IsClicked()) {
+        if (IsClicked()) {
             active = true;
         }
         if (active) {

@@ -21,7 +21,7 @@ void Page::init() {
     background = resizedImage("res/BackGround.png", screenWidth, screenHeight);     
     bottom = {0,screenHeight*0.88f,(float)screenWidth,screenHeight*0.12f};
     side = {0,screenHeight / 2 - screenHeight * 0.63f / 2,screenWidth*0.25f,screenHeight*0.63f};
-    textbox.box = Button{5, screenHeight / 2 - screenHeight*0.63f * 0.15f, screenWidth*0.25f - 10, screenHeight*0.63f * 0.15f, "", WHITE, WHITE, BLACK};
+    textbox = TextBox(5, screenHeight / 2 - screenHeight*0.63f * 0.15f, screenWidth*0.25f - 10, screenHeight*0.63f * 0.15f, "", WHITE, WHITE, BLACK);
     functions = vector<Button> { 
         Button(screenWidth*0.2, screenHeight*0.60, screenWidth*0.05, screenHeight*0.02, "Create", DARKGRAY, LIGHTGRAY, WHITE),
         Button(screenWidth*0.2, screenHeight*0.65, screenWidth*0.05, screenHeight*0.02, "Insert", DARKGRAY, LIGHTGRAY, WHITE),
