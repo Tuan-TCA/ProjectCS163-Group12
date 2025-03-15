@@ -15,7 +15,7 @@ void Menu::init() {
 
 void Menu::draw() {
     ClearBackground(MyColor1);
-    string title = "Visualization App\n";
+    string title = "Data Visualization";
     DrawRectangle(0, 0, screenWidth, screenHeight, MyColor3);
     DrawTextEx(font, title.c_str(), {screenWidth*0.2f, screenHeight*0.1f}, screenWidth * 0.0667, 5, MyColor4);
     DrawTextEx(font, "\n\nCS163 - GROUP 6", {screenWidth*0.3f, screenHeight*0.1f}, screenWidth * 0.04, 5, MyColor4);
