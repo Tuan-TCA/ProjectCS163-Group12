@@ -1,4 +1,3 @@
-#include <raylib.h>
 #include <LinkedList.h>
 
 void insertNode(LinkedListNode* &head, int key) {
@@ -8,19 +7,12 @@ void insertNode(LinkedListNode* &head, int key) {
         head->next = nullptr;
         return;
     }
-
-    LinkedListNode * a = head;
-    int total = 0;
-    while (a->next){
-        total++;
-        a = a->next;
-    }
-    total ++;
-    int totalWidth = total * (2 * r + spacing) - spacing;
-    Vector2 center = {screenWidth / 2 - totalWidth / 2 + r, screenHeight / 2};
+    
+    Vector2 center = GetPosition(head);
     Vector2 newCenter;
     
-    a = head;
+    LinkedListNode* a = head;
+    // Vẽ cái tô màu đỏ
     while (a->next){
         BeginDrawing();
         Choose(center, {255, 100, 100, 150}, {255, 150, 150, 100}, head);
@@ -74,31 +66,49 @@ void insertNode(LinkedListNode* &head, int key) {
     EndDrawing();
 }
 
+void updatePosition(LinkedListNode * head){
+    Vector2 cur = GetPosition(head), next;
+
+    while(head){
+        head->x = cur.x;
+        head->y = cur.y;
+        next = {cur.x + 2 * r + spacing, cur.y};
+        cur = next;
+        head = head->next;
+    }
+}
+
 
 void deleteNode(LinkedListNode* &head, int key){
     if(!head) return;
-    if(head->val == key){
-        LinkedListNode* tmp = head;
-        head = head->next;
-        delete tmp;
-        return;
-    }
-    else{
-        LinkedListNode* tmp = head;
-        while(tmp && tmp->next && tmp->next->val != key){
-            tmp = tmp->next;
-        }
-        if(!tmp->next) return;
-        else{
-            tmp->next = tmp->next->next;
-        }
-    }
+    // if(head->val == key){
+    //     LinkedListNode* tmp = head;
+    //     head = head->next;
+    //     delete tmp;
+    //     return;
+    // }
+    // else{
+    //     LinkedListNode* tmp = head;
+    //     while(tmp && tmp->next && tmp->next->val != key){
+    //         tmp = tmp->next;
+    //     }
+    //     if(!tmp->next) return;
+    //     else{
+    //         tmp->next = tmp->next->next;
+    //     }
+    // }
+
+    traverseDelete(head, key);
+
 }
 
 LinkedListNode *search(LinkedListNode* head, int key){
     if(!head) return nullptr;
-    if(head->val == key) return head;
-    return search(head->next, key);
+    
+    traverseSearch(head, key);
+    // if(head->val == key) return head;
+    // return search(head->next, key);
+    return nullptr;
 }
 
 

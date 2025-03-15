@@ -1,4 +1,3 @@
-#include <raylib.h>
 #include <LinkedList.h>
 
 void DrawArrow(Vector2 start, Vector2 end, float arrowSize, Color color) {
@@ -55,7 +54,7 @@ void DrawNewNode(Vector2 center, string value, Color RimDark, Color RimBland, Li
 }
 void AcceptNode(Vector2 start, Vector2 target, string value, LinkedListNode* head) {
     Vector2 curPos = start;
-    int steps = 20; // Số bước để di chuyển từ start → target
+    int steps = 15; // Số bước để di chuyển từ start → target
     float dx = (target.x - start.x) / steps;
     float dy = (target.y - start.y) / steps;
 
@@ -67,14 +66,14 @@ void AcceptNode(Vector2 start, Vector2 target, string value, LinkedListNode* hea
         BeginDrawing();
         DrawNewNode(curPos, value, {255, 255, 150, 150}, {255, 255, 200, 100}, head);
         EndDrawing();
-        WaitTime(0.03);
+        WaitTime(0.01);
     }
 
     // Chuyển từ vàng → xanh lá
     BeginDrawing();
     DrawNewNode(target, value, {150, 255, 150, 150}, {180, 255, 180, 100}, head);
     EndDrawing();
-    WaitTime(0.5);
+    WaitTime(0.15);
 
     // Chuyển từ xanh lá → trắng
     BeginDrawing();
@@ -123,7 +122,6 @@ Vector2 GetPosition(LinkedListNode* head){
 void MoveLinkedList(LinkedListNode* head, Vector2 orinalPosition, Vector2 newPosition){
     Vector2 center = orinalPosition;
 
-    cout << newPosition.x - orinalPosition.x << '\n';
     
     string s = to_string(- newPosition.x + orinalPosition.x);
 
@@ -155,5 +153,72 @@ void DrawNewLinkedList(LinkedListNode* head, Vector2 position){
         }
 
         head = head->next;
+    }
+}
+
+//animation of search
+void traverseSearch(LinkedListNode* head, int key){
+    if(!head) return;
+    Vector2 center = GetPosition(head);
+    LinkedListNode* tmp = head;
+    while(tmp){
+        BeginDrawing();
+        if(tmp->val == key){
+            BeginDrawing();
+            DrawLinkedList(head);
+            DrawRim(center, {150, 255, 150, 100}, {180, 255, 180, 80});
+            ClearBackground(GRAY);
+            DrawLinkedList(head);
+            EndDrawing();
+            WaitTime(1.0);
+
+            return;
+        }
+        Choose(center, {255, 100, 100, 150}, {255, 150, 150, 100}, head);
+        EndDrawing();
+        WaitTime(0.3);
+        if(tmp->next){
+            center.x += 2*(r) + spacing;
+        }
+        tmp = tmp->next;
+    }
+}
+
+void traverseDelete(LinkedListNode* head, int key){
+    if(!head) return;
+    Vector2 preCen;
+    Vector2 center = GetPosition(head);
+    Vector2 nextCen;
+    LinkedListNode* tmp = head;
+    LinkedListNode* newHead;
+    while(tmp){
+        if(tmp->val == key){
+            BeginDrawing();
+            DrawLinkedList(head);
+            DrawRim(center, {150, 255, 150, 100}, {180, 255, 180, 80});
+            ClearBackground(GRAY);
+            DrawLinkedList(head);
+            EndDrawing();
+            WaitTime(1.0);
+            newHead = tmp->next;
+
+            BeginDrawing();
+            ClearBackground(GRAY);
+            DrawLinkedList(head);
+            DrawLinkedList(newHead);
+            EndDrawing();
+            return;
+        }
+        BeginDrawing();
+        Choose(center, {255, 100, 100, 150}, {255, 150, 150, 100}, head);
+        EndDrawing();
+        WaitTime(0.3);
+        preCen = center;
+        if(tmp->next){
+            center.x += 2*(r) + spacing;
+            nextCen = center;
+            nextCen.x += 2*r + spacing;
+        }
+        tmp = tmp->next;
     }
 }
