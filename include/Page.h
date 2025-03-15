@@ -10,7 +10,7 @@ public:
     MyRec head;
     Rectangle bottom;
     Rectangle side;
-
+    Button Ok;
     TextBox textbox;
     vector <Button> functions;
     ButtonFromImage home;

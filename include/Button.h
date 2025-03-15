@@ -28,7 +28,7 @@ public:
     }
 
     void DrawRounded(){
-        DrawRectangleRounded(bounds, 20, 0, BLUE2);
+        DrawRectangleRounded(bounds, 20, 0, MyColor2);
         DrawText(label.c_str(), bounds.x + (bounds.width - MeasureText(label.c_str(), 40)) / 2, bounds.y + (bounds.height - 40) / 2, 40, textColor);
     }
 };
@@ -75,7 +75,7 @@ public:
 
     void DrawRounded(){
         Update();
-        DrawRectangleRounded(bounds, 20, 0,isHovered ? BLUE2 : BLUE1);
+        DrawRectangleRounded(bounds, 20, 0,isHovered ? MyColor2 : MyColor1);
         int textWidth = MeasureText(label, 20);
         DrawText(label, bounds.x + (bounds.width - textWidth) / 2, bounds.y + (bounds.height - 20) / 2, 20, textColor);
     }
@@ -125,42 +125,47 @@ public:
         if (active && ((int)(GetTime() * 2) % 2 == 0)) { // Nhấp nháy con trỏ
             displayText += "|";
         }
-        DrawText(displayText.c_str(), bounds.x + bounds.width / 2 - MeasureText(displayText.c_str(), bounds.width * 0.12f) / 2, bounds.y + bounds.height / 3 - 3 , bounds.width * 0.12f, textColor);
+        DrawText(displayText.c_str(), bounds.x + bounds.width / 2 - MeasureText(displayText.c_str(), 40) / 2, bounds.y + bounds.height / 3 - 3 , 40, textColor);
     }
 
     void HandleInput(bool Add, bool Del) {
         if (IsMouseButtonPressed(MOUSE_LEFT_BUTTON)) {
         Vector2 mousePos = GetMousePosition();
         active = (mousePos.x >= bounds.x && mousePos.x <=  bounds.x + bounds.width && mousePos.y >= bounds.y && mousePos.y <= bounds.y + bounds.height);
-    }
-        if (active) {
+        }
+        if (active || Add || Del) {
             int key = GetCharPressed();
-            while (key > 0 && inputText.size() < 9) {
+            while (key > 0 && inputText.size() < 7) {
                 if (key >= '0' && key <= '9') {
                     inputText += (char)key;
                 }
                 key = GetCharPressed();
             }
-
             if (IsKeyPressed(KEY_BACKSPACE) && !inputText.empty()) {
                 inputText.pop_back();
             }
 
-            if ((Add || IsKeyPressed(KEY_ENTER)) && !inputText.empty()) {
+            if ((Add || IsKeyPressed(KEY_ENTER) || IsKeyPressed(KEY_KP_ENTER)) && !inputText.empty()) {
                 nums.push_back(stoi(inputText));
+                TraceLog(LOG_INFO, inputText.c_str());
                 inputText = "";
-                
             }
-            else
+         
             if ((Del) && !inputText.empty()) {
                 auto it = find(nums.begin(), nums.end(), stoi(inputText));
                 if(it!=nums.end())
                     nums.erase(it);
                 inputText = "";
-                
             }
         }
     }
+
+    void resetTextbox(){
+        inputText = "";
+        active = false;
+        nums.clear();
+    }
+    
 };
 
 class ButtonFromImage : public Button {

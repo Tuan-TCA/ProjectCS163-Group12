@@ -8,12 +8,12 @@ enum class MODE {
 };
 
 extern MODE mode;
-
+extern int Theme;
 extern const int screenWidth, screenHeight;
 
-extern Color BLUE1;
-extern Color BLUE2;
-extern Color BLUE3;
-extern Color BLUE4;
-extern Color BLUE5;
+extern Color MyColor1;
+extern Color MyColor2;
+extern Color MyColor3;
+extern Color MyColor4;
+extern Color MyColor5;
 extern Texture2D resizedImage(const char* imagePath, float width, float height);
