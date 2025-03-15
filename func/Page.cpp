@@ -37,8 +37,7 @@ void Page::init() {
 void Page::draw() {
     ClearBackground(RAYWHITE);
     DrawTexture(switchState ? background2 : background1, 0, 0, WHITE);
-    head.Draw(MyColor2);
-
+    head.Draw(MyColor2, getMODE());
     DrawRectangleRec(bottom, MyColor2);
     DrawRectangleRec(side, MyColor3);
     Ok.Draw(MyColor1, MyColor2);

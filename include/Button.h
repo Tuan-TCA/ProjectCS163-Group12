@@ -32,10 +32,10 @@ public:
         DrawText(label.c_str(), bounds.x + (bounds.width - MeasureText(label.c_str(), 40)) / 2, bounds.y + (bounds.height - 40) / 2, 40, textColor);
     }
 
-    void Draw(Color color){
+    void Draw(Color color, string Mode){
         DrawRectangleRec(bounds, color);
-        int textWidth = MeasureText(label.c_str(), 40);
-        DrawText(label.c_str(), bounds.x + (bounds.width - textWidth) / 2, bounds.y + (bounds.height - 40) / 2, 40, textColor);
+        int textWidth = MeasureText(Mode.c_str(), 40);
+        DrawText(Mode.c_str(), bounds.x + (bounds.width - textWidth) / 2, bounds.y + (bounds.height - 40) / 2, 40, textColor);
     }
 };
 
