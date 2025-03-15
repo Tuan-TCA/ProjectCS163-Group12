@@ -125,16 +125,17 @@ public:
         if (active && ((int)(GetTime() * 2) % 2 == 0)) { // Nhấp nháy con trỏ
             displayText += "|";
         }
-        DrawText(displayText.c_str(), bounds.x+ 5, bounds.y + 5, 20, textColor);
+        DrawText(displayText.c_str(), bounds.x + bounds.width / 2 - MeasureText(displayText.c_str(), bounds.width * 0.12f) / 2, bounds.y + bounds.height / 3 - 3 , bounds.width * 0.12f, textColor);
     }
 
     void HandleInput(bool Add, bool Del) {
-        if (IsClicked()) {
-            active = true;
-        }
+        if (IsMouseButtonPressed(MOUSE_LEFT_BUTTON)) {
+        Vector2 mousePos = GetMousePosition();
+        active = (mousePos.x >= bounds.x && mousePos.x <=  bounds.x + bounds.width && mousePos.y >= bounds.y && mousePos.y <= bounds.y + bounds.height);
+    }
         if (active) {
             int key = GetCharPressed();
-            while (key > 0) {
+            while (key > 0 && inputText.size() < 9) {
                 if (key >= '0' && key <= '9') {
                     inputText += (char)key;
                 }
@@ -148,7 +149,7 @@ public:
             if ((Add || IsKeyPressed(KEY_ENTER)) && !inputText.empty()) {
                 nums.push_back(stoi(inputText));
                 inputText = "";
-                active = false;
+                
             }
             else
             if ((Del) && !inputText.empty()) {
@@ -156,7 +157,7 @@ public:
                 if(it!=nums.end())
                     nums.erase(it);
                 inputText = "";
-                active = false;
+                
             }
         }
     }
