@@ -13,9 +13,8 @@ public:
     Button Ok;
     TextBox textbox;
     vector <Button> functions;
-    ButtonFromImage home;
-    Texture2D background;
-
+    ButtonFromImage home, home2;
+    Texture2D background1, background2;
 
     void init();
     void draw();

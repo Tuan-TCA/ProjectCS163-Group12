@@ -14,10 +14,10 @@ private:
 
 public:
     MyRec() {};
-    MyRec(float x, float y, float width, float height, string labelText, Color buttonColor, Color textCol) {
+    MyRec(float x, float y, float width, float height, string labelText, Color color, Color textCol) {
         bounds = {x, y, width, height};
         label = labelText;
-        color = buttonColor;
+        color = color;
         textColor = textCol;
     }
 
@@ -30,6 +30,12 @@ public:
     void DrawRounded(){
         DrawRectangleRounded(bounds, 20, 0, MyColor2);
         DrawText(label.c_str(), bounds.x + (bounds.width - MeasureText(label.c_str(), 40)) / 2, bounds.y + (bounds.height - 40) / 2, 40, textColor);
+    }
+
+    void Draw(Color color){
+        DrawRectangleRec(bounds, color);
+        int textWidth = MeasureText(label.c_str(), 40);
+        DrawText(label.c_str(), bounds.x + (bounds.width - textWidth) / 2, bounds.y + (bounds.height - 40) / 2, 40, textColor);
     }
 };
 
@@ -73,6 +79,12 @@ public:
         DrawText(label, bounds.x + (bounds.width - textWidth) / 2, bounds.y + (bounds.height - 20) / 2, 20, textColor);
     }
 
+    virtual void Draw(Color HoverColor, Color color){
+        Update();
+        DrawRectangleRec(bounds, isHovered ? HoverColor : color);
+        int textWidth = MeasureText(label, 20);
+        DrawText(label, bounds.x + (bounds.width - textWidth) / 2, bounds.y + (bounds.height - 20) / 2, 20, textColor);
+    }
     void DrawRounded(){
         Update();
         DrawRectangleRounded(bounds, 20, 0,isHovered ? MyColor2 : MyColor1);
@@ -194,6 +206,7 @@ public:
     float colorAlpha;
     float colorAlphaSpeed;
 
+    AnimatedButton(){}
     AnimatedButton(float x, float y, float width, float height, const char* labelText, Color buttonColor, Color hoverCol, Color textCol)
         : Button(x, y, width, height, labelText, buttonColor, hoverCol, textCol) {
         isScaling = false;
@@ -248,5 +261,73 @@ public:
         DrawRectangleRounded(scaledBounds, 17, 2, drawColor);
         int textWidth = MeasureText(label, 20);
         DrawText(label, bounds.x - (bounds.width * (scaleFactor - 1.0f) / 2.0f) + (bounds.width * scaleFactor - textWidth ) / 2, bounds.y  - (bounds.height * (scaleFactor - 1.0f) / 2.0f) + (bounds.height * scaleFactor - 20) / 2, 20 * scaleFactor, textColor);
+    }
+
+    void Draw(Color color) {
+        Rectangle scaledBounds = {
+            bounds.x - (bounds.width * (scaleFactor - 1.0f) / 2.0f),
+            bounds.y - (bounds.height * (scaleFactor - 1.0f) / 2.0f),
+            bounds.width * scaleFactor,
+            bounds.height * scaleFactor
+        };
+
+        Color drawColor = color;
+        drawColor.a = static_cast<unsigned char>(colorAlpha * 255);
+
+        DrawRectangleRounded(scaledBounds, 17, 2, drawColor);
+        int textWidth = MeasureText(label, 20);
+        DrawText(label, bounds.x - (bounds.width * (scaleFactor - 1.0f) / 2.0f) + (bounds.width * scaleFactor - textWidth ) / 2, bounds.y  - (bounds.height * (scaleFactor - 1.0f) / 2.0f) + (bounds.height * scaleFactor - 20) / 2, 20 * scaleFactor, textColor);
+    }
+};
+
+class SwitchButton : public Button {
+public:
+    float switchPos;  
+    bool isSwitching; 
+    float switchSpeed; 
+
+    SwitchButton(){}
+    SwitchButton(float x, float y, float width, float height, const char* labelText, Color buttonColor, Color hoverCol, Color textCol)
+        : Button(x, y, width, height, labelText, buttonColor, hoverCol, textCol) {
+        switchPos = 0.0f; 
+        switchState = false; // is turning off
+        isSwitching = false; 
+        switchSpeed = 0.05f;
+    }
+
+
+    void UpdateSwitch() {
+        Vector2 mousePos = GetMousePosition();
+
+       
+        if (IsClicked()) {
+            switchState = !switchState; 
+            UpdateColorsBasedOnSwitchState();
+            isSwitching = true;  
+        }
+
+        if (isSwitching) {
+            if (switchState && switchPos < 1.0f) {
+                switchPos += switchSpeed;
+                if (switchPos >= 1.0f) {
+                    switchPos = 1.0f;
+                    isSwitching = false; 
+                }
+            }
+            else if (!switchState && switchPos > 0.0f) {
+                switchPos -= switchSpeed;
+                if (switchPos <= 0.0f) {
+                    switchPos = 0.0f;
+                    isSwitching = false;  
+                }
+            }
+        }
+    }
+
+    void Draw() override {
+        UpdateSwitch();
+        
+        DrawRectangleRounded(bounds, bounds.height / 2, 10, MyColor4);
+        DrawCircle(bounds.x + bounds.width * 0.3f +switchPos * (bounds.width - bounds.height), bounds.y + bounds.height / 2, bounds.height / 2 - 5, WHITE);
     }
 };

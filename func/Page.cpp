@@ -19,7 +19,10 @@ void Page::init() {
     Ok = Button(10 + screenWidth*0.25f - 100, screenHeight / 2 - screenHeight*0.63f * 0.15f, 73, screenHeight*0.63f * 0.15f, "OK", MyColor1, MyColor2, WHITE);
     head = MyRec(0, 10, (float) screenWidth, screenHeight*0.08f, getMODE().c_str(), MyColor2, WHITE);
     home = ButtonFromImage("res/button/back.png", "res/button/back-isOver.png", screenWidth*0.016f, screenHeight*0.016f, screenWidth*0.05f, screenWidth*0.05f); 
-    background = resizedImage("res/BackGround.png", screenWidth, screenHeight);     
+    home2 = ButtonFromImage("res/button/homeII_1.png", "res/button/homeII_2.png", screenWidth*0.016f, screenHeight*0.016f, screenWidth*0.05f, screenWidth*0.05f); 
+
+    background1 = resizedImage("res/BackGround.png", screenWidth, screenHeight);   
+    background2 = resizedImage("res/background_theme2.png", screenWidth, screenHeight);    
     bottom = {0,screenHeight*0.88f,(float)screenWidth,screenHeight*0.12f};
     side = {0,screenHeight / 2 - screenHeight * 0.63f / 2,screenWidth*0.24f,screenHeight*0.63f};
     textbox = TextBox(5, screenHeight / 2 - screenHeight*0.63f * 0.15f, screenWidth*0.25f - 100, screenHeight*0.63f * 0.15f, "", WHITE, WHITE, BLACK);
@@ -33,14 +36,14 @@ void Page::init() {
 
 void Page::draw() {
     ClearBackground(RAYWHITE);
-    DrawTexture(background, 0, 0, WHITE);
-    head.Draw();
+    DrawTexture(switchState ? background2 : background1, 0, 0, WHITE);
+    head.Draw(MyColor2);
 
     DrawRectangleRec(bottom, MyColor2);
     DrawRectangleRec(side, MyColor3);
-    Ok.Draw();
+    Ok.Draw(MyColor1, MyColor2);
     textbox.Draw();
-    home.Draw();
+    switchState ? home2.Draw() : home.Draw();
     for(auto &button : functions) {
         button.Draw();
     }
@@ -49,7 +52,7 @@ void Page::draw() {
 
 
 void Page::event() {
-    if(home.IsClicked()) {
+    if(!switchState ? home.IsClicked(): home2.IsClicked() ) {
         mode = MODE::MENU;
         textbox.resetTextbox();
         return;
@@ -61,7 +64,7 @@ void Page::event() {
     
 // }
     textbox.HandleInput(add, del);
-    if(Ok.IsClicked()){
+    if(Ok.IsClicked() && !textbox.inputText.empty()){
         textbox.nums.push_back(stoi(textbox.inputText));
          TraceLog(LOG_INFO, textbox.inputText.c_str());
         textbox.inputText = "";
