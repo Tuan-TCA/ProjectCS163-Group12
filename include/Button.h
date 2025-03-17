@@ -103,6 +103,7 @@ public:
         return bounds;
     }
     bool isOver(){
+        Update();
         return isHovered;
     }
     bool IsClicked() {

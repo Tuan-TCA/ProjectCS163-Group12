@@ -143,11 +143,56 @@ CMakeFiles/main.dir/func/Variables.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/main.dir/func/Variables.cpp.s"
 	C:\SFML\mingw64\bin\c++.exe $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S D:\Project\PROJECT163\project1\func\Variables.cpp -o CMakeFiles\main.dir\func\Variables.cpp.s
 
+CMakeFiles/main.dir/src/LinkedList/LinkedList.cpp.obj: CMakeFiles/main.dir/flags.make
+CMakeFiles/main.dir/src/LinkedList/LinkedList.cpp.obj: CMakeFiles/main.dir/includes_CXX.rsp
+CMakeFiles/main.dir/src/LinkedList/LinkedList.cpp.obj: D:/Project/PROJECT163/project1/src/LinkedList/LinkedList.cpp
+CMakeFiles/main.dir/src/LinkedList/LinkedList.cpp.obj: CMakeFiles/main.dir/compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=D:\Project\PROJECT163\project1\build\CMakeFiles --progress-num=$(CMAKE_PROGRESS_6) "Building CXX object CMakeFiles/main.dir/src/LinkedList/LinkedList.cpp.obj"
+	C:\SFML\mingw64\bin\c++.exe $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/main.dir/src/LinkedList/LinkedList.cpp.obj -MF CMakeFiles\main.dir\src\LinkedList\LinkedList.cpp.obj.d -o CMakeFiles\main.dir\src\LinkedList\LinkedList.cpp.obj -c D:\Project\PROJECT163\project1\src\LinkedList\LinkedList.cpp
+
+CMakeFiles/main.dir/src/LinkedList/LinkedList.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/main.dir/src/LinkedList/LinkedList.cpp.i"
+	C:\SFML\mingw64\bin\c++.exe $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E D:\Project\PROJECT163\project1\src\LinkedList\LinkedList.cpp > CMakeFiles\main.dir\src\LinkedList\LinkedList.cpp.i
+
+CMakeFiles/main.dir/src/LinkedList/LinkedList.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/main.dir/src/LinkedList/LinkedList.cpp.s"
+	C:\SFML\mingw64\bin\c++.exe $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S D:\Project\PROJECT163\project1\src\LinkedList\LinkedList.cpp -o CMakeFiles\main.dir\src\LinkedList\LinkedList.cpp.s
+
+CMakeFiles/main.dir/src/LinkedList/LinkedList_Algorithm.cpp.obj: CMakeFiles/main.dir/flags.make
+CMakeFiles/main.dir/src/LinkedList/LinkedList_Algorithm.cpp.obj: CMakeFiles/main.dir/includes_CXX.rsp
+CMakeFiles/main.dir/src/LinkedList/LinkedList_Algorithm.cpp.obj: D:/Project/PROJECT163/project1/src/LinkedList/LinkedList_Algorithm.cpp
+CMakeFiles/main.dir/src/LinkedList/LinkedList_Algorithm.cpp.obj: CMakeFiles/main.dir/compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=D:\Project\PROJECT163\project1\build\CMakeFiles --progress-num=$(CMAKE_PROGRESS_7) "Building CXX object CMakeFiles/main.dir/src/LinkedList/LinkedList_Algorithm.cpp.obj"
+	C:\SFML\mingw64\bin\c++.exe $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/main.dir/src/LinkedList/LinkedList_Algorithm.cpp.obj -MF CMakeFiles\main.dir\src\LinkedList\LinkedList_Algorithm.cpp.obj.d -o CMakeFiles\main.dir\src\LinkedList\LinkedList_Algorithm.cpp.obj -c D:\Project\PROJECT163\project1\src\LinkedList\LinkedList_Algorithm.cpp
+
+CMakeFiles/main.dir/src/LinkedList/LinkedList_Algorithm.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/main.dir/src/LinkedList/LinkedList_Algorithm.cpp.i"
+	C:\SFML\mingw64\bin\c++.exe $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E D:\Project\PROJECT163\project1\src\LinkedList\LinkedList_Algorithm.cpp > CMakeFiles\main.dir\src\LinkedList\LinkedList_Algorithm.cpp.i
+
+CMakeFiles/main.dir/src/LinkedList/LinkedList_Algorithm.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/main.dir/src/LinkedList/LinkedList_Algorithm.cpp.s"
+	C:\SFML\mingw64\bin\c++.exe $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S D:\Project\PROJECT163\project1\src\LinkedList\LinkedList_Algorithm.cpp -o CMakeFiles\main.dir\src\LinkedList\LinkedList_Algorithm.cpp.s
+
+CMakeFiles/main.dir/src/LinkedList/LinkedListt_Animation.cpp.obj: CMakeFiles/main.dir/flags.make
+CMakeFiles/main.dir/src/LinkedList/LinkedListt_Animation.cpp.obj: CMakeFiles/main.dir/includes_CXX.rsp
+CMakeFiles/main.dir/src/LinkedList/LinkedListt_Animation.cpp.obj: D:/Project/PROJECT163/project1/src/LinkedList/LinkedListt_Animation.cpp
+CMakeFiles/main.dir/src/LinkedList/LinkedListt_Animation.cpp.obj: CMakeFiles/main.dir/compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=D:\Project\PROJECT163\project1\build\CMakeFiles --progress-num=$(CMAKE_PROGRESS_8) "Building CXX object CMakeFiles/main.dir/src/LinkedList/LinkedListt_Animation.cpp.obj"
+	C:\SFML\mingw64\bin\c++.exe $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/main.dir/src/LinkedList/LinkedListt_Animation.cpp.obj -MF CMakeFiles\main.dir\src\LinkedList\LinkedListt_Animation.cpp.obj.d -o CMakeFiles\main.dir\src\LinkedList\LinkedListt_Animation.cpp.obj -c D:\Project\PROJECT163\project1\src\LinkedList\LinkedListt_Animation.cpp
+
+CMakeFiles/main.dir/src/LinkedList/LinkedListt_Animation.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/main.dir/src/LinkedList/LinkedListt_Animation.cpp.i"
+	C:\SFML\mingw64\bin\c++.exe $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E D:\Project\PROJECT163\project1\src\LinkedList\LinkedListt_Animation.cpp > CMakeFiles\main.dir\src\LinkedList\LinkedListt_Animation.cpp.i
+
+CMakeFiles/main.dir/src/LinkedList/LinkedListt_Animation.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/main.dir/src/LinkedList/LinkedListt_Animation.cpp.s"
+	C:\SFML\mingw64\bin\c++.exe $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S D:\Project\PROJECT163\project1\src\LinkedList\LinkedListt_Animation.cpp -o CMakeFiles\main.dir\src\LinkedList\LinkedListt_Animation.cpp.s
+
 CMakeFiles/main.dir/src/main.cpp.obj: CMakeFiles/main.dir/flags.make
 CMakeFiles/main.dir/src/main.cpp.obj: CMakeFiles/main.dir/includes_CXX.rsp
 CMakeFiles/main.dir/src/main.cpp.obj: D:/Project/PROJECT163/project1/src/main.cpp
 CMakeFiles/main.dir/src/main.cpp.obj: CMakeFiles/main.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=D:\Project\PROJECT163\project1\build\CMakeFiles --progress-num=$(CMAKE_PROGRESS_6) "Building CXX object CMakeFiles/main.dir/src/main.cpp.obj"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=D:\Project\PROJECT163\project1\build\CMakeFiles --progress-num=$(CMAKE_PROGRESS_9) "Building CXX object CMakeFiles/main.dir/src/main.cpp.obj"
 	C:\SFML\mingw64\bin\c++.exe $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/main.dir/src/main.cpp.obj -MF CMakeFiles\main.dir\src\main.cpp.obj.d -o CMakeFiles\main.dir\src\main.cpp.obj -c D:\Project\PROJECT163\project1\src\main.cpp
 
 CMakeFiles/main.dir/src/main.cpp.i: cmake_force
@@ -165,6 +210,9 @@ main_OBJECTS = \
 "CMakeFiles/main.dir/func/Page.cpp.obj" \
 "CMakeFiles/main.dir/func/Program.cpp.obj" \
 "CMakeFiles/main.dir/func/Variables.cpp.obj" \
+"CMakeFiles/main.dir/src/LinkedList/LinkedList.cpp.obj" \
+"CMakeFiles/main.dir/src/LinkedList/LinkedList_Algorithm.cpp.obj" \
+"CMakeFiles/main.dir/src/LinkedList/LinkedListt_Animation.cpp.obj" \
 "CMakeFiles/main.dir/src/main.cpp.obj"
 
 # External object files for target main
@@ -175,12 +223,15 @@ main.exe: CMakeFiles/main.dir/func/Menu.cpp.obj
 main.exe: CMakeFiles/main.dir/func/Page.cpp.obj
 main.exe: CMakeFiles/main.dir/func/Program.cpp.obj
 main.exe: CMakeFiles/main.dir/func/Variables.cpp.obj
+main.exe: CMakeFiles/main.dir/src/LinkedList/LinkedList.cpp.obj
+main.exe: CMakeFiles/main.dir/src/LinkedList/LinkedList_Algorithm.cpp.obj
+main.exe: CMakeFiles/main.dir/src/LinkedList/LinkedListt_Animation.cpp.obj
 main.exe: CMakeFiles/main.dir/src/main.cpp.obj
 main.exe: CMakeFiles/main.dir/build.make
 main.exe: CMakeFiles/main.dir/linkLibs.rsp
 main.exe: CMakeFiles/main.dir/objects1.rsp
 main.exe: CMakeFiles/main.dir/link.txt
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --bold --progress-dir=D:\Project\PROJECT163\project1\build\CMakeFiles --progress-num=$(CMAKE_PROGRESS_7) "Linking CXX executable main.exe"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --bold --progress-dir=D:\Project\PROJECT163\project1\build\CMakeFiles --progress-num=$(CMAKE_PROGRESS_10) "Linking CXX executable main.exe"
 	$(CMAKE_COMMAND) -E cmake_link_script CMakeFiles\main.dir\link.txt --verbose=$(VERBOSE)
 	C:\SFML\mingw64\bin\cmake.exe -E copy_directory D:/Project/PROJECT163/project1/res D:/Project/PROJECT163/project1/build/res
 

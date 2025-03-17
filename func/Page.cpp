@@ -4,6 +4,7 @@
 #include <bits/stdc++.h>
 #include <string>
 #include <iostream>
+#include "LinkedList.h"
 using namespace std;
 
 string getMODE() {
@@ -16,11 +17,11 @@ string getMODE() {
 
 
 void Page::init() {
+    headNode = nullptr;
     Ok = Button(10 + screenWidth*0.25f - 100, screenHeight / 2 - screenHeight*0.63f * 0.15f, 73, screenHeight*0.63f * 0.15f, "OK", MyColor1, MyColor2, WHITE);
     head = MyRec(0, 10, (float) screenWidth, screenHeight*0.08f, getMODE().c_str(), MyColor2, WHITE);
     home = ButtonFromImage("res/button/back.png", "res/button/back-isOver.png", screenWidth*0.016f, screenHeight*0.016f, screenWidth*0.05f, screenWidth*0.05f); 
     home2 = ButtonFromImage("res/button/homeII_1.png", "res/button/homeII_2.png", screenWidth*0.016f, screenHeight*0.016f, screenWidth*0.05f, screenWidth*0.05f); 
-
     background1 = resizedImage("res/BackGround.png", screenWidth, screenHeight);   
     background2 = resizedImage("res/background_theme2.png", screenWidth, screenHeight);    
     bottom = {0,screenHeight*0.88f,(float)screenWidth,screenHeight*0.12f};
@@ -65,6 +66,7 @@ void Page::event() {
     textbox.HandleInput(add, del);
     if(Ok.IsClicked() && !textbox.inputText.empty()){
         textbox.nums.push_back(stoi(textbox.inputText));
+        insertNode(headNode, stoi(textbox.inputText));
          TraceLog(LOG_INFO, textbox.inputText.c_str());
         textbox.inputText = "";
     }
