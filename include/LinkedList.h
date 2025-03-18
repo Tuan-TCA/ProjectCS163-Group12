@@ -5,10 +5,6 @@
 using namespace std;
 #include <raylib.h>
 #include "Variables.h"
-// Ví dụ các biến này có thể là thuộc tính của lớp LinkedList
-
-
-
 class Node {
 public:
     int val;
@@ -39,6 +35,7 @@ class LinkedList {
     
         ~LinkedList() {
             Node* current = head;
+            head = nullptr;
             while (current) {
                 Node* nextNode = current->next;
                 delete current;

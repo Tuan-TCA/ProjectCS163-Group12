@@ -3,12 +3,10 @@
 #include <iostream>
 
 Program::Program () {
-
     InitWindow(screenWidth, screenHeight, "Visualization App - CS 163 - Group 12");
     SetTargetFPS(60);
     mode = MODE::MENU;
     menu.init();
-    page.init();
 }
 
 
@@ -16,8 +14,8 @@ void Program::run() {
     while(!WindowShouldClose()) {
         BeginDrawing();
         ClearBackground(RAYWHITE);
-        event();
         draw();
+        event();
         EndDrawing();
     }
     CloseWindow();
@@ -30,17 +28,21 @@ void Program::event() {
         if(x == 1) {
             mode = MODE::LL;
             // std::cout<<"Linked list"; 
+            page.init();
         }
         else if(x == 2) {
             mode = MODE::HASHTB;
+            page.init();
             
         }
         else if(x == 3) {
             mode = MODE::AVL;
+            page.init();
             
         }
         else if(x == 4) {
             mode = MODE::GRAPH;
+            page.init();
             
         }
     }
