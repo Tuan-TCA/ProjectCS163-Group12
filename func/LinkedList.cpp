@@ -4,111 +4,131 @@
 using namespace std;
 
 
-Node::Node(int key, Node* nextnode) {
-    val = key;
-    next = nextnode;
-}
-
-void Node::DrawRim(Vector2 center, float rad, Color colorRim){
-    // BeginDrawing();
-
-    //vẽ hình node
-    for(int i = 0;  i < 15; i++){
-        DrawCircleLines(center.x, center.y, rad + i, colorRim);
-    }
-    // EndDrawing();
-}
-
-void Node::Draw(Vector2 pos, float rad, Color colorNode, Color colorText) {
-    // Vẽ hình tròn đại diện cho node
-    DrawCircleV(pos, rad, colorNode);
-
-    // Vẽ viền
-    DrawCircleLines(pos.x, pos.y, rad, BLACK);
-    
-    // Vẽ giá trị của node
-    std::string text = std::to_string(val);
-    Vector2 textSize = MeasureTextEx(GetFontDefault(), text.c_str(), 20, 2);
-    DrawText(text.c_str(), pos.x - textSize.x / 2, pos.y - textSize.y / 2, 20, colorText);
-}
-
 LinkedList::LinkedList() {
     head = nullptr;
     workplace = {400,300,600,600};
-    position = {workplace.x*1.1f, workplace.y*1.1f};
-    colorNode = LIGHTGRAY;
-    colorText = BLACK;
-    dis = 100;
-    rad = 30;
+    // position = {workplace.x*1.1f, workplace.y*1.1f};
     isInserting = false;
 }
+
+Vector2 LinkedList::GetPosition(int count){
+    int d = 2 * radius * count + (count - 1)*spacing;
+    int X = max((W/2 - d/2) + radius, 0) + 400;
+    int Y = H/2;
+    Vector2 center = {X, Y};
+    return center; 
+}
+
+int LinkedList::CountNode(Node* head){
+    if(!head) return 0;
+    int cnt = 0;
+    Node* tmp = head;
+    while(tmp){
+        cnt++;
+        tmp = tmp->next;
+    }
+    return cnt;
+}
+
+void LinkedList::DrawArrow(Vector2 start, Vector2 end) {
+    start = {start.x + radius, start.y};
+    end = {end.x - radius, end.y};
+    float arrowAngle = PI/6;
+    float angle = atan2f(end.y - start.y, end.x - start.x);
+    Vector2 arrowHead = {end.x, end.y};
+
+    Vector2 left = {arrowHead.x - arrow_size * cos(angle + arrowAngle), 
+                    arrowHead.y - arrow_size * sin(angle + arrowAngle)};
+    Vector2 right = {arrowHead.x - arrow_size * cos(angle - arrowAngle), 
+                     arrowHead.y - arrow_size * sin(angle - arrowAngle)};
+
+    DrawLineEx(start, arrowHead, 5, arrow_color);
+    DrawLineEx(arrowHead, left, 3, arrow_color);
+    DrawLineEx(arrowHead, right, 3, arrow_color);
+}
+
+void LinkedList::DrawNode(Vector2 center, int key, int choose){
+    string s = to_string(key);
+
+    // BeginDrawing();
+    // ClearBackground(GRAY);
+    //Draw circle
+    if (choose == 1){
+        DrawCircleV(center, radius, choose_color);
+    }
+    if (choose == -1){
+        cout << center.x << ' ' << key << '\n';
+        DrawCircleV(center, radius, visit_color);
+    }
+    if (choose == 0){
+        DrawCircleV(center, radius, WHITE);
+    }
+    DrawCircleV(center, radius - 9, ring);
+    DrawCircleV(center, radius - 10, circle);
+
+    int Fs = max(10, static_cast<int>(font_size-s.size()*3));
+    //Draw text
+    int wNode =  MeasureText(s.c_str(), Fs);
+    DrawText(s.c_str(), center.x - wNode / 2, center.y - Fs/2, Fs, text_color);
+
+    // EndDrawing();
+}
+
 
 void LinkedList::DrawLL() {
-    if (!head) {
-        //std::cout << "List is empty!" << std::endl;
+
+    if (!head){
+        cout << "Head is null\n";
         return;
     }
-    Node* cur = head;
-    Vector2 curPos = position;
-    while (cur) {  // Duyệt đến hết danh sách
-        cur->Draw(curPos, rad, colorNode, colorText);
-        if (cur->next) {  // Vẽ đường nối giữa các node
-            DrawRectangle(curPos.x + rad,curPos.y, 2.0*rad, 4.0, BLACK);
+    Node * cur = head;
+    int num = CountNode(head);
+    Vector2 center = GetPosition(num);
+
+    // cout << center.x;
+
+    while (cur){
+        DrawNode(center, cur->val, 0);
+        Vector2 newCenter = {center.x + 2 * radius + spacing, center.y};
+        if (cur->next){
+            DrawArrow(center, newCenter);
         }
-        curPos.x += dis; // Dịch chuyển vị trí để vẽ node tiếp theo
         cur = cur->next;
+        center = newCenter;
     }
-    //std::cout << "Draw complete!" << std::endl;
+
+
 }
 
-
 void LinkedList::DrawInsert(int key) {
-    // Đánh dấu rằng chúng ta đang thực hiện hiệu ứng chèn
-    isInserting = true;
-
-    // Nếu danh sách rỗng, tạo node đầu tiên với hiệu ứng phóng to
     if (!head) {
         head = new Node(key, nullptr);
-        // Hiệu ứng: vẽ node với bán kính tăng dần
-        // for (float r = rad; r <= rad * 2; r += 5) {
-        //     BeginDrawing();
-        //     //ClearBackground(RAYWHITE);
-        //     DrawLL();
-        //     head->Draw(position, r, YELLOW, BLACK);
-        //     EndDrawing();
-        //     std::this_thread::sleep_for(std::chrono::milliseconds(50));
-        // }
-        isInserting = false;
         return;
     }
+    
+    DrawLL();
+    Vector2 center = GetPosition(CountNode(head));
 
-    // Nếu danh sách không rỗng, tìm vị trí chèn ở cuối
-    Node* cur = head;
-    Vector2 curPos = position;
-    while (cur->next) {
-        // Vẽ hiệu ứng highlight cho từng node trên đường đi
+    Node * a = head;
+    Node * b = new Node(0, a);
+    while (a){
         BeginDrawing();
-        //ClearBackground(RAYWHITE);
-        cur->DrawRim(curPos, rad, YELLOW);
-        DrawLL(); // Cập nhật lại màn hình để thấy hiệu ứng
-        cout<<"@";
-        EndDrawing();
-        std::this_thread::sleep_for(std::chrono::milliseconds(100));
-        
-        cur = cur->next;
-        curPos.x += dis;
-    }
-    // Thêm node mới vào cuối danh sách
-    cur->next = new Node(key, nullptr);
-    curPos.x +=dis;
-    // Hiệu ứng phóng to cho node mới
-    for (float r = rad; r <= rad * 2; r += 5) {
-        BeginDrawing();
-        //ClearBackground(RAYWHITE);
         DrawLL();
-        cur->next->Draw(curPos, r, YELLOW, BLACK);
+        DrawNode(center, a->val, -1);
         EndDrawing();
-        std::this_thread::sleep_for(std::chrono::milliseconds(100));
+        a = a->next;
+        b = b->next;
+        Vector2 newCenter = {center.x + 2*radius + spacing, center.y};
+        center = newCenter;
+        std::this_thread::sleep_for(std::chrono::milliseconds(1000));
     }
-    isInserting = false;
+
+    Node * tmp = new Node(key, nullptr);
+    tmp->val = key;
+    tmp->next = nullptr;
+    b->next = tmp;
+}
+
+void LinkedList::SearchNode(int key){
+    
 }
