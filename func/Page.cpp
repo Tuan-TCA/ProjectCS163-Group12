@@ -53,11 +53,11 @@ void Page::draw() {
     if (A.isInserting) {
         A.DrawInsert(lastInsertedKey);
         A.isInserting = false;
-    } else {
+    }
+    else{
         A.DrawLL();
     }
 }
-
 
 
 void Page::event() {
