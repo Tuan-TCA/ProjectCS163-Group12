@@ -29,10 +29,11 @@ void Page::init() {
     side = {0,screenHeight / 2 - screenHeight * 0.63f / 2,screenWidth*0.24f,screenHeight*0.63f};
     textbox = TextBox(5, screenHeight / 2 - screenHeight*0.63f * 0.15f, screenWidth*0.25f - 100, screenHeight*0.63f * 0.15f, "", WHITE, WHITE, BLACK);
     functions = vector<Button> { 
-        Button(screenWidth*0.2, screenHeight*0.60, screenWidth*0.05, screenHeight*0.02, "Create", DARKGRAY, LIGHTGRAY, WHITE),
-        Button(screenWidth*0.2, screenHeight*0.65, screenWidth*0.05, screenHeight*0.02, "Insert", DARKGRAY, LIGHTGRAY, WHITE),
-        Button(screenWidth*0.2, screenHeight*0.70, screenWidth*0.05, screenHeight*0.02, "Search", DARKGRAY, LIGHTGRAY, WHITE),
-        Button(screenWidth*0.2, screenHeight*0.75, screenWidth*0.05, screenHeight*0.02, "Delete", DARKGRAY, LIGHTGRAY, WHITE)
+        Button(screenWidth*0.2, screenHeight*0.55, screenWidth*0.05, screenHeight*0.02, "Create", DARKGRAY, LIGHTGRAY, WHITE),
+        Button(screenWidth*0.2, screenHeight*0.60, screenWidth*0.05, screenHeight*0.02, "Insert", DARKGRAY, LIGHTGRAY, WHITE),
+        Button(screenWidth*0.2, screenHeight*0.65, screenWidth*0.05, screenHeight*0.02, "Search", DARKGRAY, LIGHTGRAY, WHITE),
+        Button(screenWidth*0.2, screenHeight*0.70, screenWidth*0.05, screenHeight*0.02, "Delete", DARKGRAY, LIGHTGRAY, WHITE),
+        Button(screenWidth*0.2, screenHeight*0.75, screenWidth*0.05, screenHeight*0.02, "Update", DARKGRAY, LIGHTGRAY, WHITE)
     };
 }
 
@@ -78,7 +79,9 @@ void Page::event() {
     if(functions[2].IsClicked())
         func = FUNC::SEARCH;
     if(functions[3].IsClicked())
-        func = FUNC::DELETE; 
+        func = FUNC::DELETE;
+    if(functions[4].IsClicked())
+        func = FUNC::UPDATE;
         
     textbox.HandleInput();
     if(Ok.IsClicked() && !textbox.inputText.empty()){
