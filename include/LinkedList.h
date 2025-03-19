@@ -60,17 +60,18 @@ class LinkedList : public Page{
             }
         }
     
-        void DrawLL();
-        void DrawInsert(int key);
-        void SearchNode(int key);
-
+        
         //animation
         Vector2 GetPosition(int count);
+        Vector2 Pos, NewPos;
         int CountNode(Node* head);
         void DrawArrow(Vector2 start, Vector2 end);
         void DrawNode(Vector2 center, int key, int choose);
-
-        void EventLLinPage(Page &page) ;
+        void DrawLL(Vector2 pos);
+        void DrawInsert(int key);
+        void SearchNode(int key);
+        
+        void EventLLinPage(Page &page);
 
         void DrawLLinPage(Page page);
     };
