@@ -5,6 +5,7 @@
 using namespace std;
 #include <raylib.h>
 #include "Variables.h"
+#include "Page.h"
 // class Node {
 // public:
 //     int val;
@@ -22,7 +23,7 @@ struct Node{
 };
 
 
-class LinkedList {
+class LinkedList : public Page{
     public:
         Node* head;
         Rectangle workplace;
@@ -45,6 +46,7 @@ class LinkedList {
         
         // Biến kiểm soát hiệu ứng chèn
         bool isInserting;
+        int lastInsertedKey;
     
         LinkedList();
     
@@ -61,10 +63,34 @@ class LinkedList {
         void DrawLL();
         void DrawInsert(int key);
         void SearchNode(int key);
+        
+        void PrintLL();
 
         //animation
         Vector2 GetPosition(int count);
         int CountNode(Node* head);
         void DrawArrow(Vector2 start, Vector2 end);
         void DrawNode(Vector2 center, int key, int choose);
+
+        void EventLLinPage(Page &page) {
+            if(page.textbox.nums.size() > 0) {
+                lastInsertedKey = page.textbox.nums[0];
+                isInserting = true;  // Kích hoạt hiệu ứng vẽ Insert
+                page.textbox.nums.pop_back();
+            }   
+            Node* cur = head; while(cur) {cout<<cur->val<<" "; cur = cur->next;} cout<<endl;
+        }
+
+        void DrawLLinPage() {
+            //BeginDrawing();
+            if (isInserting) {
+                DrawInsert(lastInsertedKey);
+                isInserting = false;
+            }
+            else{
+                DrawLL();
+            }
+            //std::this_thread::sleep_for(std::chrono::milliseconds(1000));
+            //EndDrawing();   
+        }
     };

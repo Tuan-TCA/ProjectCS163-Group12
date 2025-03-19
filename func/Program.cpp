@@ -7,6 +7,7 @@ Program::Program () {
     SetTargetFPS(10);
     mode = MODE::MENU;
     menu.init();
+    LinkedList A = LinkedList();
 }
 
 
@@ -51,6 +52,8 @@ void Program::event() {
     else if(mode == MODE::LL) {
         // Linked List
         page.event();
+        A.EventLLinPage(page);
+        //cout<<"K";
     }
     if(mode == MODE::HASHTB) {
         // Hash Table
@@ -72,7 +75,12 @@ void Program::draw() {
     } 
     if (mode == MODE::LL) {
         //LL.draw();
+        //BeginDrawing();
         page.draw();
+        A.DrawLLinPage();
+        A.PrintLL();
+        //EndDrawing();
+        //cout<<"H";
     }
      
     if (mode == MODE::HASHTB) {

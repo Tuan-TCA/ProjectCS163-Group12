@@ -3,6 +3,15 @@
 #include <raylib.h>
 using namespace std;
 
+void LinkedList::PrintLL() {
+    cout << "LL now: ";
+    Node *cur = head;
+    while(cur) {
+        cout << cur->val << ' ';
+        cur = cur->next;
+    }
+    cout<<endl;
+}
 
 LinkedList::LinkedList() {
     head = nullptr;
@@ -120,7 +129,7 @@ void LinkedList::DrawInsert(int key) {
         b = b->next;
         Vector2 newCenter = {center.x + 2*radius + spacing, center.y};
         center = newCenter;
-        std::this_thread::sleep_for(std::chrono::milliseconds(1000));
+        std::this_thread::sleep_for(std::chrono::milliseconds(500));
     }
 
     Node * tmp = new Node(key, nullptr);
