@@ -47,6 +47,15 @@ class LinkedList : public Page{
         // Biến kiểm soát hiệu ứng chèn
         bool isInserting;
         int lastInsertedKey;
+
+        bool isSearching;
+        int SearchKey;
+
+        bool isDeleting;
+        int DeleteKey;
+
+        bool isUpdating;
+        int UpdateKey;
     
         LinkedList();
     
@@ -69,7 +78,8 @@ class LinkedList : public Page{
         void DrawNode(Vector2 center, int key, int choose);
         void DrawLL(Vector2 pos);
         void DrawInsert(int key);
-        void SearchNode(int key);
+        void DrawSearchNode(int key);
+        void DrawDeleteNode(int key);
         
         void EventLLinPage(Page &page);
 

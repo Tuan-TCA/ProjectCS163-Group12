@@ -8,6 +8,9 @@ LinkedList::LinkedList() {
     workplace = {400,300,600,600};
     // position = {workplace.x*1.1f, workplace.y*1.1f};
     isInserting = false;
+    isSearching = false;
+    isDeleting = false;
+    isUpdating = false;
 }
 
 void LinkedList::EventLLinPage(Page &page) {
@@ -21,13 +24,32 @@ void LinkedList::EventLLinPage(Page &page) {
             isInserting = true;
             page.textbox.inputText = "";
         }   
-        Node* cur = head; while(cur) {cout<<cur->val<<" "; cur = cur->next;} cout<<endl;
+        // Node* cur = head; while(cur) {cout<<cur->val<<" "; cur = cur->next;} cout<<endl;
     }
     if(page.func == FUNC::SEARCH) {
-        //SearchLL;
+        if(page.textbox.nums.size() > 0) {
+            SearchKey = page.textbox.nums[0];
+            page.textbox.nums.erase(page.textbox.nums.begin());
+            isSearching = true;
+            page.textbox.inputText = "";
+        }
     }
     if(page.func == FUNC::DELETE) {
-        //DeleteLL;
+        if(page.textbox.nums.size() > 0) {
+            DeleteKey = page.textbox.nums[0];
+            page.textbox.nums.erase(page.textbox.nums.begin());
+            isSearching = true;
+            page.textbox.inputText = "";
+        }
+    }
+
+    if(page.func == FUNC::DELETE) {
+        if(page.textbox.nums.size() > 0) {
+            DeleteKey = page.textbox.nums[0];
+            page.textbox.nums.erase(page.textbox.nums.begin());
+            isSearching = true;
+            page.textbox.inputText = "";
+        }
     }
 
     if (Pos.x > NewPos.x){
@@ -52,10 +74,23 @@ void LinkedList::DrawLLinPage(Page page) {
         }
     }
     if(page.func == FUNC::SEARCH) {
-        //SearchLLDraw;
+        if (isSearching) {
+            DrawSearchNode(SearchKey);
+            isSearching = false;
+        }
+        else{
+            DrawLL(Pos);
+        }
     }
     if(page.func == FUNC::DELETE) {
-        //DeleteLLDraw;
+        if (isDeleting) {
+            DrawDeleteNode(DeleteKey);
+            isDeleting = false;
+        }
+        else{
+            DrawLL(Pos);
+        }
+
     }
     
     //BeginDrawing();
@@ -63,6 +98,17 @@ void LinkedList::DrawLLinPage(Page page) {
         DrawInsert(lastInsertedKey);
         isInserting = false;
     }
+
+    if (isSearching) {
+        DrawSearchNode(SearchKey);
+        isSearching = false;
+    }
+
+    if (isDeleting) {
+        DrawDeleteNode(DeleteKey);
+        isDeleting = false;
+    }
+
     else{
         DrawLL(Pos);
     }
@@ -192,11 +238,80 @@ void LinkedList::DrawInsert(int key) {
     NewPos = GetPosition(CountNode(head));
 }
 
-void LinkedList::SearchNode(int key){
+void LinkedList::DrawSearchNode(int key){
     if (!head){
         cout << "Head is NULL\n";
         return;
     }
     
+    Pos = GetPosition(CountNode(head));
+    Vector2 center = Pos;
+    DrawLL(center);
 
+    Node * a = head;
+    while (a){
+        if(a->val == key){
+            BeginDrawing();
+            DrawLL(Pos);
+            DrawNode(center, a->val, 1);
+            EndDrawing();
+            std::this_thread::sleep_for(std::chrono::milliseconds(500));
+            return;
+        }
+        BeginDrawing();
+        DrawLL(Pos);
+        DrawNode(center, a->val, -1);
+        EndDrawing();
+        a = a->next;
+        Vector2 newCenter = {center.x + 2*radius + spacing, center.y};
+        center = newCenter;
+        std::this_thread::sleep_for(std::chrono::milliseconds(700));
+    }
 }
+
+void LinkedList::DrawDeleteNode(int key){
+    if (!head){
+        cout << "Head is NULL\n";
+        return;
+    }
+    
+    Pos = GetPosition(CountNode(head));
+    Vector2 center = Pos;
+    DrawLL(center);
+
+    Node * a = head;
+    Node * pre = nullptr;
+    while (a){
+        if(a->val == key){
+            BeginDrawing();
+            DrawNode(center, a->val, 1);
+            EndDrawing();
+            std::this_thread::sleep_for(std::chrono::milliseconds(500));
+            if(!pre){
+                head = a->next;
+            }
+            else{
+                pre->next = a->next;
+            }
+            delete a;
+            BeginDrawing();
+            DrawLL(Pos);
+            EndDrawing();
+            std::this_thread::sleep_for(std::chrono::milliseconds(500));
+            return;
+        }
+        BeginDrawing();
+        DrawLL(Pos);
+        DrawNode(center, a->val, -1);
+        EndDrawing();
+        pre = a;
+        a = a->next;
+        Vector2 newCenter = {center.x + 2*radius + spacing, center.y};
+        center = newCenter;
+        std::this_thread::sleep_for(std::chrono::milliseconds(500));
+    }
+}
+
+// void LinkedList::DrawDeleteNode(int first, int second){
+
+// }
