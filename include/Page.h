@@ -12,14 +12,25 @@ enum class Operation {
     Delete,
     Search
 };
-
+enum class InputType {
+    Random,
+    Keyboard,
+    File
+};
 class Page {
 public:
     Operation currentOperation;
+    InputType currentInput;
+    //input
+    vector<string> options = {"RANDOM", "KEYBOARD", "FILE"};
+    int selectedIndex;  // position hiện tại
+    Button optionButton; // op hiện tại
+    Button prevButton;  // chuyển trái
+    Button nextButton; 
+
     Button insertButton, createButton, deleteButton, searchButton;
     vector<Button> operationButtons;
     vector<Vector2> subButtonPosition;
-    float subWidth, subHeight;
     bool isInsertExpanded = false; 
     bool isCreateExpanded = false; 
     bool isDeleteExpanded = false;  
@@ -30,7 +41,6 @@ public:
     Rectangle side;
     Button Ok;
     TextBox textbox;
-    vector <Button> functions;
     ButtonFromImage home, home2;
     Texture2D background1, background2;
 
@@ -38,4 +48,5 @@ public:
     void draw();
     void event();
     void reset();
+    void handleInput();
 };

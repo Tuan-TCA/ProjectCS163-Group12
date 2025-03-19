@@ -19,20 +19,24 @@ void Page::init() {
     subButtonPosition.push_back({screenWidth*0.24f, screenHeight / 2 - screenHeight*0.63f * 0.5f + 5});
     subButtonPosition.push_back({screenWidth*0.24f + screenHeight*0.63f * 0.15f + 5 , screenHeight / 2 - screenHeight*0.63f * 0.5f + 5});
     subButtonPosition.push_back({screenWidth*0.24f + screenHeight*0.63f * 0.15f * 2 + 10 , screenHeight / 2 - screenHeight*0.63f * 0.5f + 5});
-    subWidth = screenHeight*0.63f * 0.15f;
-    subHeight = screenHeight*0.63f * 0.15f;
+
     insertButton = Button(5, screenHeight / 2 - screenHeight*0.63f * 0.5f + 5, screenWidth*0.24f - 10, screenHeight*0.63f * 0.15f, "INSERT", MyColor1, Fade(MyColor1, 0.8f), WHITE);
     createButton = Button(5, screenHeight / 2 - screenHeight*0.63f * 0.5f + 5, screenWidth*0.24f - 10, screenHeight*0.63f * 0.15f, "CREATE", MyColor1, Fade(MyColor1, 0.8f), WHITE);
     deleteButton = Button(5, screenHeight / 2 - screenHeight*0.63f * 0.5f + 5, screenWidth*0.24f - 10, screenHeight*0.63f * 0.15f, "DELETE", MyColor1, Fade(MyColor1, 0.8f), WHITE);
     searchButton = Button(5, screenHeight / 2 - screenHeight*0.63f * 0.5f + 5, screenWidth*0.24f - 10, screenHeight*0.63f * 0.15f, "SEARCH", MyColor1, Fade(MyColor1, 0.8f), WHITE);
 
-    operationButtons.push_back(Button(screenWidth*0.24f, screenHeight / 2 - screenHeight*0.63f * 0.5f + 5, screenHeight*0.63f * 0.15f , screenHeight*0.63f * 0.15f, "Insert", MyColor1, MyColor2, WHITE));
+    selectedIndex = 0;
+    optionButton = Button(screenWidth * 0.24f * 0.15f,screenHeight / 2 - screenHeight*0.63f * 0.35f + 10 , screenWidth*0.24f * 0.7f, screenHeight*0.63f * 0.15f, options[selectedIndex].c_str(), WHITE, LIGHTGRAY, MyColor5);
+    prevButton = Button(5,screenHeight / 2 - screenHeight*0.63f * 0.35f + 10 ,  screenWidth*0.24f * 0.15f - 10, screenHeight*0.63f * 0.15f, "<", WHITE, LIGHTGRAY, MyColor5);
+    nextButton = Button(screenWidth*0.24f * 0.85f + 5,screenHeight / 2 - screenHeight*0.63f * 0.35f + 10 ,  screenWidth*0.24f * 0.15f - 10, screenHeight*0.63f * 0.15f, ">", WHITE, LIGHTGRAY, MyColor5);
+    currentInput = InputType::Keyboard;
+    operationButtons.push_back(Button(120, 50, 100, 30, "Insert", MyColor1, MyColor2, WHITE));
     operationButtons.push_back(Button(120, 50, 100, 30, "Create", MyColor1, MyColor2, WHITE));
     operationButtons.push_back(Button(120, 90, 100, 30, "Delete", MyColor1, MyColor2, WHITE));
     operationButtons.push_back(Button(120, 130, 100, 30, "Search", MyColor1, MyColor2, WHITE));
     currentOperation = Operation::Insert;
 
-    Ok = Button(10 + screenWidth*0.25f - 100, screenHeight / 2 - screenHeight*0.63f * 0.15f, 73, screenHeight*0.63f * 0.15f, "OK", MyColor1, MyColor2, WHITE);
+    Ok = Button(10 + screenWidth*0.25f - 100, screenHeight / 2 - screenHeight*0.63f * 0.17f, 73, screenHeight*0.63f * 0.15f, "OK", MyColor1, MyColor2, WHITE);
     head = MyRec(0, 10, (float) screenWidth, screenHeight*0.08f, getMODE().c_str(), MyColor2, WHITE);
     home = ButtonFromImage("res/button/back.png", "res/button/back-isOver.png", screenWidth*0.016f, screenHeight*0.016f, screenWidth*0.05f, screenWidth*0.05f); 
     home2 = ButtonFromImage("res/button/homeII_1.png", "res/button/homeII_2.png", screenWidth*0.016f, screenHeight*0.016f, screenWidth*0.05f, screenWidth*0.05f); 
@@ -40,14 +44,8 @@ void Page::init() {
     background1 = resizedImage("res/BackGround.png", screenWidth, screenHeight);   
     background2 = resizedImage("res/background_theme2.png", screenWidth, screenHeight);    
     bottom = {0,screenHeight*0.88f,(float)screenWidth,screenHeight*0.12f};
-    side = {0,screenHeight / 2 - screenHeight * 0.63f / 2,screenWidth*0.24f,screenHeight*0.63f};
-    textbox = TextBox(5, screenHeight / 2 - screenHeight*0.63f * 0.15f, screenWidth*0.25f - 100, screenHeight*0.63f * 0.15f, "", WHITE, WHITE, BLACK);
-    functions = vector<Button> { 
-        Button(screenWidth*0.2, screenHeight*0.60, screenWidth*0.05, screenHeight*0.02, "Create", DARKGRAY, LIGHTGRAY, WHITE),
-        Button(screenWidth*0.2, screenHeight*0.65, screenWidth*0.05, screenHeight*0.02, "Insert", DARKGRAY, LIGHTGRAY, WHITE),
-        Button(screenWidth*0.2, screenHeight*0.70, screenWidth*0.05, screenHeight*0.02, "Search", DARKGRAY, LIGHTGRAY, WHITE),
-        Button(screenWidth*0.2, screenHeight*0.75, screenWidth*0.05, screenHeight*0.02, "Delete", DARKGRAY, LIGHTGRAY, WHITE)
-    };
+    side = {0,screenHeight / 2 - screenHeight * 0.64f / 2,screenWidth*0.24f,screenHeight*0.64f};
+    textbox = TextBox(5, screenHeight / 2 - screenHeight*0.63f * 0.17f, screenWidth*0.25f - 100, screenHeight*0.63f * 0.15f, "", WHITE, WHITE, BLACK);
 }
 void Page::reset(){
     currentOperation = Operation::Insert;
@@ -62,14 +60,19 @@ void Page::draw() {
     head.Draw(MyColor2, getMODE());
     DrawRectangleRec(bottom, MyColor2);
     DrawRectangleRec(side, MyColor3);
+    if(currentInput != InputType::File){
     Ok.Draw(MyColor1, MyColor2);
     textbox.Draw();
-    switchState ? home2.Draw() : home.Draw();
-    for(auto &button : functions) {
-        button.Draw();
     }
+    else{
+        //drop file field
+    }
+    switchState ? home2.Draw() : home.Draw();
+    optionButton.Draw( LIGHTGRAY, WHITE);
+    prevButton.Draw(LIGHTGRAY, WHITE);
+    nextButton.Draw(LIGHTGRAY, WHITE);
     if(currentOperation == Operation::Insert){
-        insertButton.Draw();
+        insertButton.Draw(MyColor1, Fade(MyColor1, 0.8f));
         if (isInsertExpanded) {
             DrawRectangle(0,0,screenWidth,screenHeight,Fade(GRAY, 0.2));
             operationButtons[1].Draw(MyColor1, Fade(MyColor1, 0.8f));  
@@ -78,7 +81,7 @@ void Page::draw() {
         }
     }
      if (currentOperation == Operation::Create){
-        createButton.Draw();
+        createButton.Draw(MyColor1, Fade(MyColor1, 0.8f));
         if (isCreateExpanded) {
             DrawRectangle(0,0,screenWidth,screenHeight,Fade(GRAY, 0.2));
             operationButtons[0].Draw(MyColor1, Fade(MyColor1, 0.8f));  
@@ -87,7 +90,7 @@ void Page::draw() {
         }
     }
      if(currentOperation == Operation::Delete){
-        deleteButton.Draw();
+        deleteButton.Draw(MyColor1, Fade(MyColor1, 0.8f));
         if (isDeleteExpanded) {
             DrawRectangle(0,0,screenWidth,screenHeight,Fade(GRAY, 0.2));
             operationButtons[0].Draw(MyColor1, Fade(MyColor1, 0.8f));  
@@ -96,7 +99,7 @@ void Page::draw() {
         }
     }
      if (currentOperation == Operation::Search){
-        searchButton.Draw();
+        searchButton.Draw(MyColor1, Fade(MyColor1, 0.8f));
         if (isSearchExpanded) {
             DrawRectangle(0,0,screenWidth,screenHeight,Fade(GRAY, 0.2));
             operationButtons[0].Draw(MyColor1, Fade(MyColor1, 0.8f));  
@@ -113,14 +116,8 @@ void Page::event() {
         reset();
         return;
     }
-    textbox.HandleInput();
 
-    
-    if(Ok.IsClicked() && !textbox.inputText.empty()){
-        textbox.nums.push_back(stoi(textbox.inputText));
-         TraceLog(LOG_INFO, textbox.inputText.c_str());
-        textbox.inputText = "";
-    }
+    handleInput();
   
     if(currentOperation == Operation::Insert){
         if (insertButton.IsClicked()) {
@@ -238,5 +235,58 @@ void Page::event() {
             }
         }
     }
+
+    //INPUT
+
+    if (prevButton.IsClicked()) {
+        selectedIndex = (selectedIndex - 1 + options.size()) % options.size();
+        optionButton.label = options[selectedIndex].c_str(); 
+    }
+
+    if (nextButton.IsClicked()) {
+        selectedIndex = (selectedIndex + 1) % options.size();
+        optionButton.label = options[selectedIndex].c_str(); 
+    }
+
+        if (options[selectedIndex] == "KEYBOARD") currentInput = InputType::Keyboard;
+        if (options[selectedIndex] == "RANDOM") currentInput = InputType::Random;
+        if (options[selectedIndex] == "FILE") currentInput = InputType::File;
+}
+
+void Page::handleInput(){
+
+
+    switch (currentInput) {
+            case InputType::Random:
+                if(optionButton.IsClicked()){
+                textbox.inputText = to_string(rand() % 1000); 
+                }
+                break;
+            case InputType::Keyboard:
+                textbox.HandleInput(); 
+                break;
+            case InputType::File:
+                if(optionButton.IsClicked()){
+                    //open 'File Explorer' to open the specific file
+
+                }
+                else{
+                    //we can drop file into the blank
+                }
+                break;
+            default:
+                break;
+        }
+
+        if (IsKeyPressed(KEY_BACKSPACE) && !textbox.inputText.empty()) {
+                textbox.inputText.pop_back();
+            }
+
+        if ((Ok.IsClicked() || IsKeyPressed(KEY_ENTER) || IsKeyPressed(KEY_KP_ENTER)) && !textbox.inputText.empty()) {
+            textbox.nums.push_back(stoi(textbox.inputText));
+            TraceLog(LOG_INFO, textbox.inputText.c_str());
+            textbox.inputText = "";
+        }    
+
 }
 

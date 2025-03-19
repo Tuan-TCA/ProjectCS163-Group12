@@ -6,7 +6,8 @@
 enum class MODE {
     MENU, LL, HASHTB, AVL, GRAPH    
 };
-
+extern const float subWidth;
+extern const float subHeight;
 extern MODE mode;
 extern bool switchState; // true: red, false: blue
 extern const int screenWidth, screenHeight;

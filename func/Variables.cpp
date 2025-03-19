@@ -2,7 +2,8 @@
 
 MODE mode; //pointer của trang 
 const int screenWidth = 1200, screenHeight = 900;
-
+const float subWidth = screenHeight*0.63f * 0.15f;
+const float subHeight = screenHeight*0.63f * 0.15f;
 //MyCorlor
 //Theme 1:
 bool switchState = false;;

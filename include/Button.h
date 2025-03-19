@@ -130,8 +130,14 @@ public:
         active = false;  
         nums.clear();    
     }
-
+    void update(){
+        if (IsMouseButtonPressed(MOUSE_LEFT_BUTTON)) {
+        Vector2 mousePos = GetMousePosition();
+        active = (mousePos.x >= bounds.x && mousePos.x <=  bounds.x + bounds.width && mousePos.y >= bounds.y && mousePos.y <= bounds.y + bounds.height);
+        }
+    }
     void Draw() override {
+        update();
         Button::Draw();
         string displayText = inputText;
         if (active && ((int)(GetTime() * 2) % 2 == 0)) { // Nhấp nháy con trỏ
@@ -141,10 +147,7 @@ public:
     }
 
     void HandleInput() {
-        if (IsMouseButtonPressed(MOUSE_LEFT_BUTTON)) {
-        Vector2 mousePos = GetMousePosition();
-        active = (mousePos.x >= bounds.x && mousePos.x <=  bounds.x + bounds.width && mousePos.y >= bounds.y && mousePos.y <= bounds.y + bounds.height);
-        }
+        update();
         if (active) {
             int key = GetCharPressed();
             while (key > 0 && inputText.size() < 7) {
@@ -152,16 +155,6 @@ public:
                     inputText += (char)key;
                 }
                 key = GetCharPressed();
-            }
-            if (IsKeyPressed(KEY_BACKSPACE) && !inputText.empty()) {
-                inputText.pop_back();
-            }
-
-            if ((IsKeyPressed(KEY_ENTER) || IsKeyPressed(KEY_KP_ENTER)) && !inputText.empty()) {
-                nums.push_back(stoi(inputText));
-                TraceLog(LOG_INFO, inputText.c_str());
-                TraceLog(LOG_INFO, "loi cho nay ne");
-                inputText = "";
             }
         }
     }
