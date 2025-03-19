@@ -10,6 +10,66 @@ LinkedList::LinkedList() {
     isInserting = false;
 }
 
+void LinkedList::EventLLinPage(Page &page) {
+    if(page.func == FUNC::CREATE) {
+        //CreateLL;
+    }
+    if(page.func == FUNC::INSERT) {
+        if(page.textbox.nums.size() > 0) {
+            lastInsertedKey = page.textbox.nums[0];
+            page.textbox.nums.erase(page.textbox.nums.begin());
+            isInserting = true;
+            page.textbox.inputText = "";
+        }   
+        Node* cur = head; while(cur) {cout<<cur->val<<" "; cur = cur->next;} cout<<endl;
+    }
+    if(page.func == FUNC::SEARCH) {
+        //SearchLL;
+    }
+    if(page.func == FUNC::DELETE) {
+        //DeleteLL;
+    }
+
+    if (Pos.x > NewPos.x){
+        Pos = {Pos.x - 5, Pos.y};
+    }
+    else{
+        Pos = NewPos;
+    }
+}
+
+void LinkedList::DrawLLinPage(Page page) {
+    if(page.func == FUNC::CREATE) {
+        //DrawLL();
+    }
+    if(page.func == FUNC::INSERT) {
+        if (isInserting) {
+            DrawInsert(lastInsertedKey);
+            isInserting = false;
+        }
+        else{
+            DrawLL(Pos);
+        }
+    }
+    if(page.func == FUNC::SEARCH) {
+        //SearchLLDraw;
+    }
+    if(page.func == FUNC::DELETE) {
+        //DeleteLLDraw;
+    }
+    
+    //BeginDrawing();
+    if (isInserting) {
+        DrawInsert(lastInsertedKey);
+        isInserting = false;
+    }
+    else{
+        DrawLL(Pos);
+    }
+    //std::this_thread::sleep_for(std::chrono::milliseconds(1000));
+    //EndDrawing();   
+}
+
 Vector2 LinkedList::GetPosition(int count){
     int d = 2 * radius * count + (count - 1)*spacing;
     int X = max((W/2 - d/2) + radius, 0) + 400;
@@ -74,7 +134,7 @@ void LinkedList::DrawNode(Vector2 center, int key, int choose){
 }
 
 
-void LinkedList::DrawLL() {
+void LinkedList::DrawLL(Vector2 pos) {
 
     if (!head){
         cout << "Head is null\n";
@@ -82,7 +142,7 @@ void LinkedList::DrawLL() {
     }
     Node * cur = head;
     int num = CountNode(head);
-    Vector2 center = GetPosition(num);
+    Vector2 center = pos;
 
     // cout << center.x;
 
@@ -102,17 +162,19 @@ void LinkedList::DrawLL() {
 void LinkedList::DrawInsert(int key) {
     if (!head) {
         head = new Node(key, nullptr);
+        Pos = GetPosition(CountNode(head));
+        NewPos = Pos;
         return;
     }
-    
-    DrawLL();
-    Vector2 center = GetPosition(CountNode(head));
+    Pos = GetPosition(CountNode(head));
+    Vector2 center = Pos;
+    DrawLL(center);
 
     Node * a = head;
     Node * b = new Node(0, a);
     while (a){
         BeginDrawing();
-        DrawLL();
+        DrawLL(Pos);
         DrawNode(center, a->val, -1);
         EndDrawing();
         a = a->next;
@@ -126,8 +188,15 @@ void LinkedList::DrawInsert(int key) {
     tmp->val = key;
     tmp->next = nullptr;
     b->next = tmp;
+
+    NewPos = GetPosition(CountNode(head));
 }
 
 void LinkedList::SearchNode(int key){
+    if (!head){
+        cout << "Head is NULL\n";
+        return;
+    }
     
+
 }
