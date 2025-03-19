@@ -113,13 +113,9 @@ void Page::event() {
         reset();
         return;
     }
-    bool add = functions[1].IsClicked();
-    bool del = functions[3].IsClicked();
-//     if (add) {
-//     TraceLog(LOG_INFO, "Insert button clicked");
+    textbox.HandleInput();
+
     
-// }
-    textbox.HandleInput(add, del);
     if(Ok.IsClicked() && !textbox.inputText.empty()){
         textbox.nums.push_back(stoi(textbox.inputText));
          TraceLog(LOG_INFO, textbox.inputText.c_str());
