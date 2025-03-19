@@ -17,7 +17,7 @@ public:
     ButtonFromImage home, home2;
     Texture2D background1, background2;
 
-    FUNC func;
+    FUNC func = FUNC::NONE;
 
     void init();
     void draw();

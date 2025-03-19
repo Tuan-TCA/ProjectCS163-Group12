@@ -8,7 +8,7 @@ enum class MODE {
 };
 
 enum class FUNC {
-    CREATE, INSERT, SEARCH, DELETE
+    NONE,CREATE, INSERT, SEARCH, DELETE
 };
 
 extern FUNC func;

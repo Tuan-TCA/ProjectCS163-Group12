@@ -41,13 +41,16 @@ void Page::draw() {
     DrawTexture(switchState ? background2 : background1, 0, 0, WHITE);
     head.Draw(MyColor2, getMODE());
     DrawRectangleRec(bottom, MyColor2);
+
     DrawRectangleRec(side, MyColor3);
     Ok.Draw(MyColor1, MyColor2);
     textbox.Draw();
-    switchState ? home2.Draw() : home.Draw();
     for(auto &button : functions) {
         button.Draw();
     }
+
+    
+    switchState ? home2.Draw() : home.Draw();
 
     // if (A.isInserting) {
     //     A.DrawInsert(lastInsertedKey);
@@ -79,14 +82,16 @@ void Page::event() {
         func = FUNC::SEARCH;
     if(functions[3].IsClicked())
         func = FUNC::DELETE; 
-        
+
     textbox.HandleInput();
     if(Ok.IsClicked() && !textbox.inputText.empty()){
         textbox.nums.push_back(stoi(textbox.inputText));
          TraceLog(LOG_INFO, textbox.inputText.c_str());
         textbox.inputText = "";
     }
-
+    if(func == FUNC::NONE) {
+        textbox.nums.clear();
+    }
 
 
     // if (textbox.nums.size() > 0) {

@@ -70,57 +70,7 @@ class LinkedList : public Page{
         void DrawArrow(Vector2 start, Vector2 end);
         void DrawNode(Vector2 center, int key, int choose);
 
-        void EventLLinPage(Page &page) {
-            if(page.func == FUNC::CREATE) {
-                //CreateLL;
-            }
-            if(page.func == FUNC::INSERT) {
-                if(page.textbox.nums.size() > 0) {
-                    lastInsertedKey = page.textbox.nums[0];
-                    page.textbox.nums.erase(page.textbox.nums.begin());
-                    isInserting = true;
-                    page.textbox.inputText = "";
-                }   
-                Node* cur = head; while(cur) {cout<<cur->val<<" "; cur = cur->next;} cout<<endl;
-            }
-            if(page.func == FUNC::SEARCH) {
-                //SearchLL;
-            }
-            if(page.func == FUNC::DELETE) {
-                //DeleteLL;
-            }
-        }
+        void EventLLinPage(Page &page) ;
 
-        void DrawLLinPage(Page page) {
-            if(page.func == FUNC::CREATE) {
-                //DrawLL();
-                
-            }
-            if(page.func == FUNC::INSERT) {
-                if (isInserting) {
-                    DrawInsert(lastInsertedKey);
-                    isInserting = false;
-                }
-                else{
-                    DrawLL();
-                }
-            }
-            if(page.func == FUNC::SEARCH) {
-                //SearchLLDraw;
-            }
-            if(page.func == FUNC::DELETE) {
-                //DeleteLLDraw;
-            }
-            
-            //BeginDrawing();
-            if (isInserting) {
-                DrawInsert(lastInsertedKey);
-                isInserting = false;
-            }
-            else{
-                DrawLL();
-            }
-            //std::this_thread::sleep_for(std::chrono::milliseconds(1000));
-            //EndDrawing();   
-        }
+        void DrawLLinPage(Page page);
     };
