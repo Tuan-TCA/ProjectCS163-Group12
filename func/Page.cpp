@@ -65,18 +65,29 @@ void Page::event() {
         textbox.resetTextbox();
         return;
     }
-    bool add = functions[1].IsClicked();
-    bool del = functions[3].IsClicked();
+
 //     if (add) {
 //     TraceLog(LOG_INFO, "Insert button clicked");
     
 // }
-    textbox.HandleInput(add, del);
+
+    if(functions[0].IsClicked())
+        func = FUNC::CREATE; 
+    if(functions[1].IsClicked())
+        func = FUNC::INSERT;
+    if(functions[2].IsClicked())
+        func = FUNC::SEARCH;
+    if(functions[3].IsClicked())
+        func = FUNC::DELETE; 
+        
+    textbox.HandleInput();
     if(Ok.IsClicked() && !textbox.inputText.empty()){
         textbox.nums.push_back(stoi(textbox.inputText));
          TraceLog(LOG_INFO, textbox.inputText.c_str());
         textbox.inputText = "";
     }
+
+
 
     // if (textbox.nums.size() > 0) {
     //     lastInsertedKey = textbox.nums[0];

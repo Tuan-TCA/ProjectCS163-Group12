@@ -7,6 +7,11 @@ enum class MODE {
     MENU, LL, HASHTB, AVL, GRAPH    
 };
 
+enum class FUNC {
+    CREATE, INSERT, SEARCH, DELETE
+};
+
+extern FUNC func;
 extern MODE mode;
 extern bool switchState; // true: red, false: blue
 extern const int screenWidth, screenHeight;

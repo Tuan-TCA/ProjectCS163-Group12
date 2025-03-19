@@ -63,8 +63,6 @@ class LinkedList : public Page{
         void DrawLL();
         void DrawInsert(int key);
         void SearchNode(int key);
-        
-        void PrintLL();
 
         //animation
         Vector2 GetPosition(int count);
@@ -73,15 +71,47 @@ class LinkedList : public Page{
         void DrawNode(Vector2 center, int key, int choose);
 
         void EventLLinPage(Page &page) {
-            if(page.textbox.nums.size() > 0) {
-                lastInsertedKey = page.textbox.nums[0];
-                isInserting = true;  // Kích hoạt hiệu ứng vẽ Insert
-                page.textbox.nums.pop_back();
-            }   
-            Node* cur = head; while(cur) {cout<<cur->val<<" "; cur = cur->next;} cout<<endl;
+            if(page.func == FUNC::CREATE) {
+                //CreateLL;
+            }
+            if(page.func == FUNC::INSERT) {
+                if(page.textbox.nums.size() > 0) {
+                    lastInsertedKey = page.textbox.nums[0];
+                    page.textbox.nums.erase(page.textbox.nums.begin());
+                    isInserting = true;
+                    page.textbox.inputText = "";
+                }   
+                Node* cur = head; while(cur) {cout<<cur->val<<" "; cur = cur->next;} cout<<endl;
+            }
+            if(page.func == FUNC::SEARCH) {
+                //SearchLL;
+            }
+            if(page.func == FUNC::DELETE) {
+                //DeleteLL;
+            }
         }
 
-        void DrawLLinPage() {
+        void DrawLLinPage(Page page) {
+            if(page.func == FUNC::CREATE) {
+                //DrawLL();
+                
+            }
+            if(page.func == FUNC::INSERT) {
+                if (isInserting) {
+                    DrawInsert(lastInsertedKey);
+                    isInserting = false;
+                }
+                else{
+                    DrawLL();
+                }
+            }
+            if(page.func == FUNC::SEARCH) {
+                //SearchLLDraw;
+            }
+            if(page.func == FUNC::DELETE) {
+                //DeleteLLDraw;
+            }
+            
             //BeginDrawing();
             if (isInserting) {
                 DrawInsert(lastInsertedKey);

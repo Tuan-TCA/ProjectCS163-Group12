@@ -3,16 +3,6 @@
 #include <raylib.h>
 using namespace std;
 
-void LinkedList::PrintLL() {
-    cout << "LL now: ";
-    Node *cur = head;
-    while(cur) {
-        cout << cur->val << ' ';
-        cur = cur->next;
-    }
-    cout<<endl;
-}
-
 LinkedList::LinkedList() {
     head = nullptr;
     workplace = {400,300,600,600};

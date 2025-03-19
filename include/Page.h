@@ -17,6 +17,8 @@ public:
     ButtonFromImage home, home2;
     Texture2D background1, background2;
 
+    FUNC func;
+
     void init();
     void draw();
     void event();

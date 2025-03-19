@@ -77,8 +77,7 @@ void Program::draw() {
         //LL.draw();
         //BeginDrawing();
         page.draw();
-        A.DrawLLinPage();
-        A.PrintLL();
+        A.DrawLLinPage(page);
         //EndDrawing();
         //cout<<"H";
     }

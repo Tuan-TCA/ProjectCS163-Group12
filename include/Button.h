@@ -140,12 +140,12 @@ public:
         DrawText(displayText.c_str(), bounds.x + bounds.width / 2 - MeasureText(displayText.c_str(), 40) / 2, bounds.y + bounds.height / 3 - 3 , 40, textColor);
     }
 
-    void HandleInput(bool Add, bool Del) {
+    void HandleInput() {
         if (IsMouseButtonPressed(MOUSE_LEFT_BUTTON)) {
         Vector2 mousePos = GetMousePosition();
         active = (mousePos.x >= bounds.x && mousePos.x <=  bounds.x + bounds.width && mousePos.y >= bounds.y && mousePos.y <= bounds.y + bounds.height);
         }
-        if (active || Add || Del) {
+        if (active) {
             int key = GetCharPressed();
             while (key > 0 && inputText.size() < 7) {
                 if (key >= '0' && key <= '9') {
@@ -157,16 +157,9 @@ public:
                 inputText.pop_back();
             }
 
-            if ((Add || IsKeyPressed(KEY_ENTER) || IsKeyPressed(KEY_KP_ENTER)) && !inputText.empty()) {
+            if ((IsKeyPressed(KEY_ENTER) || IsKeyPressed(KEY_KP_ENTER)) && !inputText.empty()) {
                 nums.push_back(stoi(inputText));
                 TraceLog(LOG_INFO, inputText.c_str());
-                inputText = "";
-            }
-         
-            if ((Del) && !inputText.empty()) {
-                auto it = find(nums.begin(), nums.end(), stoi(inputText));
-                if(it!=nums.end())
-                    nums.erase(it);
                 inputText = "";
             }
         }
