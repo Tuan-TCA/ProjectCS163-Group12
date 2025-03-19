@@ -5,8 +5,26 @@
 #include "InputField.h"
 using namespace std;
 
+
+enum class Operation {
+    Insert,
+    Create,
+    Delete,
+    Search
+};
+
 class Page {
 public:
+    Operation currentOperation;
+    Button insertButton, createButton, deleteButton, searchButton;
+    vector<Button> operationButtons;
+    vector<Vector2> subButtonPosition;
+    float subWidth, subHeight;
+    bool isInsertExpanded = false; 
+    bool isCreateExpanded = false; 
+    bool isDeleteExpanded = false;  
+    bool isSearchExpanded = false;  
+
     MyRec head;
     Rectangle bottom;
     Rectangle side;
@@ -19,4 +37,5 @@ public:
     void init();
     void draw();
     void event();
+    void reset();
 };

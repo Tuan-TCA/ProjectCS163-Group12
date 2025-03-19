@@ -32,6 +32,7 @@ void Program::event() {
         if(x == 1) {
             mode = MODE::LL;
             // std::cout<<"Linked list"; 
+            page.init();
         }
         else if(x == 2) {
             mode = MODE::HASHTB;
