@@ -13,7 +13,7 @@ enum class FUNC {
 
 extern FUNC func;
 extern MODE mode;
-extern bool switchState; // true: red, false: blue
+extern bool switchState; 
 extern const int screenWidth, screenHeight;
 
 extern Color MyColor1;

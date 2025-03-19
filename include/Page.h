@@ -1,8 +1,8 @@
 #pragma once
-#include<raylib.h>
+#include <raylib.h>
 #include "Button.h"
 #include "Variables.h"
-#include<bits/stdc++.h>
+#include <bits/stdc++.h>
 #include "InputField.h"
 using namespace std;
 
@@ -13,11 +13,16 @@ public:
     Rectangle side;
     Button Ok;
     TextBox textbox;
-    vector <Button> functions;
     ButtonFromImage home, home2;
     Texture2D background1, background2;
 
     FUNC func;
+
+    vector<string> options = {"CREATE", "INSERT", "SEARCH", "DELETE", "UPDATE"};
+    int selectedIndex;  // position hiện tại
+    Button optionButton; // op hiện tại
+    Button prevButton;  // chuyển trái
+    Button nextButton;  // chuyển phải
 
     void init();
     void draw();

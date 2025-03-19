@@ -18,24 +18,34 @@ string getMODE() {
 
 
 void Page::init() {
-    Ok = Button(10 + screenWidth*0.25f - 100, screenHeight / 2 - screenHeight*0.63f * 0.15f, 73, screenHeight*0.63f * 0.15f, "OK", MyColor1, MyColor2, WHITE);
-    head = MyRec(0, 10, (float) screenWidth, screenHeight*0.08f, getMODE().c_str(), MyColor2, WHITE);
-    home = ButtonFromImage("res/button/back.png", "res/button/back-isOver.png", screenWidth*0.016f, screenHeight*0.016f, screenWidth*0.05f, screenWidth*0.05f); 
-    home2 = ButtonFromImage("res/button/homeII_1.png", "res/button/homeII_2.png", screenWidth*0.016f, screenHeight*0.016f, screenWidth*0.05f, screenWidth*0.05f); 
+    Ok = Button(10 + screenWidth * 0.25f - 100, screenHeight / 2 - screenHeight * 0.63f * 0.15f, 
+                73, screenHeight * 0.63f * 0.15f, "OK", MyColor1, MyColor2, WHITE);
 
-    background1 = resizedImage("res/BackGround.png", screenWidth, screenHeight);   
-    background2 = resizedImage("res/background_theme2.png", screenWidth, screenHeight);    
-    bottom = {0,screenHeight*0.88f,(float)screenWidth,screenHeight*0.12f};
-    side = {0,screenHeight / 2 - screenHeight * 0.63f / 2,screenWidth*0.24f,screenHeight*0.63f};
-    textbox = TextBox(5, screenHeight / 2 - screenHeight*0.63f * 0.15f, screenWidth*0.25f - 100, screenHeight*0.63f * 0.15f, "", WHITE, WHITE, BLACK);
-    functions = vector<Button> { 
-        Button(screenWidth*0.2, screenHeight*0.55, screenWidth*0.05, screenHeight*0.02, "Create", DARKGRAY, LIGHTGRAY, WHITE),
-        Button(screenWidth*0.2, screenHeight*0.60, screenWidth*0.05, screenHeight*0.02, "Insert", DARKGRAY, LIGHTGRAY, WHITE),
-        Button(screenWidth*0.2, screenHeight*0.65, screenWidth*0.05, screenHeight*0.02, "Search", DARKGRAY, LIGHTGRAY, WHITE),
-        Button(screenWidth*0.2, screenHeight*0.70, screenWidth*0.05, screenHeight*0.02, "Delete", DARKGRAY, LIGHTGRAY, WHITE),
-        Button(screenWidth*0.2, screenHeight*0.75, screenWidth*0.05, screenHeight*0.02, "Update", DARKGRAY, LIGHTGRAY, WHITE)
-    };
+    head = MyRec(0, 10, (float) screenWidth, screenHeight * 0.08f, getMODE().c_str(), MyColor2, WHITE);
+    home = ButtonFromImage("res/button/back.png", "res/button/back-isOver.png", 
+                           screenWidth * 0.016f, screenHeight * 0.016f, screenWidth * 0.05f, screenWidth * 0.05f);
+
+    background1 = resizedImage("res/BackGround.png", screenWidth, screenHeight);
+    background2 = resizedImage("res/background_theme2.png", screenWidth, screenHeight);
+    
+    bottom = {0, screenHeight * 0.88f, (float)screenWidth, screenHeight * 0.12f};
+    side = {0, screenHeight / 2 - screenHeight * 0.63f / 2, screenWidth * 0.24f, screenHeight * 0.63f};
+
+    textbox = TextBox(5, screenHeight / 2 - screenHeight * 0.63f * 0.15f, 
+                      screenWidth * 0.25f - 100, screenHeight * 0.63f * 0.15f, "", WHITE, WHITE, BLACK);
+
+    selectedIndex = 0;
+    optionButton = Button(screenWidth * 0.12f, screenHeight * 0.10f, 
+        screenWidth * 0.1f, screenHeight * 0.06f, 
+        options[selectedIndex].c_str(), DARKGREEN, DARKBLUE, WHITE);
+
+    prevButton = Button(screenWidth * 0.05f, screenHeight * 0.10f, 
+                        screenWidth * 0.04f, screenHeight * 0.04f, "<", DARKGRAY, LIGHTGRAY, WHITE);
+
+    nextButton = Button(screenWidth * 0.25f, screenHeight * 0.10f, 
+                        screenWidth * 0.04f, screenHeight * 0.04f, ">", DARKGRAY, LIGHTGRAY, WHITE);
 }
+
 
 void Page::draw() {
     ClearBackground(RAYWHITE);
@@ -46,56 +56,44 @@ void Page::draw() {
     Ok.Draw(MyColor1, MyColor2);
     textbox.Draw();
     switchState ? home2.Draw() : home.Draw();
-    for(auto &button : functions) {
-        button.Draw();
-    }
 
-    // if (A.isInserting) {
-    //     A.DrawInsert(lastInsertedKey);
-    //     A.isInserting = false;
-    // }
-    // else{
-    //     A.DrawLL();
-    // }
+    prevButton.Draw();
+    optionButton.Draw();
+    nextButton.Draw();
 }
 
 
+
 void Page::event() {
-    if(!switchState ? home.IsClicked(): home2.IsClicked() ) {
+    if (!switchState ? home.IsClicked() : home2.IsClicked()) {
         mode = MODE::MENU;
         textbox.resetTextbox();
         return;
     }
 
-//     if (add) {
-//     TraceLog(LOG_INFO, "Insert button clicked");
-    
-// }
-
-    if(functions[0].IsClicked())
-        func = FUNC::CREATE; 
-    if(functions[1].IsClicked())
-        func = FUNC::INSERT;
-    if(functions[2].IsClicked())
-        func = FUNC::SEARCH;
-    if(functions[3].IsClicked())
-        func = FUNC::DELETE;
-    if(functions[4].IsClicked())
-        func = FUNC::UPDATE;
-        
     textbox.HandleInput();
-    if(Ok.IsClicked() && !textbox.inputText.empty()){
+
+    if (Ok.IsClicked() && !textbox.inputText.empty()) {
         textbox.nums.push_back(stoi(textbox.inputText));
-         TraceLog(LOG_INFO, textbox.inputText.c_str());
+        TraceLog(LOG_INFO, textbox.inputText.c_str());
         textbox.inputText = "";
     }
 
+    if (prevButton.IsClicked()) {
+        selectedIndex = (selectedIndex - 1 + options.size()) % options.size();
+        optionButton.label = options[selectedIndex].c_str(); 
+    }
 
+    if (nextButton.IsClicked()) {
+        selectedIndex = (selectedIndex + 1) % options.size();
+        optionButton.label = options[selectedIndex].c_str(); 
+    }
 
-    // if (textbox.nums.size() > 0) {
-    //     lastInsertedKey = textbox.nums[0];
-    //     A.isInserting = true;  // Kích hoạt hiệu ứng vẽ Insert
-    //     textbox.nums.pop_back();
-    // }
-    // for (auto x: textbox.nums) cout<<x<<" ";std::cout<<endl;
+    if (optionButton.IsClicked()) {
+        if (options[selectedIndex] == "CREATE") func = FUNC::CREATE;
+        if (options[selectedIndex] == "INSERT") func = FUNC::INSERT;
+        if (options[selectedIndex] == "SEARCH") func = FUNC::SEARCH;
+        if (options[selectedIndex] == "DELETE") func = FUNC::DELETE;
+        if (options[selectedIndex] == "UPDATE") func = FUNC::UPDATE;
+    }
 }
