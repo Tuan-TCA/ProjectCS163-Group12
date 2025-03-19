@@ -56,10 +56,10 @@ RM = C:\SFML\mingw64\bin\cmake.exe -E rm -f
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = D:\Project\PROJECT163\project1
+CMAKE_SOURCE_DIR = D:\Project\PROJECT163\test_pj
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = D:\Project\PROJECT163\project1\build
+CMAKE_BINARY_DIR = D:\Project\PROJECT163\test_pj\build
 
 #=============================================================================
 # Targets provided globally by CMake.
@@ -86,9 +86,9 @@ rebuild_cache/fast: rebuild_cache
 
 # The main all target
 all: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start D:\Project\PROJECT163\project1\build\CMakeFiles D:\Project\PROJECT163\project1\build\\CMakeFiles\progress.marks
+	$(CMAKE_COMMAND) -E cmake_progress_start D:\Project\PROJECT163\test_pj\build\CMakeFiles D:\Project\PROJECT163\test_pj\build\\CMakeFiles\progress.marks
 	$(MAKE) $(MAKESILENT) -f CMakeFiles\Makefile2 all
-	$(CMAKE_COMMAND) -E cmake_progress_start D:\Project\PROJECT163\project1\build\CMakeFiles 0
+	$(CMAKE_COMMAND) -E cmake_progress_start D:\Project\PROJECT163\test_pj\build\CMakeFiles 0
 .PHONY : all
 
 # The main clean target
@@ -248,78 +248,6 @@ func/Variables.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles\main.dir\build.make CMakeFiles/main.dir/func/Variables.cpp.s
 .PHONY : func/Variables.cpp.s
 
-src/LinkedList/LinkedList.obj: src/LinkedList/LinkedList.cpp.obj
-.PHONY : src/LinkedList/LinkedList.obj
-
-# target to build an object file
-src/LinkedList/LinkedList.cpp.obj:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles\main.dir\build.make CMakeFiles/main.dir/src/LinkedList/LinkedList.cpp.obj
-.PHONY : src/LinkedList/LinkedList.cpp.obj
-
-src/LinkedList/LinkedList.i: src/LinkedList/LinkedList.cpp.i
-.PHONY : src/LinkedList/LinkedList.i
-
-# target to preprocess a source file
-src/LinkedList/LinkedList.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles\main.dir\build.make CMakeFiles/main.dir/src/LinkedList/LinkedList.cpp.i
-.PHONY : src/LinkedList/LinkedList.cpp.i
-
-src/LinkedList/LinkedList.s: src/LinkedList/LinkedList.cpp.s
-.PHONY : src/LinkedList/LinkedList.s
-
-# target to generate assembly for a file
-src/LinkedList/LinkedList.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles\main.dir\build.make CMakeFiles/main.dir/src/LinkedList/LinkedList.cpp.s
-.PHONY : src/LinkedList/LinkedList.cpp.s
-
-src/LinkedList/LinkedList_Algorithm.obj: src/LinkedList/LinkedList_Algorithm.cpp.obj
-.PHONY : src/LinkedList/LinkedList_Algorithm.obj
-
-# target to build an object file
-src/LinkedList/LinkedList_Algorithm.cpp.obj:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles\main.dir\build.make CMakeFiles/main.dir/src/LinkedList/LinkedList_Algorithm.cpp.obj
-.PHONY : src/LinkedList/LinkedList_Algorithm.cpp.obj
-
-src/LinkedList/LinkedList_Algorithm.i: src/LinkedList/LinkedList_Algorithm.cpp.i
-.PHONY : src/LinkedList/LinkedList_Algorithm.i
-
-# target to preprocess a source file
-src/LinkedList/LinkedList_Algorithm.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles\main.dir\build.make CMakeFiles/main.dir/src/LinkedList/LinkedList_Algorithm.cpp.i
-.PHONY : src/LinkedList/LinkedList_Algorithm.cpp.i
-
-src/LinkedList/LinkedList_Algorithm.s: src/LinkedList/LinkedList_Algorithm.cpp.s
-.PHONY : src/LinkedList/LinkedList_Algorithm.s
-
-# target to generate assembly for a file
-src/LinkedList/LinkedList_Algorithm.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles\main.dir\build.make CMakeFiles/main.dir/src/LinkedList/LinkedList_Algorithm.cpp.s
-.PHONY : src/LinkedList/LinkedList_Algorithm.cpp.s
-
-src/LinkedList/LinkedListt_Animation.obj: src/LinkedList/LinkedListt_Animation.cpp.obj
-.PHONY : src/LinkedList/LinkedListt_Animation.obj
-
-# target to build an object file
-src/LinkedList/LinkedListt_Animation.cpp.obj:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles\main.dir\build.make CMakeFiles/main.dir/src/LinkedList/LinkedListt_Animation.cpp.obj
-.PHONY : src/LinkedList/LinkedListt_Animation.cpp.obj
-
-src/LinkedList/LinkedListt_Animation.i: src/LinkedList/LinkedListt_Animation.cpp.i
-.PHONY : src/LinkedList/LinkedListt_Animation.i
-
-# target to preprocess a source file
-src/LinkedList/LinkedListt_Animation.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles\main.dir\build.make CMakeFiles/main.dir/src/LinkedList/LinkedListt_Animation.cpp.i
-.PHONY : src/LinkedList/LinkedListt_Animation.cpp.i
-
-src/LinkedList/LinkedListt_Animation.s: src/LinkedList/LinkedListt_Animation.cpp.s
-.PHONY : src/LinkedList/LinkedListt_Animation.s
-
-# target to generate assembly for a file
-src/LinkedList/LinkedListt_Animation.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles\main.dir\build.make CMakeFiles/main.dir/src/LinkedList/LinkedListt_Animation.cpp.s
-.PHONY : src/LinkedList/LinkedListt_Animation.cpp.s
-
 src/main.obj: src/main.cpp.obj
 .PHONY : src/main.obj
 
@@ -368,15 +296,6 @@ help:
 	@echo ... func/Variables.obj
 	@echo ... func/Variables.i
 	@echo ... func/Variables.s
-	@echo ... src/LinkedList/LinkedList.obj
-	@echo ... src/LinkedList/LinkedList.i
-	@echo ... src/LinkedList/LinkedList.s
-	@echo ... src/LinkedList/LinkedList_Algorithm.obj
-	@echo ... src/LinkedList/LinkedList_Algorithm.i
-	@echo ... src/LinkedList/LinkedList_Algorithm.s
-	@echo ... src/LinkedList/LinkedListt_Animation.obj
-	@echo ... src/LinkedList/LinkedListt_Animation.i
-	@echo ... src/LinkedList/LinkedListt_Animation.s
 	@echo ... src/main.obj
 	@echo ... src/main.i
 	@echo ... src/main.s

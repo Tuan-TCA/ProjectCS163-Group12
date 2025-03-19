@@ -1,6 +1,6 @@
 CMakeFiles/main.dir/func/Menu.cpp.obj: \
- D:\Project\PROJECT163\project1\func\Menu.cpp \
- D:/Project/PROJECT163/project1/include/Menu.h C:/raylib/include/raylib.h \
+ D:\Project\PROJECT163\test_pj\func\Menu.cpp \
+ D:/Project/PROJECT163/test_pj/include/Menu.h C:/raylib/include/raylib.h \
  C:/SFML/mingw64/lib/gcc/x86_64-w64-mingw32/14.2.0/include/stdarg.h \
  C:/SFML/mingw64/x86_64-w64-mingw32/include/stdarg.h \
  C:/SFML/mingw64/x86_64-w64-mingw32/include/_mingw_stdarg.h \
@@ -9,8 +9,8 @@ CMakeFiles/main.dir/func/Menu.cpp.obj: \
  C:/SFML/mingw64/x86_64-w64-mingw32/include/_mingw_mac.h \
  C:/SFML/mingw64/x86_64-w64-mingw32/include/_mingw_secapi.h \
  C:/SFML/mingw64/x86_64-w64-mingw32/include/sdks/_mingw_ddk.h \
- D:/Project/PROJECT163/project1/include/Button.h \
- D:/Project/PROJECT163/project1/include/Variables.h \
+ D:/Project/PROJECT163/test_pj/include/Button.h \
+ D:/Project/PROJECT163/test_pj/include/Variables.h \
  C:/SFML/mingw64/include/c++/14.2.0/x86_64-w64-mingw32/bits/stdc++.h \
  C:/SFML/mingw64/include/c++/14.2.0/cassert \
  C:/SFML/mingw64/include/c++/14.2.0/x86_64-w64-mingw32/bits/c++config.h \
