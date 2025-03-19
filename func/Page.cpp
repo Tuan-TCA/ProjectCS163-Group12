@@ -34,7 +34,6 @@ void Page::init() {
         Button(screenWidth*0.2, screenHeight*0.70, screenWidth*0.05, screenHeight*0.02, "Search", DARKGRAY, LIGHTGRAY, WHITE),
         Button(screenWidth*0.2, screenHeight*0.75, screenWidth*0.05, screenHeight*0.02, "Delete", DARKGRAY, LIGHTGRAY, WHITE)
     };
-    A.head = nullptr;
 }
 
 void Page::draw() {
@@ -50,13 +49,13 @@ void Page::draw() {
         button.Draw();
     }
 
-    if (A.isInserting) {
-        A.DrawInsert(lastInsertedKey);
-        A.isInserting = false;
-    }
-    else{
-        A.DrawLL();
-    }
+    // if (A.isInserting) {
+    //     A.DrawInsert(lastInsertedKey);
+    //     A.isInserting = false;
+    // }
+    // else{
+    //     A.DrawLL();
+    // }
 }
 
 
@@ -79,10 +78,10 @@ void Page::event() {
         textbox.inputText = "";
     }
 
-    if (textbox.nums.size() > 0) {
-        lastInsertedKey = textbox.nums[0];
-        A.isInserting = true;  // Kích hoạt hiệu ứng vẽ Insert
-        textbox.nums.pop_back();
-    }
+    // if (textbox.nums.size() > 0) {
+    //     lastInsertedKey = textbox.nums[0];
+    //     A.isInserting = true;  // Kích hoạt hiệu ứng vẽ Insert
+    //     textbox.nums.pop_back();
+    // }
     // for (auto x: textbox.nums) cout<<x<<" ";std::cout<<endl;
 }
