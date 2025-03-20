@@ -285,7 +285,6 @@ public:
 
     void UpdateSwitch() {
         Vector2 mousePos = GetMousePosition();
-
        
         if (IsClicked()) {
             switchState = !switchState; 
