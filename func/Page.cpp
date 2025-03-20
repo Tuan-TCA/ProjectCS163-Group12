@@ -6,6 +6,8 @@
 #include <iostream>
 using namespace std;
 
+int lastInsertedKey;
+
 string getMODE() {
     if(mode == MODE::LL) return "Linked List";
     if(mode == MODE::HASHTB) return "Hash Table";
@@ -328,3 +330,26 @@ void Page::handleInput(){
 
 }
 
+//         return;
+//     }
+
+//     if(functions[0].IsClicked())
+//         func = FUNC::CREATE; 
+//     if(functions[1].IsClicked())
+//         func = FUNC::INSERT;
+//     if(functions[2].IsClicked())
+//         func = FUNC::SEARCH;
+//     if(functions[3].IsClicked())
+//         func = FUNC::DELETE; 
+
+//     textbox.HandleInput();
+//     if(Ok.IsClicked() && !textbox.inputText.empty()){
+//         textbox.nums.push_back(stoi(textbox.inputText));
+//          TraceLog(LOG_INFO, textbox.inputText.c_str());
+//         textbox.inputText = "";
+//     }
+//     if(func == FUNC::NONE) {
+//         textbox.nums.clear();
+//     }
+
+// }

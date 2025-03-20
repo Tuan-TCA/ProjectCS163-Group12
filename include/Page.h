@@ -1,3 +1,5 @@
+#pragma once
+
 #include<raylib.h>
 #include "Button.h"
 #include "Variables.h"
@@ -43,6 +45,7 @@ public:
     Rectangle side;
     Button Ok;
     TextBox textbox;
+
     ButtonFromImage home, home2;
     Texture2D background1, background2;
 
@@ -52,6 +55,6 @@ public:
     void reset();
 
     void handleInput();
-
+    // FUNC func = FUNC::NONE;
 
 };

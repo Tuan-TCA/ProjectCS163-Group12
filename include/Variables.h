@@ -8,6 +8,12 @@ enum class MODE {
 };
 extern const float subWidth;
 extern const float subHeight;
+
+enum class FUNC {
+    NONE,CREATE, INSERT, SEARCH, DELETE
+};
+
+extern FUNC func;
 extern MODE mode;
 extern bool switchState; // true: red, false: blue
 extern const int screenWidth, screenHeight;

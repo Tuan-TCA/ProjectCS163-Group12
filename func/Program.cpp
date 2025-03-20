@@ -36,14 +36,17 @@ void Program::event() {
         }
         else if(x == 2) {
             mode = MODE::HASHTB;
+            page.init();
             
         }
         else if(x == 3) {
             mode = MODE::AVL;
+            page.init();
             
         }
         else if(x == 4) {
             mode = MODE::GRAPH;
+            page.init();
             
         }
     }
@@ -52,6 +55,8 @@ void Program::event() {
     else if(mode == MODE::LL) {
         // Linked List
         page.event();
+        A.EventLLinPage(page);
+        //cout<<"K";
     }
     if(mode == MODE::HASHTB) {
         // Hash Table
@@ -73,7 +78,11 @@ void Program::draw() {
     } 
     if (mode == MODE::LL) {
         //LL.draw();
+        //BeginDrawing();
         page.draw();
+        A.DrawLLinPage(page);
+        //EndDrawing();
+        //cout<<"H";
     }
      
     if (mode == MODE::HASHTB) {
