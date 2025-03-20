@@ -12,7 +12,8 @@ enum class Operation {
     Insert,
     Create,
     Delete,
-    Search
+    Search,
+    Update
 };
 
 enum class InputType {

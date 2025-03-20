@@ -4,6 +4,7 @@
 #include <bits/stdc++.h>
 #include <string>
 #include <iostream>
+#include <fstream>
 using namespace std;
 
 int lastInsertedKey;
@@ -69,6 +70,8 @@ void Page::draw() {
     textbox.Draw();
     }
     else{
+        DrawRectangle(5, screenHeight / 2 - screenHeight*0.63f * 0.17f, screenWidth*0.24f - 10, screenHeight*0.63f * 0.15f, WHITE);
+        DrawText("DROP FILE HERE", 30, screenHeight / 2 - screenHeight*0.63f * 0.118f, 25, GRAY);
         //drop file field
     }
     switchState ? home2.Draw() : home.Draw();
@@ -306,12 +309,20 @@ void Page::handleInput(){
                 textbox.HandleInput(); 
                 break;
             case InputType::File:
-                if(optionButton.IsClicked()){
-                    //open 'File Explorer' to open the specific file
-
-                }
-                else{
-                    //we can drop file into the blank
+                if(IsFileDropped()){
+                    FilePathList droppedFiles = LoadDroppedFiles();
+                    TextCopy(filePath,droppedFiles.paths[0]);
+                    ifstream fin(filePath);
+                    if(!fin.is_open()) cout << "Cannot open dropped file";
+                    else{
+                        textbox.resetTextbox();
+                        int val;
+                         while (fin >> val) {
+                            textbox.nums.push_back(val);
+                        }       
+                        fin.close();
+                    }
+                    UnloadDroppedFiles(droppedFiles); 
                 }
                 break;
             default:

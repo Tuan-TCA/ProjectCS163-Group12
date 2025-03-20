@@ -23,6 +23,7 @@ struct Node{
 };
 
 
+
 class LinkedList : public Page{
     public:
         Node* head;
@@ -33,8 +34,8 @@ class LinkedList : public Page{
         const int radius = 50;
         const int font_size = 40;
         const int spacing = 50;
-        const Color choose_color = GREEN;
-        const Color visit_color = RED;
+        const Color choose_color = { 0, 128, 0, 128 };//green
+        const Color visit_color = { 255, 105, 180, 128 };//red
         const Color ring = BLACK;
         const Color circle = LIGHTGRAY;
         const Color text_color = BLACK;
@@ -47,6 +48,16 @@ class LinkedList : public Page{
         // Biến kiểm soát hiệu ứng chèn
         bool isInserting;
         int lastInsertedKey;
+
+        bool isSearching;
+        int SearchKey;
+
+        bool isDeleting;
+        int DeleteKey;
+
+        bool isUpdating;
+        int UpdateKey;
+        int newVal;
     
         LinkedList();
     
@@ -69,8 +80,10 @@ class LinkedList : public Page{
         void DrawNode(Vector2 center, int key, int choose);
         void DrawLL(Vector2 pos);
         void DrawInsert(int key);
-        void SearchNode(int key);
-        
+        void DrawSearchNode(int key);
+        void DrawDeleteNode(int key);
+        void DrawUpDateNode(int first, int second);
+
         void EventLLinPage(Page &page);
 
         void DrawLLinPage(Page page);

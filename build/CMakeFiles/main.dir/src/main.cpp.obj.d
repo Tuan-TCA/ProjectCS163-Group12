@@ -1,5 +1,5 @@
-CMakeFiles/main.dir/src/main.cpp.obj: \
- D:\Project\PROJECT163\test_pj\src\main.cpp C:/raylib/include/raylib.h \
+CMakeFiles/main.dir/src/main.cpp.obj: D:\Project\ProjectTEST\src\main.cpp \
+ C:/raylib/include/raylib.h \
  C:/SFML/mingw64/lib/gcc/x86_64-w64-mingw32/14.2.0/include/stdarg.h \
  C:/SFML/mingw64/x86_64-w64-mingw32/include/stdarg.h \
  C:/SFML/mingw64/x86_64-w64-mingw32/include/_mingw_stdarg.h \
@@ -334,12 +334,12 @@ CMakeFiles/main.dir/src/main.cpp.obj: \
  C:/SFML/mingw64/include/c++/14.2.0/bits/fs_dir.h \
  C:/SFML/mingw64/include/c++/14.2.0/bits/fs_ops.h \
  C:/SFML/mingw64/include/c++/14.2.0/memory_resource \
- D:/Project/PROJECT163/test_pj/include/Program.h \
- D:/Project/PROJECT163/test_pj/include/Variables.h \
- D:/Project/PROJECT163/test_pj/include/Menu.h \
- D:/Project/PROJECT163/test_pj/include/Button.h \
- D:/Project/PROJECT163/test_pj/include/Page.h \
- D:/Project/PROJECT163/test_pj/include/InputField.h \
- D:/Project/PROJECT163/test_pj/include/LinkedList.h \
+ D:/Project/ProjectTEST/include/Program.h \
+ D:/Project/ProjectTEST/include/Variables.h \
+ D:/Project/ProjectTEST/include/Menu.h \
+ D:/Project/ProjectTEST/include/Button.h \
+ D:/Project/ProjectTEST/include/Page.h \
+ D:/Project/ProjectTEST/include/InputField.h \
+ D:/Project/ProjectTEST/include/LinkedList.h \
  C:/SFML/mingw64/include/c++/14.2.0/math.h \
- D:/Project/PROJECT163/test_pj/include/HashTB.h
+ D:/Project/ProjectTEST/include/HashTB.h

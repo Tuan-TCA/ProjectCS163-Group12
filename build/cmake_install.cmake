@@ -1,4 +1,4 @@
-# Install script for directory: D:/Project/PROJECT163/test_pj
+# Install script for directory: D:/Project/ProjectTEST
 
 # Set the install prefix
 if(NOT DEFINED CMAKE_INSTALL_PREFIX)
@@ -52,6 +52,6 @@ endif()
 if(NOT CMAKE_INSTALL_LOCAL_ONLY)
   string(REPLACE ";" "\n" CMAKE_INSTALL_MANIFEST_CONTENT
        "${CMAKE_INSTALL_MANIFEST_FILES}")
-  file(WRITE "D:/Project/PROJECT163/test_pj/build/${CMAKE_INSTALL_MANIFEST}"
+  file(WRITE "D:/Project/ProjectTEST/build/${CMAKE_INSTALL_MANIFEST}"
      "${CMAKE_INSTALL_MANIFEST_CONTENT}")
 endif()
