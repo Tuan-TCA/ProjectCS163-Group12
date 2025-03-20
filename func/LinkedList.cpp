@@ -43,11 +43,12 @@ void LinkedList::EventLLinPage(Page &page) {
         }
     }
 
-    if(page.func == FUNC::DELETE) {
+    if(page.func == FUNC::UPDATE) {
         if(page.textbox.nums.size() > 0) {
-            DeleteKey = page.textbox.nums[0];
+            UpdateKey = page.textbox.nums[0];
             page.textbox.nums.erase(page.textbox.nums.begin());
-            isSearching = true;
+            newVal = page.textbox.nums[1];
+            isUpdating = true;
             page.textbox.inputText = "";
         }
     }
@@ -92,6 +93,17 @@ void LinkedList::DrawLLinPage(Page page) {
         }
 
     }
+
+    if(page.func == FUNC::UPDATE) {
+        if (isUpdating) {
+            DrawUpDateNode(UpdateKey, newVal);
+            isUpdating = false;
+        }
+        else{
+            DrawLL(Pos);
+        }
+
+    }
     
     //BeginDrawing();
     if (isInserting) {
@@ -107,6 +119,11 @@ void LinkedList::DrawLLinPage(Page page) {
     if (isDeleting) {
         DrawDeleteNode(DeleteKey);
         isDeleting = false;
+    }
+
+    if (isUpdating) {
+        DrawDeleteNode(UpdateKey);
+        isUpdating = false;
     }
 
     else{
@@ -243,7 +260,8 @@ void LinkedList::DrawSearchNode(int key){
         cout << "Head is NULL\n";
         return;
     }
-    
+    bool found = false;
+
     Pos = GetPosition(CountNode(head));
     Vector2 center = Pos;
     DrawLL(center);
@@ -255,7 +273,8 @@ void LinkedList::DrawSearchNode(int key){
             DrawLL(Pos);
             DrawNode(center, a->val, 1);
             EndDrawing();
-            std::this_thread::sleep_for(std::chrono::milliseconds(500));
+            found = true;
+            std::this_thread::sleep_for(std::chrono::milliseconds(700));
             return;
         }
         BeginDrawing();
@@ -265,9 +284,24 @@ void LinkedList::DrawSearchNode(int key){
         a = a->next;
         Vector2 newCenter = {center.x + 2*radius + spacing, center.y};
         center = newCenter;
-        std::this_thread::sleep_for(std::chrono::milliseconds(700));
+        std::this_thread::sleep_for(std::chrono::milliseconds(500));
+    }
+    if (!found) {
+        BeginDrawing();  
+        DrawLL(Pos);  
+         
+        int textW = MeasureText("NOT FOUND", font_size); 
+        int listWidth = max(CountNode(head), 1) * (2 * radius + spacing); 
+        int posX = Pos.x + (listWidth - textW) / 2 - radius;
+        int posY = Pos.y + font_size + 100;  
+    
+        DrawText("Not Found", posX, posY, font_size, RED);
+        
+        EndDrawing(); 
+        std::this_thread::sleep_for(std::chrono::milliseconds(1000));  
     }
 }
+
 
 void LinkedList::DrawDeleteNode(int key){
     if (!head){
@@ -294,6 +328,10 @@ void LinkedList::DrawDeleteNode(int key){
                 pre->next = a->next;
             }
             delete a;
+
+            NewPos = GetPosition(CountNode(head));
+            Pos = NewPos;
+
             BeginDrawing();
             DrawLL(Pos);
             EndDrawing();
@@ -312,6 +350,36 @@ void LinkedList::DrawDeleteNode(int key){
     }
 }
 
-// void LinkedList::DrawDeleteNode(int first, int second){
+void LinkedList::DrawUpDateNode(int first, int second){
+    if(!head){
+        cout << "Head is empty\n";
+        return;
+    }
+    Pos = GetPosition(CountNode(head));
+    Vector2 center = Pos;
+    DrawLL(center);
 
-// }
+    Node * a = head;
+    while(a){
+        if(a->val == first){
+            BeginDrawing();
+            DrawNode(center, a->val, 1);
+            EndDrawing();
+            std::this_thread::sleep_for(std::chrono::milliseconds(500));
+            BeginDrawing();
+            DrawNode(center, second, 1);
+            EndDrawing();
+            std::this_thread::sleep_for(std::chrono::milliseconds(500));
+            a->val = second;
+            return;
+        }
+        BeginDrawing();
+        DrawLL(Pos);
+        DrawNode(center, a->val, -1);
+        EndDrawing();
+        a = a->next;
+        Vector2 newCenter = {center.x + 2*radius + spacing, center.y};
+        center = newCenter;
+        std::this_thread::sleep_for(std::chrono::milliseconds(500));
+    }
+}

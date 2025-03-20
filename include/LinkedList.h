@@ -23,6 +23,7 @@ struct Node{
 };
 
 
+
 class LinkedList : public Page{
     public:
         Node* head;
@@ -56,6 +57,7 @@ class LinkedList : public Page{
 
         bool isUpdating;
         int UpdateKey;
+        int newVal;
     
         LinkedList();
     
@@ -80,7 +82,8 @@ class LinkedList : public Page{
         void DrawInsert(int key);
         void DrawSearchNode(int key);
         void DrawDeleteNode(int key);
-        
+        void DrawUpDateNode(int first, int second);
+
         void EventLLinPage(Page &page);
 
         void DrawLLinPage(Page page);
