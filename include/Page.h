@@ -12,6 +12,7 @@ enum class Operation {
     Delete,
     Search
 };
+
 enum class InputType {
     Random,
     Keyboard,
@@ -31,6 +32,7 @@ public:
     Button insertButton, createButton, deleteButton, searchButton;
     vector<Button> operationButtons;
     vector<Vector2> subButtonPosition;
+
     bool isInsertExpanded = false; 
     bool isCreateExpanded = false; 
     bool isDeleteExpanded = false;  
@@ -48,5 +50,8 @@ public:
     void draw();
     void event();
     void reset();
+
     void handleInput();
+
+
 };
