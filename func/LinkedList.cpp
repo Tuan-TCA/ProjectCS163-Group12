@@ -295,7 +295,7 @@ void LinkedList::DrawSearchNode(int key){
         int posX = Pos.x + (listWidth - textW) / 2 - radius;
         int posY = Pos.y + font_size + 100;  
     
-        DrawText("Not Found", posX, posY, font_size, RED);
+        DrawText("NOT FOUND", posX, posY, font_size, RED);
         
         EndDrawing(); 
         std::this_thread::sleep_for(std::chrono::milliseconds(1000));  

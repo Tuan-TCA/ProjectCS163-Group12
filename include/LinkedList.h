@@ -34,8 +34,8 @@ class LinkedList : public Page{
         const int radius = 50;
         const int font_size = 40;
         const int spacing = 50;
-        const Color choose_color = GREEN;
-        const Color visit_color = RED;
+        const Color choose_color = { 0, 128, 0, 128 };//green
+        const Color visit_color = { 255, 105, 180, 128 };//red
         const Color ring = BLACK;
         const Color circle = LIGHTGRAY;
         const Color text_color = BLACK;
