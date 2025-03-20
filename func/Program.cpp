@@ -3,18 +3,20 @@
 #include <iostream>
 
 Program::Program () {
-
     InitWindow(screenWidth, screenHeight, "Visualization App - CS 163 - Group 12");
-    SetTargetFPS(60);
+    SetTargetFPS(10);
     mode = MODE::MENU;
+    menu.init();
+    LinkedList A = LinkedList();
 }
+
 
 void Program::run() {
     while(!WindowShouldClose()) {
         BeginDrawing();
         ClearBackground(RAYWHITE);
-        event();
         draw();
+        event();
         EndDrawing();
     }
     CloseWindow();
@@ -22,13 +24,12 @@ void Program::run() {
 
 void Program::event() {
     if(mode == MODE::MENU) {
-        menu.init();
         int x;
         x = menu.modeRetrieve();
         if(x == 1) {
             mode = MODE::LL;
-            page.init();
             // std::cout<<"Linked list"; 
+            page.init();
         }
         else if(x == 2) {
             mode = MODE::HASHTB;
@@ -43,6 +44,7 @@ void Program::event() {
         else if(x == 4) {
             mode = MODE::GRAPH;
             page.init();
+            
         }
     }
 
@@ -50,6 +52,8 @@ void Program::event() {
     else if(mode == MODE::LL) {
         // Linked List
         page.event();
+        A.EventLLinPage(page);
+        //cout<<"K";
     }
     if(mode == MODE::HASHTB) {
         // Hash Table
@@ -71,19 +75,23 @@ void Program::draw() {
     } 
     if (mode == MODE::LL) {
         //LL.draw();
+        //BeginDrawing();
         page.draw();
+        A.DrawLLinPage(page);
+        //EndDrawing();
+        //cout<<"H";
     }
      
     if (mode == MODE::HASHTB) {
-        //Hash.draw();
+        //LL.draw();
         page.draw();
     }
     if (mode == MODE::AVL) {
-        //Tree.draw();
+        //LL.draw();
         page.draw();
     }
     if (mode == MODE::GRAPH) {
-        //Graph.draw();
+        //LL.draw();
         page.draw();
     }
 }

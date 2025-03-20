@@ -7,13 +7,19 @@ enum class MODE {
     MENU, LL, HASHTB, AVL, GRAPH    
 };
 
+enum class FUNC {
+    NONE,CREATE, INSERT, SEARCH, DELETE
+};
+
+extern FUNC func;
 extern MODE mode;
+extern bool switchState; // true: red, false: blue
+extern const int screenWidth, screenHeight;
 
-extern const float screenWidth, screenHeight;
-
-extern Color BLUE1;
-extern Color BLUE2;
-extern Color BLUE3;
-extern Color BLUE4;
-extern Color BLUE5;
+extern Color MyColor1;
+extern Color MyColor2;
+extern Color MyColor3;
+extern Color MyColor4;
+extern Color MyColor5;
 extern Texture2D resizedImage(const char* imagePath, float width, float height);
+extern void UpdateColorsBasedOnSwitchState();

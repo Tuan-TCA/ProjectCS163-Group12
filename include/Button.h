@@ -14,22 +14,28 @@ private:
 
 public:
     MyRec() {};
-    MyRec(float x, float y, float width, float height, string labelText, Color buttonColor, Color textCol) {
+    MyRec(float x, float y, float width, float height, string labelText, Color color, Color textCol) {
         bounds = {x, y, width, height};
         label = labelText;
-        color = buttonColor;
+        color = color;
         textColor = textCol;
     }
 
     void Draw() {
         DrawRectangleRec(bounds, color);
         int textWidth = MeasureText(label.c_str(), 40);
-        DrawText(label.c_str(), bounds.x + (bounds.width - textWidth) / 2, bounds.y + (bounds.height - 40) / 2, 30, textColor);
+        DrawText(label.c_str(), bounds.x + (bounds.width - textWidth) / 2, bounds.y + (bounds.height - 40) / 2, 40, textColor);
     }
 
     void DrawRounded(){
-        DrawRectangleRounded(bounds, 20, 0, BLUE2);
+        DrawRectangleRounded(bounds, 20, 0, MyColor2);
         DrawText(label.c_str(), bounds.x + (bounds.width - MeasureText(label.c_str(), 40)) / 2, bounds.y + (bounds.height - 40) / 2, 40, textColor);
+    }
+
+    void Draw(Color color, string Mode){
+        DrawRectangleRec(bounds, color);
+        int textWidth = MeasureText(Mode.c_str(), 40);
+        DrawText(Mode.c_str(), bounds.x + (bounds.width - textWidth) / 2, bounds.y + (bounds.height - 40) / 2, 40, textColor);
     }
 };
 
@@ -48,7 +54,7 @@ public:
         label = "";
         color = WHITE;
         hoverColor = WHITE;
-        textColor = BLACK;
+        textColor = WHITE;
         isHovered = false;
     }
 
@@ -73,9 +79,15 @@ public:
         DrawText(label, bounds.x + (bounds.width - textWidth) / 2, bounds.y + (bounds.height - 20) / 2, 20, textColor);
     }
 
+    virtual void Draw(Color HoverColor, Color color){
+        Update();
+        DrawRectangleRec(bounds, isHovered ? HoverColor : color);
+        int textWidth = MeasureText(label, 20);
+        DrawText(label, bounds.x + (bounds.width - textWidth) / 2, bounds.y + (bounds.height - 20) / 2, 20, textColor);
+    }
     void DrawRounded(){
         Update();
-        DrawRectangleRounded(bounds, 20, 0,isHovered ? BLUE2 : BLUE1);
+        DrawRectangleRounded(bounds, 20, 0,isHovered ? MyColor2 : MyColor1);
         int textWidth = MeasureText(label, 20);
         DrawText(label, bounds.x + (bounds.width - textWidth) / 2, bounds.y + (bounds.height - 20) / 2, 20, textColor);
     }
@@ -101,52 +113,64 @@ public:
 
 class TextBox: public Button {
 public:
-    Button box;
     string inputText;
     bool active;
     vector<int> nums;
-    
+
+    TextBox() : Button() {
+        inputText = "";
+        active = false;
+        nums.clear();
+    }
+
+    TextBox(float x, float y, float width, float height, const char* labelText, 
+            Color buttonColor, Color hoverCol, Color textCol)
+        : Button(x, y, width, height, labelText, buttonColor, hoverCol, textCol) { 
+        inputText = "";  
+        active = false;  
+        nums.clear();    
+    }
+
     void Draw() override {
-        box.Draw();
+        Button::Draw();
         string displayText = inputText;
         if (active && ((int)(GetTime() * 2) % 2 == 0)) { // Nhấp nháy con trỏ
             displayText += "|";
         }
-        DrawText(displayText.c_str(), box.bounds.x+ 5, box.bounds.y + 5, 20, textColor);
+        DrawText(displayText.c_str(), bounds.x + bounds.width / 2 - MeasureText(displayText.c_str(), 40) / 2, bounds.y + bounds.height / 3 - 3 , 40, textColor);
     }
 
-    void HandleInput(bool Add, bool Del) {
-        if (box.IsClicked()) {
-            active = true;
+    void HandleInput() {
+        if (IsMouseButtonPressed(MOUSE_LEFT_BUTTON)) {
+        Vector2 mousePos = GetMousePosition();
+        active = (mousePos.x >= bounds.x && mousePos.x <=  bounds.x + bounds.width && mousePos.y >= bounds.y && mousePos.y <= bounds.y + bounds.height);
         }
         if (active) {
             int key = GetCharPressed();
-            while (key > 0) {
+            while (key > 0 && inputText.size() < 7) {
                 if (key >= '0' && key <= '9') {
                     inputText += (char)key;
                 }
                 key = GetCharPressed();
             }
-
             if (IsKeyPressed(KEY_BACKSPACE) && !inputText.empty()) {
                 inputText.pop_back();
             }
 
-            if ((Add || IsKeyPressed(KEY_ENTER)) && !inputText.empty()) {
+            if ((IsKeyPressed(KEY_ENTER) || IsKeyPressed(KEY_KP_ENTER)) && !inputText.empty()) {
                 nums.push_back(stoi(inputText));
+                TraceLog(LOG_INFO, inputText.c_str());
                 inputText = "";
-                active = false;
-            }
-            else
-            if ((Del) && !inputText.empty()) {
-                auto it = find(nums.begin(), nums.end(), stoi(inputText));
-                if(it!=nums.end())
-                    nums.erase(it);
-                inputText = "";
-                active = false;
             }
         }
     }
+
+    void resetTextbox(){
+        inputText = "";
+        active = false;
+        nums.clear();
+    }
+    
 };
 
 class ButtonFromImage : public Button {
@@ -175,6 +199,7 @@ public:
     float colorAlpha;
     float colorAlphaSpeed;
 
+    AnimatedButton(){}
     AnimatedButton(float x, float y, float width, float height, const char* labelText, Color buttonColor, Color hoverCol, Color textCol)
         : Button(x, y, width, height, labelText, buttonColor, hoverCol, textCol) {
         isScaling = false;
@@ -229,5 +254,73 @@ public:
         DrawRectangleRounded(scaledBounds, 17, 2, drawColor);
         int textWidth = MeasureText(label, 20);
         DrawText(label, bounds.x - (bounds.width * (scaleFactor - 1.0f) / 2.0f) + (bounds.width * scaleFactor - textWidth ) / 2, bounds.y  - (bounds.height * (scaleFactor - 1.0f) / 2.0f) + (bounds.height * scaleFactor - 20) / 2, 20 * scaleFactor, textColor);
+    }
+
+    void Draw(Color color) {
+        Rectangle scaledBounds = {
+            bounds.x - (bounds.width * (scaleFactor - 1.0f) / 2.0f),
+            bounds.y - (bounds.height * (scaleFactor - 1.0f) / 2.0f),
+            bounds.width * scaleFactor,
+            bounds.height * scaleFactor
+        };
+
+        Color drawColor = color;
+        drawColor.a = static_cast<unsigned char>(colorAlpha * 255);
+
+        DrawRectangleRounded(scaledBounds, 17, 2, drawColor);
+        int textWidth = MeasureText(label, 20);
+        DrawText(label, bounds.x - (bounds.width * (scaleFactor - 1.0f) / 2.0f) + (bounds.width * scaleFactor - textWidth ) / 2, bounds.y  - (bounds.height * (scaleFactor - 1.0f) / 2.0f) + (bounds.height * scaleFactor - 20) / 2, 20 * scaleFactor, textColor);
+    }
+};
+
+class SwitchButton : public Button {
+public:
+    float switchPos;  
+    bool isSwitching; 
+    float switchSpeed; 
+
+    SwitchButton(){}
+    SwitchButton(float x, float y, float width, float height, const char* labelText, Color buttonColor, Color hoverCol, Color textCol)
+        : Button(x, y, width, height, labelText, buttonColor, hoverCol, textCol) {
+        switchPos = 0.0f; 
+        switchState = false; // is turning off
+        isSwitching = false; 
+        switchSpeed = 0.05f;
+    }
+
+
+    void UpdateSwitch() {
+        Vector2 mousePos = GetMousePosition();
+
+       
+        if (IsClicked()) {
+            switchState = !switchState; 
+            UpdateColorsBasedOnSwitchState();
+            isSwitching = true;  
+        }
+
+        if (isSwitching) {
+            if (switchState && switchPos < 1.0f) {
+                switchPos += switchSpeed;
+                if (switchPos >= 1.0f) {
+                    switchPos = 1.0f;
+                    isSwitching = false; 
+                }
+            }
+            else if (!switchState && switchPos > 0.0f) {
+                switchPos -= switchSpeed;
+                if (switchPos <= 0.0f) {
+                    switchPos = 0.0f;
+                    isSwitching = false;  
+                }
+            }
+        }
+    }
+
+    void Draw() override {
+        UpdateSwitch();
+        
+        DrawRectangleRounded(bounds, bounds.height / 2, 10, MyColor4);
+        DrawCircle(bounds.x + bounds.width * 0.3f +switchPos * (bounds.width - bounds.height), bounds.y + bounds.height / 2, bounds.height / 2 - 5, WHITE);
     }
 };

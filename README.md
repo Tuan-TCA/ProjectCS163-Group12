@@ -51,4 +51,3 @@ Sau khi đã push nhánh lên remote repository, hãy làm theo các bước sau
 
 ---
 💡Sau khi PR được duyệt, bạn có thể merge PR vào nhánh chính và xóa nhánh không cần thiết.
-
