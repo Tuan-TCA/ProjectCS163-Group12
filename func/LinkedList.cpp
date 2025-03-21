@@ -1,6 +1,7 @@
 #include "LinkedList.h"
 #include<bits/stdc++.h>
 #include <raylib.h>
+#include <thread>
 using namespace std;
 
 LinkedList::LinkedList() {
@@ -14,10 +15,11 @@ LinkedList::LinkedList() {
 }
 
 void LinkedList::EventLLinPage(Page &page) {
-    if(page.func == FUNC::CREATE) {
+    if(page.currentOperation == Operation::Create) {
         //CreateLL;
     }
-    if(page.func == FUNC::INSERT) {
+    if(page.currentOperation == Operation::Insert) {
+        
         if(page.textbox.nums.size() > 0) {
             lastInsertedKey = page.textbox.nums[0];
             page.textbox.nums.erase(page.textbox.nums.begin());
@@ -26,7 +28,7 @@ void LinkedList::EventLLinPage(Page &page) {
         }   
         // Node* cur = head; while(cur) {cout<<cur->val<<" "; cur = cur->next;} cout<<endl;
     }
-    if(page.func == FUNC::SEARCH) {
+    if(page.currentOperation == Operation::Search) {
         if(page.textbox.nums.size() > 0) {
             SearchKey = page.textbox.nums[0];
             page.textbox.nums.erase(page.textbox.nums.begin());
@@ -34,7 +36,7 @@ void LinkedList::EventLLinPage(Page &page) {
             page.textbox.inputText = "";
         }
     }
-    if(page.func == FUNC::DELETE) {
+    if(page.currentOperation == Operation::Delete) {
         if(page.textbox.nums.size() > 0) {
             DeleteKey = page.textbox.nums[0];
             page.textbox.nums.erase(page.textbox.nums.begin());
@@ -43,7 +45,7 @@ void LinkedList::EventLLinPage(Page &page) {
         }
     }
 
-    if(page.func == FUNC::UPDATE) {
+    if(page.currentOperation == Operation::Update) {
         if(page.textbox.nums.size() > 0) {
             UpdateKey = page.textbox.nums[0];
             page.textbox.nums.erase(page.textbox.nums.begin());
@@ -62,10 +64,10 @@ void LinkedList::EventLLinPage(Page &page) {
 }
 
 void LinkedList::DrawLLinPage(Page page) {
-    if(page.func == FUNC::CREATE) {
+    if(page.currentOperation == Operation::Create) {
         //DrawLL();
     }
-    if(page.func == FUNC::INSERT) {
+    if(page.currentOperation == Operation::Insert) {
         if (isInserting) {
             DrawInsert(lastInsertedKey);
             isInserting = false;
@@ -74,7 +76,7 @@ void LinkedList::DrawLLinPage(Page page) {
             DrawLL(Pos);
         }
     }
-    if(page.func == FUNC::SEARCH) {
+    if(page.currentOperation == Operation::Search) {
         if (isSearching) {
             DrawSearchNode(SearchKey);
             isSearching = false;
@@ -83,7 +85,7 @@ void LinkedList::DrawLLinPage(Page page) {
             DrawLL(Pos);
         }
     }
-    if(page.func == FUNC::DELETE) {
+    if(page.currentOperation == Operation::Delete) {
         if (isDeleting) {
             DrawDeleteNode(DeleteKey);
             isDeleting = false;
@@ -94,7 +96,7 @@ void LinkedList::DrawLLinPage(Page page) {
 
     }
 
-    if(page.func == FUNC::UPDATE) {
+    if(page.currentOperation == Operation::Update) {
         if (isUpdating) {
             DrawUpDateNode(UpdateKey, newVal);
             isUpdating = false;
@@ -133,11 +135,12 @@ void LinkedList::DrawLLinPage(Page page) {
     //EndDrawing();   
 }
 
+
 Vector2 LinkedList::GetPosition(int count){
     int d = 2 * radius * count + (count - 1)*spacing;
     int X = max((W/2 - d/2) + radius, 0) + 400;
     int Y = H/2;
-    Vector2 center = {X, Y};
+    Vector2 center = {(float)X, (float)Y};
     return center; 
 }
 
@@ -218,9 +221,10 @@ void LinkedList::DrawLL(Vector2 pos) {
         cur = cur->next;
         center = newCenter;
     }
-
-
 }
+
+
+
 
 void LinkedList::DrawInsert(int key) {
     if (!head) {

@@ -3,20 +3,23 @@
 #include <iostream>
 
 Program::Program () {
+
     InitWindow(screenWidth, screenHeight, "Visualization App - CS 163 - Group 12");
-    SetTargetFPS(10);
+    SetTargetFPS(60);
     mode = MODE::MENU;
-    menu.init();
-    LinkedList A = LinkedList();
 }
 
-
+void Program::init(){
+    menu.init();
+    page.init();
+}
 void Program::run() {
+    init();
     while(!WindowShouldClose()) {
         BeginDrawing();
         ClearBackground(RAYWHITE);
-        draw();
         event();
+        draw();
         EndDrawing();
     }
     CloseWindow();

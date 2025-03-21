@@ -3,16 +3,18 @@
 #include "Variables.h"
 #include<bits/stdc++.h>
 #include <string>
+#include <algorithm>
 using namespace std;
 
 class MyRec {
 private:
-    Rectangle bounds;
+    
     Color color;
     Color textColor;
     string label;
 
 public:
+    Rectangle bounds;
     MyRec() {};
     MyRec(float x, float y, float width, float height, string labelText, Color color, Color textCol) {
         bounds = {x, y, width, height};
@@ -28,7 +30,11 @@ public:
     }
 
     void DrawRounded(){
-        DrawRectangleRounded(bounds, 20, 0, MyColor2);
+        DrawRectangleRounded(bounds, 20, 0, color);
+        DrawText(label.c_str(), bounds.x + (bounds.width - MeasureText(label.c_str(), 40)) / 2, bounds.y + (bounds.height - 40) / 2, 40, textColor);
+    }
+    void DrawRounded(Color color){
+        DrawRectangleRounded(bounds, 20, 0, color);
         DrawText(label.c_str(), bounds.x + (bounds.width - MeasureText(label.c_str(), 40)) / 2, bounds.y + (bounds.height - 40) / 2, 40, textColor);
     }
 
@@ -130,8 +136,14 @@ public:
         active = false;  
         nums.clear();    
     }
-
+    void update(){
+        if (IsMouseButtonPressed(MOUSE_LEFT_BUTTON)) {
+        Vector2 mousePos = GetMousePosition();
+        active = (mousePos.x >= bounds.x && mousePos.x <=  bounds.x + bounds.width && mousePos.y >= bounds.y && mousePos.y <= bounds.y + bounds.height);
+        }
+    }
     void Draw() override {
+        update();
         Button::Draw();
         string displayText = inputText;
         if (active && ((int)(GetTime() * 2) % 2 == 0)) { // Nhấp nháy con trỏ
@@ -141,10 +153,7 @@ public:
     }
 
     void HandleInput() {
-        if (IsMouseButtonPressed(MOUSE_LEFT_BUTTON)) {
-        Vector2 mousePos = GetMousePosition();
-        active = (mousePos.x >= bounds.x && mousePos.x <=  bounds.x + bounds.width && mousePos.y >= bounds.y && mousePos.y <= bounds.y + bounds.height);
-        }
+        update();
         if (active) {
             int key = GetCharPressed();
             while (key > 0 && inputText.size() < 7) {
@@ -152,15 +161,6 @@ public:
                     inputText += (char)key;
                 }
                 key = GetCharPressed();
-            }
-            if (IsKeyPressed(KEY_BACKSPACE) && !inputText.empty()) {
-                inputText.pop_back();
-            }
-
-            if ((IsKeyPressed(KEY_ENTER) || IsKeyPressed(KEY_KP_ENTER)) && !inputText.empty()) {
-                nums.push_back(stoi(inputText));
-                TraceLog(LOG_INFO, inputText.c_str());
-                inputText = "";
             }
         }
     }
@@ -292,7 +292,6 @@ public:
 
     void UpdateSwitch() {
         Vector2 mousePos = GetMousePosition();
-
        
         if (IsClicked()) {
             switchState = !switchState; 
@@ -323,5 +322,34 @@ public:
         
         DrawRectangleRounded(bounds, bounds.height / 2, 10, MyColor4);
         DrawCircle(bounds.x + bounds.width * 0.3f +switchPos * (bounds.width - bounds.height), bounds.y + bounds.height / 2, bounds.height / 2 - 5, WHITE);
+    }
+};
+
+
+class Slider {
+public:
+    Rectangle bounds;
+    float value;
+    float minValue;
+    float maxValue;
+
+    Slider(){}
+    Slider(Rectangle bounds, float minValue, float maxValue) {
+        this->bounds = bounds;
+        this->minValue = minValue;
+        this->maxValue = maxValue;
+        this->value = minValue;
+    }
+
+    void Update() {
+        if (IsMouseButtonDown(MOUSE_LEFT_BUTTON) && CheckCollisionPointRec(GetMousePosition(), bounds)) {
+            value = minValue + (maxValue - minValue) * ((GetMousePosition().x - bounds.x) / bounds.width);
+            value = clamp(value, minValue, maxValue); //guarantee the value is always between maxvalue & minvalue
+        }
+    }
+
+    void Draw() {
+        DrawRectangleRounded(bounds, 20,20, WHITE);
+        DrawRectangle((int)(bounds.x + (value - minValue) / (maxValue - minValue) * bounds.width), bounds.y, 10, bounds.height, RED);
     }
 };

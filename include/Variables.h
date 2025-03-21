@@ -6,14 +6,12 @@
 enum class MODE {
     MENU, LL, HASHTB, AVL, GRAPH    
 };
+extern const float subWidth;
+extern const float subHeight;
 
-enum class FUNC {
-    CREATE, INSERT, SEARCH, DELETE, UPDATE
-};
-
-extern FUNC func;
+extern char filePath[50];
 extern MODE mode;
-extern bool switchState; 
+extern bool switchState; // true: red, false: blue
 extern const int screenWidth, screenHeight;
 
 extern Color MyColor1;

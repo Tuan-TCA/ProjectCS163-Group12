@@ -2,11 +2,12 @@
 
 MODE mode; //pointer của trang 
 const int screenWidth = 1200, screenHeight = 900;
-
+const float subWidth = screenHeight*0.63f * 0.15f;
+const float subHeight = screenHeight*0.63f * 0.15f;
 //MyCorlor
 //Theme 1:
 bool switchState = false;;
-
+char filePath[50];
 
 Color MyColor1 = Color{17, 105, 124, 255};
 Color MyColor2 = Color{27, 177, 177, 255};
