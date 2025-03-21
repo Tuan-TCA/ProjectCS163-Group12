@@ -1,9 +1,9 @@
 #pragma once
 #include "raylib.h"
 #include "Variables.h"
-#include<bits/stdc++.h>
 #include <string>
 #include <algorithm>
+#include <vector>
 using namespace std;
 
 class MyRec {

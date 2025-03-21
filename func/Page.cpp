@@ -1,7 +1,6 @@
 #include "Page.h"
 #include "Variables.h"
 #include <raylib.h>
-#include <bits/stdc++.h>
 #include <string>
 #include <iostream>
 #include <fstream>

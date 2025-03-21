@@ -1,5 +1,4 @@
 #include "LinkedList.h"
-#include<bits/stdc++.h>
 #include <raylib.h>
 #include <thread>
 using namespace std;
