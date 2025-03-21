@@ -1,9 +1,9 @@
 #pragma once
 #include "raylib.h"
 #include "Variables.h"
-#include<bits/stdc++.h>
 #include <string>
 #include <algorithm>
+#include <vector>
 using namespace std;
 
 class MyRec {
@@ -278,6 +278,7 @@ public:
     float switchPos;  
     bool isSwitching; 
     float switchSpeed; 
+    bool switchState;
 
     SwitchButton(){}
     SwitchButton(float x, float y, float width, float height, const char* labelText, Color buttonColor, Color hoverCol, Color textCol)

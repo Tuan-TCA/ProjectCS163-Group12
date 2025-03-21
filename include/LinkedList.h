@@ -71,7 +71,7 @@ class LinkedList : public Page{
             }
         }
     
-        
+        void init();
         //animation
         Vector2 GetPosition(int count);
         Vector2 Pos, NewPos;
@@ -80,11 +80,11 @@ class LinkedList : public Page{
         void DrawNode(Vector2 center, int key, int choose);
         void DrawLL(Vector2 pos);
         void DrawInsert(int key);
-        void DrawSearchNode(int key);
+        bool DrawSearchNode(int key);
         void DrawDeleteNode(int key);
         void DrawUpDateNode(int first, int second);
 
         void EventLLinPage(Page &page);
 
-        void DrawLLinPage(Page page);
+        void DrawLLinPage(Page &page);
     };
