@@ -5,6 +5,8 @@
 #include <string>
 #include <iostream>
 #include <fstream>
+#include <iomanip>
+#include <sstream>
 using namespace std;
 
 int lastInsertedKey;
@@ -42,16 +44,28 @@ void Page::init() {
 
     Ok = Button(10 + screenWidth*0.25f - 100, screenHeight / 2 - screenHeight*0.63f * 0.17f, 73, screenHeight*0.63f * 0.15f, "OK", MyColor1, MyColor2, WHITE);
 
+    isPlaying = false;
     head = MyRec(0, 10, (float) screenWidth, screenHeight*0.08f, getMODE().c_str(), MyColor2, WHITE);
     home = ButtonFromImage("res/button/back.png", "res/button/back-isOver.png", screenWidth*0.016f, screenHeight*0.016f, screenWidth*0.05f, screenWidth*0.05f); 
     home2 = ButtonFromImage("res/button/homeII_1.png", "res/button/homeII_2.png", screenWidth*0.016f, screenHeight*0.016f, screenWidth*0.05f, screenWidth*0.05f); 
 
+    back1 = ButtonFromImage("res/button/1-prev.png", "res/button/1-prev.png", screenWidth / 2 -   screenWidth * 0.05f * 3 / 2 - 20 , screenHeight*0.926f,  screenWidth * 0.04f, screenWidth*0.04f);
+    next1 = ButtonFromImage("res/button/1-next.png", "res/button/1-next.png", screenWidth / 2 +   screenWidth * 0.05f , screenHeight*0.926f,  screenWidth * 0.04f, screenWidth*0.04f);
+    play1 = ButtonFromImage("res/button/1-play.png", "res/button/1-play.png", screenWidth / 2 -   screenWidth * 0.05f / 2  , screenHeight*0.92f,  screenWidth * 0.05f, screenWidth*0.05f);
+    pause1 = ButtonFromImage("res/button/1-pause.png", "res/button/1-pause.png", screenWidth / 2 -   screenWidth * 0.05f / 2  , screenHeight*0.92f,  screenWidth * 0.05f, screenWidth*0.05f);
+    back2 = ButtonFromImage("res/button/2-prev.png", "res/button/2-prev.png", screenWidth / 2 -   screenWidth * 0.05f * 3 / 2 - 20 , screenHeight*0.926f,  screenWidth * 0.04f, screenWidth*0.04f);
+    next2 = ButtonFromImage("res/button/2-next.png", "res/button/2-next.png", screenWidth / 2 +   screenWidth * 0.05f , screenHeight*0.926f,  screenWidth * 0.04f, screenWidth*0.04f);
+    pause2 = ButtonFromImage("res/button/2-pause.png", "res/button/2-pause.png", screenWidth / 2 -   screenWidth * 0.05f / 2  , screenHeight*0.92f,  screenWidth * 0.05f, screenWidth*0.05f);
+    play2 = ButtonFromImage("res/button/2-play.png", "res/button/2-play.png", screenWidth / 2 -   screenWidth * 0.05f / 2  , screenHeight*0.92f,  screenWidth * 0.05f, screenWidth*0.05f);
+    animationSpeed = 1.0f;
+    speedSliding = MyRec(screenWidth * 0.723f , screenHeight*0.936f,  screenWidth * 0.182f * 0.38f,screenHeight * 0.095f / 3 * 0.9f, "", MyColor3, WHITE);
     background1 = resizedImage("res/BackGround.png", screenWidth, screenHeight);   
     background2 = resizedImage("res/background_theme2.png", screenWidth, screenHeight);    
-    bottom = {0,screenHeight*0.88f,(float)screenWidth,screenHeight*0.12f};
+    bottom = {0,screenHeight*0.905f,(float)screenWidth,screenHeight*0.095f};
     side = {0,screenHeight / 2 - screenHeight * 0.64f / 2,screenWidth*0.24f,screenHeight*0.64f};
     textbox = TextBox(5, screenHeight / 2 - screenHeight*0.63f * 0.17f, screenWidth*0.25f - 100, screenHeight*0.63f * 0.15f, "", WHITE, WHITE, BLACK);
 }
+
 void Page::reset(){
     currentOperation = Operation::Insert;
     isInsertExpanded = false; 
@@ -59,12 +73,20 @@ void Page::reset(){
     isDeleteExpanded = false;  
     isSearchExpanded = false;  
 }
+
 void Page::draw() {
     ClearBackground(RAYWHITE);
     DrawTexture(switchState ? background2 : background1, 0, 0, WHITE);
     head.Draw(MyColor2, getMODE());
     DrawRectangleRec(bottom, MyColor2);
     DrawRectangleRec(side, MyColor3);
+    DrawRectangleRounded({screenWidth * 0.7f , screenHeight*0.934f , screenWidth * 0.182f,screenHeight * 0.095f / 3}, 20, 20, WHITE); //speed control
+    speedSliding.DrawRounded(MyColor3);
+
+    stringstream ss;
+    ss << fixed << std::setprecision(1) << animationSpeed;
+    std::string formattedSpeed = ss.str();
+    DrawText(formattedSpeed.c_str(), screenWidth * 0.9f, screenHeight * 0.934f, 20, WHITE);
     if(currentInput != InputType::File){
     Ok.Draw(MyColor1, MyColor2);
     textbox.Draw();
@@ -74,7 +96,18 @@ void Page::draw() {
         DrawText("DROP FILE HERE", 30, screenHeight / 2 - screenHeight*0.63f * 0.118f, 25, GRAY);
         //drop file field
     }
-    switchState ? home2.Draw() : home.Draw();
+
+    if(switchState){
+        !isPlaying ? play2.Draw() : pause2.Draw();
+        back2.Draw();
+        next2.Draw();
+        home2.Draw(); }
+    else{ 
+        !isPlaying ? play1.Draw() : pause1.Draw();
+        back1.Draw();
+        next1.Draw();
+        home.Draw();
+    }
     optionButton.Draw( LIGHTGRAY, WHITE);
     prevButton.Draw(LIGHTGRAY, WHITE);
     nextButton.Draw(LIGHTGRAY, WHITE);
@@ -161,7 +194,34 @@ void Page::event() {
     }
 
     handleInput();
-  
+
+    //speed sliding event
+    Vector2 mousePoint = GetMousePosition();
+    float minX = screenWidth * 0.7f + 1;
+    float maxX = screenWidth * 0.7f + screenWidth * 0.181f - speedSliding.bounds.width;
+    if (CheckCollisionPointRec(mousePoint, speedSliding.bounds) && IsMouseButtonDown(MOUSE_BUTTON_LEFT)) {
+        float clampedMouseX = clamp(mousePoint.x - speedSliding.bounds.width / 2, minX, maxX);
+        speedSliding.bounds.x = clampedMouseX;
+        cout << speedSliding.bounds.x << endl;
+    }
+    animationSpeed = clamp(static_cast<float>((speedSliding.bounds.x - minX) * 5 / (maxX - minX)), 0.1f, 5.0f);
+
+    //play & pause event
+    if(!isPlaying){
+        if(!switchState ? play1.IsClicked() : play2.IsClicked()){
+            isPlaying = true;
+            TraceLog(LOG_INFO, "is playing");
+        }
+    }
+    else{
+        if( isPlaying && !switchState ? pause1.IsClicked() : pause2.IsClicked())
+        {
+            isPlaying = false;
+            TraceLog(LOG_INFO, "is pausing");
+        }
+    }
+
+    //Operation event
     if(currentOperation == Operation::Insert){
         if (insertButton.IsClicked()) {
             isInsertExpanded = !isInsertExpanded; 
@@ -279,7 +339,7 @@ void Page::event() {
         }
     }
 
-    //INPUT
+    //INPUT Event
 
     if (prevButton.IsClicked()) {
         selectedIndex = (selectedIndex - 1 + options.size()) % options.size();
@@ -297,7 +357,6 @@ void Page::event() {
 }
 
 void Page::handleInput(){
-
 
     switch (currentInput) {
             case InputType::Random:
@@ -341,26 +400,3 @@ void Page::handleInput(){
 
 }
 
-//         return;
-//     }
-
-//     if(functions[0].IsClicked())
-//         func = FUNC::CREATE; 
-//     if(functions[1].IsClicked())
-//         func = FUNC::INSERT;
-//     if(functions[2].IsClicked())
-//         func = FUNC::SEARCH;
-//     if(functions[3].IsClicked())
-//         func = FUNC::DELETE; 
-
-//     textbox.HandleInput();
-//     if(Ok.IsClicked() && !textbox.inputText.empty()){
-//         textbox.nums.push_back(stoi(textbox.inputText));
-//          TraceLog(LOG_INFO, textbox.inputText.c_str());
-//         textbox.inputText = "";
-//     }
-//     if(func == FUNC::NONE) {
-//         textbox.nums.clear();
-//     }
-
-// }

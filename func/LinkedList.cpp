@@ -140,7 +140,7 @@ Vector2 LinkedList::GetPosition(int count){
     int d = 2 * radius * count + (count - 1)*spacing;
     int X = max((W/2 - d/2) + radius, 0) + 400;
     int Y = H/2;
-    Vector2 center = {X, Y};
+    Vector2 center = {(float)X, (float)Y};
     return center; 
 }
 

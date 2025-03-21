@@ -41,14 +41,19 @@ public:
     bool isDeleteExpanded = false;  
     bool isSearchExpanded = false;  
 
+    bool isPlaying;
     MyRec head;
     Rectangle bottom;
     Rectangle side;
     Button Ok;
     TextBox textbox;
-
+    float animationSpeed;
+    MyRec speedSliding;
+    ButtonFromImage back1, next1, pause1, play1;
+    ButtonFromImage back2, next2, pause2, play2;
     ButtonFromImage home, home2;
     Texture2D background1, background2;
+ 
 
     void init();
     void draw();
