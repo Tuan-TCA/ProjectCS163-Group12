@@ -82,7 +82,6 @@ void Page::draw() {
     DrawRectangleRec(side, MyColor3);
     DrawRectangleRounded({screenWidth * 0.7f , screenHeight*0.934f , screenWidth * 0.182f,screenHeight * 0.095f / 3}, 20, 20, WHITE); //speed control
     speedSliding.DrawRounded(MyColor3);
-
     stringstream ss;
     ss << fixed << std::setprecision(1) << animationSpeed;
     std::string formattedSpeed = ss.str();
@@ -114,75 +113,57 @@ void Page::draw() {
     if(currentOperation == Operation::Insert){
         insertButton.Draw(MyColor1, Fade(MyColor1, 0.8f));
         if (isInsertExpanded) {
+             DrawTextEx(FONT, "<", {screenWidth*0.22f, screenHeight / 2 - screenHeight*0.63f * 0.44f}, 30, 30, WHITE);
             DrawRectangle(0,0,screenWidth,screenHeight,Fade(GRAY, 0.2));
+            
             operationButtons[1].Draw(MyColor1, Fade(MyColor1, 0.8f));  
             operationButtons[2].Draw(MyColor1, Fade(MyColor1, 0.8f)); 
             operationButtons[3].Draw(MyColor1, Fade(MyColor1, 0.8f));  
         }
+         else{
+       DrawTextEx(FONT, ">", {screenWidth*0.22f, screenHeight / 2 - screenHeight*0.63f * 0.44f}, 30, 30, WHITE);
+    }
     }
      if (currentOperation == Operation::Create){
         createButton.Draw(MyColor1, Fade(MyColor1, 0.8f));
         if (isCreateExpanded) {
+             DrawTextEx(FONT, "<", {screenWidth*0.22f, screenHeight / 2 - screenHeight*0.63f * 0.44f}, 30, 30, WHITE);
             DrawRectangle(0,0,screenWidth,screenHeight,Fade(GRAY, 0.2));
             operationButtons[0].Draw(MyColor1, Fade(MyColor1, 0.8f));  
             operationButtons[2].Draw(MyColor1, Fade(MyColor1, 0.8f)); 
             operationButtons[3].Draw(MyColor1, Fade(MyColor1, 0.8f));  
         }
+         else{
+       DrawTextEx(FONT, ">", {screenWidth*0.22f, screenHeight / 2 - screenHeight*0.63f * 0.44f}, 30, 30, WHITE);
+    }
     }
      if(currentOperation == Operation::Delete){
         deleteButton.Draw(MyColor1, Fade(MyColor1, 0.8f));
         if (isDeleteExpanded) {
+             DrawTextEx(FONT, "<", {screenWidth*0.22f, screenHeight / 2 - screenHeight*0.63f * 0.44f}, 30, 30, WHITE);
             DrawRectangle(0,0,screenWidth,screenHeight,Fade(GRAY, 0.2));
             operationButtons[0].Draw(MyColor1, Fade(MyColor1, 0.8f));  
             operationButtons[1].Draw(MyColor1, Fade(MyColor1, 0.8f)); 
             operationButtons[3].Draw(MyColor1, Fade(MyColor1, 0.8f));  
         }
+         else{
+       DrawTextEx(FONT, ">", {screenWidth*0.22f, screenHeight / 2 - screenHeight*0.63f * 0.44f}, 30, 30, WHITE);
+    }
     }
      if (currentOperation == Operation::Search){
         searchButton.Draw(MyColor1, Fade(MyColor1, 0.8f));
         if (isSearchExpanded) {
+             DrawTextEx(FONT, "<", {screenWidth*0.22f, screenHeight / 2 - screenHeight*0.63f * 0.44f}, 30, 30, WHITE);
             DrawRectangle(0,0,screenWidth,screenHeight,Fade(GRAY, 0.2));
             operationButtons[0].Draw(MyColor1, Fade(MyColor1, 0.8f));  
             operationButtons[1].Draw(MyColor1, Fade(MyColor1, 0.8f)); 
             operationButtons[2].Draw(MyColor1, Fade(MyColor1, 0.8f));  
         }
+         else{
+       DrawTextEx(FONT, ">", {screenWidth*0.22f, screenHeight / 2 - screenHeight*0.63f * 0.44f}, 30, 30, WHITE);
     }
-    if(currentOperation == Operation::Insert){
-        insertButton.Draw();
-        if (isInsertExpanded) {
-            DrawRectangle(0,0,screenWidth,screenHeight,Fade(GRAY, 0.2));
-            operationButtons[1].Draw(MyColor1, Fade(MyColor1, 0.8f));  
-            operationButtons[2].Draw(MyColor1, Fade(MyColor1, 0.8f)); 
-            operationButtons[3].Draw(MyColor1, Fade(MyColor1, 0.8f));  
-        }
-    }
-     if (currentOperation == Operation::Create){
-        createButton.Draw();
-        if (isCreateExpanded) {
-            DrawRectangle(0,0,screenWidth,screenHeight,Fade(GRAY, 0.2));
-            operationButtons[0].Draw(MyColor1, Fade(MyColor1, 0.8f));  
-            operationButtons[2].Draw(MyColor1, Fade(MyColor1, 0.8f)); 
-            operationButtons[3].Draw(MyColor1, Fade(MyColor1, 0.8f));  
-        }
-    }
-     if(currentOperation == Operation::Delete){
-        deleteButton.Draw();
-        if (isDeleteExpanded) {
-            DrawRectangle(0,0,screenWidth,screenHeight,Fade(GRAY, 0.2));
-            operationButtons[0].Draw(MyColor1, Fade(MyColor1, 0.8f));  
-            operationButtons[1].Draw(MyColor1, Fade(MyColor1, 0.8f)); 
-            operationButtons[3].Draw(MyColor1, Fade(MyColor1, 0.8f));  
-        }
-    }
-     if (currentOperation == Operation::Search){
-        searchButton.Draw();
-        if (isSearchExpanded) {
-            DrawRectangle(0,0,screenWidth,screenHeight,Fade(GRAY, 0.2));
-            operationButtons[0].Draw(MyColor1, Fade(MyColor1, 0.8f));  
-            operationButtons[1].Draw(MyColor1, Fade(MyColor1, 0.8f)); 
-            operationButtons[2].Draw(MyColor1, Fade(MyColor1, 0.8f));  
-        }
-    }
+    }  
+   
 }
 
 void Page::event() {

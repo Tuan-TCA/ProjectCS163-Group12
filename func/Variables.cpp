@@ -6,14 +6,16 @@ const float subWidth = screenHeight*0.63f * 0.15f;
 const float subHeight = screenHeight*0.63f * 0.15f;
 //MyCorlor
 //Theme 1:
-bool switchState = false;;
-char filePath[50];
 
+bool switchState = false;
+char filePath[50];
+Font FONT = LoadFont("res/font/setback.png");
 Color MyColor1 = Color{17, 105, 124, 255};
 Color MyColor2 = Color{27, 177, 177, 255};
 Color MyColor3 = Color{65, 219, 179, 255};
 Color MyColor4 = Color{30, 66, 94, 255};
 Color MyColor5 = Color{33, 117, 135, 255};
+
 
 void UpdateColorsBasedOnSwitchState() {
     if (switchState) {
