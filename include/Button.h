@@ -3,16 +3,18 @@
 #include "Variables.h"
 #include<bits/stdc++.h>
 #include <string>
+#include <algorithm>
 using namespace std;
 
 class MyRec {
 private:
-    Rectangle bounds;
+    
     Color color;
     Color textColor;
     string label;
 
 public:
+    Rectangle bounds;
     MyRec() {};
     MyRec(float x, float y, float width, float height, string labelText, Color color, Color textCol) {
         bounds = {x, y, width, height};
@@ -28,7 +30,11 @@ public:
     }
 
     void DrawRounded(){
-        DrawRectangleRounded(bounds, 20, 0, MyColor2);
+        DrawRectangleRounded(bounds, 20, 0, color);
+        DrawText(label.c_str(), bounds.x + (bounds.width - MeasureText(label.c_str(), 40)) / 2, bounds.y + (bounds.height - 40) / 2, 40, textColor);
+    }
+    void DrawRounded(Color color){
+        DrawRectangleRounded(bounds, 20, 0, color);
         DrawText(label.c_str(), bounds.x + (bounds.width - MeasureText(label.c_str(), 40)) / 2, bounds.y + (bounds.height - 40) / 2, 40, textColor);
     }
 
@@ -315,5 +321,34 @@ public:
         
         DrawRectangleRounded(bounds, bounds.height / 2, 10, MyColor4);
         DrawCircle(bounds.x + bounds.width * 0.3f +switchPos * (bounds.width - bounds.height), bounds.y + bounds.height / 2, bounds.height / 2 - 5, WHITE);
+    }
+};
+
+
+class Slider {
+public:
+    Rectangle bounds;
+    float value;
+    float minValue;
+    float maxValue;
+
+    Slider(){}
+    Slider(Rectangle bounds, float minValue, float maxValue) {
+        this->bounds = bounds;
+        this->minValue = minValue;
+        this->maxValue = maxValue;
+        this->value = minValue;
+    }
+
+    void Update() {
+        if (IsMouseButtonDown(MOUSE_LEFT_BUTTON) && CheckCollisionPointRec(GetMousePosition(), bounds)) {
+            value = minValue + (maxValue - minValue) * ((GetMousePosition().x - bounds.x) / bounds.width);
+            value = clamp(value, minValue, maxValue); //guarantee the value is always between maxvalue & minvalue
+        }
+    }
+
+    void Draw() {
+        DrawRectangleRounded(bounds, 20,20, WHITE);
+        DrawRectangle((int)(bounds.x + (value - minValue) / (maxValue - minValue) * bounds.width), bounds.y, 10, bounds.height, RED);
     }
 };
