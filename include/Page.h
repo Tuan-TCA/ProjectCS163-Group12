@@ -3,7 +3,6 @@
 #include<raylib.h>
 #include "Button.h"
 #include "Variables.h"
-#include<bits/stdc++.h>
 #include "InputField.h"
 using namespace std;
 
