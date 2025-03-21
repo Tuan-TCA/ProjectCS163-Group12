@@ -14,6 +14,14 @@ LinkedList::LinkedList() {
     isUpdating = false;
 }
 
+void LinkedList::init(){
+    while (head){
+        Node * tmp = head;
+        head = head->next;
+        delete tmp;
+    }
+}
+
 void LinkedList::EventLLinPage(Page &page) {
     if(page.currentOperation == Operation::Create) {
         //CreateLL;

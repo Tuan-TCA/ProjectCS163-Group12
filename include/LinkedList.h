@@ -71,7 +71,7 @@ class LinkedList : public Page{
             }
         }
     
-        
+        void init();
         //animation
         Vector2 GetPosition(int count);
         Vector2 Pos, NewPos;
