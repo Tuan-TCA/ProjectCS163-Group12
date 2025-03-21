@@ -23,31 +23,32 @@ enum class InputType {
 };
 class Page {
 public:
-    Operation currentOperation;
-    InputType currentInput;
     //input
+    InputType currentInput;
     vector<string> options = {"RANDOM", "KEYBOARD", "FILE"};
     int selectedIndex;  // position hiện tại
     Button optionButton; // op hiện tại
     Button prevButton;  // chuyển trái
     Button nextButton; 
 
+    //operations
+    Operation currentOperation;
     Button insertButton, createButton, deleteButton, searchButton;
     vector<Button> operationButtons;
     vector<Vector2> subButtonPosition;
-
     bool isInsertExpanded = false; 
     bool isCreateExpanded = false; 
     bool isDeleteExpanded = false;  
     bool isSearchExpanded = false;  
 
+    //others
     bool isPlaying;
     MyRec head;
     Rectangle bottom;
     Rectangle side;
     Button Ok;
     TextBox textbox;
-    float animationSpeed;
+     float animationSpeed;
     MyRec speedSliding;
     ButtonFromImage back1, next1, pause1, play1;
     ButtonFromImage back2, next2, pause2, play2;
@@ -55,9 +56,9 @@ public:
     Texture2D background1, background2;
  
 
-    void init();
-    void draw();
-    void event();
+    virtual void init();
+    virtual void draw();
+    virtual void event();
     void reset();
 
     void handleInput();

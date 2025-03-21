@@ -43,12 +43,11 @@ void Page::init() {
     currentOperation = Operation::Insert;
 
     Ok = Button(10 + screenWidth*0.25f - 100, screenHeight / 2 - screenHeight*0.63f * 0.17f, 73, screenHeight*0.63f * 0.15f, "OK", MyColor1, MyColor2, WHITE);
-
-    isPlaying = false;
     head = MyRec(0, 10, (float) screenWidth, screenHeight*0.08f, getMODE().c_str(), MyColor2, WHITE);
     home = ButtonFromImage("res/button/back.png", "res/button/back-isOver.png", screenWidth*0.016f, screenHeight*0.016f, screenWidth*0.05f, screenWidth*0.05f); 
     home2 = ButtonFromImage("res/button/homeII_1.png", "res/button/homeII_2.png", screenWidth*0.016f, screenHeight*0.016f, screenWidth*0.05f, screenWidth*0.05f); 
 
+    isPlaying = false;
     back1 = ButtonFromImage("res/button/1-prev.png", "res/button/1-prev.png", screenWidth / 2 -   screenWidth * 0.05f * 3 / 2 - 20 , screenHeight*0.926f,  screenWidth * 0.04f, screenWidth*0.04f);
     next1 = ButtonFromImage("res/button/1-next.png", "res/button/1-next.png", screenWidth / 2 +   screenWidth * 0.05f , screenHeight*0.926f,  screenWidth * 0.04f, screenWidth*0.04f);
     play1 = ButtonFromImage("res/button/1-play.png", "res/button/1-play.png", screenWidth / 2 -   screenWidth * 0.05f / 2  , screenHeight*0.92f,  screenWidth * 0.05f, screenWidth*0.05f);
@@ -57,7 +56,8 @@ void Page::init() {
     next2 = ButtonFromImage("res/button/2-next.png", "res/button/2-next.png", screenWidth / 2 +   screenWidth * 0.05f , screenHeight*0.926f,  screenWidth * 0.04f, screenWidth*0.04f);
     pause2 = ButtonFromImage("res/button/2-pause.png", "res/button/2-pause.png", screenWidth / 2 -   screenWidth * 0.05f / 2  , screenHeight*0.92f,  screenWidth * 0.05f, screenWidth*0.05f);
     play2 = ButtonFromImage("res/button/2-play.png", "res/button/2-play.png", screenWidth / 2 -   screenWidth * 0.05f / 2  , screenHeight*0.92f,  screenWidth * 0.05f, screenWidth*0.05f);
-    animationSpeed = 1.0f;
+
+    animationSpeed = 1.0;
     speedSliding = MyRec(screenWidth * 0.723f , screenHeight*0.936f,  screenWidth * 0.182f * 0.38f,screenHeight * 0.095f / 3 * 0.9f, "", MyColor3, WHITE);
     background1 = resizedImage("res/BackGround.png", screenWidth, screenHeight);   
     background2 = resizedImage("res/background_theme2.png", screenWidth, screenHeight);    
@@ -84,8 +84,10 @@ void Page::draw() {
     speedSliding.DrawRounded(MyColor3);
     stringstream ss;
     ss << fixed << std::setprecision(1) << animationSpeed;
+    // cout << " page draw speed : " << animationSpeed * 500 << endl;
     std::string formattedSpeed = ss.str();
-    DrawText(formattedSpeed.c_str(), screenWidth * 0.9f, screenHeight * 0.934f, 20, WHITE);
+    formattedSpeed.push_back('x');
+    DrawText(formattedSpeed.c_str(), screenWidth * 0.906f, screenHeight * 0.935f, 30, WHITE);
     if(currentInput != InputType::File){
     Ok.Draw(MyColor1, MyColor2);
     textbox.Draw();
@@ -183,9 +185,9 @@ void Page::event() {
     if (CheckCollisionPointRec(mousePoint, speedSliding.bounds) && IsMouseButtonDown(MOUSE_BUTTON_LEFT)) {
         float clampedMouseX = clamp(mousePoint.x - speedSliding.bounds.width / 2, minX, maxX);
         speedSliding.bounds.x = clampedMouseX;
-        cout << speedSliding.bounds.x << endl;
     }
     animationSpeed = clamp(static_cast<float>((speedSliding.bounds.x - minX) * 5 / (maxX - minX)), 0.1f, 5.0f);
+    animationSpeed = round(animationSpeed * 10.0) / 10.0; // round up to 1 decimal
 
     //play & pause event
     if(!isPlaying){

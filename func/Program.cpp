@@ -11,7 +11,7 @@ Program::Program () {
 
 void Program::init(){
     menu.init();
-    page.init();
+    LL.init();
 }
 void Program::run() {
     init();
@@ -32,7 +32,7 @@ void Program::event() {
         if(x == 1) {
             mode = MODE::LL;
             // std::cout<<"Linked list"; 
-            page.init();
+            LL.init();
         }
         else if(x == 2) {
             mode = MODE::HASHTB;
@@ -54,8 +54,7 @@ void Program::event() {
     
     else if(mode == MODE::LL) {
         // Linked List
-        page.event();
-        A.EventLLinPage(page);
+        LL.event();
         //cout<<"K";
     }
     if(mode == MODE::HASHTB) {
@@ -77,12 +76,7 @@ void Program::draw() {
         menu.draw();
     } 
     if (mode == MODE::LL) {
-        //LL.draw();
-        //BeginDrawing();
-        page.draw();
-        A.DrawLLinPage(page);
-        //EndDrawing();
-        //cout<<"H";
+        LL.draw();
     }
      
     if (mode == MODE::HASHTB) {
