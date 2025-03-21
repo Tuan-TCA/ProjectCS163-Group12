@@ -29,6 +29,7 @@ void Program::event() {
     if(mode == MODE::MENU) {
         int x;
         x = menu.modeRetrieve();
+        //init LinkedList
         if(x == 1) {
             mode = MODE::LL;
             // std::cout<<"Linked list"; 

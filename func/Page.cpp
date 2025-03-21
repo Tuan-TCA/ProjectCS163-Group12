@@ -1,12 +1,12 @@
 #include "Page.h"
 #include "Variables.h"
 #include <raylib.h>
-#include <bits/stdc++.h>
 #include <string>
 #include <iostream>
 #include <fstream>
 #include <iomanip>
 #include <sstream>
+#include <random>
 using namespace std;
 
 int lastInsertedKey;
@@ -339,14 +339,16 @@ void Page::event() {
         if (options[selectedIndex] == "FILE") currentInput = InputType::File;
 }
 
+std::mt19937 rng(std::random_device{}());
 void Page::handleInput(){
 
     switch (currentInput) {
             case InputType::Random:
-                if(optionButton.IsClicked()){
-                textbox.inputText = to_string(rand() % 1000); 
-                }
-                break;
+            if (optionButton.IsClicked()) {
+                std::uniform_int_distribution<int> dist(0, 999); // Giới hạn số từ 0-999
+                textbox.inputText = to_string(dist(rng)); // Lấy số ngẫu nhiên
+            }
+            break;
             case InputType::Keyboard:
                 textbox.HandleInput(); 
                 break;

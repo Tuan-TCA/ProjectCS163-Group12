@@ -4,7 +4,7 @@ MODE mode; //pointer của trang
 const int screenWidth = 1200, screenHeight = 900;
 const float subWidth = screenHeight*0.63f * 0.15f;
 const float subHeight = screenHeight*0.63f * 0.15f;
- float animationSpeed = 1.0;
+
 //MyCorlor
 //Theme 1:
 

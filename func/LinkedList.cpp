@@ -1,5 +1,4 @@
 #include "LinkedList.h"
-#include<bits/stdc++.h>
 #include <raylib.h>
 #include <thread>
 using namespace std;
@@ -16,6 +15,11 @@ LinkedList::LinkedList() {
 
 void LinkedList::init(){
     Page::init();
+        while (head){
+        Node * tmp = head;
+        head = head->next;
+        delete tmp;
+    }
     head = nullptr;
     workplace = {400,300,600,600};
     // position = {workplace.x*1.1f, workplace.y*1.1f};
@@ -24,6 +28,7 @@ void LinkedList::init(){
     isDeleting = false;
     isUpdating = false;
 }
+
 void LinkedList::event() {
     Page::event();
 
@@ -52,7 +57,7 @@ void LinkedList::event() {
         if(textbox.nums.size() > 0) {
             DeleteKey = textbox.nums[0];
             textbox.nums.erase(textbox.nums.begin());
-            isSearching = true;
+            isDeleting = true;
             textbox.inputText = "";
         }
     }
@@ -196,7 +201,7 @@ void LinkedList::DrawNode(Vector2 center, int key, int choose){
         DrawCircleV(center, radius, choose_color);
     }
     if (choose == -1){
-        cout << center.x << ' ' << key << '\n';
+        //cout << center.x << ' ' << key << '\n';
         DrawCircleV(center, radius, visit_color);
     }
     if (choose == 0){
@@ -274,10 +279,10 @@ void LinkedList::DrawInsert(int key) {
     NewPos = GetPosition(CountNode(head));
 }
 
-void LinkedList::DrawSearchNode(int key){
+bool LinkedList::DrawSearchNode(int key){
     if (!head){
         cout << "Head is NULL\n";
-        return;
+        return false;
     }
     bool found = false;
 
@@ -287,14 +292,17 @@ void LinkedList::DrawSearchNode(int key){
 
     Node * a = head;
     while (a){
+
+        cout << "SEARCH: " << a->val << ' ' << key << '\n';
+
         if(a->val == key){
             BeginDrawing();
             DrawLL(Pos);
             DrawNode(center, a->val, 1);
             EndDrawing();
             found = true;
-            std::this_thread::sleep_for(std::chrono::milliseconds((int)(700.0f / animationSpeed)));
-            return;
+            std::this_thread::sleep_for(std::chrono::milliseconds(700));
+            return true;
         }
         BeginDrawing();
         DrawLL(Pos);
@@ -319,6 +327,8 @@ void LinkedList::DrawSearchNode(int key){
         EndDrawing(); 
         std::this_thread::sleep_for(std::chrono::milliseconds(1000));  
     }
+
+    return found;
 }
 
 
@@ -327,6 +337,28 @@ void LinkedList::DrawDeleteNode(int key){
         cout << "Head is NULL\n";
         return;
     }
+
+    bool ok = DrawSearchNode(key);
+
+    if (ok){
+        Node *a = head, *prev = nullptr;
+        if (head->val == key){
+            head = head->next;
+            delete a;
+            return;
+        }
+        while (a){
+            if (a->val == key){
+                prev->next = a->next;
+                delete a;
+                return;
+            } 
+            prev = a;
+            a = a->next;
+        }
+    }
+
+    return;
     
     Pos = GetPosition(CountNode(head));
     Vector2 center = Pos;
@@ -335,6 +367,7 @@ void LinkedList::DrawDeleteNode(int key){
     Node * a = head;
     Node * pre = nullptr;
     while (a){
+        cout << a->val << ": " << key << '\n';
         if(a->val == key){
             BeginDrawing();
             DrawNode(center, a->val, 1);
