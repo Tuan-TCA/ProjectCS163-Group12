@@ -157,12 +157,13 @@ public:
         if (active) {
             int key = GetCharPressed();
             while (key > 0 && inputText.size() < 7) {
-                if (key >= '0' && key <= '9') {
+                if (key >= '0' && key <= '9' || key == ' ') {
                     inputText += (char)key;
                 }
                 key = GetCharPressed();
             }
         }
+
     }
 
     void resetTextbox(){

@@ -378,7 +378,11 @@ void Page::handleInput(){
             }
 
         if ((Ok.IsClicked() || IsKeyPressed(KEY_ENTER) || IsKeyPressed(KEY_KP_ENTER)) && !textbox.inputText.empty()) {
-            textbox.nums.push_back(stoi(textbox.inputText));
+            int val;
+            stringstream ss(textbox.inputText);
+            while(ss >> val){
+                textbox.nums.push_back(val);
+            }
             TraceLog(LOG_INFO, textbox.inputText.c_str());
             textbox.inputText = "";
         }    
