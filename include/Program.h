@@ -10,14 +10,11 @@ class Program
 public:
     Menu menu;
     Page page;
-    LinkedList A;
+    LinkedList LL;
     Program();
     void run();
 
     void init();
-    
-
-
     void draw();
     void event();
 };

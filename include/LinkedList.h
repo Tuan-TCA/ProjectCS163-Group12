@@ -36,11 +36,11 @@ class LinkedList : public Page{
         const int spacing = 50;
         const Color choose_color = { 0, 128, 0, 128 };//green
         const Color visit_color = RED;//red
-        const Color ring = BLACK;
-        const Color circle = LIGHTGRAY;
-        const Color text_color = BLACK;
+        const Color ring = MyColor2;
+        const Color circle = MyColor2;
+        const Color text_color = WHITE;
         const float arrow_size = 15.0;
-        const Color arrow_color = BLACK;
+        const Color arrow_color = MyColor1;
 
         int W = 600;
         int H = 600;
@@ -70,8 +70,6 @@ class LinkedList : public Page{
                 current = nextNode;
             }
         }
-    
-        void init();
         //animation
         Vector2 GetPosition(int count);
         Vector2 Pos, NewPos;
@@ -84,7 +82,7 @@ class LinkedList : public Page{
         void DrawDeleteNode(int key);
         void DrawUpDateNode(int first, int second);
 
-        void EventLLinPage(Page &page);
-
-        void DrawLLinPage(Page &page);
+        void event() override;
+        void init() override;
+        void draw() override;
     };

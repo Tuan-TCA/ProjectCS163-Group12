@@ -14,51 +14,61 @@ LinkedList::LinkedList() {
 }
 
 void LinkedList::init(){
-    while (head){
+    Page::init();
+        while (head){
         Node * tmp = head;
         head = head->next;
         delete tmp;
     }
+    head = nullptr;
+    workplace = {400,300,600,600};
+    // position = {workplace.x*1.1f, workplace.y*1.1f};
+    isInserting = false;
+    isSearching = false;
+    isDeleting = false;
+    isUpdating = false;
 }
 
-void LinkedList::EventLLinPage(Page &page) {
-    if(page.currentOperation == Operation::Create) {
+void LinkedList::event() {
+    Page::event();
+
+    if(currentOperation == Operation::Create) {
         //CreateLL;
     }
-    if(page.currentOperation == Operation::Insert) {
+    if(currentOperation == Operation::Insert) {
         
-        if(page.textbox.nums.size() > 0) {
-            lastInsertedKey = page.textbox.nums[0];
-            page.textbox.nums.erase(page.textbox.nums.begin());
+        if(textbox.nums.size() > 0) {
+            lastInsertedKey = textbox.nums[0];
+            textbox.nums.erase(textbox.nums.begin());
             isInserting = true;
-            page.textbox.inputText = "";
+            textbox.inputText = "";
         }   
         // Node* cur = head; while(cur) {cout<<cur->val<<" "; cur = cur->next;} cout<<endl;
     }
-    if(page.currentOperation == Operation::Search) {
-        if(page.textbox.nums.size() > 0) {
-            SearchKey = page.textbox.nums[0];
-            page.textbox.nums.erase(page.textbox.nums.begin());
+    if(currentOperation == Operation::Search) {
+        if(textbox.nums.size() > 0) {
+            SearchKey = textbox.nums[0];
+            textbox.nums.erase(textbox.nums.begin());
             isSearching = true;
-            page.textbox.inputText = "";
+            textbox.inputText = "";
         }
     }
-    if(page.currentOperation == Operation::Delete) {
-        if(page.textbox.nums.size() > 0) {
-            DeleteKey = page.textbox.nums[0];
-            page.textbox.nums.erase(page.textbox.nums.begin());
+    if(currentOperation == Operation::Delete) {
+        if(textbox.nums.size() > 0) {
+            DeleteKey = textbox.nums[0];
+            textbox.nums.erase(textbox.nums.begin());
             isDeleting = true;
-            page.textbox.inputText = "";
+            textbox.inputText = "";
         }
     }
 
-    if(page.currentOperation == Operation::Update) {
-        if(page.textbox.nums.size() > 0) {
-            UpdateKey = page.textbox.nums[0];
-            page.textbox.nums.erase(page.textbox.nums.begin());
-            newVal = page.textbox.nums[1];
+    if(currentOperation == Operation::Update) {
+        if(textbox.nums.size() > 0) {
+            UpdateKey = textbox.nums[0];
+            textbox.nums.erase(textbox.nums.begin());
+            newVal = textbox.nums[1];
             isUpdating = true;
-            page.textbox.inputText = "";
+            textbox.inputText = "";
         }
     }
 
@@ -70,11 +80,13 @@ void LinkedList::EventLLinPage(Page &page) {
     }
 }
 
-void LinkedList::DrawLLinPage(Page &page) {
-    if(page.currentOperation == Operation::Create) {
+void LinkedList::draw() {
+    Page::draw();
+
+    if(currentOperation == Operation::Create) {
         //DrawLL();
     }
-    if(page.currentOperation == Operation::Insert) {
+    if(currentOperation == Operation::Insert) {
         if (isInserting) {
             DrawInsert(lastInsertedKey);
             isInserting = false;
@@ -83,7 +95,7 @@ void LinkedList::DrawLLinPage(Page &page) {
             DrawLL(Pos);
         }
     }
-    if(page.currentOperation == Operation::Search) {
+    if(currentOperation == Operation::Search) {
         if (isSearching) {
             DrawSearchNode(SearchKey);
             isSearching = false;
@@ -92,7 +104,7 @@ void LinkedList::DrawLLinPage(Page &page) {
             DrawLL(Pos);
         }
     }
-    if(page.currentOperation == Operation::Delete) {
+    if(currentOperation == Operation::Delete) {
         if (isDeleting) {
             DrawDeleteNode(DeleteKey);
             isDeleting = false;
@@ -103,7 +115,7 @@ void LinkedList::DrawLLinPage(Page &page) {
 
     }
 
-    if(page.currentOperation == Operation::Update) {
+    if(currentOperation == Operation::Update) {
         if (isUpdating) {
             DrawUpDateNode(UpdateKey, newVal);
             isUpdating = false;
@@ -255,7 +267,8 @@ void LinkedList::DrawInsert(int key) {
         b = b->next;
         Vector2 newCenter = {center.x + 2*radius + spacing, center.y};
         center = newCenter;
-        std::this_thread::sleep_for(std::chrono::milliseconds(500));
+        std::this_thread::sleep_for(std::chrono::milliseconds((int)(500.0f / animationSpeed)));
+        
     }
 
     Node * tmp = new Node(key, nullptr);
@@ -298,7 +311,7 @@ bool LinkedList::DrawSearchNode(int key){
         a = a->next;
         Vector2 newCenter = {center.x + 2*radius + spacing, center.y};
         center = newCenter;
-        std::this_thread::sleep_for(std::chrono::milliseconds(500));
+        std::this_thread::sleep_for(std::chrono::milliseconds((int)(500.0f / animationSpeed)));
     }
     if (!found) {
         BeginDrawing();  
@@ -359,7 +372,7 @@ void LinkedList::DrawDeleteNode(int key){
             BeginDrawing();
             DrawNode(center, a->val, 1);
             EndDrawing();
-            std::this_thread::sleep_for(std::chrono::milliseconds(500));
+            std::this_thread::sleep_for(std::chrono::milliseconds((int)(500.0f / animationSpeed)));
             if(!pre){
                 head = a->next;
             }
@@ -374,7 +387,7 @@ void LinkedList::DrawDeleteNode(int key){
             BeginDrawing();
             DrawLL(Pos);
             EndDrawing();
-            std::this_thread::sleep_for(std::chrono::milliseconds(500));
+            std::this_thread::sleep_for(std::chrono::milliseconds((int)(500.0f / animationSpeed)));
             return;
         }
         BeginDrawing();
@@ -385,7 +398,7 @@ void LinkedList::DrawDeleteNode(int key){
         a = a->next;
         Vector2 newCenter = {center.x + 2*radius + spacing, center.y};
         center = newCenter;
-        std::this_thread::sleep_for(std::chrono::milliseconds(500));
+        std::this_thread::sleep_for(std::chrono::milliseconds((int)(500.0f / animationSpeed)));
     }
 }
 
@@ -404,11 +417,11 @@ void LinkedList::DrawUpDateNode(int first, int second){
             BeginDrawing();
             DrawNode(center, a->val, 1);
             EndDrawing();
-            std::this_thread::sleep_for(std::chrono::milliseconds(500));
+            std::this_thread::sleep_for(std::chrono::milliseconds((int)(500.0f / animationSpeed)));
             BeginDrawing();
             DrawNode(center, second, 1);
             EndDrawing();
-            std::this_thread::sleep_for(std::chrono::milliseconds(500));
+            std::this_thread::sleep_for(std::chrono::milliseconds((int)(500.0f / animationSpeed)));
             a->val = second;
             return;
         }
@@ -419,6 +432,6 @@ void LinkedList::DrawUpDateNode(int first, int second){
         a = a->next;
         Vector2 newCenter = {center.x + 2*radius + spacing, center.y};
         center = newCenter;
-        std::this_thread::sleep_for(std::chrono::milliseconds(500));
+        std::this_thread::sleep_for(std::chrono::milliseconds((int)(500.0f / animationSpeed)));
     }
 }

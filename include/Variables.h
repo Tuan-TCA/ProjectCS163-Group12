@@ -9,6 +9,8 @@ extern const float subWidth;
 extern const float subHeight;
 
 extern char filePath[50];
+
+extern Font FONT;
 extern MODE mode;
 extern bool switchState; // true: red, false: blue
 extern const int screenWidth, screenHeight;
