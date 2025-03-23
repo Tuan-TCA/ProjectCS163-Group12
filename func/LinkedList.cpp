@@ -147,9 +147,7 @@ void LinkedList::draw() {
         isUpdating = false;
     }
 
-    else{
-        DrawLL(Pos);
-    }
+    DrawLL(Pos);
     //std::this_thread::sleep_for(std::chrono::milliseconds(1000));
     //EndDrawing();   
 }
@@ -341,6 +339,8 @@ void LinkedList::DrawDeleteNode(int key){
     bool ok = DrawSearchNode(key);
 
     if (ok){
+        Pos = GetPosition(CountNode(head) - 1);
+        NewPos = Pos;
         Node *a = head, *prev = nullptr;
         if (head->val == key){
             head = head->next;
@@ -357,49 +357,7 @@ void LinkedList::DrawDeleteNode(int key){
             a = a->next;
         }
     }
-
     return;
-    
-    Pos = GetPosition(CountNode(head));
-    Vector2 center = Pos;
-    DrawLL(center);
-
-    Node * a = head;
-    Node * pre = nullptr;
-    while (a){
-        cout << a->val << ": " << key << '\n';
-        if(a->val == key){
-            BeginDrawing();
-            DrawNode(center, a->val, 1);
-            EndDrawing();
-            std::this_thread::sleep_for(std::chrono::milliseconds((int)(500.0f / animationSpeed)));
-            if(!pre){
-                head = a->next;
-            }
-            else{
-                pre->next = a->next;
-            }
-            delete a;
-
-            NewPos = GetPosition(CountNode(head));
-            Pos = NewPos;
-
-            BeginDrawing();
-            DrawLL(Pos);
-            EndDrawing();
-            std::this_thread::sleep_for(std::chrono::milliseconds((int)(500.0f / animationSpeed)));
-            return;
-        }
-        BeginDrawing();
-        DrawLL(Pos);
-        DrawNode(center, a->val, -1);
-        EndDrawing();
-        pre = a;
-        a = a->next;
-        Vector2 newCenter = {center.x + 2*radius + spacing, center.y};
-        center = newCenter;
-        std::this_thread::sleep_for(std::chrono::milliseconds((int)(500.0f / animationSpeed)));
-    }
 }
 
 void LinkedList::DrawUpDateNode(int first, int second){
@@ -408,6 +366,7 @@ void LinkedList::DrawUpDateNode(int first, int second){
         return;
     }
     Pos = GetPosition(CountNode(head));
+
     Vector2 center = Pos;
     DrawLL(center);
 
