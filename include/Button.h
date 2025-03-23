@@ -350,6 +350,6 @@ public:
 
     void Draw() {
         DrawRectangleRounded(bounds, 20,20, WHITE);
-        DrawRectangle((int)(bounds.x + (value - minValue) / (maxValue - minValue) * bounds.width), bounds.y, 10, bounds.height, RED);
+        DrawRectangleRounded({std::clamp(bounds.x + (value - minValue) / (maxValue - minValue) * bounds.width - bounds.width * 0.11f /2, bounds.x, bounds.x + bounds.width - bounds.width * 0.11f), bounds.y, bounds.width * 0.11f, bounds.height}, 20, 20, MyColor1);
     }
 };

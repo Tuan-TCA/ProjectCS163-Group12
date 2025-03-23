@@ -128,29 +128,29 @@ main/fast:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles\main.dir\build.make CMakeFiles/main.dir/build
 .PHONY : main/fast
 
-func/InputField.obj: func/InputField.cpp.obj
-.PHONY : func/InputField.obj
+func/Graph.obj: func/Graph.cpp.obj
+.PHONY : func/Graph.obj
 
 # target to build an object file
-func/InputField.cpp.obj:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles\main.dir\build.make CMakeFiles/main.dir/func/InputField.cpp.obj
-.PHONY : func/InputField.cpp.obj
+func/Graph.cpp.obj:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\main.dir\build.make CMakeFiles/main.dir/func/Graph.cpp.obj
+.PHONY : func/Graph.cpp.obj
 
-func/InputField.i: func/InputField.cpp.i
-.PHONY : func/InputField.i
+func/Graph.i: func/Graph.cpp.i
+.PHONY : func/Graph.i
 
 # target to preprocess a source file
-func/InputField.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles\main.dir\build.make CMakeFiles/main.dir/func/InputField.cpp.i
-.PHONY : func/InputField.cpp.i
+func/Graph.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\main.dir\build.make CMakeFiles/main.dir/func/Graph.cpp.i
+.PHONY : func/Graph.cpp.i
 
-func/InputField.s: func/InputField.cpp.s
-.PHONY : func/InputField.s
+func/Graph.s: func/Graph.cpp.s
+.PHONY : func/Graph.s
 
 # target to generate assembly for a file
-func/InputField.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles\main.dir\build.make CMakeFiles/main.dir/func/InputField.cpp.s
-.PHONY : func/InputField.cpp.s
+func/Graph.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\main.dir\build.make CMakeFiles/main.dir/func/Graph.cpp.s
+.PHONY : func/Graph.cpp.s
 
 func/LinkedList.obj: func/LinkedList.cpp.obj
 .PHONY : func/LinkedList.obj
@@ -305,9 +305,9 @@ help:
 	@echo ... edit_cache
 	@echo ... rebuild_cache
 	@echo ... main
-	@echo ... func/InputField.obj
-	@echo ... func/InputField.i
-	@echo ... func/InputField.s
+	@echo ... func/Graph.obj
+	@echo ... func/Graph.i
+	@echo ... func/Graph.s
 	@echo ... func/LinkedList.obj
 	@echo ... func/LinkedList.i
 	@echo ... func/LinkedList.s

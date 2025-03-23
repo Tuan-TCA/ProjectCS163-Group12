@@ -3,7 +3,7 @@
 #include<raylib.h>
 #include "Button.h"
 #include "Variables.h"
-#include "InputField.h"
+
 using namespace std;
 
 
@@ -49,6 +49,7 @@ public:
     TextBox textbox;
      float animationSpeed;
     MyRec speedSliding;
+    Slider timeSlider;
     ButtonFromImage back1, next1, pause1, play1;
     ButtonFromImage back2, next2, pause2, play2;
     ButtonFromImage home, home2;

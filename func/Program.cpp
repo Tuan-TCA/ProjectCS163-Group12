@@ -12,6 +12,7 @@ Program::Program () {
 void Program::init(){
     menu.init();
     LL.init();
+    graph.init();
 }
 void Program::run() {
     init();
@@ -47,7 +48,7 @@ void Program::event() {
         }
         else if(x == 4) {
             mode = MODE::GRAPH;
-            page.init();
+            graph.init();
             
         }
     }
@@ -60,15 +61,15 @@ void Program::event() {
     }
     if(mode == MODE::HASHTB) {
         // Hash Table
-        page.event();
+        // hashtable.event();
     }
     if(mode == MODE::AVL) {
         // AVL Tree
-        page.event();
+        // avl.event();
     }
     if(mode == MODE::GRAPH) {
         // Graph   
-        page.event();
+        graph.event();
     }
 }
 
@@ -81,16 +82,15 @@ void Program::draw() {
     }
      
     if (mode == MODE::HASHTB) {
-        //LL.draw();
-        page.draw();
+
+        // hashtable.draw();
     }
     if (mode == MODE::AVL) {
-        //LL.draw();
-        page.draw();
+        // avl.draw();
     }
     if (mode == MODE::GRAPH) {
-        //LL.draw();
-        page.draw();
+
+        graph.draw();
     }
 }
 

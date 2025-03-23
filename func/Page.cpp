@@ -56,7 +56,7 @@ void Page::init() {
     next2 = ButtonFromImage("res/button/2-next.png", "res/button/2-next.png", screenWidth / 2 +   screenWidth * 0.05f , screenHeight*0.926f,  screenWidth * 0.04f, screenWidth*0.04f);
     pause2 = ButtonFromImage("res/button/2-pause.png", "res/button/2-pause.png", screenWidth / 2 -   screenWidth * 0.05f / 2  , screenHeight*0.92f,  screenWidth * 0.05f, screenWidth*0.05f);
     play2 = ButtonFromImage("res/button/2-play.png", "res/button/2-play.png", screenWidth / 2 -   screenWidth * 0.05f / 2  , screenHeight*0.92f,  screenWidth * 0.05f, screenWidth*0.05f);
-
+    timeSlider = Slider({screenWidth * 0.05f , screenHeight*0.936f,  screenWidth * 0.3f ,screenHeight * 0.095f / 3 * 0.9f}, 0.0f, 1.0f);
     animationSpeed = 1.0;
     speedSliding = MyRec(screenWidth * 0.723f , screenHeight*0.936f,  screenWidth * 0.182f * 0.38f,screenHeight * 0.095f / 3 * 0.9f, "", MyColor3, WHITE);
     background1 = resizedImage("res/BackGround.png", screenWidth, screenHeight);   
@@ -82,6 +82,7 @@ void Page::draw() {
     DrawRectangleRec(side, MyColor3);
     DrawRectangleRounded({screenWidth * 0.7f , screenHeight*0.934f , screenWidth * 0.182f,screenHeight * 0.095f / 3}, 20, 20, WHITE); //speed control
     speedSliding.DrawRounded(MyColor3);
+    timeSlider.Draw();
     stringstream ss;
     ss << fixed << std::setprecision(1) << animationSpeed;
     // cout << " page draw speed : " << animationSpeed * 500 << endl;
@@ -189,6 +190,8 @@ void Page::event() {
     animationSpeed = clamp(static_cast<float>((speedSliding.bounds.x - minX) * 5 / (maxX - minX)), 0.1f, 5.0f);
     animationSpeed = round(animationSpeed * 10.0) / 10.0; // round up to 1 decimal
 
+    //time slider
+    timeSlider.Update();
     //play & pause event
     if(!isPlaying){
         if(!switchState ? play1.IsClicked() : play2.IsClicked()){

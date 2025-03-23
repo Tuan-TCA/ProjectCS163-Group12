@@ -5,12 +5,14 @@
 #include "Page.h"
 #include "LinkedList.h"
 #include "HashTB.h"
+#include "Graph.h"
 class Program
 {
 public:
     Menu menu;
     Page page;
     LinkedList LL;
+    GraphPage graph;
     Program();
     void run();
 
