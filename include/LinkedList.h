@@ -6,6 +6,7 @@ using namespace std;
 #include <raylib.h>
 #include "Variables.h"
 #include "Page.h"
+#include "ControlAnimation.h"
 // class Node {
 // public:
 //     int val;
@@ -46,6 +47,7 @@ class LinkedList : public Page{
         int H = 600;
         
         // Biến kiểm soát hiệu ứng chèn
+        ControlAnimation animationController;
         bool isInserting;
         int lastInsertedKey;
 
@@ -72,11 +74,12 @@ class LinkedList : public Page{
         }
         //animation
         Vector2 GetPosition(int count);
-        Vector2 Pos, NewPos;
+        Vector2 Pos = {400,300}, NewPos, finishedPos;
+        bool hasFinishedOnce = false;
         int CountNode(Node* head);
         void DrawArrow(Vector2 start, Vector2 end);
         void DrawNode(Vector2 center, int key, int choose);
-        void DrawLL(Vector2 pos);
+        void DrawLL(Vector2 pos, bool last = true);
         void DrawInsert(int key);
         bool DrawSearchNode(int key);
         void DrawDeleteNode(int key);

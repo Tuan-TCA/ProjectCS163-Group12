@@ -189,20 +189,20 @@ void Page::event() {
     animationSpeed = clamp(static_cast<float>((speedSliding.bounds.x - minX) * 5 / (maxX - minX)), 0.1f, 5.0f);
     animationSpeed = round(animationSpeed * 10.0) / 10.0; // round up to 1 decimal
 
-    //play & pause event
-    if(!isPlaying){
-        if(!switchState ? play1.IsClicked() : play2.IsClicked()){
-            isPlaying = true;
-            TraceLog(LOG_INFO, "is playing");
-        }
-    }
-    else{
-        if( isPlaying && !switchState ? pause1.IsClicked() : pause2.IsClicked())
-        {
-            isPlaying = false;
-            TraceLog(LOG_INFO, "is pausing");
-        }
-    }
+    // //play & pause event
+    // if(!isPlaying){
+    //     if(!switchState ? play1.IsClicked() : play2.IsClicked()){
+    //         isPlaying = true;
+    //         TraceLog(LOG_INFO, "is playing");
+    //     }
+    // }
+    // else{
+    //     if( isPlaying && !switchState ? pause1.IsClicked() : pause2.IsClicked())
+    //     {
+    //         isPlaying = false;
+    //         TraceLog(LOG_INFO, "is pausing");
+    //     }
+    // }
 
     //Operation event
     if(currentOperation == Operation::Insert){

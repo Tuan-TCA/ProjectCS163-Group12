@@ -1,6 +1,7 @@
 #include "LinkedList.h"
 #include <raylib.h>
 #include <thread>
+#include "ControlAnimation.h"
 using namespace std;
 
 LinkedList::LinkedList() {
@@ -32,6 +33,8 @@ void LinkedList::init(){
 void LinkedList::event() {
     Page::event();
 
+
+    //Choose Operation
     if(currentOperation == Operation::Create) {
         //CreateLL;
     }
@@ -72,87 +75,230 @@ void LinkedList::event() {
         }
     }
 
-    if (Pos.x > NewPos.x){
-        Pos = {Pos.x - 5, Pos.y};
+    //Run step-by-step
+
+    if(!isPlaying){
+        if(!switchState ? play1.IsClicked() : play2.IsClicked()){
+            animationController.isPaused = !animationController.isPaused;
+            isPlaying = true;
+            TraceLog(LOG_INFO, "is playing");
+        }
     }
     else{
-        Pos = NewPos;
+        if( isPlaying && !switchState ? pause1.IsClicked() : pause2.IsClicked())
+        {
+            animationController.isPaused = !animationController.isPaused;
+            isPlaying = false;
+            TraceLog(LOG_INFO, "is pausing");
+        }
     }
+
+
+    // Kiểm tra phím mũi tên trái và phải
+    if (back1.IsClicked() || back2.IsClicked()) {
+        if (animationController.IsFinished()) {
+            // Khi animation đã hoàn tất, khôi phục Pos và trạng thái animation
+            Pos = finishedPos;
+            hasFinishedOnce = false;
+            isPlaying = false;
+            //animationController.isFinished = false; // Đặt lại để animation chưa kết thúc
+        }
+        if (animationController.currentStep > 0) {
+            animationController.isPaused = true;
+            animationController.currentStep--; // Quay lại bước trước đó
+            if (!animationController.steps.empty()) {
+                animationController.steps[animationController.currentStep](); // Vẽ bước trước đó
+            }
+        }
+    } else if ((next1.IsClicked() || next2.IsClicked()) && animationController.currentStep < animationController.steps.size() - 1) {
+        animationController.isPaused = true; // Tạm dừng animation
+        animationController.currentStep++;
+    }
+
+
+    //...Lưu ý: Cần chỉnh sửa hiển thị nút play, pause cho phù hợp
 }
+
 
 void LinkedList::draw() {
     Page::draw();
 
-    if(currentOperation == Operation::Create) {
-        //DrawLL();
-    }
-    if(currentOperation == Operation::Insert) {
+    // Toggle pause/resume khi nhấn SPACE
+    
+
+    static float elapsedTime = 0.0f; // Thời gian trôi qua cho mỗi step
+    const float stepDuration = 0.5f; // Thời gian chờ giữa các step (0.5 giây)
+
+    // Operation: Insert
+    if (currentOperation == Operation::Insert) {
         if (isInserting) {
-            DrawInsert(lastInsertedKey);
-            isInserting = false;
+            animationController.Reset(); 
+            DrawInsert(lastInsertedKey); 
+            isInserting = false;         
+            elapsedTime = 0.0f;          
+            hasFinishedOnce = false;     
         }
-        else{
-            DrawLL(Pos);
+        else {
+            if (!animationController.steps.empty()) { // Kiểm tra xem có bước nào không
+                // Luôn vẽ step hiện tại nếu currentStep hợp lệ
+                if (animationController.currentStep < animationController.steps.size()) {
+                    animationController.steps[animationController.currentStep]();
+                }
+    
+                if (animationController.IsPaused()) {
+                    // Khi pause, hiển thị thông tin step hiện tại
+                    DrawText(("Current Step: " + std::to_string(animationController.currentStep)).c_str(),
+                             10, 10, 20, WHITE);
+                } else {
+                    // Cập nhật thời gian và chuyển bước nếu đủ thời gian
+                    elapsedTime += GetFrameTime();
+                    if (elapsedTime >= stepDuration && !animationController.IsFinished()) {
+                        animationController.NextStep();
+                        elapsedTime = 0.0f;
+                        cout << animationController.currentStep << endl;
+                    }
+                }
+            }
+    
+            if (animationController.IsFinished()) {
+                DrawLL(Pos);
+                if (!hasFinishedOnce) {
+                    finishedPos = Pos;    // Cập nhật finishedPos trong lần đầu tiên
+                    hasFinishedOnce = true; // Đánh dấu đã hoàn tất lần đầu
+                }
+                if (Pos.x > NewPos.x) {
+                    Pos = {Pos.x - 5, Pos.y}; // Tiếp tục di chuyển Pos về NewPos
+                } else {
+                    Pos = NewPos; // Pos đã đến vị trí đích
+
+                }
+            }
         }
     }
-    if(currentOperation == Operation::Search) {
+
+    // Operation: Search
+    if (currentOperation == Operation::Search) {
         if (isSearching) {
+            animationController.Reset();
             DrawSearchNode(SearchKey);
             isSearching = false;
-        }
-        else{
-            DrawLL(Pos);
+            elapsedTime = 0.0f;
+        } else {
+            // Kiểm tra phím mũi tên trái và phải
+            if (IsKeyPressed(KEY_LEFT) && animationController.currentStep > 0) {
+                animationController.isPaused = true;
+                animationController.currentStep--;
+            } else if (IsKeyPressed(KEY_RIGHT) && animationController.currentStep < animationController.steps.size() - 1) {
+                animationController.isPaused = true;
+                animationController.currentStep++;
+            }
+
+            if (!animationController.steps.empty()) {
+                if (animationController.currentStep < animationController.steps.size()) {
+                    animationController.steps[animationController.currentStep]();
+                }
+
+                if (animationController.IsPaused()) {
+                    DrawText(("Current Step: " + std::to_string(animationController.currentStep)).c_str(),
+                             10, 10, 20, WHITE);
+                } else {
+                    elapsedTime += GetFrameTime();
+                    if (elapsedTime >= stepDuration && !animationController.IsFinished()) {
+                        animationController.NextStep();
+                        elapsedTime = 0.0f;
+                        cout << animationController.currentStep << endl;
+                    }
+                }
+            }
+
+            if (animationController.IsFinished()) {
+                DrawLL(Pos);
+            }
         }
     }
-    if(currentOperation == Operation::Delete) {
+
+    // Operation: Delete
+    if (currentOperation == Operation::Delete) {
         if (isDeleting) {
+            animationController.Reset();
             DrawDeleteNode(DeleteKey);
             isDeleting = false;
-        }
-        else{
-            DrawLL(Pos);
-        }
+            elapsedTime = 0.0f;
+        } else {
+            // Kiểm tra phím mũi tên trái và phải
+            if (IsKeyPressed(KEY_LEFT) && animationController.currentStep > 0) {
+                animationController.isPaused = true;
+                animationController.currentStep--;
+            } else if (IsKeyPressed(KEY_RIGHT) && animationController.currentStep < animationController.steps.size() - 1) {
+                animationController.isPaused = true;
+                animationController.currentStep++;
+            }
 
+            if (!animationController.steps.empty()) {
+                if (animationController.currentStep < animationController.steps.size()) {
+                    animationController.steps[animationController.currentStep]();
+                }
+
+                if (animationController.IsPaused()) {
+                    DrawText(("Current Step: " + std::to_string(animationController.currentStep)).c_str(),
+                             10, 10, 20, WHITE);
+                } else {
+                    elapsedTime += GetFrameTime();
+                    if (elapsedTime >= stepDuration && !animationController.IsFinished()) {
+                        animationController.NextStep();
+                        elapsedTime = 0.0f;
+                        cout << animationController.currentStep << endl;
+                    }
+                }
+            }
+
+            if (animationController.IsFinished()) {
+                DrawLL(Pos);
+            }
+        }
     }
 
-    if(currentOperation == Operation::Update) {
+    // Operation: Update
+    if (currentOperation == Operation::Update) {
         if (isUpdating) {
+            animationController.Reset();
             DrawUpDateNode(UpdateKey, newVal);
             isUpdating = false;
+            elapsedTime = 0.0f;
+        } else {
+            // Kiểm tra phím mũi tên trái và phải
+            if (IsKeyPressed(KEY_LEFT) && animationController.currentStep > 0) {
+                animationController.isPaused = true;
+                animationController.currentStep--;
+            } else if (IsKeyPressed(KEY_RIGHT) && animationController.currentStep < animationController.steps.size() - 1) {
+                animationController.isPaused = true;
+                animationController.currentStep++;
+            }
+
+            if (!animationController.steps.empty()) {
+                if (animationController.currentStep < animationController.steps.size()) {
+                    animationController.steps[animationController.currentStep]();
+                }
+
+                if (animationController.IsPaused()) {
+                    DrawText(("Current Step: " + std::to_string(animationController.currentStep)).c_str(),
+                             10, 10, 20, WHITE);
+                } else {
+                    elapsedTime += GetFrameTime();
+                    if (elapsedTime >= stepDuration && !animationController.IsFinished()) {
+                        animationController.NextStep();
+                        elapsedTime = 0.0f;
+                        cout << animationController.currentStep << endl;
+                    }
+                }
+            }
+
+            if (animationController.IsFinished()) {
+                DrawLL(Pos);
+            }
         }
-        else{
-            DrawLL(Pos);
-        }
-
     }
-    
-    //BeginDrawing();
-    if (isInserting) {
-        DrawInsert(lastInsertedKey);
-        isInserting = false;
-    }
-
-    if (isSearching) {
-        DrawSearchNode(SearchKey);
-        isSearching = false;
-    }
-
-    if (isDeleting) {
-        DrawDeleteNode(DeleteKey);
-        isDeleting = false;
-    }
-
-    if (isUpdating) {
-        DrawDeleteNode(UpdateKey);
-        isUpdating = false;
-    }
-
-    DrawLL(Pos);
-    //std::this_thread::sleep_for(std::chrono::milliseconds(1000));
-    //EndDrawing();   
 }
-
-
 Vector2 LinkedList::GetPosition(int count){
     int d = 2 * radius * count + (count - 1)*spacing;
     int X = max((W/2 - d/2) + radius, 0) + 400;
@@ -217,7 +363,7 @@ void LinkedList::DrawNode(Vector2 center, int key, int choose){
 }
 
 
-void LinkedList::DrawLL(Vector2 pos) {
+void LinkedList::DrawLL(Vector2 pos, bool last) {
 
     if (!head){
         cout << "Head is null\n";
@@ -228,10 +374,11 @@ void LinkedList::DrawLL(Vector2 pos) {
     Vector2 center = pos;
 
     // cout << center.x;
-
     while (cur){
+        
         DrawNode(center, cur->val, 0);
         Vector2 newCenter = {center.x + 2 * radius + spacing, center.y};
+        if(!last && cur->next && cur->next->next == nullptr) return;
         if (cur->next){
             DrawArrow(center, newCenter);
         }
@@ -252,20 +399,22 @@ void LinkedList::DrawInsert(int key) {
     }
     Pos = GetPosition(CountNode(head));
     Vector2 center = Pos;
-    DrawLL(center);
+    //DrawLL(center);
 
     Node * a = head;
     Node * b = new Node(0, a);
-    while (a){
-        BeginDrawing();
-        DrawLL(Pos);
-        DrawNode(center, a->val, -1);
-        EndDrawing();
+    while (a) {
+        animationController.AddStep([this, a,center]() {
+            //BeginDrawing();
+            DrawLL(this->Pos, false);
+            DrawNode(center, a->val, -1);
+            //EndDrawing();
+        });
+
         a = a->next;
         b = b->next;
         Vector2 newCenter = {center.x + 2*radius + spacing, center.y};
         center = newCenter;
-        std::this_thread::sleep_for(std::chrono::milliseconds((int)(500.0f / animationSpeed)));
         
     }
 
