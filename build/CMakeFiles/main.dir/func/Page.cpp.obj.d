@@ -105,19 +105,6 @@ CMakeFiles/main.dir/func/Page.cpp.obj: \
  C:/SFML/mingw64/include/c++/14.2.0/bits/uses_allocator.h \
  C:/SFML/mingw64/include/c++/14.2.0/bits/uses_allocator_args.h \
  C:/SFML/mingw64/include/c++/14.2.0/tuple \
- C:/SFML/mingw64/include/c++/14.2.0/algorithm \
- C:/SFML/mingw64/include/c++/14.2.0/bits/stl_algo.h \
- C:/SFML/mingw64/include/c++/14.2.0/bits/algorithmfwd.h \
- C:/SFML/mingw64/include/c++/14.2.0/bits/stl_heap.h \
- C:/SFML/mingw64/include/c++/14.2.0/bits/uniform_int_dist.h \
- C:/SFML/mingw64/include/c++/14.2.0/bits/stl_tempbuf.h \
- C:/SFML/mingw64/include/c++/14.2.0/pstl/glue_algorithm_defs.h \
- C:/SFML/mingw64/include/c++/14.2.0/pstl/execution_defs.h \
- C:/SFML/mingw64/include/c++/14.2.0/vector \
- C:/SFML/mingw64/include/c++/14.2.0/bits/stl_uninitialized.h \
- C:/SFML/mingw64/include/c++/14.2.0/bits/stl_vector.h \
- C:/SFML/mingw64/include/c++/14.2.0/bits/stl_bvector.h \
- C:/SFML/mingw64/include/c++/14.2.0/bits/vector.tcc \
  C:/SFML/mingw64/include/c++/14.2.0/iostream \
  C:/SFML/mingw64/include/c++/14.2.0/ostream \
  C:/SFML/mingw64/include/c++/14.2.0/ios \
@@ -163,6 +150,19 @@ CMakeFiles/main.dir/func/Page.cpp.obj: \
  C:/SFML/mingw64/include/c++/14.2.0/bits/ostream.tcc \
  C:/SFML/mingw64/include/c++/14.2.0/istream \
  C:/SFML/mingw64/include/c++/14.2.0/bits/istream.tcc \
+ C:/SFML/mingw64/include/c++/14.2.0/algorithm \
+ C:/SFML/mingw64/include/c++/14.2.0/bits/stl_algo.h \
+ C:/SFML/mingw64/include/c++/14.2.0/bits/algorithmfwd.h \
+ C:/SFML/mingw64/include/c++/14.2.0/bits/stl_heap.h \
+ C:/SFML/mingw64/include/c++/14.2.0/bits/uniform_int_dist.h \
+ C:/SFML/mingw64/include/c++/14.2.0/bits/stl_tempbuf.h \
+ C:/SFML/mingw64/include/c++/14.2.0/pstl/glue_algorithm_defs.h \
+ C:/SFML/mingw64/include/c++/14.2.0/pstl/execution_defs.h \
+ C:/SFML/mingw64/include/c++/14.2.0/vector \
+ C:/SFML/mingw64/include/c++/14.2.0/bits/stl_uninitialized.h \
+ C:/SFML/mingw64/include/c++/14.2.0/bits/stl_vector.h \
+ C:/SFML/mingw64/include/c++/14.2.0/bits/stl_bvector.h \
+ C:/SFML/mingw64/include/c++/14.2.0/bits/vector.tcc \
  C:/SFML/mingw64/include/c++/14.2.0/fstream \
  C:/SFML/mingw64/include/c++/14.2.0/bits/codecvt.h \
  C:/SFML/mingw64/include/c++/14.2.0/x86_64-w64-mingw32/bits/basic_file.h \

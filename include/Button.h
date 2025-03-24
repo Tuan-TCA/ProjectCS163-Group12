@@ -332,20 +332,25 @@ public:
     float value;
     float minValue;
     float maxValue;
-
-    Slider(){}
+    bool isPressing;
+    Slider(){isPressing = false;}
     Slider(Rectangle bounds, float minValue, float maxValue) {
         this->bounds = bounds;
         this->minValue = minValue;
         this->maxValue = maxValue;
         this->value = minValue;
+        isPressing = false;
     }
 
     void Update() {
-        if (IsMouseButtonDown(MOUSE_LEFT_BUTTON) && CheckCollisionPointRec(GetMousePosition(), bounds)) {
+        if (IsMouseButtonDown(MOUSE_LEFT_BUTTON)) {
+            if(CheckCollisionPointRec(GetMousePosition(), bounds) || isPressing){
             value = minValue + (maxValue - minValue) * ((GetMousePosition().x - bounds.x) / bounds.width);
             value = clamp(value, minValue, maxValue); //guarantee the value is always between maxvalue & minvalue
+            isPressing = true;
+            }
         }
+        else isPressing = false;
     }
 
     void Draw() {

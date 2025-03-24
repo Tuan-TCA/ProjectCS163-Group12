@@ -11,8 +11,6 @@ CMakeFiles/main.dir/func/Program.cpp.obj: \
  C:/SFML/mingw64/x86_64-w64-mingw32/include/_mingw_secapi.h \
  C:/SFML/mingw64/x86_64-w64-mingw32/include/sdks/_mingw_ddk.h \
  D:/Project/PROJECT163/testtest/include/Variables.h \
- D:/Project/PROJECT163/testtest/include/Menu.h \
- D:/Project/PROJECT163/testtest/include/Button.h \
  C:/SFML/mingw64/include/c++/14.2.0/string \
  C:/SFML/mingw64/include/c++/14.2.0/bits/requires_hosted.h \
  C:/SFML/mingw64/include/c++/14.2.0/x86_64-w64-mingw32/bits/c++config.h \
@@ -107,38 +105,6 @@ CMakeFiles/main.dir/func/Program.cpp.obj: \
  C:/SFML/mingw64/include/c++/14.2.0/bits/uses_allocator.h \
  C:/SFML/mingw64/include/c++/14.2.0/bits/uses_allocator_args.h \
  C:/SFML/mingw64/include/c++/14.2.0/tuple \
- C:/SFML/mingw64/include/c++/14.2.0/algorithm \
- C:/SFML/mingw64/include/c++/14.2.0/bits/stl_algo.h \
- C:/SFML/mingw64/include/c++/14.2.0/bits/algorithmfwd.h \
- C:/SFML/mingw64/include/c++/14.2.0/bits/stl_heap.h \
- C:/SFML/mingw64/include/c++/14.2.0/bits/uniform_int_dist.h \
- C:/SFML/mingw64/include/c++/14.2.0/bits/stl_tempbuf.h \
- C:/SFML/mingw64/include/c++/14.2.0/pstl/glue_algorithm_defs.h \
- C:/SFML/mingw64/include/c++/14.2.0/pstl/execution_defs.h \
- C:/SFML/mingw64/include/c++/14.2.0/vector \
- C:/SFML/mingw64/include/c++/14.2.0/bits/stl_uninitialized.h \
- C:/SFML/mingw64/include/c++/14.2.0/bits/stl_vector.h \
- C:/SFML/mingw64/include/c++/14.2.0/bits/stl_bvector.h \
- C:/SFML/mingw64/include/c++/14.2.0/bits/vector.tcc \
- D:/Project/PROJECT163/testtest/include/Page.h \
- D:/Project/PROJECT163/testtest/include/LinkedList.h \
- C:/SFML/mingw64/include/c++/14.2.0/math.h \
- C:/SFML/mingw64/include/c++/14.2.0/cmath \
- C:/SFML/mingw64/x86_64-w64-mingw32/include/math.h \
- C:/SFML/mingw64/include/c++/14.2.0/bits/specfun.h \
- C:/SFML/mingw64/include/c++/14.2.0/limits \
- C:/SFML/mingw64/include/c++/14.2.0/tr1/gamma.tcc \
- C:/SFML/mingw64/include/c++/14.2.0/tr1/special_function_util.h \
- C:/SFML/mingw64/include/c++/14.2.0/tr1/bessel_function.tcc \
- C:/SFML/mingw64/include/c++/14.2.0/tr1/beta_function.tcc \
- C:/SFML/mingw64/include/c++/14.2.0/tr1/ell_integral.tcc \
- C:/SFML/mingw64/include/c++/14.2.0/tr1/exp_integral.tcc \
- C:/SFML/mingw64/include/c++/14.2.0/tr1/hypergeometric.tcc \
- C:/SFML/mingw64/include/c++/14.2.0/tr1/legendre_function.tcc \
- C:/SFML/mingw64/include/c++/14.2.0/tr1/modified_bessel_func.tcc \
- C:/SFML/mingw64/include/c++/14.2.0/tr1/poly_hermite.tcc \
- C:/SFML/mingw64/include/c++/14.2.0/tr1/poly_laguerre.tcc \
- C:/SFML/mingw64/include/c++/14.2.0/tr1/riemann_zeta.tcc \
  C:/SFML/mingw64/include/c++/14.2.0/iostream \
  C:/SFML/mingw64/include/c++/14.2.0/ostream \
  C:/SFML/mingw64/include/c++/14.2.0/ios \
@@ -184,5 +150,39 @@ CMakeFiles/main.dir/func/Program.cpp.obj: \
  C:/SFML/mingw64/include/c++/14.2.0/bits/ostream.tcc \
  C:/SFML/mingw64/include/c++/14.2.0/istream \
  C:/SFML/mingw64/include/c++/14.2.0/bits/istream.tcc \
+ D:/Project/PROJECT163/testtest/include/Menu.h \
+ D:/Project/PROJECT163/testtest/include/Button.h \
+ C:/SFML/mingw64/include/c++/14.2.0/algorithm \
+ C:/SFML/mingw64/include/c++/14.2.0/bits/stl_algo.h \
+ C:/SFML/mingw64/include/c++/14.2.0/bits/algorithmfwd.h \
+ C:/SFML/mingw64/include/c++/14.2.0/bits/stl_heap.h \
+ C:/SFML/mingw64/include/c++/14.2.0/bits/uniform_int_dist.h \
+ C:/SFML/mingw64/include/c++/14.2.0/bits/stl_tempbuf.h \
+ C:/SFML/mingw64/include/c++/14.2.0/pstl/glue_algorithm_defs.h \
+ C:/SFML/mingw64/include/c++/14.2.0/pstl/execution_defs.h \
+ C:/SFML/mingw64/include/c++/14.2.0/vector \
+ C:/SFML/mingw64/include/c++/14.2.0/bits/stl_uninitialized.h \
+ C:/SFML/mingw64/include/c++/14.2.0/bits/stl_vector.h \
+ C:/SFML/mingw64/include/c++/14.2.0/bits/stl_bvector.h \
+ C:/SFML/mingw64/include/c++/14.2.0/bits/vector.tcc \
+ D:/Project/PROJECT163/testtest/include/Page.h \
+ D:/Project/PROJECT163/testtest/include/LinkedList.h \
+ C:/SFML/mingw64/include/c++/14.2.0/math.h \
+ C:/SFML/mingw64/include/c++/14.2.0/cmath \
+ C:/SFML/mingw64/x86_64-w64-mingw32/include/math.h \
+ C:/SFML/mingw64/include/c++/14.2.0/bits/specfun.h \
+ C:/SFML/mingw64/include/c++/14.2.0/limits \
+ C:/SFML/mingw64/include/c++/14.2.0/tr1/gamma.tcc \
+ C:/SFML/mingw64/include/c++/14.2.0/tr1/special_function_util.h \
+ C:/SFML/mingw64/include/c++/14.2.0/tr1/bessel_function.tcc \
+ C:/SFML/mingw64/include/c++/14.2.0/tr1/beta_function.tcc \
+ C:/SFML/mingw64/include/c++/14.2.0/tr1/ell_integral.tcc \
+ C:/SFML/mingw64/include/c++/14.2.0/tr1/exp_integral.tcc \
+ C:/SFML/mingw64/include/c++/14.2.0/tr1/hypergeometric.tcc \
+ C:/SFML/mingw64/include/c++/14.2.0/tr1/legendre_function.tcc \
+ C:/SFML/mingw64/include/c++/14.2.0/tr1/modified_bessel_func.tcc \
+ C:/SFML/mingw64/include/c++/14.2.0/tr1/poly_hermite.tcc \
+ C:/SFML/mingw64/include/c++/14.2.0/tr1/poly_laguerre.tcc \
+ C:/SFML/mingw64/include/c++/14.2.0/tr1/riemann_zeta.tcc \
  D:/Project/PROJECT163/testtest/include/HashTB.h \
  D:/Project/PROJECT163/testtest/include/Graph.h

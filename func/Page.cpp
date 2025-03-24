@@ -30,13 +30,12 @@ void Page::init() {
     deleteButton = Button(5, screenHeight / 2 - screenHeight*0.63f * 0.5f + 5, screenWidth*0.24f - 10, screenHeight*0.63f * 0.15f, "DELETE", MyColor1, Fade(MyColor1, 0.8f), WHITE);
     searchButton = Button(5, screenHeight / 2 - screenHeight*0.63f * 0.5f + 5, screenWidth*0.24f - 10, screenHeight*0.63f * 0.15f, "SEARCH", MyColor1, Fade(MyColor1, 0.8f), WHITE);
 
-    selectedIndex = 0;
-    optionButton = Button(screenWidth * 0.24f * 0.15f,screenHeight / 2 - screenHeight*0.63f * 0.35f + 10 , screenWidth*0.24f * 0.7f, screenHeight*0.63f * 0.15f, options[selectedIndex].c_str(), WHITE, LIGHTGRAY, MyColor5);
-    prevButton = Button(5,screenHeight / 2 - screenHeight*0.63f * 0.35f + 10 ,  screenWidth*0.24f * 0.15f - 10, screenHeight*0.63f * 0.15f, "<", WHITE, LIGHTGRAY, MyColor5);
-    nextButton = Button(screenWidth*0.24f * 0.85f + 5,screenHeight / 2 - screenHeight*0.63f * 0.35f + 10 ,  screenWidth*0.24f * 0.15f - 10, screenHeight*0.63f * 0.15f, ">", WHITE, LIGHTGRAY, MyColor5);
+    selectedInputIndex = 0;
+    InputOptionButton = Button(screenWidth * 0.24f * 0.15f,screenHeight / 2 - screenHeight*0.63f * 0.35f + 10 , screenWidth*0.24f * 0.7f, screenHeight*0.63f * 0.15f, InputOptions[selectedInputIndex].c_str(), WHITE, LIGHTGRAY, MyColor5);
+    InputPrevButton = Button(5,screenHeight / 2 - screenHeight*0.63f * 0.35f + 10 ,  screenWidth*0.24f * 0.15f - 10, screenHeight*0.63f * 0.15f, "<", WHITE, LIGHTGRAY, MyColor5);
+    InputNextButton = Button(screenWidth*0.24f * 0.85f + 5,screenHeight / 2 - screenHeight*0.63f * 0.35f + 10 ,  screenWidth*0.24f * 0.15f - 10, screenHeight*0.63f * 0.15f, ">", WHITE, LIGHTGRAY, MyColor5);
     currentInput = InputType::Keyboard;
     operationButtons.push_back(Button(120, 50, 100, 30, "Insert", MyColor1, MyColor2, WHITE));
-
     operationButtons.push_back(Button(120, 50, 100, 30, "Create", MyColor1, MyColor2, WHITE));
     operationButtons.push_back(Button(120, 90, 100, 30, "Delete", MyColor1, MyColor2, WHITE));
     operationButtons.push_back(Button(120, 130, 100, 30, "Search", MyColor1, MyColor2, WHITE));
@@ -110,9 +109,9 @@ void Page::draw() {
         next1.Draw();
         home.Draw();
     }
-    optionButton.Draw( LIGHTGRAY, WHITE);
-    prevButton.Draw(LIGHTGRAY, WHITE);
-    nextButton.Draw(LIGHTGRAY, WHITE);
+    InputOptionButton.Draw( LIGHTGRAY, WHITE);
+    InputPrevButton.Draw(LIGHTGRAY, WHITE);
+    InputNextButton.Draw(LIGHTGRAY, WHITE);
     if(currentOperation == Operation::Insert){
         insertButton.Draw(MyColor1, Fade(MyColor1, 0.8f));
         if (isInsertExpanded) {
@@ -177,7 +176,7 @@ void Page::event() {
         return;
     }
 
-    handleInput();
+    if(mode != MODE::GRAPH) {cout << " yeye" << endl; handleInput();}
 
     //speed sliding event
     Vector2 mousePoint = GetMousePosition();
@@ -327,19 +326,19 @@ void Page::event() {
 
     //INPUT Event
 
-    if (prevButton.IsClicked()) {
-        selectedIndex = (selectedIndex - 1 + options.size()) % options.size();
-        optionButton.label = options[selectedIndex].c_str(); 
+    if (InputPrevButton.IsClicked()) {
+        selectedInputIndex = (selectedInputIndex - 1 + InputOptions.size()) % InputOptions.size();
+        InputOptionButton.label = InputOptions[selectedInputIndex].c_str(); 
     }
 
-    if (nextButton.IsClicked()) {
-        selectedIndex = (selectedIndex + 1) % options.size();
-        optionButton.label = options[selectedIndex].c_str(); 
+    if (InputNextButton.IsClicked()) {
+        selectedInputIndex = (selectedInputIndex + 1) % InputOptions.size();
+        InputOptionButton.label = InputOptions[selectedInputIndex].c_str(); 
     }
 
-        if (options[selectedIndex] == "KEYBOARD") currentInput = InputType::Keyboard;
-        if (options[selectedIndex] == "RANDOM") currentInput = InputType::Random;
-        if (options[selectedIndex] == "FILE") currentInput = InputType::File;
+        if (InputOptions[selectedInputIndex] == "KEYBOARD") currentInput = InputType::Keyboard;
+        if (InputOptions[selectedInputIndex] == "RANDOM") currentInput = InputType::Random;
+        if (InputOptions[selectedInputIndex] == "FILE") currentInput = InputType::File;
 }
 
 std::mt19937 rng(std::random_device{}());
@@ -347,7 +346,7 @@ void Page::handleInput(){
 
     switch (currentInput) {
             case InputType::Random:
-            if (optionButton.IsClicked()) {
+            if (InputOptionButton.IsClicked()) {
                 std::uniform_int_distribution<int> dist(0, 999); // Giới hạn số từ 0-999
                 textbox.inputText = to_string(dist(rng)); // Lấy số ngẫu nhiên
             }

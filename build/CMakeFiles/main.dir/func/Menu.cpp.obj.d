@@ -105,6 +105,51 @@ CMakeFiles/main.dir/func/Menu.cpp.obj: \
  C:/SFML/mingw64/include/c++/14.2.0/bits/uses_allocator.h \
  C:/SFML/mingw64/include/c++/14.2.0/bits/uses_allocator_args.h \
  C:/SFML/mingw64/include/c++/14.2.0/tuple \
+ C:/SFML/mingw64/include/c++/14.2.0/iostream \
+ C:/SFML/mingw64/include/c++/14.2.0/ostream \
+ C:/SFML/mingw64/include/c++/14.2.0/ios \
+ C:/SFML/mingw64/include/c++/14.2.0/exception \
+ C:/SFML/mingw64/include/c++/14.2.0/bits/exception_ptr.h \
+ C:/SFML/mingw64/include/c++/14.2.0/bits/cxxabi_init_exception.h \
+ C:/SFML/mingw64/include/c++/14.2.0/typeinfo \
+ C:/SFML/mingw64/include/c++/14.2.0/bits/nested_exception.h \
+ C:/SFML/mingw64/include/c++/14.2.0/bits/ios_base.h \
+ C:/SFML/mingw64/include/c++/14.2.0/ext/atomicity.h \
+ C:/SFML/mingw64/include/c++/14.2.0/x86_64-w64-mingw32/bits/gthr.h \
+ C:/SFML/mingw64/include/c++/14.2.0/x86_64-w64-mingw32/bits/gthr-default.h \
+ C:/SFML/mingw64/x86_64-w64-mingw32/include/pthread.h \
+ C:/SFML/mingw64/x86_64-w64-mingw32/include/sys/types.h \
+ C:/SFML/mingw64/x86_64-w64-mingw32/include/process.h \
+ C:/SFML/mingw64/x86_64-w64-mingw32/include/corecrt_startup.h \
+ C:/SFML/mingw64/x86_64-w64-mingw32/include/signal.h \
+ C:/SFML/mingw64/x86_64-w64-mingw32/include/pthread_signal.h \
+ C:/SFML/mingw64/x86_64-w64-mingw32/include/time.h \
+ C:/SFML/mingw64/x86_64-w64-mingw32/include/sys/timeb.h \
+ C:/SFML/mingw64/x86_64-w64-mingw32/include/sec_api/sys/timeb_s.h \
+ C:/SFML/mingw64/x86_64-w64-mingw32/include/_timeval.h \
+ C:/SFML/mingw64/x86_64-w64-mingw32/include/pthread_time.h \
+ C:/SFML/mingw64/x86_64-w64-mingw32/include/pthread_compat.h \
+ C:/SFML/mingw64/x86_64-w64-mingw32/include/pthread_unistd.h \
+ C:/SFML/mingw64/include/c++/14.2.0/x86_64-w64-mingw32/bits/atomic_word.h \
+ C:/SFML/mingw64/include/c++/14.2.0/bits/locale_classes.h \
+ C:/SFML/mingw64/include/c++/14.2.0/bits/locale_classes.tcc \
+ C:/SFML/mingw64/include/c++/14.2.0/system_error \
+ C:/SFML/mingw64/include/c++/14.2.0/x86_64-w64-mingw32/bits/error_constants.h \
+ C:/SFML/mingw64/include/c++/14.2.0/stdexcept \
+ C:/SFML/mingw64/include/c++/14.2.0/streambuf \
+ C:/SFML/mingw64/include/c++/14.2.0/bits/streambuf.tcc \
+ C:/SFML/mingw64/include/c++/14.2.0/bits/basic_ios.h \
+ C:/SFML/mingw64/include/c++/14.2.0/bits/locale_facets.h \
+ C:/SFML/mingw64/include/c++/14.2.0/cwctype \
+ C:/SFML/mingw64/x86_64-w64-mingw32/include/wctype.h \
+ C:/SFML/mingw64/include/c++/14.2.0/x86_64-w64-mingw32/bits/ctype_base.h \
+ C:/SFML/mingw64/include/c++/14.2.0/bits/streambuf_iterator.h \
+ C:/SFML/mingw64/include/c++/14.2.0/x86_64-w64-mingw32/bits/ctype_inline.h \
+ C:/SFML/mingw64/include/c++/14.2.0/bits/locale_facets.tcc \
+ C:/SFML/mingw64/include/c++/14.2.0/bits/basic_ios.tcc \
+ C:/SFML/mingw64/include/c++/14.2.0/bits/ostream.tcc \
+ C:/SFML/mingw64/include/c++/14.2.0/istream \
+ C:/SFML/mingw64/include/c++/14.2.0/bits/istream.tcc \
  C:/SFML/mingw64/include/c++/14.2.0/algorithm \
  C:/SFML/mingw64/include/c++/14.2.0/bits/stl_algo.h \
  C:/SFML/mingw64/include/c++/14.2.0/bits/algorithmfwd.h \

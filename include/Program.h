@@ -12,7 +12,7 @@ public:
     Menu menu;
     Page page;
     LinkedList LL;
-    GraphPage graph;
+    Graph graph;
     Program();
     void run();
 
