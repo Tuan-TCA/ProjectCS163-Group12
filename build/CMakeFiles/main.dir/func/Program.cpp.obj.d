@@ -185,4 +185,11 @@ CMakeFiles/main.dir/func/Program.cpp.obj: \
  C:/SFML/mingw64/include/c++/14.2.0/tr1/poly_laguerre.tcc \
  C:/SFML/mingw64/include/c++/14.2.0/tr1/riemann_zeta.tcc \
  D:/Project/PROJECT163/testtest/include/HashTB.h \
- D:/Project/PROJECT163/testtest/include/Graph.h
+ D:/Project/PROJECT163/testtest/include/Graph.h \
+ C:/SFML/mingw64/include/c++/14.2.0/queue \
+ C:/SFML/mingw64/include/c++/14.2.0/deque \
+ C:/SFML/mingw64/include/c++/14.2.0/bits/stl_deque.h \
+ C:/SFML/mingw64/include/c++/14.2.0/bits/deque.tcc \
+ C:/SFML/mingw64/include/c++/14.2.0/bits/stl_queue.h \
+ D:/Project/PROJECT163/testtest/include/Vertex.h \
+ D:/Project/PROJECT163/testtest/include/Edge.h

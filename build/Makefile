@@ -128,6 +128,30 @@ main/fast:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles\main.dir\build.make CMakeFiles/main.dir/build
 .PHONY : main/fast
 
+func/Edge.obj: func/Edge.cpp.obj
+.PHONY : func/Edge.obj
+
+# target to build an object file
+func/Edge.cpp.obj:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\main.dir\build.make CMakeFiles/main.dir/func/Edge.cpp.obj
+.PHONY : func/Edge.cpp.obj
+
+func/Edge.i: func/Edge.cpp.i
+.PHONY : func/Edge.i
+
+# target to preprocess a source file
+func/Edge.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\main.dir\build.make CMakeFiles/main.dir/func/Edge.cpp.i
+.PHONY : func/Edge.cpp.i
+
+func/Edge.s: func/Edge.cpp.s
+.PHONY : func/Edge.s
+
+# target to generate assembly for a file
+func/Edge.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\main.dir\build.make CMakeFiles/main.dir/func/Edge.cpp.s
+.PHONY : func/Edge.cpp.s
+
 func/Graph.obj: func/Graph.cpp.obj
 .PHONY : func/Graph.obj
 
@@ -272,6 +296,30 @@ func/Variables.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles\main.dir\build.make CMakeFiles/main.dir/func/Variables.cpp.s
 .PHONY : func/Variables.cpp.s
 
+func/Vertex.obj: func/Vertex.cpp.obj
+.PHONY : func/Vertex.obj
+
+# target to build an object file
+func/Vertex.cpp.obj:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\main.dir\build.make CMakeFiles/main.dir/func/Vertex.cpp.obj
+.PHONY : func/Vertex.cpp.obj
+
+func/Vertex.i: func/Vertex.cpp.i
+.PHONY : func/Vertex.i
+
+# target to preprocess a source file
+func/Vertex.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\main.dir\build.make CMakeFiles/main.dir/func/Vertex.cpp.i
+.PHONY : func/Vertex.cpp.i
+
+func/Vertex.s: func/Vertex.cpp.s
+.PHONY : func/Vertex.s
+
+# target to generate assembly for a file
+func/Vertex.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\main.dir\build.make CMakeFiles/main.dir/func/Vertex.cpp.s
+.PHONY : func/Vertex.cpp.s
+
 src/main.obj: src/main.cpp.obj
 .PHONY : src/main.obj
 
@@ -305,6 +353,9 @@ help:
 	@echo ... edit_cache
 	@echo ... rebuild_cache
 	@echo ... main
+	@echo ... func/Edge.obj
+	@echo ... func/Edge.i
+	@echo ... func/Edge.s
 	@echo ... func/Graph.obj
 	@echo ... func/Graph.i
 	@echo ... func/Graph.s
@@ -323,6 +374,9 @@ help:
 	@echo ... func/Variables.obj
 	@echo ... func/Variables.i
 	@echo ... func/Variables.s
+	@echo ... func/Vertex.obj
+	@echo ... func/Vertex.i
+	@echo ... func/Vertex.s
 	@echo ... src/main.obj
 	@echo ... src/main.i
 	@echo ... src/main.s

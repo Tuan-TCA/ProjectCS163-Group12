@@ -54,7 +54,7 @@ public:
     Rectangle side;
     Button Ok;
     TextBox textbox;
-     float animationSpeed;
+     
     MyRec speedSliding;
     Slider timeSlider;
     ButtonFromImage back1, next1, pause1, play1;

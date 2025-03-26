@@ -3,6 +3,7 @@
 #include <iostream>
 #include <cmath>
 #include "Variables.h"
+#include <unordered_set>
 using namespace std;
 
 float distance(Vector2 pos1, Vector2 pos2){
@@ -14,8 +15,8 @@ void Graph::init(){
     MSTbutton =  Button(5, screenHeight / 2 - screenHeight*0.63f * 0.5f + 5, screenWidth*0.24f - 10, screenHeight*0.63f * 0.15f, "MST", MyColor1, Fade(MyColor1, 0.8f), WHITE); 
     added = false;
     minDistance = 100.0f;
-    animateSpeed = 10.0f;
-    duration = 1.0;
+    got1stV = false;
+    isAnimating = false;
 }
 
 void Graph::draw(){
@@ -29,6 +30,18 @@ void Graph::draw(){
         for(auto& v: vertex){
         v.Draw();
     }
+
+}
+Vertex* Graph::getFirstVertexClicked(){
+    for(auto& v: vertex){
+        if(v.isClicked()) {
+            got1stV = true;
+            isAnimating = true;
+            isPlaying = true;
+            return &v;
+        } 
+    }
+    return nullptr;
 }
 
 void Graph::event(){
@@ -39,6 +52,7 @@ void Graph::event(){
        added = true;
    }
 
+     
     for(auto& v: vertex){
         if(IsMouseButtonDown(MOUSE_LEFT_BUTTON)){
             if(CheckCollisionPointCircle(GetMousePosition(), v.position, v.radius) || v.isPressing){
@@ -50,26 +64,85 @@ void Graph::event(){
         }
     }
 
-       float deltaTime = GetFrameTime();
-    for(auto& v: vertex){
-        if(v.isClicked()) v.isColorHighlighting = true;
-        if(v.isColorHighlighting){
-            v.Update(deltaTime);
-        }
+    
+   handleBFS();
+    
+   
+}
+
+void Graph::startAnimation(float duration){
+    this->duration = duration;
+    while(!animationQueue.empty()){
+        animationQueue.pop();
     }
-
-    for(auto& e: edge){
-        if(e.isClicked()){
-            e.isColorHighlighting = true;
-        }
-
-        if(e.isColorHighlighting){
-            e.Update(deltaTime);
-        }
+   
+    for(auto& s: arrayQueue){
+        // s->print();
+        animationQueue.push(s);
+        
     }
 }
+
+
+Edge* Graph::findEdge(Vertex* v1, Vertex* v2){
+    for(auto& e: edge){
+        if((e.start == v1 && e.end == v2) || (e.start == v2 && e.end == v1)) return &e;
+    }
+    return nullptr;
+}
+
+Vertex* Graph::findVertex(int value){
+    for(auto& v: vertex){
+        if(v.value == value) return &v;
+    }
+    return nullptr;
+}
+void Graph::bfs(Vertex* source) {
+    // cout << "bfs\n";
+    int n = matrix.size();
+    if (n == 0) return;
+    arrayQueue.clear();
+  
+    queue<Vertex*> q;
+    unordered_set<Edge*> visitedEdge;
+    unordered_set<Vertex*> visitedVertices; 
+
+    q.push(source);  // Start with the source vertex which one we've just clicked on
+    visitedVertices.insert(source);
+  
+
+    while (!q.empty()) {
+        Vertex* v = q.front();
+        arrayQueue.push_back(v);
+        // v->print();
+        q.pop();
+
+        for (int i = 0; i < n; i++) {
+            if (matrix[v->value][i] != 0) {
+                Vertex* nextVertex = findVertex(i);
+                if (nextVertex != nullptr && visitedVertices.find(nextVertex) == visitedVertices.end()) { 
+                    Edge* e = findEdge(v, nextVertex);
+                    if (e != nullptr && visitedEdge.find(e) == visitedEdge.end()){
+                        arrayQueue.push_back(e);
+                        visitedEdge.insert(e);
+                        // e->print();
+                        // cout << "yes\n"; 
+                    }
+                    q.push(nextVertex);
+                    visitedVertices.insert(nextVertex);
+                }
+            }
+        }
+    }
+
+    for (auto& elem : arrayQueue) {
+    elem->print();
+    }
+}
+
+
 void Graph::addFromMatrix(){
-     srand(static_cast<unsigned int>(time(0)));
+     srand(static_cast<unsigned int>(time(0) + rand()));
     int n = matrix.size();
     //random vertices in workplace 
     int minX = screenWidth * 0.3f, maxX = screenWidth - 100;  
@@ -108,6 +181,9 @@ void Graph::addFromMatrix(){
             }
         }
     }
+
+
+
 }
 void Graph::handleInput(){
     
@@ -122,16 +198,16 @@ void Graph::handleInput(){
                 break;
             case InputType::File:
                 if(IsFileDropped()){
-                    added = false;
+                    
                     FilePathList droppedFiles = LoadDroppedFiles();
                     TextCopy(filePath,droppedFiles.paths[0]);
                     ifstream fin(filePath);
                     if(!fin.is_open()) cout << "Cannot open dropped file";
                     else{
                         cout << "File path: " << filePath << endl;
-
+                        reset(); // reset graph;
                         textbox.resetTextbox();
-                        // for(auto& x: matrix) x.clear();
+                        matrix.clear();
                         int n;
                         fin >> n;
                         matrix.resize(n, vector<int>(n));
@@ -154,3 +230,58 @@ void Graph::handleInput(){
 
 }
 
+void Graph::reset(){
+    added = false;
+    vertex.clear();
+    edge.clear();
+    matrix.clear();
+    while(!animationQueue.empty()){
+        animationQueue.pop();
+    }
+    arrayQueue.clear();
+   
+     isAnimating  = false;
+     got1stV = false;
+     bfsCalled = false;
+     clickedV = nullptr;
+}
+void Graph::handleBFS(){
+    float deltaTime = GetFrameTime();
+     if(!got1stV){
+        clickedV = getFirstVertexClicked();
+    }
+    if(isAnimating && clickedV){
+    
+         if (!bfsCalled) {
+            bfs(clickedV);
+            // cout << arrayQueue.size() << endl;
+            startAnimation(1);
+            animationQueue.front()->startAnimation(ORANGE, duration);
+            bfsCalled = true;
+        }
+        if (!animationQueue.empty()) {
+            Drawable* current = animationQueue.front();
+            if (!current->isAnimating) {
+                animationQueue.pop();
+        
+                if (!animationQueue.empty()) {
+                    current = animationQueue.front();
+                    current->startAnimation(ORANGE, duration);
+                }
+                // current->print();
+                
+            }
+            
+            // cout << deltaTime << endl;
+            if(isPlaying){
+            current->Update(deltaTime);
+            }
+        }
+        else{
+            isAnimating = false;
+        }
+    }
+    else {
+        bfsCalled = false;
+    } 
+}

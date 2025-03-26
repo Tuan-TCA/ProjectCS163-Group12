@@ -2,6 +2,9 @@
 #include "Page.h"
 #include "Variables.h"
 #include <vector>
+#include <queue>
+#include "Vertex.h"
+#include "Edge.h"
 using namespace std;
 class Graph : public Page{
     public:
@@ -11,13 +14,26 @@ class Graph : public Page{
     vector<vector<int>> matrix;
     Button MSTbutton;
     float minDistance;
-    float animateSpeed;
+    queue<Drawable*> animationQueue;
+    vector<Drawable*> arrayQueue;
     float duration;
+    bool isAnimating;
+    bool got1stV;
+    bool bfsCalled = false;
+    Vertex* clickedV = nullptr;
+
 
     void init() override;
     void draw() override;
     void event() override;
+    
     void handleInput() override;
-
+    void startAnimation( float duration);
+    void bfs(Vertex* source);
+    void handleBFS();
+    Vertex* getFirstVertexClicked();
+    Vertex* findVertex(int value);
+    Edge* findEdge(Vertex* v1, Vertex* v2);
     void addFromMatrix();
+    void reset();
 };

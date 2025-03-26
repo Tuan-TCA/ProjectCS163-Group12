@@ -342,4 +342,6 @@ CMakeFiles/main.dir/src/main.cpp.obj: \
  D:/Project/PROJECT163/testtest/include/LinkedList.h \
  C:/SFML/mingw64/include/c++/14.2.0/math.h \
  D:/Project/PROJECT163/testtest/include/HashTB.h \
- D:/Project/PROJECT163/testtest/include/Graph.h
+ D:/Project/PROJECT163/testtest/include/Graph.h \
+ D:/Project/PROJECT163/testtest/include/Vertex.h \
+ D:/Project/PROJECT163/testtest/include/Edge.h
