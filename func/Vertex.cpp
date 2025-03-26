@@ -29,7 +29,6 @@ void Vertex::Update(float deltaTime){
         fullColor = false;
     }
 }
-
     
 void Vertex::Draw() {
     DrawCircleV(position, radius + 0.5f, color); 

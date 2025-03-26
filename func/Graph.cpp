@@ -3,6 +3,7 @@
 #include <iostream>
 #include <cmath>
 #include "Variables.h"
+#include "ControlAnimation.h"
 #include <unordered_set>
 using namespace std;
 
@@ -217,8 +218,6 @@ void Graph::handleInput(){
                                 cout << "matrix[" << i << "][" << j << "] = " << matrix[i][j] << endl;
                             }
                         }     
-                 
-
                         fin.close();
                     }
                     UnloadDroppedFiles(droppedFiles); 

@@ -7,6 +7,7 @@
 #include <iomanip>
 #include <sstream>
 #include <random>
+#include "ControlAnimation.h"
 using namespace std;
 
 int lastInsertedKey;
@@ -99,12 +100,12 @@ void Page::draw() {
     }
 
     if(switchState){
-        !isPlaying ? play2.Draw() : pause2.Draw();
+        isPlaying ? play2.Draw() : pause2.Draw();
         back2.Draw();
         next2.Draw();
         home2.Draw(); }
     else{ 
-        !isPlaying ? play1.Draw() : pause1.Draw();
+        isPlaying ? play1.Draw() : pause1.Draw();
         back1.Draw();
         next1.Draw();
         home.Draw();
@@ -176,7 +177,7 @@ void Page::event() {
         return;
     }
 
-    if(mode != MODE::GRAPH) {cout << " yeye" << endl; handleInput();}
+    if(mode != MODE::GRAPH) {handleInput();}
 
     //speed sliding event
     Vector2 mousePoint = GetMousePosition();
@@ -191,7 +192,7 @@ void Page::event() {
 
     //time slider
     timeSlider.Update();
-    //play & pause event
+    // play & pause event
     if(!isPlaying){
         if(!switchState ? play1.IsClicked() : play2.IsClicked()){
             isPlaying = true;
@@ -199,7 +200,7 @@ void Page::event() {
         }
     }
     else{
-        if( isPlaying && !switchState ? pause1.IsClicked() : pause2.IsClicked())
+        if(!switchState ? pause1.IsClicked() : pause2.IsClicked())
         {
             isPlaying = false;
             TraceLog(LOG_INFO, "is pausing");

@@ -11,6 +11,7 @@ float animationSpeed = 1.0;
 bool switchState = false;
 char filePath[50];
 Font FONT = LoadFont("res/font/setback.png");
+
 Color MyColor1 = Color{17, 105, 124, 255};
 Color MyColor2 = Color{27, 177, 177, 255};
 Color MyColor3 = Color{65, 219, 179, 255};

@@ -204,4 +204,17 @@ CMakeFiles/main.dir/func/Page.cpp.obj: \
  C:/SFML/mingw64/include/c++/14.2.0/bits/random.tcc \
  C:/SFML/mingw64/include/c++/14.2.0/numeric \
  C:/SFML/mingw64/include/c++/14.2.0/bits/stl_numeric.h \
- C:/SFML/mingw64/include/c++/14.2.0/pstl/glue_numeric_defs.h
+ C:/SFML/mingw64/include/c++/14.2.0/pstl/glue_numeric_defs.h \
+ D:/Project/PROJECT163/testtest/include/ControlAnimation.h \
+ C:/SFML/mingw64/include/c++/14.2.0/functional \
+ C:/SFML/mingw64/include/c++/14.2.0/bits/std_function.h \
+ C:/SFML/mingw64/include/c++/14.2.0/unordered_map \
+ C:/SFML/mingw64/include/c++/14.2.0/bits/unordered_map.h \
+ C:/SFML/mingw64/include/c++/14.2.0/bits/hashtable.h \
+ C:/SFML/mingw64/include/c++/14.2.0/bits/hashtable_policy.h \
+ C:/SFML/mingw64/include/c++/14.2.0/ext/aligned_buffer.h \
+ C:/SFML/mingw64/include/c++/14.2.0/bits/enable_special_members.h \
+ C:/SFML/mingw64/include/c++/14.2.0/bits/node_handle.h \
+ C:/SFML/mingw64/include/c++/14.2.0/bits/erase_if.h \
+ C:/SFML/mingw64/include/c++/14.2.0/array \
+ C:/SFML/mingw64/include/c++/14.2.0/compare
