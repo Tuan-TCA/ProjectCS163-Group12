@@ -93,212 +93,225 @@ void LinkedList::event() {
         }
     }
 
-
-    // Kiểm tra phím mũi tên trái và phải
     if (back1.IsClicked() || back2.IsClicked()) {
         if (animationController.IsFinished()) {
-            // Khi animation đã hoàn tất, khôi phục Pos và trạng thái animation
             Pos = finishedPos;
             hasFinishedOnce = false;
             isPlaying = false;
-            //animationController.isFinished = false; // Đặt lại để animation chưa kết thúc
         }
         if (animationController.currentStep > 0) {
             animationController.isPaused = true;
-            animationController.currentStep--; // Quay lại bước trước đó
+            animationController.currentStep--; 
             if (!animationController.steps.empty()) {
-                animationController.steps[animationController.currentStep](); // Vẽ bước trước đó
+                animationController.steps[animationController.currentStep]();
             }
         }
     } else if ((next1.IsClicked() || next2.IsClicked()) && animationController.currentStep < animationController.steps.size() - 1) {
-        animationController.isPaused = true; // Tạm dừng animation
+        animationController.isPaused = true;
         animationController.currentStep++;
     }
 
 
     //...Lưu ý: Cần chỉnh sửa hiển thị nút play, pause cho phù hợp
 }
-
-
 void LinkedList::draw() {
     Page::draw();
 
-    // Toggle pause/resume khi nhấn SPACE
-    
+    static float elapsedTime = 0.0f; 
+    const float stepDuration = 0.5f/animationSpeed;
 
-    static float elapsedTime = 0.0f; // Thời gian trôi qua cho mỗi step
-    const float stepDuration = 0.5f; // Thời gian chờ giữa các step (0.5 giây)
-
-    // Operation: Insert
     if (currentOperation == Operation::Insert) {
         if (isInserting) {
-            animationController.Reset(); 
-            DrawInsert(lastInsertedKey); 
-            isInserting = false;         
-            elapsedTime = 0.0f;          
-            hasFinishedOnce = false;     
-        }
-        else {
-            if (!animationController.steps.empty()) { // Kiểm tra xem có bước nào không
-                // Luôn vẽ step hiện tại nếu currentStep hợp lệ
+            animationController.Reset();         
+            DrawInsert(lastInsertedKey);         
+            isInserting = false;                 
+            elapsedTime = 0.0f;                  
+            hasFinishedOnce = false;        
+        } else {
+            if (!animationController.steps.empty()) {
                 if (animationController.currentStep < animationController.steps.size()) {
-                    animationController.steps[animationController.currentStep]();
+                    animationController.steps[animationController.currentStep](); 
                 }
-    
-                if (animationController.IsPaused()) {
-                    // Khi pause, hiển thị thông tin step hiện tại
-                    DrawText(("Current Step: " + std::to_string(animationController.currentStep)).c_str(),
-                             10, 10, 20, WHITE);
-                } else {
-                    // Cập nhật thời gian và chuyển bước nếu đủ thời gian
-                    elapsedTime += GetFrameTime();
+
+                if (!animationController.IsPaused()) {
+                    elapsedTime += GetFrameTime(); 
                     if (elapsedTime >= stepDuration && !animationController.IsFinished()) {
                         animationController.NextStep();
-                        elapsedTime = 0.0f;
-                        cout << animationController.currentStep << endl;
+                        elapsedTime = 0.0f;            
+                        cout << animationController.currentStep << endl; 
                     }
                 }
             }
-    
+
             if (animationController.IsFinished()) {
-                DrawLL(Pos);
+                DrawLL(Pos); 
                 if (!hasFinishedOnce) {
-                    finishedPos = Pos;    // Cập nhật finishedPos trong lần đầu tiên
-                    hasFinishedOnce = true; // Đánh dấu đã hoàn tất lần đầu
+                    finishedPos = Pos;    
+                    hasFinishedOnce = true; 
                 }
                 if (Pos.x > NewPos.x) {
-                    Pos = {Pos.x - 5, Pos.y}; // Tiếp tục di chuyển Pos về NewPos
+                    Pos = {Pos.x - 5, Pos.y}; 
                 } else {
-                    Pos = NewPos; // Pos đã đến vị trí đích
-
+                    Pos = NewPos; 
                 }
             }
         }
     }
 
-    // Operation: Search
     if (currentOperation == Operation::Search) {
         if (isSearching) {
-            animationController.Reset();
-            DrawSearchNode(SearchKey);
-            isSearching = false;
-            elapsedTime = 0.0f;
+            animationController.Reset();         
+            DrawSearchNode(SearchKey);           
+            isSearching = false;                 
+            elapsedTime = 0.0f;                  
+            hasFinishedOnce = false;             
         } else {
-            // Kiểm tra phím mũi tên trái và phải
-            if (IsKeyPressed(KEY_LEFT) && animationController.currentStep > 0) {
-                animationController.isPaused = true;
-                animationController.currentStep--;
-            } else if (IsKeyPressed(KEY_RIGHT) && animationController.currentStep < animationController.steps.size() - 1) {
-                animationController.isPaused = true;
-                animationController.currentStep++;
-            }
-
             if (!animationController.steps.empty()) {
                 if (animationController.currentStep < animationController.steps.size()) {
-                    animationController.steps[animationController.currentStep]();
+                    animationController.steps[animationController.currentStep](); 
                 }
 
-                if (animationController.IsPaused()) {
-                    DrawText(("Current Step: " + std::to_string(animationController.currentStep)).c_str(),
-                             10, 10, 20, WHITE);
-                } else {
-                    elapsedTime += GetFrameTime();
+                if (!animationController.IsPaused()) {
+                    elapsedTime += GetFrameTime(); 
                     if (elapsedTime >= stepDuration && !animationController.IsFinished()) {
-                        animationController.NextStep();
-                        elapsedTime = 0.0f;
-                        cout << animationController.currentStep << endl;
+                        animationController.NextStep(); 
+                        elapsedTime = 0.0f;             
+                        cout << animationController.currentStep << endl; 
                     }
                 }
             }
 
             if (animationController.IsFinished()) {
-                DrawLL(Pos);
+                DrawLL(Pos); 
+                if (!hasFinishedOnce) {
+                    finishedPos = Pos;    
+                    hasFinishedOnce = true; 
+                }
+                if (Pos.x > NewPos.x) {
+                    Pos = {Pos.x - 5, Pos.y}; 
+                } else {
+                    Pos = NewPos; 
+                }
             }
         }
     }
 
-    // Operation: Delete
     if (currentOperation == Operation::Delete) {
         if (isDeleting) {
-            animationController.Reset();
-            DrawDeleteNode(DeleteKey);
-            isDeleting = false;
-            elapsedTime = 0.0f;
+            animationController.Reset(); 
+            DrawDeleteNode(DeleteKey);           
+            isDeleting = false;                  
+            elapsedTime = 0.0f;              
+            hasFinishedOnce = false;             
         } else {
-            // Kiểm tra phím mũi tên trái và phải
-            if (IsKeyPressed(KEY_LEFT) && animationController.currentStep > 0) {
-                animationController.isPaused = true;
-                animationController.currentStep--;
-            } else if (IsKeyPressed(KEY_RIGHT) && animationController.currentStep < animationController.steps.size() - 1) {
-                animationController.isPaused = true;
-                animationController.currentStep++;
-            }
-
             if (!animationController.steps.empty()) {
                 if (animationController.currentStep < animationController.steps.size()) {
-                    animationController.steps[animationController.currentStep]();
+                    animationController.steps[animationController.currentStep](); 
                 }
 
-                if (animationController.IsPaused()) {
-                    DrawText(("Current Step: " + std::to_string(animationController.currentStep)).c_str(),
-                             10, 10, 20, WHITE);
-                } else {
-                    elapsedTime += GetFrameTime();
+                if (!animationController.IsPaused()) {
+                    elapsedTime += GetFrameTime(); 
                     if (elapsedTime >= stepDuration && !animationController.IsFinished()) {
-                        animationController.NextStep();
-                        elapsedTime = 0.0f;
-                        cout << animationController.currentStep << endl;
+                        animationController.NextStep(); 
+                        elapsedTime = 0.0f;             
+                        cout << animationController.currentStep << endl; 
                     }
                 }
             }
 
             if (animationController.IsFinished()) {
-                DrawLL(Pos);
+                DrawLL(Pos); 
+                if (!hasFinishedOnce) {
+                    finishedPos = Pos;    
+                    hasFinishedOnce = true; 
+                }
+                if (Pos.x < NewPos.x) {
+                    Pos = {Pos.x + 5, Pos.y}; 
+                } else {
+                    Pos = NewPos; 
+                }
             }
         }
     }
 
-    // Operation: Update
     if (currentOperation == Operation::Update) {
         if (isUpdating) {
-            animationController.Reset();
-            DrawUpDateNode(UpdateKey, newVal);
-            isUpdating = false;
-            elapsedTime = 0.0f;
+            animationController.Reset();         
+            DrawUpDateNode(UpdateKey, newVal);   
+            isUpdating = false;                  
+            elapsedTime = 0.0f;                  
+            hasFinishedOnce = false;             
         } else {
-            // Kiểm tra phím mũi tên trái và phải
-            if (IsKeyPressed(KEY_LEFT) && animationController.currentStep > 0) {
-                animationController.isPaused = true;
-                animationController.currentStep--;
-            } else if (IsKeyPressed(KEY_RIGHT) && animationController.currentStep < animationController.steps.size() - 1) {
-                animationController.isPaused = true;
-                animationController.currentStep++;
-            }
-
             if (!animationController.steps.empty()) {
                 if (animationController.currentStep < animationController.steps.size()) {
-                    animationController.steps[animationController.currentStep]();
+                    animationController.steps[animationController.currentStep](); 
                 }
 
-                if (animationController.IsPaused()) {
-                    DrawText(("Current Step: " + std::to_string(animationController.currentStep)).c_str(),
-                             10, 10, 20, WHITE);
-                } else {
-                    elapsedTime += GetFrameTime();
+                if (!animationController.IsPaused()) {
+                    elapsedTime += GetFrameTime(); 
                     if (elapsedTime >= stepDuration && !animationController.IsFinished()) {
-                        animationController.NextStep();
-                        elapsedTime = 0.0f;
-                        cout << animationController.currentStep << endl;
+                        animationController.NextStep(); 
+                        elapsedTime = 0.0f;             
+                        cout << animationController.currentStep << endl; 
                     }
                 }
             }
 
             if (animationController.IsFinished()) {
-                DrawLL(Pos);
+                DrawLL(Pos); 
+                if (!hasFinishedOnce) {
+                    finishedPos = Pos;    
+                    hasFinishedOnce = true; 
+                }
+                if (Pos.x > NewPos.x) {
+                    Pos = {Pos.x - 5, Pos.y}; 
+                } else {
+                    Pos = NewPos; 
+                }
             }
         }
     }
 }
+
+LinkedList* LinkedList::copy() const {
+    LinkedList* newList = new LinkedList(); // Tạo đối tượng mới
+
+    // Sao chép các thuộc tính
+    newList->Pos = this->Pos;
+    newList->NewPos = this->NewPos;
+    newList->finishedPos = this->finishedPos;
+    newList->hasFinishedOnce = this->hasFinishedOnce;
+    newList->workplace = this->workplace;
+    newList->W = this->W;
+    newList->H = this->H;
+    newList->isInserting = this->isInserting;
+    newList->lastInsertedKey = this->lastInsertedKey;
+    newList->isSearching = this->isSearching;
+    newList->SearchKey = this->SearchKey;
+    newList->isDeleting = this->isDeleting;
+    newList->DeleteKey = this->DeleteKey;
+    newList->isUpdating = this->isUpdating;
+    newList->UpdateKey = this->UpdateKey;
+    newList->newVal = this->newVal;
+
+    // Sao chép danh sách liên kết
+    if (!this->head) return newList; // Nếu danh sách rỗng, trả về bản sao rỗng
+
+    Node* current = this->head;
+    Node* newHead = new Node(current->val, nullptr); // Sao chép node đầu tiên
+    newList->head = newHead;
+    Node* newCurrent = newHead;
+
+    current = current->next;
+    while (current) {
+        newCurrent->next = new Node(current->val, nullptr); // Sao chép node tiếp theo
+        newCurrent = newCurrent->next;
+        current = current->next;
+    }
+
+    return newList;
+}
+
 Vector2 LinkedList::GetPosition(int count){
     int d = 2 * radius * count + (count - 1)*spacing;
     int X = max((W/2 - d/2) + radius, 0) + 400;
@@ -435,7 +448,7 @@ bool LinkedList::DrawSearchNode(int key){
 
     Pos = GetPosition(CountNode(head));
     Vector2 center = Pos;
-    DrawLL(center);
+    //DrawLL(center);
 
     Node * a = head;
     while (a){
@@ -443,25 +456,25 @@ bool LinkedList::DrawSearchNode(int key){
         cout << "SEARCH: " << a->val << ' ' << key << '\n';
 
         if(a->val == key){
-            BeginDrawing();
+            animationController.AddStep([this, a,center]() {
             DrawLL(Pos);
             DrawNode(center, a->val, 1);
-            EndDrawing();
+            });
             found = true;
-            std::this_thread::sleep_for(std::chrono::milliseconds(700));
+            //std::this_thread::sleep_for(std::chrono::milliseconds(700));
             return true;
         }
-        BeginDrawing();
+        animationController.AddStep([this, a,center]() {
         DrawLL(Pos);
         DrawNode(center, a->val, -1);
-        EndDrawing();
+        });
         a = a->next;
         Vector2 newCenter = {center.x + 2*radius + spacing, center.y};
         center = newCenter;
-        std::this_thread::sleep_for(std::chrono::milliseconds((int)(500.0f / animationSpeed)));
+        //std::this_thread::sleep_for(std::chrono::milliseconds((int)(500.0f / animationSpeed)));
     }
     if (!found) {
-        BeginDrawing();  
+        animationController.AddStep([this, a,center]() {
         DrawLL(Pos);  
          
         int textW = MeasureText("NOT FOUND", font_size); 
@@ -470,44 +483,91 @@ bool LinkedList::DrawSearchNode(int key){
         int posY = Pos.y + font_size + 100;  
     
         DrawText("NOT FOUND", posX, posY, font_size, RED);
-        
-        EndDrawing(); 
-        std::this_thread::sleep_for(std::chrono::milliseconds(1000));  
+        });
+        //EndDrawing(); 
+        //std::this_thread::sleep_for(std::chrono::milliseconds(1000));  
     }
 
     return found;
 }
 
-
-void LinkedList::DrawDeleteNode(int key){
-    if (!head){
-        cout << "Head is NULL\n";
+void LinkedList::DrawDeleteNode(int key) {
+    if (!head) {
+        animationController.AddStep([this]() {
+            DrawLL(this->Pos);
+            DrawText("List is empty", Pos.x, Pos.y - 50, font_size, RED);
+        });
         return;
     }
 
-    bool ok = DrawSearchNode(key);
+    Pos = GetPosition(CountNode(head));
+    Vector2 center = Pos;
 
-    if (ok){
-        Pos = GetPosition(CountNode(head) - 1);
-        NewPos = Pos;
-        Node *a = head, *prev = nullptr;
-        if (head->val == key){
-            head = head->next;
-            delete a;
-            return;
+    // Tạo bản sao
+
+    Node *a = head, *prev = nullptr;
+    bool found = false;
+
+    
+    LinkedList* tmp = this->copy();
+    while (a) {
+        Vector2 currentCenter = center;
+        int val = a->val;
+        animationController.AddStep([tmp, currentCenter, val]() {
+            tmp->DrawLL(tmp->Pos);
+            tmp->DrawNode(currentCenter, val, -1);
+        });
+
+        if (a->val == key && !found) {
+            found = true;
+            animationController.AddStep([tmp, currentCenter, val]() {
+                tmp->DrawLL(tmp->Pos);
+                tmp->DrawNode(currentCenter, val, 1);
+            });
+            break;
         }
-        while (a){
-            if (a->val == key){
-                prev->next = a->next;
-                delete a;
-                return;
-            } 
-            prev = a;
-            a = a->next;
-        }
+
+        prev = a;
+        a = a->next;
+        center = {center.x + 2 * radius + spacing, center.y};
     }
-    return;
+
+    if (found) {
+        NewPos = GetPosition(CountNode(head) - 1);
+        tmp = this->copy();
+        animationController.AddStep([this, tmp, key]() {
+            Node *a = head, *prev = nullptr;
+            while (a && a->val != key) {
+                prev = a;
+                a = a->next;
+            }
+            if (a) {
+                if (prev) {
+                    prev->next = a->next;
+                } else {
+                    head = a->next;
+                }
+                delete a;
+            }
+            DrawLL(Pos); // Redraw after deletion (dùng this)
+        });
+    } 
+
+    else {
+        animationController.AddStep([tmp]() {
+            tmp->DrawLL(tmp->Pos);
+            int textW = MeasureText("NOT FOUND", tmp->font_size);
+            int listWidth = max(tmp->CountNode(tmp->head), 1) * (2 * tmp->radius + tmp->spacing);
+            int posX = tmp->Pos.x + (listWidth - textW) / 2 - tmp->radius;
+            int posY = tmp->Pos.y + tmp->font_size + 100;
+            DrawText("NOT FOUND", posX, posY, tmp->font_size, RED);
+        });
+    }
+
+    delete tmp;     // Giải phóng bản sao
 }
+
+
 
 void LinkedList::DrawUpDateNode(int first, int second){
     if(!head){

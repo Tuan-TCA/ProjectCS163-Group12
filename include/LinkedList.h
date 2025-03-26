@@ -72,6 +72,8 @@ class LinkedList : public Page{
                 current = nextNode;
             }
         }
+        
+        LinkedList* copy() const;
         //animation
         Vector2 GetPosition(int count);
         Vector2 Pos = {400,300}, NewPos, finishedPos;
@@ -88,4 +90,5 @@ class LinkedList : public Page{
         void event() override;
         void init() override;
         void draw() override;
+
     };
