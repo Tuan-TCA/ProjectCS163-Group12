@@ -157,12 +157,13 @@ public:
         if (active) {
             int key = GetCharPressed();
             while (key > 0 && inputText.size() < 7) {
-                if (key >= '0' && key <= '9') {
+                if (key >= '0' && key <= '9' || key == ' ') {
                     inputText += (char)key;
                 }
                 key = GetCharPressed();
             }
         }
+
     }
 
     void resetTextbox(){
@@ -331,24 +332,29 @@ public:
     float value;
     float minValue;
     float maxValue;
-
-    Slider(){}
+    bool isPressing;
+    Slider(){isPressing = false;}
     Slider(Rectangle bounds, float minValue, float maxValue) {
         this->bounds = bounds;
         this->minValue = minValue;
         this->maxValue = maxValue;
         this->value = minValue;
+        isPressing = false;
     }
 
     void Update() {
-        if (IsMouseButtonDown(MOUSE_LEFT_BUTTON) && CheckCollisionPointRec(GetMousePosition(), bounds)) {
+        if (IsMouseButtonDown(MOUSE_LEFT_BUTTON)) {
+            if(CheckCollisionPointRec(GetMousePosition(), bounds) || isPressing){
             value = minValue + (maxValue - minValue) * ((GetMousePosition().x - bounds.x) / bounds.width);
             value = clamp(value, minValue, maxValue); //guarantee the value is always between maxvalue & minvalue
+            isPressing = true;
+            }
         }
+        else isPressing = false;
     }
 
     void Draw() {
         DrawRectangleRounded(bounds, 20,20, WHITE);
-        DrawRectangle((int)(bounds.x + (value - minValue) / (maxValue - minValue) * bounds.width), bounds.y, 10, bounds.height, RED);
+        DrawRectangleRounded({std::clamp(bounds.x + (value - minValue) / (maxValue - minValue) * bounds.width - bounds.width * 0.11f /2, bounds.x, bounds.x + bounds.width - bounds.width * 0.11f), bounds.y, bounds.width * 0.11f, bounds.height}, 20, 20, MyColor1);
     }
 };

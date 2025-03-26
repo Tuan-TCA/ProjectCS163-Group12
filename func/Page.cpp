@@ -7,6 +7,7 @@
 #include <iomanip>
 #include <sstream>
 #include <random>
+#include "ControlAnimation.h"
 using namespace std;
 
 int lastInsertedKey;
@@ -30,13 +31,12 @@ void Page::init() {
     deleteButton = Button(5, screenHeight / 2 - screenHeight*0.63f * 0.5f + 5, screenWidth*0.24f - 10, screenHeight*0.63f * 0.15f, "DELETE", MyColor1, Fade(MyColor1, 0.8f), WHITE);
     searchButton = Button(5, screenHeight / 2 - screenHeight*0.63f * 0.5f + 5, screenWidth*0.24f - 10, screenHeight*0.63f * 0.15f, "SEARCH", MyColor1, Fade(MyColor1, 0.8f), WHITE);
 
-    selectedIndex = 0;
-    optionButton = Button(screenWidth * 0.24f * 0.15f,screenHeight / 2 - screenHeight*0.63f * 0.35f + 10 , screenWidth*0.24f * 0.7f, screenHeight*0.63f * 0.15f, options[selectedIndex].c_str(), WHITE, LIGHTGRAY, MyColor5);
-    prevButton = Button(5,screenHeight / 2 - screenHeight*0.63f * 0.35f + 10 ,  screenWidth*0.24f * 0.15f - 10, screenHeight*0.63f * 0.15f, "<", WHITE, LIGHTGRAY, MyColor5);
-    nextButton = Button(screenWidth*0.24f * 0.85f + 5,screenHeight / 2 - screenHeight*0.63f * 0.35f + 10 ,  screenWidth*0.24f * 0.15f - 10, screenHeight*0.63f * 0.15f, ">", WHITE, LIGHTGRAY, MyColor5);
+    selectedInputIndex = 0;
+    InputOptionButton = Button(screenWidth * 0.24f * 0.15f,screenHeight / 2 - screenHeight*0.63f * 0.35f + 10 , screenWidth*0.24f * 0.7f, screenHeight*0.63f * 0.15f, InputOptions[selectedInputIndex].c_str(), WHITE, LIGHTGRAY, MyColor5);
+    InputPrevButton = Button(5,screenHeight / 2 - screenHeight*0.63f * 0.35f + 10 ,  screenWidth*0.24f * 0.15f - 10, screenHeight*0.63f * 0.15f, "<", WHITE, LIGHTGRAY, MyColor5);
+    InputNextButton = Button(screenWidth*0.24f * 0.85f + 5,screenHeight / 2 - screenHeight*0.63f * 0.35f + 10 ,  screenWidth*0.24f * 0.15f - 10, screenHeight*0.63f * 0.15f, ">", WHITE, LIGHTGRAY, MyColor5);
     currentInput = InputType::Keyboard;
     operationButtons.push_back(Button(120, 50, 100, 30, "Insert", MyColor1, MyColor2, WHITE));
-
     operationButtons.push_back(Button(120, 50, 100, 30, "Create", MyColor1, MyColor2, WHITE));
     operationButtons.push_back(Button(120, 90, 100, 30, "Delete", MyColor1, MyColor2, WHITE));
     operationButtons.push_back(Button(120, 130, 100, 30, "Search", MyColor1, MyColor2, WHITE));
@@ -56,8 +56,8 @@ void Page::init() {
     next2 = ButtonFromImage("res/button/2-next.png", "res/button/2-next.png", screenWidth / 2 +   screenWidth * 0.05f , screenHeight*0.926f,  screenWidth * 0.04f, screenWidth*0.04f);
     pause2 = ButtonFromImage("res/button/2-pause.png", "res/button/2-pause.png", screenWidth / 2 -   screenWidth * 0.05f / 2  , screenHeight*0.92f,  screenWidth * 0.05f, screenWidth*0.05f);
     play2 = ButtonFromImage("res/button/2-play.png", "res/button/2-play.png", screenWidth / 2 -   screenWidth * 0.05f / 2  , screenHeight*0.92f,  screenWidth * 0.05f, screenWidth*0.05f);
-
-    animationSpeed = 1.0;
+    timeSlider = Slider({screenWidth * 0.05f , screenHeight*0.936f,  screenWidth * 0.3f ,screenHeight * 0.095f / 3 * 0.9f}, 0.0f, 1.0f);
+    
     speedSliding = MyRec(screenWidth * 0.723f , screenHeight*0.936f,  screenWidth * 0.182f * 0.38f,screenHeight * 0.095f / 3 * 0.9f, "", MyColor3, WHITE);
     background1 = resizedImage("res/BackGround.png", screenWidth, screenHeight);   
     background2 = resizedImage("res/background_theme2.png", screenWidth, screenHeight);    
@@ -82,6 +82,7 @@ void Page::draw() {
     DrawRectangleRec(side, MyColor3);
     DrawRectangleRounded({screenWidth * 0.7f , screenHeight*0.934f , screenWidth * 0.182f,screenHeight * 0.095f / 3}, 20, 20, WHITE); //speed control
     speedSliding.DrawRounded(MyColor3);
+    timeSlider.Draw();
     stringstream ss;
     ss << fixed << std::setprecision(1) << animationSpeed;
     // cout << " page draw speed : " << animationSpeed * 500 << endl;
@@ -99,19 +100,19 @@ void Page::draw() {
     }
 
     if(switchState){
-        !isPlaying ? play2.Draw() : pause2.Draw();
+        isPlaying ? play2.Draw() : pause2.Draw();
         back2.Draw();
         next2.Draw();
         home2.Draw(); }
     else{ 
-        !isPlaying ? play1.Draw() : pause1.Draw();
+        isPlaying ? play1.Draw() : pause1.Draw();
         back1.Draw();
         next1.Draw();
         home.Draw();
     }
-    optionButton.Draw( LIGHTGRAY, WHITE);
-    prevButton.Draw(LIGHTGRAY, WHITE);
-    nextButton.Draw(LIGHTGRAY, WHITE);
+    InputOptionButton.Draw( LIGHTGRAY, WHITE);
+    InputPrevButton.Draw(LIGHTGRAY, WHITE);
+    InputNextButton.Draw(LIGHTGRAY, WHITE);
     if(currentOperation == Operation::Insert){
         insertButton.Draw(MyColor1, Fade(MyColor1, 0.8f));
         if (isInsertExpanded) {
@@ -176,7 +177,7 @@ void Page::event() {
         return;
     }
 
-    handleInput();
+    if(mode != MODE::GRAPH) {handleInput();}
 
     //speed sliding event
     Vector2 mousePoint = GetMousePosition();
@@ -189,20 +190,22 @@ void Page::event() {
     animationSpeed = clamp(static_cast<float>((speedSliding.bounds.x - minX) * 5 / (maxX - minX)), 0.1f, 5.0f);
     animationSpeed = round(animationSpeed * 10.0) / 10.0; // round up to 1 decimal
 
-    // //play & pause event
-    // if(!isPlaying){
-    //     if(!switchState ? play1.IsClicked() : play2.IsClicked()){
-    //         isPlaying = true;
-    //         TraceLog(LOG_INFO, "is playing");
-    //     }
-    // }
-    // else{
-    //     if( isPlaying && !switchState ? pause1.IsClicked() : pause2.IsClicked())
-    //     {
-    //         isPlaying = false;
-    //         TraceLog(LOG_INFO, "is pausing");
-    //     }
-    // }
+    //time slider
+    timeSlider.Update();
+    // play & pause event
+    if(!isPlaying){
+        if(!switchState ? play1.IsClicked() : play2.IsClicked()){
+            isPlaying = true;
+            TraceLog(LOG_INFO, "is playing");
+        }
+    }
+    else{
+        if(!switchState ? pause1.IsClicked() : pause2.IsClicked())
+        {
+            isPlaying = false;
+            TraceLog(LOG_INFO, "is pausing");
+        }
+    }
 
     //Operation event
     if(currentOperation == Operation::Insert){
@@ -324,19 +327,19 @@ void Page::event() {
 
     //INPUT Event
 
-    if (prevButton.IsClicked()) {
-        selectedIndex = (selectedIndex - 1 + options.size()) % options.size();
-        optionButton.label = options[selectedIndex].c_str(); 
+    if (InputPrevButton.IsClicked()) {
+        selectedInputIndex = (selectedInputIndex - 1 + InputOptions.size()) % InputOptions.size();
+        InputOptionButton.label = InputOptions[selectedInputIndex].c_str(); 
     }
 
-    if (nextButton.IsClicked()) {
-        selectedIndex = (selectedIndex + 1) % options.size();
-        optionButton.label = options[selectedIndex].c_str(); 
+    if (InputNextButton.IsClicked()) {
+        selectedInputIndex = (selectedInputIndex + 1) % InputOptions.size();
+        InputOptionButton.label = InputOptions[selectedInputIndex].c_str(); 
     }
 
-        if (options[selectedIndex] == "KEYBOARD") currentInput = InputType::Keyboard;
-        if (options[selectedIndex] == "RANDOM") currentInput = InputType::Random;
-        if (options[selectedIndex] == "FILE") currentInput = InputType::File;
+        if (InputOptions[selectedInputIndex] == "KEYBOARD") currentInput = InputType::Keyboard;
+        if (InputOptions[selectedInputIndex] == "RANDOM") currentInput = InputType::Random;
+        if (InputOptions[selectedInputIndex] == "FILE") currentInput = InputType::File;
 }
 
 std::mt19937 rng(std::random_device{}());
@@ -344,7 +347,7 @@ void Page::handleInput(){
 
     switch (currentInput) {
             case InputType::Random:
-            if (optionButton.IsClicked()) {
+            if (InputOptionButton.IsClicked()) {
                 std::uniform_int_distribution<int> dist(0, 999); // Giới hạn số từ 0-999
                 textbox.inputText = to_string(dist(rng)); // Lấy số ngẫu nhiên
             }
@@ -378,7 +381,11 @@ void Page::handleInput(){
             }
 
         if ((Ok.IsClicked() || IsKeyPressed(KEY_ENTER) || IsKeyPressed(KEY_KP_ENTER)) && !textbox.inputText.empty()) {
-            textbox.nums.push_back(stoi(textbox.inputText));
+            int val;
+            stringstream ss(textbox.inputText);
+            while(ss >> val){
+                textbox.nums.push_back(val);
+            }
             TraceLog(LOG_INFO, textbox.inputText.c_str());
             textbox.inputText = "";
         }    

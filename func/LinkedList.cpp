@@ -364,8 +364,8 @@ void LinkedList::DrawNode(Vector2 center, int key, int choose){
     if (choose == 0){
         DrawCircleV(center, radius, WHITE);
     }
-    DrawCircleV(center, radius - 9, ring);
-    DrawCircleV(center, radius - 10, circle);
+    DrawCircleV(center, radius - 9, MyColor2);
+    DrawCircleV(center, radius - 10, MyColor2);
 
     int Fs = max(10, static_cast<int>(font_size-s.size()*3));
     //Draw text

@@ -3,7 +3,7 @@
 #include<raylib.h>
 #include "Button.h"
 #include "Variables.h"
-#include "InputField.h"
+
 using namespace std;
 
 
@@ -12,7 +12,8 @@ enum class Operation {
     Create,
     Delete,
     Search,
-    Update
+    Update,
+    MST
 };
 
 enum class InputType {
@@ -24,11 +25,11 @@ class Page {
 public:
     //input
     InputType currentInput;
-    vector<string> options = {"RANDOM", "KEYBOARD", "FILE"};
-    int selectedIndex;  // position hiện tại
-    Button optionButton; // op hiện tại
-    Button prevButton;  // chuyển trái
-    Button nextButton; 
+    vector<string> InputOptions = {"RANDOM", "KEYBOARD", "FILE"};
+    int selectedInputIndex;  // position hiện tại
+    Button InputOptionButton; // op hiện tại
+    Button InputPrevButton;  // chuyển trái
+    Button InputNextButton; 
 
     //operations
     Operation currentOperation;
@@ -40,6 +41,12 @@ public:
     bool isDeleteExpanded = false;  
     bool isSearchExpanded = false;  
 
+    // vector<string> OperationOptions;
+    // int selectedOperationIndex;
+    // Button OperationOptionButton;
+    // Button OperationPrevButton;
+    // Button OperationNextButton;
+
     //others
     bool isPlaying;
     MyRec head;
@@ -47,8 +54,9 @@ public:
     Rectangle side;
     Button Ok;
     TextBox textbox;
-     float animationSpeed;
+     
     MyRec speedSliding;
+    Slider timeSlider;
     ButtonFromImage back1, next1, pause1, play1;
     ButtonFromImage back2, next2, pause2, play2;
     ButtonFromImage home, home2;
@@ -59,5 +67,5 @@ public:
     virtual void draw();
     virtual void event();
     void reset();
-    void handleInput();
+    virtual void handleInput();
 };
