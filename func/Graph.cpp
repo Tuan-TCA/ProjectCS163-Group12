@@ -3,6 +3,7 @@
 #include <iostream>
 #include <cmath>
 #include "Variables.h"
+#include <algorithm>
 #include "ControlAnimation.h"
 #include <unordered_set>
 using namespace std;
@@ -12,7 +13,6 @@ float distance(Vector2 pos1, Vector2 pos2){
 }
 void Graph::init(){
     Page::init();
-    subButtonPosition.pop_back();
     MSTbutton =  Button(5, screenHeight / 2 - screenHeight*0.63f * 0.5f + 5, screenWidth*0.24f - 10, screenHeight*0.63f * 0.15f, "MST", MyColor1, Fade(MyColor1, 0.8f), WHITE); 
     added = false;
     minDistance = 100.0f;
@@ -65,23 +65,57 @@ void Graph::event(){
         }
     }
 
-    
+    if (back1.IsClicked() || back2.IsClicked()) {
+        cout << "back\n";
+        isPlaying = false;
+        cout << "before back " << currentIndex << endl;
+        if (!arrayQueue.empty() && currentIndex < arrayQueue.size()) {
+            vector<Drawable*> current = arrayQueue[currentIndex];
+            for (auto& elem : current) {
+                elem->reset();
+            }
+            currentIndex--;
+            if (currentIndex < 0) currentIndex = 0;
+            if (currentIndex < arrayQueue.size()) {
+                vector<Drawable*> prev = arrayQueue[currentIndex];
+                for (auto& elem : prev) {
+                    elem->reset();
+                    elem->isAnimating = true; 
+                }
+            }
+        }
+        cout << "after back " << currentIndex << endl;
+    } 
+    else if (next1.IsClicked() || next2.IsClicked()) {
+        cout << "next\n";
+        isPlaying = false; 
+        cout << "before next " << currentIndex << endl;
+        if (!arrayQueue.empty() && currentIndex < arrayQueue.size()) {
+            vector<Drawable*> current = arrayQueue[currentIndex];
+            for (auto& elem : current) {
+                elem->SetColor(ORANGE);
+                elem->isAnimating = false;
+            }
+            currentIndex++;
+            if (currentIndex > arrayQueue.size() - 1) currentIndex = arrayQueue.size() - 1;
+            if (currentIndex < arrayQueue.size()) {
+                vector<Drawable*> next = arrayQueue[currentIndex];
+                for (auto& elem : next) {
+                    elem->SetColor(ORANGE);
+                    elem->isAnimating = false; // ready to be animating
+                }
+            }
+        }
+        cout << "after next " << currentIndex << endl;
+    }
    handleBFS();
-    
+    // cout << currentIndex << endl
    
 }
 
 void Graph::startAnimation(float duration){
     this->duration = duration;
-    while(!animationQueue.empty()){
-        animationQueue.pop();
-    }
-   
-    for(auto& s: arrayQueue){
-        // s->print();
-        animationQueue.push(s);
-        
-    }
+    currentIndex = 0;
 }
 
 
@@ -97,48 +131,6 @@ Vertex* Graph::findVertex(int value){
         if(v.value == value) return &v;
     }
     return nullptr;
-}
-void Graph::bfs(Vertex* source) {
-    // cout << "bfs\n";
-    int n = matrix.size();
-    if (n == 0) return;
-    arrayQueue.clear();
-  
-    queue<Vertex*> q;
-    unordered_set<Edge*> visitedEdge;
-    unordered_set<Vertex*> visitedVertices; 
-
-    q.push(source);  // Start with the source vertex which one we've just clicked on
-    visitedVertices.insert(source);
-  
-
-    while (!q.empty()) {
-        Vertex* v = q.front();
-        arrayQueue.push_back(v);
-        // v->print();
-        q.pop();
-
-        for (int i = 0; i < n; i++) {
-            if (matrix[v->value][i] != 0) {
-                Vertex* nextVertex = findVertex(i);
-                if (nextVertex != nullptr && visitedVertices.find(nextVertex) == visitedVertices.end()) { 
-                    Edge* e = findEdge(v, nextVertex);
-                    if (e != nullptr && visitedEdge.find(e) == visitedEdge.end()){
-                        arrayQueue.push_back(e);
-                        visitedEdge.insert(e);
-                        // e->print();
-                        // cout << "yes\n"; 
-                    }
-                    q.push(nextVertex);
-                    visitedVertices.insert(nextVertex);
-                }
-            }
-        }
-    }
-
-    for (auto& elem : arrayQueue) {
-    elem->print();
-    }
 }
 
 
@@ -234,46 +226,55 @@ void Graph::reset(){
     vertex.clear();
     edge.clear();
     matrix.clear();
-    while(!animationQueue.empty()){
-        animationQueue.pop();
-    }
+
     arrayQueue.clear();
-   
-     isAnimating  = false;
-     got1stV = false;
-     bfsCalled = false;
-     clickedV = nullptr;
+    isAnimating  = false;
+    got1stV = false;
+    bfsCalled = false;
+    clickedV = nullptr;
+    currentIndex = 0;
 }
+
 void Graph::handleBFS(){
     float deltaTime = GetFrameTime();
      if(!got1stV){
         clickedV = getFirstVertexClicked();
     }
+        
+    // cout << arrayQueue.size();
     if(isAnimating && clickedV){
     
          if (!bfsCalled) {
             bfs(clickedV);
             // cout << arrayQueue.size() << endl;
             startAnimation(1);
-            animationQueue.front()->startAnimation(ORANGE, duration);
+            arrayQueue[currentIndex][0]->startAnimation(ORANGE, 1);
             bfsCalled = true;
         }
-        if (!animationQueue.empty()) {
-            Drawable* current = animationQueue.front();
-            if (!current->isAnimating) {
-                animationQueue.pop();
-        
-                if (!animationQueue.empty()) {
-                    current = animationQueue.front();
-                    current->startAnimation(ORANGE, duration);
-                }
-                // current->print();
-                
-            }
+            if (!arrayQueue.empty() && currentIndex < arrayQueue.size()) {
             
-            // cout << deltaTime << endl;
-            if(isPlaying){
-            current->Update(deltaTime);
+            vector<Drawable*> current = arrayQueue[currentIndex];
+ 
+            int checkDoneAnimating = 0;
+            for(int i = 0; i < current.size(); i++){
+                if (!current[i]->isAnimating) { // done or hasn't started yet
+                checkDoneAnimating++;
+                    // cout << "dôdo" << endl;        
+                }
+               
+                   if(isPlaying) current[i]->Update(deltaTime);
+            }
+            if(checkDoneAnimating == current.size()) {
+                if(!arrayQueue.empty() && currentIndex + 1 < arrayQueue.size()){
+                        current = arrayQueue[++currentIndex];
+                        for(auto& elem: current){
+                            elem->startAnimation(ORANGE, 1);
+                        }
+
+                    }
+                    else if(currentIndex >= arrayQueue.size()){
+                        isPlaying = false;
+                    }
             }
         }
         else{
@@ -283,4 +284,70 @@ void Graph::handleBFS(){
     else {
         bfsCalled = false;
     } 
+    
+}
+
+
+void Graph::bfs(Vertex* source) {
+    // cout << "bfs\n";
+    int n = matrix.size();
+    if (n == 0) return;
+    arrayQueue.clear();
+    
+    
+    queue<Vertex*> q;
+    unordered_set<Edge*> visitedEdge;
+    unordered_set<Vertex*> visitedVertices; 
+
+    q.push(source);  // Start with the source vertex which one we've just clicked on
+    visitedVertices.insert(source);
+    arrayQueue.push_back({source});
+    
+    while (!q.empty()) {
+        Vertex* v = q.front();
+        
+        // v->print();
+        q.pop();
+        vector<Vertex*> vertexStorage;
+        vector<Edge*> edgeStorage;
+        for (int i = 0; i < n; i++) {
+            if (matrix[v->value][i] != 0) {
+                Vertex* nextVertex = findVertex(i);
+                if (nextVertex != nullptr && visitedVertices.find(nextVertex) == visitedVertices.end()) { 
+                    Edge* e = findEdge(v, nextVertex);
+                    if (e != nullptr && visitedEdge.find(e) == visitedEdge.end()){
+                        edgeStorage.push_back(e);
+                        visitedEdge.insert(e);
+                        // e->print();
+                        // cout << "yes\n"; 
+                    }
+                    q.push(nextVertex);
+                    vertexStorage.push_back(nextVertex);
+                    visitedVertices.insert(nextVertex);
+                }
+            }
+        }
+        vector<Drawable*> drawableVertexStorage;
+            for (auto& v : vertexStorage) {
+                drawableVertexStorage.push_back(static_cast<Drawable*>(v)); // ép kiểu Vertex* thành Drawable*
+            }
+        vector<Drawable*> drawableEdgeStorage;
+            for (auto& e : edgeStorage) {
+                drawableEdgeStorage.push_back(static_cast<Drawable*>(e)); 
+            }
+        if(drawableVertexStorage.size() != 0)  arrayQueue.push_back(drawableEdgeStorage);
+        if(drawableEdgeStorage.size() != 0) arrayQueue.push_back(drawableVertexStorage);
+        
+    }
+    int i = 0;
+    for (auto& elem : arrayQueue) {
+        cout << "Index " << i++ << endl;
+        for(auto& s: elem) s->print();
+    }
+}
+
+void Graph::update(){
+    float deltaTime = GetFrameTime();
+
+
 }

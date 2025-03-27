@@ -5,6 +5,7 @@
 #include <queue>
 #include "Vertex.h"
 #include "Edge.h"
+#include "ControlAnimation.h"
 using namespace std;
 class Graph : public Page{
     public:
@@ -14,19 +15,18 @@ class Graph : public Page{
     vector<vector<int>> matrix;
     Button MSTbutton;
     float minDistance;
-    queue<Drawable*> animationQueue;
-    vector<Drawable*> arrayQueue;
+    vector<vector<Drawable*>> arrayQueue;
     float duration;
     bool isAnimating;
     bool got1stV;
     bool bfsCalled = false;
     Vertex* clickedV = nullptr;
-
+    int currentIndex;
 
     void init() override;
     void draw() override;
     void event() override;
-    
+    void update();
     void handleInput() override;
     void startAnimation( float duration);
     void bfs(Vertex* source);

@@ -8,7 +8,8 @@ class Menu
 {
 public:
     SwitchButton SwitchTheme;
-    vector<AnimatedButton> buttons;
+    vector<AnimatedImageButton> buttons1;
+    vector<AnimatedImageButton> buttons2;
     Font font; 
     void init();
     void draw();

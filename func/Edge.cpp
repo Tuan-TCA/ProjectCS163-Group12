@@ -4,6 +4,7 @@
 void Edge::Update(float deltaTime){
     if(isAnimating){
         animationTime += deltaTime;
+        
         float t = animationTime / (duration / animationSpeed);
         if(t > 1) {
             t = 1; 
@@ -34,4 +35,14 @@ void Edge::print(){
 
 float Edge::length(){
     return sqrt(pow( start->position.x - end->position.x,2) + pow(start->position.y - end->position.y, 2));
+}
+
+void Edge::SetColor(Color target){
+    this->color = target;
+}
+
+void Edge::reset(){
+    color = MyColor4;
+    animationTime = 0.0f;
+    isAnimating = false;
 }

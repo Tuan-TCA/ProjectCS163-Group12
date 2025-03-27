@@ -274,6 +274,52 @@ public:
     }
 };
 
+class AnimatedImageButton : public AnimatedButton{
+    public:
+
+    Texture2D texture;
+
+    AnimatedImageButton(){
+    }
+        AnimatedImageButton(const char* path, float x, float y, float width, float height) : 
+        AnimatedButton( x,  y,  width,  height,  "",  WHITE,  WHITE,  WHITE){
+            texture = resizedImage(path, width, height);
+        }
+    float Lerp(float start, float end, float amount) {
+        return start + (end - start) * amount;
+    }
+        void Update() override {
+        Button::Update();
+        float deltaTime = GetFrameTime();
+        float targetScale = isHovered ? 1.2f : 1.0f;
+        float targetAlpha = isHovered ? 0.5f : 1.0f;
+        float lerpSpeed = 5.0f; // Tốc độ nội suy
+
+        scaleFactor = Lerp(scaleFactor, targetScale, lerpSpeed * deltaTime);
+        colorAlpha = Lerp(colorAlpha, targetAlpha, lerpSpeed * deltaTime);
+
+        // Có thể thêm một ngưỡng nhỏ để xác định khi hiệu ứng kết thúc
+        if (abs(scaleFactor - targetScale) < 0.01f && abs(colorAlpha - targetAlpha) < 0.01f) {
+            isScaling = false; // Hoặc bạn có thể bỏ biến isScaling nếu không cần thiết nữa
+        } else {
+            isScaling = true;
+        }
+    }
+    void Draw() override{
+        Rectangle scaledBounds = {
+            bounds.x - (bounds.width * (scaleFactor - 1.0f) / 2.0f),
+            bounds.y - (bounds.height * (scaleFactor - 1.0f) / 2.0f),
+            bounds.width * scaleFactor,
+            bounds.height * scaleFactor
+        };
+
+        
+        DrawTexture(texture, bounds.x, bounds. y, WHITE);
+      
+    }
+
+};
+
 class SwitchButton : public Button {
 public:
     float switchPos;  

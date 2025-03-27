@@ -57,3 +57,17 @@ void Vertex::startAnimation(Color target, float duration) {
 void Vertex::print(){
     cout << value << endl;
 }
+
+void Vertex::SetColor(Color target){
+    this->color = WHITE;
+    this->ringColor = target;
+    this->textColor = target;
+}
+
+void Vertex::reset(){
+     isAnimating = false;
+        color = WHITE;
+        ringColor = MyColor4;
+        textColor = MyColor4;
+        animationTime = 0;
+}

@@ -417,7 +417,7 @@ void LinkedList::DrawInsert(int key) {
     Node * a = head;
     Node * b = new Node(0, a);
     while (a) {
-        animationController.AddStep([this, a,center]() {
+        animationController.AddStep([this, a,center] () {
             //BeginDrawing();
             DrawLL(this->Pos, false);
             DrawNode(center, a->val, -1);

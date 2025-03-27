@@ -29,4 +29,6 @@ public:
     void startAnimation(Color target, float duration) override;
     void print();
     float length();
+    void SetColor(Color targetColor) override;
+    void reset() override;
 };

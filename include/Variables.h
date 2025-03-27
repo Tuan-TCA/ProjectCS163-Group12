@@ -34,7 +34,8 @@ public:
    
     virtual ~Drawable() {} 
     bool isAnimating;
-
+    virtual void SetColor(Color targetColor) = 0;
      virtual void print(){}
+    virtual void reset() = 0;
 };
 

@@ -192,19 +192,11 @@ void Page::event() {
 
     //time slider
     timeSlider.Update();
-    // play & pause event
-    if(!isPlaying){
-        if(!switchState ? play1.IsClicked() : play2.IsClicked()){
-            isPlaying = true;
-            TraceLog(LOG_INFO, "is playing");
-        }
-    }
-    else{
-        if(!switchState ? pause1.IsClicked() : pause2.IsClicked())
-        {
-            isPlaying = false;
-            TraceLog(LOG_INFO, "is pausing");
-        }
+
+    if(play1.IsClicked() || play2.IsClicked() || pause1.IsClicked() || pause2.IsClicked() || IsKeyPressed(KEY_SPACE)){
+        isPlaying = !isPlaying;
+        if(!isPlaying) TraceLog(LOG_INFO, "is pausing");
+        else TraceLog(LOG_INFO, "is playing");
     }
 
     //Operation event
