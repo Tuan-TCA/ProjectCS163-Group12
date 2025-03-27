@@ -7,7 +7,6 @@ Program::Program () {
     SetTargetFPS(10);
     mode = MODE::MENU;
     menu.init();
-    LinkedList A = LinkedList();
 }
 
 
@@ -55,10 +54,26 @@ void Program::event() {
         A.EventLLinPage(page);
         //cout<<"K";
     }
-    if(mode == MODE::HASHTB) {
-        // Hash Table
+    else if (mode == MODE::HASHTB) {
         page.event();
+    
+        if (page.func == FUNC::CREATE && !page.textbox.nums.empty()) {
+            int size = page.textbox.nums[0];
+            page.textbox.nums.erase(page.textbox.nums.begin());
+    
+            if (B) delete B;  // xoá bảng cũ nếu có
+            B = new HashTableChaining(size);  // tạo bảng mới với tableSize
+    
+            B->createKeys = page.textbox.nums;  // danh sách các key cần chèn
+            B->isCreating = true;
+    
+            page.textbox.nums.clear();
+            page.textbox.inputText = "";
+        }
+    
+        if (B) B->EventHashTableInPage(page);
     }
+    
     if(mode == MODE::AVL) {
         // AVL Tree
         page.event();
@@ -85,6 +100,7 @@ void Program::draw() {
     if (mode == MODE::HASHTB) {
         //LL.draw();
         page.draw();
+        if (B) B->DrawHashTableInPage(page);
     }
     if (mode == MODE::AVL) {
         //LL.draw();
@@ -95,6 +111,8 @@ void Program::draw() {
         page.draw();
     }
 }
-
+Program::~Program() {
+    if (B) delete B;
+}
 
 
