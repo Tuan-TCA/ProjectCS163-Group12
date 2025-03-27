@@ -6,6 +6,7 @@
 #include "LinkedList.h"
 #include "HashTB.h"
 #include "Graph.h"
+#include "AVL.h"
 class Program
 {
 public:
@@ -13,6 +14,7 @@ public:
     Page page;
     LinkedList LL;
     Graph graph;
+    AVL avl;
     Program();
     void run();
 
