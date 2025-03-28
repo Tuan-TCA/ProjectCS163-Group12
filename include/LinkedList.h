@@ -32,9 +32,9 @@ class LinkedList : public Page{
 
 
         //public variable for linked-list
-        const int radius = 50;
-        const int font_size = 40;
-        const int spacing = 50;
+        const int radius = 30;
+        const int font_size = 30;
+        const int spacing = 30;
         const Color choose_color = { 0, 128, 0, 128 };//green
         const Color visit_color = RED;//red
         const Color ring = MyColor2;

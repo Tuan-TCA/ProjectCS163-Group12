@@ -355,14 +355,14 @@ void LinkedList::DrawNode(Vector2 center, int key, int choose){
     // ClearBackground(GRAY);
     //Draw circle
     if (choose == 1){
-        DrawCircleV(center, radius, choose_color);
+        DrawCircleV(center, radius - 3, choose_color);
     }
     if (choose == -1){
         //cout << center.x << ' ' << key << '\n';
-        DrawCircleV(center, radius, visit_color);
+        DrawCircleV(center, radius - 3, visit_color);
     }
     if (choose == 0){
-        DrawCircleV(center, radius, WHITE);
+        DrawCircleV(center, radius - 3, WHITE);
     }
     DrawCircleV(center, radius - 9, MyColor2);
     DrawCircleV(center, radius - 10, MyColor2);
