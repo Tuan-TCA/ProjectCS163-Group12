@@ -91,4 +91,10 @@ class LinkedList : public Page{
         void init() override;
         void draw() override;
 
+        //test show code
+        static const char* INSERT_CODE[];
+        static const char* DELETE_CODE[];
+        static const char* SEARCH_CODE[];
+        void DrawHighlightedCode(const char* code[], int start, int end);
+
     };

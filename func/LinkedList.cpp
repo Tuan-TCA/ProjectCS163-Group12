@@ -401,8 +401,6 @@ void LinkedList::DrawLL(Vector2 pos, bool last) {
 }
 
 
-
-
 void LinkedList::DrawInsert(int key) {
     if (!head) {
         head = new Node(key, nullptr);
@@ -421,6 +419,7 @@ void LinkedList::DrawInsert(int key) {
             //BeginDrawing();
             DrawLL(this->Pos, false);
             DrawNode(center, a->val, -1);
+            
             //EndDrawing();
         });
 
@@ -438,6 +437,8 @@ void LinkedList::DrawInsert(int key) {
 
     NewPos = GetPosition(CountNode(head));
 }
+
+
 
 bool LinkedList::DrawSearchNode(int key){
     if (!head){
@@ -490,6 +491,7 @@ bool LinkedList::DrawSearchNode(int key){
 
     return found;
 }
+
 
 void LinkedList::DrawDeleteNode(int key) {
     if (!head) {
@@ -603,3 +605,70 @@ void LinkedList::DrawUpDateNode(int first, int second){
         std::this_thread::sleep_for(std::chrono::milliseconds((int)(500.0f / animationSpeed)));
     }
 }
+
+//test show code
+void LinkedList::DrawHighlightedCode(const char* code[], int start, int end) {
+    int y = 50; // position
+    for (int i = 0; i < start; i++) {
+        DrawText(code[i], 50, y, font_size - 10, MyColor2); // hàng đợi
+        y += font_size + 5;
+    }
+    for (int i = start; i <= end; i++) {
+        DrawText(code[i], 50, y, font_size - 10, MyColor3); // code đang chạy
+        y += font_size + 5;
+    }
+    for (int i = end + 1; i < sizeof(code) / sizeof(code[0]); i++) {
+        DrawText(code[i], 50, y, font_size - 10, MyColor2);
+        y += font_size + 5;
+
+    }
+}
+const char* LinkedList::INSERT_CODE[] = {
+    "Node* new_node = new Node(key);",
+    "",
+    "if (!head) {",
+    "    head = new_node;",
+    "    return;",
+    "}",
+    "",
+    "Node* temp = head;",
+    "while (temp->next) {",
+    "    temp = temp->next;",
+    "}",
+    "",
+    "temp->next = new_node;"
+};
+
+const char* LinkedList::DELETE_CODE[] = {
+    "if (!head) return;",
+
+    "if (head->val == key) {",
+    "    Node* temp = head;",
+    "    head = head->next;",
+    "    delete temp;",
+    "    return;",
+    "}",
+
+    "Node* temp = head;",
+    "while (temp->next && temp->next->val != key) {",
+    "    temp = temp->next;",
+    "}",
+
+    "if (temp->next) {",
+    "    Node* delNode = temp->next;",
+    "    temp->next = temp->next->next;",
+    "    delete delNode;",
+    "}",
+};
+
+const char* LinkedList::SEARCH_CODE[] = {
+    "if (!head) return false;",
+    "Node* temp = head;",
+    "while (temp) {",
+    "    if (temp->val == key) {",
+    "        return true;",
+    "    }",
+    "    temp = temp->next;",
+    "}",
+    "return false;",
+};
