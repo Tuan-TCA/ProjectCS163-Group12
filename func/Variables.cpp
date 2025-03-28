@@ -41,3 +41,24 @@ Texture2D resizedImage(const char* imagePath, float width, float height) {
     UnloadImage(img);  
     return texture;  
 }
+
+Vector2 operator+(Vector2 a, Vector2 b){
+    return {a.x + b.x, a.y + b.y};
+}
+
+Vector2 operator-(Vector2 a, Vector2 b){
+    return {a.x - b.x, a.y - b.y};
+}
+
+Vector2 operator*(Vector2 a, float b){
+    return {a.x * b, a.y * b};
+}
+
+Vector2 operator/(Vector2 a, float b){
+    return {a.x / b, a.y / b};
+}
+
+ bool operator!=(Vector2 a, Vector2 b){
+    return a.x != b.x || a.y != b.y;
+ }
+

@@ -12,13 +12,15 @@ public:
     Color color;
     float animationTime;
     Color targetColor;
-    float duration;
+    float duration; 
+    Vector2 endEdge;
     Edge(){color = MyColor4;}
     Edge(Vertex* s, Vertex* e, int w) : 
         start(s), 
         end(e), 
         w(w), 
-        color(MyColor4)
+        color(MyColor4),
+        endEdge(s->position)
       
          {}
 

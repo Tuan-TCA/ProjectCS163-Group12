@@ -25,6 +25,11 @@ extern Color MyColor4;
 extern Color MyColor5;
 extern Texture2D resizedImage(const char* imagePath, float width, float height);
 extern void UpdateColorsBasedOnSwitchState();
+extern Vector2 operator+(Vector2 a, Vector2 b);
+extern Vector2 operator-(Vector2 a, Vector2 b);
+extern Vector2 operator*(Vector2 a, float b);
+extern Vector2 operator/(Vector2 a, float b);
+extern bool operator!=(Vector2 a, Vector2 b);
 
 class Drawable { // base class of vertex, edge
 public:
@@ -35,7 +40,7 @@ public:
     virtual ~Drawable() {} 
     bool isAnimating;
     virtual void SetColor(Color targetColor) = 0;
-     virtual void print(){}
+     virtual void print() = 0;
     virtual void reset() = 0;
 };
 

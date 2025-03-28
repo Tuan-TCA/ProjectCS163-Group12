@@ -28,6 +28,7 @@ class Graph : public Page{
     void event() override;
     void update();
     void handleInput() override;
+    
     void startAnimation( float duration);
     void bfs(Vertex* source);
     void handleBFS();
@@ -36,4 +37,5 @@ class Graph : public Page{
     Edge* findEdge(Vertex* v1, Vertex* v2);
     void addFromMatrix();
     void reset();
+    void handleCollision();
 };

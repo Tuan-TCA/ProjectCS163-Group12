@@ -47,6 +47,7 @@ Vertex* Graph::getFirstVertexClicked(){
 
 void Graph::event(){
     Page::event();
+
     handleInput();
    if(!added){
         addFromMatrix(); 
@@ -58,6 +59,7 @@ void Graph::event(){
         if(IsMouseButtonDown(MOUSE_LEFT_BUTTON)){
             if(CheckCollisionPointCircle(GetMousePosition(), v.position, v.radius) || v.isPressing){
                 v.position = GetMousePosition();
+                
                 v.isPressing = true;
             }
         }else{
@@ -65,10 +67,18 @@ void Graph::event(){
         }
     }
 
+    for(auto& e: edge){
+        
+        if(!e.isAnimating) e.Update(GetFrameTime());
+        
+        
+    }
+    handleCollision();
+    
     if (back1.IsClicked() || back2.IsClicked()) {
-        cout << "back\n";
+        
         isPlaying = false;
-        cout << "before back " << currentIndex << endl;
+
         if (!arrayQueue.empty() && currentIndex < arrayQueue.size()) {
             vector<Drawable*> current = arrayQueue[currentIndex];
             for (auto& elem : current) {
@@ -84,12 +94,12 @@ void Graph::event(){
                 }
             }
         }
-        cout << "after back " << currentIndex << endl;
+
     } 
     else if (next1.IsClicked() || next2.IsClicked()) {
-        cout << "next\n";
+
         isPlaying = false; 
-        cout << "before next " << currentIndex << endl;
+
         if (!arrayQueue.empty() && currentIndex < arrayQueue.size()) {
             vector<Drawable*> current = arrayQueue[currentIndex];
             for (auto& elem : current) {
@@ -106,8 +116,10 @@ void Graph::event(){
                 }
             }
         }
-        cout << "after next " << currentIndex << endl;
+
     }
+
+
    handleBFS();
     // cout << currentIndex << endl
    
@@ -121,7 +133,11 @@ void Graph::startAnimation(float duration){
 
 Edge* Graph::findEdge(Vertex* v1, Vertex* v2){
     for(auto& e: edge){
-        if((e.start == v1 && e.end == v2) || (e.start == v2 && e.end == v1)) return &e;
+        if((e.start == v1 && e.end == v2) || (e.start == v2 && e.end == v1) ) return &e;
+        //  if (e.start == v2 && e.end == v1) {
+        //     swap(e.start, e.end);
+        //      return &e;
+        // }
     }
     return nullptr;
 }
@@ -174,8 +190,10 @@ void Graph::addFromMatrix(){
             }
         }
     }
-
-
+    cout << "EDGE: " << endl;
+    for(auto& e: edge){
+        e.print();
+    }
 
 }
 void Graph::handleInput(){
@@ -226,7 +244,6 @@ void Graph::reset(){
     vertex.clear();
     edge.clear();
     matrix.clear();
-
     arrayQueue.clear();
     isAnimating  = false;
     got1stV = false;
@@ -240,13 +257,10 @@ void Graph::handleBFS(){
      if(!got1stV){
         clickedV = getFirstVertexClicked();
     }
-        
-    // cout << arrayQueue.size();
-    if(isAnimating && clickedV){
     
+    if( isAnimating && clickedV){
          if (!bfsCalled) {
             bfs(clickedV);
-            // cout << arrayQueue.size() << endl;
             startAnimation(1);
             arrayQueue[currentIndex][0]->startAnimation(ORANGE, 1);
             bfsCalled = true;
@@ -258,8 +272,7 @@ void Graph::handleBFS(){
             int checkDoneAnimating = 0;
             for(int i = 0; i < current.size(); i++){
                 if (!current[i]->isAnimating) { // done or hasn't started yet
-                checkDoneAnimating++;
-                    // cout << "dôdo" << endl;        
+                checkDoneAnimating++;      
                 }
                
                    if(isPlaying) current[i]->Update(deltaTime);
@@ -283,6 +296,7 @@ void Graph::handleBFS(){
     }
     else {
         bfsCalled = false;
+        
     } 
     
 }
@@ -349,5 +363,23 @@ void Graph::bfs(Vertex* source) {
 void Graph::update(){
     float deltaTime = GetFrameTime();
 
+
+}
+
+void Graph::handleCollision(){
+    
+    for(int i = 0; i < vertex.size(); i++){
+        for(int j = 0; j < vertex.size(); j++){
+            float dis = distance(vertex[i].position, vertex[j].position);
+            if( dis && dis  < minDistance){
+                Vector2 delta = vertex[i].position - vertex[j].position;
+                Vector2 rate = delta / dis;
+                delta = rate * (minDistance - dis);
+                if(vertex[i].isPressing){
+                    vertex[j].position = vertex[j].position - delta;
+                }
+            }
+        }
+    }
 
 }
