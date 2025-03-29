@@ -62,3 +62,6 @@ Vector2 operator/(Vector2 a, float b){
     return a.x != b.x || a.y != b.y;
  }
 
+bool operator!=(Color a, Color b){
+    return a.a != b.a || a.b != b.b || a.g != b.g || a.r != b.r;
+}

@@ -152,29 +152,53 @@ func/Edge.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles\main.dir\build.make CMakeFiles/main.dir/func/Edge.cpp.s
 .PHONY : func/Edge.cpp.s
 
-func/Graph.obj: func/Graph.cpp.obj
-.PHONY : func/Graph.obj
+func/GRAPH/Graph_algorithm.obj: func/GRAPH/Graph_algorithm.cpp.obj
+.PHONY : func/GRAPH/Graph_algorithm.obj
 
 # target to build an object file
-func/Graph.cpp.obj:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles\main.dir\build.make CMakeFiles/main.dir/func/Graph.cpp.obj
-.PHONY : func/Graph.cpp.obj
+func/GRAPH/Graph_algorithm.cpp.obj:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\main.dir\build.make CMakeFiles/main.dir/func/GRAPH/Graph_algorithm.cpp.obj
+.PHONY : func/GRAPH/Graph_algorithm.cpp.obj
 
-func/Graph.i: func/Graph.cpp.i
-.PHONY : func/Graph.i
+func/GRAPH/Graph_algorithm.i: func/GRAPH/Graph_algorithm.cpp.i
+.PHONY : func/GRAPH/Graph_algorithm.i
 
 # target to preprocess a source file
-func/Graph.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles\main.dir\build.make CMakeFiles/main.dir/func/Graph.cpp.i
-.PHONY : func/Graph.cpp.i
+func/GRAPH/Graph_algorithm.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\main.dir\build.make CMakeFiles/main.dir/func/GRAPH/Graph_algorithm.cpp.i
+.PHONY : func/GRAPH/Graph_algorithm.cpp.i
 
-func/Graph.s: func/Graph.cpp.s
-.PHONY : func/Graph.s
+func/GRAPH/Graph_algorithm.s: func/GRAPH/Graph_algorithm.cpp.s
+.PHONY : func/GRAPH/Graph_algorithm.s
 
 # target to generate assembly for a file
-func/Graph.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles\main.dir\build.make CMakeFiles/main.dir/func/Graph.cpp.s
-.PHONY : func/Graph.cpp.s
+func/GRAPH/Graph_algorithm.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\main.dir\build.make CMakeFiles/main.dir/func/GRAPH/Graph_algorithm.cpp.s
+.PHONY : func/GRAPH/Graph_algorithm.cpp.s
+
+func/GRAPH/Graph_logic.obj: func/GRAPH/Graph_logic.cpp.obj
+.PHONY : func/GRAPH/Graph_logic.obj
+
+# target to build an object file
+func/GRAPH/Graph_logic.cpp.obj:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\main.dir\build.make CMakeFiles/main.dir/func/GRAPH/Graph_logic.cpp.obj
+.PHONY : func/GRAPH/Graph_logic.cpp.obj
+
+func/GRAPH/Graph_logic.i: func/GRAPH/Graph_logic.cpp.i
+.PHONY : func/GRAPH/Graph_logic.i
+
+# target to preprocess a source file
+func/GRAPH/Graph_logic.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\main.dir\build.make CMakeFiles/main.dir/func/GRAPH/Graph_logic.cpp.i
+.PHONY : func/GRAPH/Graph_logic.cpp.i
+
+func/GRAPH/Graph_logic.s: func/GRAPH/Graph_logic.cpp.s
+.PHONY : func/GRAPH/Graph_logic.s
+
+# target to generate assembly for a file
+func/GRAPH/Graph_logic.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\main.dir\build.make CMakeFiles/main.dir/func/GRAPH/Graph_logic.cpp.s
+.PHONY : func/GRAPH/Graph_logic.cpp.s
 
 func/LinkedList.obj: func/LinkedList.cpp.obj
 .PHONY : func/LinkedList.obj
@@ -356,9 +380,12 @@ help:
 	@echo ... func/Edge.obj
 	@echo ... func/Edge.i
 	@echo ... func/Edge.s
-	@echo ... func/Graph.obj
-	@echo ... func/Graph.i
-	@echo ... func/Graph.s
+	@echo ... func/GRAPH/Graph_algorithm.obj
+	@echo ... func/GRAPH/Graph_algorithm.i
+	@echo ... func/GRAPH/Graph_algorithm.s
+	@echo ... func/GRAPH/Graph_logic.obj
+	@echo ... func/GRAPH/Graph_logic.i
+	@echo ... func/GRAPH/Graph_logic.s
 	@echo ... func/LinkedList.obj
 	@echo ... func/LinkedList.i
 	@echo ... func/LinkedList.s

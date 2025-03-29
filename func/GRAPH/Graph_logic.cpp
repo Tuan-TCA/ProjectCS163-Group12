@@ -28,22 +28,20 @@ void Graph::draw(){
         // cout << "edge draw" << endl;
         e.Draw();
     }
-        for(auto& v: vertex){
+    for(auto& v: vertex){
         v.Draw();
     }
 
+    // for(auto& elem: arrayQueue){
+    //     cout << 2;
+    //     for(auto& s: elem){
+    //         s->Draw();
+    //         cout << "Draw" << endl;
+    //     }
+    // }
+
 }
-Vertex* Graph::getFirstVertexClicked(){
-    for(auto& v: vertex){
-        if(v.isClicked()) {
-            got1stV = true;
-            isAnimating = true;
-            isPlaying = true;
-            return &v;
-        } 
-    }
-    return nullptr;
-}
+
 
 void Graph::event(){
     Page::event();
@@ -66,11 +64,10 @@ void Graph::event(){
             v.isPressing = false;
         }
     }
-
+   
     for(auto& e: edge){
         
-        if(!e.isAnimating) e.Update(GetFrameTime());
-        
+        if(!e.isAnimating || (e.isAnimating && e.endEdge != e.start->position && e.endEdge != e.end->position)) e.Update(0);
         
     }
     handleCollision();
@@ -131,23 +128,7 @@ void Graph::startAnimation(float duration){
 }
 
 
-Edge* Graph::findEdge(Vertex* v1, Vertex* v2){
-    for(auto& e: edge){
-        if((e.start == v1 && e.end == v2) || (e.start == v2 && e.end == v1) ) return &e;
-        //  if (e.start == v2 && e.end == v1) {
-        //     swap(e.start, e.end);
-        //      return &e;
-        // }
-    }
-    return nullptr;
-}
 
-Vertex* Graph::findVertex(int value){
-    for(auto& v: vertex){
-        if(v.value == value) return &v;
-    }
-    return nullptr;
-}
 
 
 void Graph::addFromMatrix(){
@@ -164,15 +145,15 @@ void Graph::addFromMatrix(){
         float newPosX, newPosY;
         bool validPosition = false;
         while(!validPosition){
-        newPosX = rand() % (maxX - minX + 1) + minX;
-        newPosY = rand() %  (maxY - minY + 1) + minY;
-        validPosition = true;
-        for(int j = 0; j <= i;j++){
-            if(distance({newPosX, newPosY}, vertex[j].position) < minDistance){
-                validPosition = false;
-                break;
+            newPosX = rand() % (maxX - minX + 1) + minX;
+            newPosY = rand() %  (maxY - minY + 1) + minY;
+            validPosition = true;
+            for(int j = 0; j <= i;j++){
+                if(distance({newPosX, newPosY}, vertex[j].position) < minDistance){
+                    validPosition = false;
+                    break;
+                }
             }
-        }
         }
         vertex_.position.x =  newPosX;
         vertex_.position.y =  newPosY;    
@@ -184,7 +165,7 @@ void Graph::addFromMatrix(){
     edge.clear();
 
     for(int i = 0; i < matrix.size(); i++){
-        for(int j = i; j < matrix.size(); j++){
+        for(int j = i; j < matrix.size(); j++){ // bat dau tu 0
             if(matrix[i][j]){
                 edge.push_back(Edge(&vertex[i], &vertex[j], matrix[i][j]));
             }
@@ -194,7 +175,6 @@ void Graph::addFromMatrix(){
     for(auto& e: edge){
         e.print();
     }
-
 }
 void Graph::handleInput(){
     
@@ -250,114 +230,6 @@ void Graph::reset(){
     bfsCalled = false;
     clickedV = nullptr;
     currentIndex = 0;
-}
-
-void Graph::handleBFS(){
-    float deltaTime = GetFrameTime();
-     if(!got1stV){
-        clickedV = getFirstVertexClicked();
-    }
-    
-    if( isAnimating && clickedV){
-         if (!bfsCalled) {
-            bfs(clickedV);
-            startAnimation(1);
-            arrayQueue[currentIndex][0]->startAnimation(ORANGE, 1);
-            bfsCalled = true;
-        }
-            if (!arrayQueue.empty() && currentIndex < arrayQueue.size()) {
-            
-            vector<Drawable*> current = arrayQueue[currentIndex];
- 
-            int checkDoneAnimating = 0;
-            for(int i = 0; i < current.size(); i++){
-                if (!current[i]->isAnimating) { // done or hasn't started yet
-                checkDoneAnimating++;      
-                }
-               
-                   if(isPlaying) current[i]->Update(deltaTime);
-            }
-            if(checkDoneAnimating == current.size()) {
-                if(!arrayQueue.empty() && currentIndex + 1 < arrayQueue.size()){
-                        current = arrayQueue[++currentIndex];
-                        for(auto& elem: current){
-                            elem->startAnimation(ORANGE, 1);
-                        }
-
-                    }
-                    else if(currentIndex >= arrayQueue.size()){
-                        isPlaying = false;
-                    }
-            }
-        }
-        else{
-            isAnimating = false;
-        }
-    }
-    else {
-        bfsCalled = false;
-        
-    } 
-    
-}
-
-
-void Graph::bfs(Vertex* source) {
-    // cout << "bfs\n";
-    int n = matrix.size();
-    if (n == 0) return;
-    arrayQueue.clear();
-    
-    
-    queue<Vertex*> q;
-    unordered_set<Edge*> visitedEdge;
-    unordered_set<Vertex*> visitedVertices; 
-
-    q.push(source);  // Start with the source vertex which one we've just clicked on
-    visitedVertices.insert(source);
-    arrayQueue.push_back({source});
-    
-    while (!q.empty()) {
-        Vertex* v = q.front();
-        
-        // v->print();
-        q.pop();
-        vector<Vertex*> vertexStorage;
-        vector<Edge*> edgeStorage;
-        for (int i = 0; i < n; i++) {
-            if (matrix[v->value][i] != 0) {
-                Vertex* nextVertex = findVertex(i);
-                if (nextVertex != nullptr && visitedVertices.find(nextVertex) == visitedVertices.end()) { 
-                    Edge* e = findEdge(v, nextVertex);
-                    if (e != nullptr && visitedEdge.find(e) == visitedEdge.end()){
-                        edgeStorage.push_back(e);
-                        visitedEdge.insert(e);
-                        // e->print();
-                        // cout << "yes\n"; 
-                    }
-                    q.push(nextVertex);
-                    vertexStorage.push_back(nextVertex);
-                    visitedVertices.insert(nextVertex);
-                }
-            }
-        }
-        vector<Drawable*> drawableVertexStorage;
-            for (auto& v : vertexStorage) {
-                drawableVertexStorage.push_back(static_cast<Drawable*>(v)); // ép kiểu Vertex* thành Drawable*
-            }
-        vector<Drawable*> drawableEdgeStorage;
-            for (auto& e : edgeStorage) {
-                drawableEdgeStorage.push_back(static_cast<Drawable*>(e)); 
-            }
-        if(drawableVertexStorage.size() != 0)  arrayQueue.push_back(drawableEdgeStorage);
-        if(drawableEdgeStorage.size() != 0) arrayQueue.push_back(drawableVertexStorage);
-        
-    }
-    int i = 0;
-    for (auto& elem : arrayQueue) {
-        cout << "Index " << i++ << endl;
-        for(auto& s: elem) s->print();
-    }
 }
 
 void Graph::update(){

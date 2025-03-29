@@ -9,7 +9,7 @@ public:
     Vertex* start;
     Vertex* end;
     int w;
-    Color color;
+    Color color, textColor;
     float animationTime;
     Color targetColor;
     float duration; 
@@ -20,14 +20,14 @@ public:
         end(e), 
         w(w), 
         color(MyColor4),
-        endEdge(s->position)
-      
+        textColor(MyColor4)
          {}
 
 
     void Update(float deltaTime) override;
     void Draw() override;
     bool isClicked();
+ 
     void startAnimation(Color target, float duration) override;
     void print();
     float length();

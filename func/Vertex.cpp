@@ -71,3 +71,4 @@ void Vertex::reset(){
         textColor = MyColor4;
         animationTime = 0;
 }
+
