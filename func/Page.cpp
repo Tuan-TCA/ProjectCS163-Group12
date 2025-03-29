@@ -94,6 +94,8 @@ void Page::event() {
     }
 
 
+
+
     // if (textbox.nums.size() > 0) {
     //     lastInsertedKey = textbox.nums[0];
     //     A.isInserting = true;  // Kích hoạt hiệu ứng vẽ Insert

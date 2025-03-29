@@ -45,10 +45,7 @@ void Program::event() {
             page.init();
             
         }
-    }
-
-    
-    else if(mode == MODE::LL) {
+    }else if(mode == MODE::LL) {
         // Linked List
         page.event();
         A.EventLLinPage(page);
@@ -57,18 +54,15 @@ void Program::event() {
     else if (mode == MODE::HASHTB) {
         page.event();
     
+        // Xử lý CREATE với table size nhập từ bàn phím
         if (page.func == FUNC::CREATE && !page.textbox.nums.empty()) {
-            int size = page.textbox.nums[0];
+            int size = page.textbox.nums[0];  // Lấy table size từ input
             page.textbox.nums.erase(page.textbox.nums.begin());
     
-            if (B) delete B;  // xoá bảng cũ nếu có
-            B = new HashTableChaining(size);  // tạo bảng mới với tableSize
+            if (B) delete B;  // Xoá bảng cũ nếu có
+            B = new HashTableChaining(size);  // Khởi tạo bảng mới với kích thước
     
-            B->createKeys = page.textbox.nums;  // danh sách các key cần chèn
-            B->isCreating = true;
-    
-            page.textbox.nums.clear();
-            page.textbox.inputText = "";
+            page.textbox.inputText = "";  // Reset input
         }
     
         if (B) B->EventHashTableInPage(page);
@@ -100,7 +94,12 @@ void Program::draw() {
     if (mode == MODE::HASHTB) {
         //LL.draw();
         page.draw();
-        if (B) B->DrawHashTableInPage(page);
+        if(B)
+        B->DrawHashTableInPage(page);
+        else {
+            B = new HashTableChaining(10);
+            B->DrawHashTableInPage(page);
+        }
     }
     if (mode == MODE::AVL) {
         //LL.draw();
@@ -111,8 +110,8 @@ void Program::draw() {
         page.draw();
     }
 }
-Program::~Program() {
-    if (B) delete B;
-}
+// Program::~Program() {
+//     if (B) delete B;
+// }
 
 

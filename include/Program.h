@@ -12,7 +12,7 @@ public:
     Menu menu;
     Page page;
     LinkedList A;
-    HashTableChaining* B = nullptr;
+    HashTableChaining *B = nullptr;
     Program();
     void run();
 

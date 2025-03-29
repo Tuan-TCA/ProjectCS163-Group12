@@ -4,15 +4,16 @@
 #include <chrono>
 #include <iostream>
 #include "DrawUtils.h"
+#include "Program.h"
 using namespace std;
 
-HashTableChaining::HashTableChaining() {
-    for (int i = 0; i < tableSize; ++i) {
-        table[i] = nullptr;
-    }
-    isInserting = false;
-    lastInsertedKey = -1;
-}
+// HashTableChaining::HashTableChaining() {
+//     for (int i = 0; i < tableSize; ++i) {
+//         table[i] = nullptr;
+//     }
+//     isInserting = false;
+//     lastInsertedKey = -1;
+// }
 
 HashTableChaining::HashTableChaining(int size) {
     tableSize = size;
@@ -22,7 +23,6 @@ HashTableChaining::HashTableChaining(int size) {
     isCreating = false;
     isDuplicateInsert = false;
 }
-
 
 HashTableChaining::~HashTableChaining() {
     for (int i = 0; i < tableSize; ++i) {
@@ -267,7 +267,7 @@ void HashTableChaining::DrawDeleteEffect(Vector2 origin, Page& page) {
                 page.draw();
                 DrawHashTable(origin);
             
-                // Vẽ node đang mờ dần
+                // Vẽ node đang mờ dần/
                 DrawFadingNode(nodePos, cur->key, alpha, radius, font_size, circle, text_color);
             
                 EndDrawing();
@@ -293,7 +293,6 @@ void HashTableChaining::DrawDeleteEffect(Vector2 origin, Page& page) {
 
     isDeleting = false;
 }
-
 
 void HashTableChaining::DrawHashTableInPage(Page page) {
     Vector2 origin = { 350, 100 };
@@ -384,16 +383,11 @@ void HashTableChaining::EventHashTableInPage(Page& page) {
         }
     }
     if (page.func == FUNC::CREATE) {
-        if (!page.textbox.nums.empty()) {
-            int size = page.textbox.nums[0];
-            page.textbox.nums.erase(page.textbox.nums.begin());
-    
-         HashTableChaining(size); 
-    
-            B.createKeys = page.textbox.nums;
+        if (page.textbox.nums.size() > 0) {
+            createKeys = page.textbox.nums;
             page.textbox.nums.clear();
             page.textbox.inputText = "";
-            B.isCreating = true;
+            isCreating = true;
         }
-    }
+    }    
 }

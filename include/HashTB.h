@@ -19,8 +19,19 @@ struct HashNode {
 };
 
 class HashTableChaining : public Page {
-    
+private:
+    // Các biến cần thiết cho việc vẽ
+    // Vector2 origin = { 350, 100 };
+    // Vector2 nodePos = { origin.x + bucket_width + spacing, origin.y + bucket_height / 2.0f };
+    // Vector2 arrowStart = { nodePos.x - spacing, nodePos.y };
+    // Vector2 arrowEnd = { nodePos.x, nodePos.y };
+    // Vector2 nodePos = { origin.x + bucket_width + spacing, origin.y + bucket_height / 2.0f };
 public:
+
+    int tableSize = 10;
+    vector<HashNode*> table; // Khởi tạo bảng băm với kích thước tableSize
+    // HashNode* table[tableSize]; // Bảng băm
+
     int HashFunction(int key);
 
     // Cấu hình cho vẽ node
@@ -29,10 +40,6 @@ public:
     const Color circle = LIGHTGRAY;
     const Color choose_color = GREEN;
     const Color visit_color = RED;
-
-
-    int tableSize;
-    vector<HashNode*> table;
 
 
     // UI settings
@@ -62,7 +69,7 @@ public:
 
 
     // Constructor & Destructor
-    HashTableChaining();
+    // HashTableChaining();
     ~HashTableChaining();
     HashTableChaining(int size);
 
@@ -82,7 +89,6 @@ public:
     void DrawSearchEffect(Vector2 origin, Page& page);
     void DrawDeleteEffect(Vector2 origin, Page& page);
     void DrawInsertDuplicateEffect(Vector2 origin, Page& page);
-
 
 
     // Integration with Page
