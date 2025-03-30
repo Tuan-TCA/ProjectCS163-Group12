@@ -39,12 +39,12 @@ void Graph::handleBFS(){
          if (!bfsCalled) {
             bfs(clickedV);
             startAnimation(1);
-            arrayQueue[currentIndex][0]->startAnimation(ORANGE, 1);
+            arrayQueue[currentQueueIndex][0]->startAnimation(ORANGE, 1);
             bfsCalled = true;
         }
-            if (!arrayQueue.empty() && currentIndex < arrayQueue.size()) {
+            if (!arrayQueue.empty() && currentQueueIndex < arrayQueue.size()) {
             
-            vector<Drawable*> current = arrayQueue[currentIndex];
+            vector<Drawable*> current = arrayQueue[currentQueueIndex];
  
             int checkDoneAnimating = 0;
             for(int i = 0; i < current.size(); i++){
@@ -52,19 +52,20 @@ void Graph::handleBFS(){
                 checkDoneAnimating++;      
                 }
                
-                   if(isPlaying) current[i]->Update(deltaTime);
+                if(isPlaying) current[i]->Update(deltaTime);
             }
             if(checkDoneAnimating == current.size()) {
-                if(!arrayQueue.empty() && currentIndex + 1 < arrayQueue.size()){
-                        current = arrayQueue[++currentIndex];
+                if(!arrayQueue.empty() && currentQueueIndex + 1 < arrayQueue.size()){
+                        
+                        current = arrayQueue[++currentQueueIndex];
                         for(auto& elem: current){
                             elem->startAnimation(ORANGE, 1);
                         }
 
                     }
-                    else if(currentIndex >= arrayQueue.size()){
-                        isPlaying = false;
-                    }
+                else if(currentQueueIndex >= arrayQueue.size()){
+                    isPlaying = false;
+                }
             }
         }
         else{
@@ -87,20 +88,27 @@ void Graph::bfs(Vertex* source) {
     
     
     queue<Vertex*> q;
+  
     unordered_set<Edge*> visitedEdge;
     unordered_set<Vertex*> visitedVertices; 
 
     q.push(source);  // Start with the source vertex which one we've just clicked on
-    visitedVertices.insert(source);
     arrayQueue.push_back({source});
+    StepQueue.push_back({1, 2});
+    //Mark as visited nhe
+    visitedVertices.insert(source);
+
     
+
     while (!q.empty()) {
+       
         Vertex* v = q.front();
-        
+       
         // v->print();
         q.pop();
         vector<Vertex*> vertexStorage;
         vector<Edge*> edgeStorage;
+        
         for (int i = 0; i < n; i++) {
             if (matrix[v->value][i] != 0) {
                 Vertex* nextVertex = findVertex(i);
@@ -128,10 +136,13 @@ void Graph::bfs(Vertex* source) {
             }
         if (!drawableEdgeStorage.empty()) {
             arrayQueue.push_back(drawableEdgeStorage);
+            StepQueue.push_back({2});
         }
         if (!drawableVertexStorage.empty()) {
             arrayQueue.push_back(drawableVertexStorage);
+            StepQueue.push_back({3});
         }
+
         
     }
     int i = 0;

@@ -16,12 +16,26 @@ class Graph : public Page{
     Button MSTbutton;
     float minDistance;
     vector<vector<Drawable*>> arrayQueue;
+    vector<string> pseudocode = {
+        "BFS (G, s)",
+        " while !Q.empty // Q is a normal queue",
+        "   for each neighbor v of u = Q.front, Q.pop",
+        "       if v is unvisited, tree edge, Q.push(v)",
+    };
+    int currentStep = 0;
+    vector<vector<int>> StepQueue;
     float duration;
     bool isAnimating;
+    int currentQueueIndex;
+
+
+    //bfs
     bool got1stV;
     bool bfsCalled = false;
     Vertex* clickedV = nullptr;
-    int currentIndex;
+    Vertex* getFirstVertexClicked();
+    void bfs(Vertex* source);
+    void handleBFS();
 
     void init() override;
     void draw() override;
@@ -30,9 +44,8 @@ class Graph : public Page{
     void handleInput() override;
     
     void startAnimation( float duration);
-    void bfs(Vertex* source);
-    void handleBFS();
-    Vertex* getFirstVertexClicked();
+
+   
     Vertex* findVertex(int value);
     Edge* findEdge(Vertex* v1, Vertex* v2);
     void addFromMatrix();

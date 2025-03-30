@@ -57,6 +57,7 @@ float Edge::length(){
 }
 
 void Edge::SetColor(Color target){
+    this->textColor = target;
     this->color = target;
 }
 

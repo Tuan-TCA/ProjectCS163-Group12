@@ -6,6 +6,7 @@
 #include <algorithm>
 #include "ControlAnimation.h"
 #include <unordered_set>
+
 using namespace std;
 
 float distance(Vector2 pos1, Vector2 pos2){
@@ -32,13 +33,27 @@ void Graph::draw(){
         v.Draw();
     }
 
-    // for(auto& elem: arrayQueue){
-    //     cout << 2;
-    //     for(auto& s: elem){
-    //         s->Draw();
-    //         cout << "Draw" << endl;
-    //     }
-    // }
+    float pseudocodeX = screenWidth * 0.01f;
+    float pseudocodeY = screenHeight * 0.5f;
+    float lineHeight = 20.0f;
+    Color highlightColor = YELLOW;
+     if(isAnimating){
+    for (size_t i = 0; i < pseudocode.size(); ++i) {
+        Color currentColor = highlightColor;
+        if(!StepQueue.empty() && find(StepQueue[currentQueueIndex].begin(), StepQueue[currentQueueIndex].end(), i) != StepQueue[currentQueueIndex].end()){
+            currentColor.a = 255;
+        }
+        else{
+            currentColor.a = 0;
+        }
+        
+        // DrawText(pseudocode[i].c_str(), pseudocodeX, pseudocodeY + i * lineHeight, 20, currentColor);
+        float textWidth = MeasureText(pseudocode[i].c_str(), 14);
+        DrawRectangleRounded(Rectangle{pseudocodeX - 5, pseudocodeY + i * lineHeight - 5, screenWidth*0.23f,  lineHeight}, 1, 5, currentColor);
+        DrawTextEx(FONT, pseudocode[i].c_str(), {pseudocodeX, pseudocodeY + i * lineHeight} , 10, 2, MyColor4);
+        
+    }
+    }
 
 }
 
@@ -76,15 +91,15 @@ void Graph::event(){
         
         isPlaying = false;
 
-        if (!arrayQueue.empty() && currentIndex < arrayQueue.size()) {
-            vector<Drawable*> current = arrayQueue[currentIndex];
+        if (!arrayQueue.empty() && currentQueueIndex < arrayQueue.size()) {
+            vector<Drawable*> current = arrayQueue[currentQueueIndex];
             for (auto& elem : current) {
                 elem->reset();
             }
-            currentIndex--;
-            if (currentIndex < 0) currentIndex = 0;
-            if (currentIndex < arrayQueue.size()) {
-                vector<Drawable*> prev = arrayQueue[currentIndex];
+            currentQueueIndex--;
+            if (currentQueueIndex < 0) currentQueueIndex = 0;
+            if (currentQueueIndex < arrayQueue.size()) {
+                vector<Drawable*> prev = arrayQueue[currentQueueIndex];
                 for (auto& elem : prev) {
                     elem->reset();
                     elem->isAnimating = true; 
@@ -97,16 +112,16 @@ void Graph::event(){
 
         isPlaying = false; 
 
-        if (!arrayQueue.empty() && currentIndex < arrayQueue.size()) {
-            vector<Drawable*> current = arrayQueue[currentIndex];
+        if (!arrayQueue.empty() && currentQueueIndex < arrayQueue.size()) {
+            vector<Drawable*> current = arrayQueue[currentQueueIndex];
             for (auto& elem : current) {
                 elem->SetColor(ORANGE);
                 elem->isAnimating = false;
             }
-            currentIndex++;
-            if (currentIndex > arrayQueue.size() - 1) currentIndex = arrayQueue.size() - 1;
-            if (currentIndex < arrayQueue.size()) {
-                vector<Drawable*> next = arrayQueue[currentIndex];
+            currentQueueIndex++;
+            if (currentQueueIndex > arrayQueue.size() - 1) currentQueueIndex = arrayQueue.size() - 1;
+            if (currentQueueIndex < arrayQueue.size()) {
+                vector<Drawable*> next = arrayQueue[currentQueueIndex];
                 for (auto& elem : next) {
                     elem->SetColor(ORANGE);
                     elem->isAnimating = false; // ready to be animating
@@ -124,7 +139,7 @@ void Graph::event(){
 
 void Graph::startAnimation(float duration){
     this->duration = duration;
-    currentIndex = 0;
+    currentQueueIndex = 0;
 }
 
 
@@ -229,7 +244,8 @@ void Graph::reset(){
     got1stV = false;
     bfsCalled = false;
     clickedV = nullptr;
-    currentIndex = 0;
+    currentQueueIndex = 0;
+    currentStep = 0;
 }
 
 void Graph::update(){
