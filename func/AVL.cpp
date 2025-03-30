@@ -2,7 +2,6 @@
 #include "ControlAnimation.h"
 #include <iostream>
 
-//Tìm logic để addStep linnear
 
 
 void AVL::insert(int key, TreeNode*& root, TreeNode* parent) {
@@ -55,6 +54,7 @@ void AVL::insert(int key, TreeNode*& root, TreeNode* parent) {
             else {
                 LeftRotate(root->left);
                 RightRotate(root);
+                cout<<"LL";
             }
         }
         else {
@@ -84,6 +84,7 @@ void AVL::insert(int key, TreeNode*& root, TreeNode* parent) {
     root->isHighLight = 0;
 
 }
+
 int cur;
 void AVL::draw() {
     Page::draw();
@@ -97,7 +98,9 @@ void AVL::draw() {
         if (isInserting) {
             steps.clear(); // Xóa các bước cũ
             this->insert(lastInsertedKey, root); // Thêm node và lưu các bước
+            addStep(this->root);
             isInserting = false;
+            isPlaying = true;
             cur = 0; // Bắt đầu từ bước đầu tiên
             elapsedTime = 0.0f;
         } else {
@@ -117,9 +120,10 @@ void AVL::draw() {
                         }
                     }
                 }
-
-                if(cur == steps.size()) {
+                
+                if(cur == steps.size() && cur!=0) {
                     DrawTree(steps[cur-1].root);
+                    isPlaying = false;
                 }
             }
         }
@@ -228,7 +232,8 @@ void AVL::init() {
     workplace = {screenWidth*0.24f,screenHeight*0.2f,(float) screenWidth *(1-0.24f),screenHeight*(1-0.095f)};
     rootPos= {workplace.x + workplace.width / 2, workplace.y};      
     //int a[]={8, 4, 12, 2, 6, 10, 14, 1, 3, 5, 7, 9, 11, 13, 15, 16};  for (int i = 0; i < 16; i++) this->insert(a[i],root);
-    
+    steps.clear();
+
     isInserting = false;
     isSearching = false;
     isDeleting = false;
@@ -288,7 +293,8 @@ void AVL::CalculateAllPos(TreeNode* &root, TreeNode* parent, bool isLeft) {
 void AVL::RightRotate(TreeNode* &root) {
     if (!root || !root->left) return;
     Vector2 oldPos = root->Pos;
-
+    int oldLevel = root->level;
+    
     TreeNode *tmp = root->left;
     TreeNode *tmpRight = tmp->right;
 
@@ -300,10 +306,11 @@ void AVL::RightRotate(TreeNode* &root) {
     if (tmpRight) tmpRight->parent = root;  // Nếu có node tmpLeft
     tmp->parent = root->parent;           // Kế thừa parent từ root cũ
     root->parent = tmp;                   // Root cũ trở thành con trái của tmp
-
+    
     // Cập nhật root mới
     root = tmp;
     root->Pos = oldPos;
+    root->level = oldLevel;
 
 
     // Cập nhật height: cập nhật node cũ (root cũ) trước, node mới (tmp) sau
@@ -315,12 +322,18 @@ void AVL::RightRotate(TreeNode* &root) {
     root->height = 1 + max(getHeight(root->left), getHeight(root->right));
 
     // Tính toán lại vị trí từ node gốc mới (không cần gán thủ công Pos/level)
-    CalculateAllPos(root, root->parent, root->val < root->parent->val);  // Giả sử CalculateAllPos xử lý parent
+    if(root->parent)
+        CalculateAllPos(root, root->parent, root->val < root->parent->val);  // Giả sử CalculateAllPos xử lý parent
+    else 
+        CalculateAllPos(root, root->parent, true);  // Giả sử CalculateAllPos xử lý parent
+    
 }
 
 void AVL::LeftRotate(TreeNode* &root) {
     if (!root || !root->right) return;
+
     Vector2 oldPos = root->Pos;
+    int oldLevel = root->level;
 
     TreeNode *tmp = root->right;
     TreeNode *tmpLeft = tmp->left;
@@ -328,7 +341,7 @@ void AVL::LeftRotate(TreeNode* &root) {
     // Cập nhật liên kết
     tmp->left = root;
     root->right = tmpLeft;
-
+    
     // Cập nhật parent
     if (tmpLeft) tmpLeft->parent = root;  // Nếu có node tmpLeft
     tmp->parent = root->parent;           // Kế thừa parent từ root cũ
@@ -337,7 +350,8 @@ void AVL::LeftRotate(TreeNode* &root) {
     // Cập nhật root mới
     root = tmp;
     root->Pos = oldPos;
-
+    root->level = oldLevel;
+    
     // Cập nhật height: cập nhật node cũ (root cũ) trước, node mới (tmp) sau
     if(root->left)
     root->left->height = 1 + max(getHeight(root->left->left), getHeight(root->left->right));
@@ -345,9 +359,13 @@ void AVL::LeftRotate(TreeNode* &root) {
     root->right->height = 1 + max(getHeight(root->right->left), getHeight(root->right->right));
    
     root->height = 1 + max(getHeight(root->left), getHeight(root->right));
-
+    
     // Tính toán lại vị trí từ node gốc mới (không cần gán thủ công Pos/level)
-    CalculateAllPos(root, root->parent, true);  // Giả sử CalculateAllPos xử lý parent
+    if(root->parent)
+        CalculateAllPos(root, root->parent, root->val < root->parent->val);  // Giả sử CalculateAllPos xử lý parent
+    else 
+        CalculateAllPos(root, root->parent, true);  // Giả sử CalculateAllPos xử lý parent
+    
 }
 
 bool AVL::isNodeHighlighted(int key) {
