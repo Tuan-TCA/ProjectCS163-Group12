@@ -12,8 +12,7 @@ enum class Operation {
     Create,
     Delete,
     Search,
-    Update,
-    MST
+    Update
 };
 
 enum class InputType {
@@ -26,35 +25,32 @@ public:
     //input
     InputType currentInput;
     vector<string> InputOptions = {"RANDOM", "KEYBOARD", "FILE"};
-    int selectedInputIndex;  // position hiện tại
-    Button InputOptionButton; // op hiện tại
-    Button InputPrevButton;  // chuyển trái
+    int selectedInputIndex; 
+    Button InputOptionButton; 
+    Button InputPrevButton; 
     Button InputNextButton; 
-
+    virtual void RANDOM_INPUT(); 
+    virtual void KEYBOARD_INPUT();
+    virtual void FILE_INPUT();
     //operations
     Operation currentOperation;
-    Button insertButton, createButton, deleteButton, searchButton;
-    vector<Button> operationButtons;
-    vector<Vector2> subButtonPosition;
-    bool isInsertExpanded = false; 
-    bool isCreateExpanded = false; 
-    bool isDeleteExpanded = false;  
-    bool isSearchExpanded = false;  
-
-    // vector<string> OperationOptions;
-    // int selectedOperationIndex;
-    // Button OperationOptionButton;
-    // Button OperationPrevButton;
-    // Button OperationNextButton;
+    vector<string> OperationOptions = {"INSERT", "CREATE", "UPDATE", "DELETE", "SEARCH"};
+    int selectedOperationIndex;
+    Button OperationOptionButton;
+    Button OperationPrevButton;
+    Button OperationNextButton;
 
     //others
+    int newValue, oldValue;
     bool isPlaying;
     MyRec head;
     Rectangle bottom;
     Rectangle side;
     Button Ok;
     TextBox textbox;
-
+    TextBox oldTextBox;
+    TextBox newTextBox;
+    
     MyRec speedSliding;
     Slider timeSlider;
     ButtonFromImage back1, next1, pause1, play1;

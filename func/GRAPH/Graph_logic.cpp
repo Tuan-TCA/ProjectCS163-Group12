@@ -200,7 +200,7 @@ void Graph::handleInput(){
             }
             break;
             case InputType::Keyboard:
-                textbox.HandleInput(); 
+                textbox.HandleInput(7); 
                 break;
             case InputType::File:
                 if(IsFileDropped()){

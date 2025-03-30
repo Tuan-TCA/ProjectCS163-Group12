@@ -146,17 +146,27 @@ public:
         update();
         Button::Draw();
         string displayText = inputText;
-        if (active && ((int)(GetTime() * 2) % 2 == 0)) { // Nhấp nháy con trỏ
+        if (active && ((int)(GetTime() * 2) % 2 == 0)) { 
             displayText += "|";
         }
         DrawText(displayText.c_str(), bounds.x + bounds.width / 2 - MeasureText(displayText.c_str(), 40) / 2, bounds.y + bounds.height / 3 - 3 , 40, textColor);
     }
 
-    void HandleInput() {
+    void Draw(int fontSize){
+        update();
+        Button::Draw();
+        string displayText = inputText;
+        if (active && ((int)(GetTime() * 2) % 2 == 0)) { 
+            displayText += "|";
+        }
+        DrawText(displayText.c_str(), bounds.x + bounds.width * 0.7 - MeasureText(displayText.c_str(), fontSize) / 2, bounds.y + bounds.height / 3 + 5 , fontSize, textColor);
+    }
+
+    void HandleInput(int maxSize) {
         update();
         if (active) {
             int key = GetCharPressed();
-            while (key > 0 && inputText.size() < 7) {
+            while (key > 0 && inputText.size() < maxSize) {
                 if (key >= '0' && key <= '9' || key == ' ') {
                     inputText += (char)key;
                 }
@@ -171,6 +181,7 @@ public:
         active = false;
         nums.clear();
     }
+
     
 };
 
