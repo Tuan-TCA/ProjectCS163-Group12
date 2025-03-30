@@ -1,6 +1,6 @@
 CMakeFiles/main.dir/func/Variables.cpp.obj: \
- C:\Users\Tuan\ TCA\OneDrive\Desktop\Project\func\Variables.cpp \
- C:/Users/TUANTC~1/OneDrive/Desktop/Project/include/Variables.h \
+ C:\Users\Tuan\ TCA\OneDrive\Desktop\Project2\func\Variables.cpp \
+ C:/Users/TUANTC~1/OneDrive/Desktop/Project2/include/Variables.h \
  C:/msys64/ucrt64/include/c++/14.2.0/string \
  C:/msys64/ucrt64/include/c++/14.2.0/bits/requires_hosted.h \
  C:/msys64/ucrt64/include/c++/14.2.0/x86_64-w64-mingw32/bits/c++config.h \
