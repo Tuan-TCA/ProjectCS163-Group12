@@ -13,6 +13,7 @@ public:
     Page page;
     LinkedList LL;
     Graph graph;
+    HashTableChaining* B = nullptr;
     Program();
     void run();
 

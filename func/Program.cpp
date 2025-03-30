@@ -59,9 +59,21 @@ void Program::event() {
         LL.event();
         //cout<<"K";
     }
-    if(mode == MODE::HASHTB) {
-        // Hash Table
-        // hashtable.event();
+    else if (mode == MODE::HASHTB) {
+        page.event();
+    
+        // Xử lý CREATE với table size nhập từ bàn phím
+        if (page.currentOperation == Operation::Create && !page.textbox.nums.empty()) {
+            int size = page.textbox.nums[0];  // Lấy table size từ input
+            page.textbox.nums.erase(page.textbox.nums.begin());
+    
+            if (B) delete B;  // Xoá bảng cũ nếu có
+            B = new HashTableChaining(size);  // Khởi tạo bảng mới với kích thước
+    
+            page.textbox.inputText = "";  // Reset input
+        }
+    
+        if (B) B->EventHashTableInPage(page);
     }
     if(mode == MODE::AVL) {
         // AVL Tree
@@ -82,8 +94,14 @@ void Program::draw() {
     }
      
     if (mode == MODE::HASHTB) {
-
-        // hashtable.draw();
+        //LL.draw();
+        page.draw();
+        if(B)
+        B->DrawHashTableInPage(page);
+        else {
+            B = new HashTableChaining(3);
+            B->DrawHashTableInPage(page);
+        }
     }
     if (mode == MODE::AVL) {
         // avl.draw();
