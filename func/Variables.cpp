@@ -17,6 +17,7 @@ Color MyColor2 = Color{27, 177, 177, 255};
 Color MyColor3 = Color{65, 219, 179, 255};
 Color MyColor4 = Color{30, 66, 94, 255};
 Color MyColor5 = Color{33, 117, 135, 255};
+Color MyColor6 = Color{190, 255, 214, 255};
 
 
 void UpdateColorsBasedOnSwitchState() {
@@ -25,13 +26,15 @@ void UpdateColorsBasedOnSwitchState() {
         MyColor2 = Color{212, 87, 107, 255}; 
         MyColor3 = Color{255, 150, 150, 255};//ok
         MyColor4 = Color{88, 33, 64, 255};//ok
-        MyColor5 = Color{255, 0, 0, 255};
+        MyColor5 = Color{163, 62, 53, 255};
+        MyColor6 = Color{255, 211, 207, 255};
     } else {
         MyColor1 = Color{17, 105, 124, 255};  // Xanh
         MyColor2 = Color{27, 177, 177, 255};
         MyColor3 = Color{65, 219, 179, 255};
         MyColor4 = Color{30, 66, 94, 255};
         MyColor5 = Color{33, 117, 135, 255};
+        MyColor6 = Color{190, 255, 214, 255};
     }
 }
 Texture2D resizedImage(const char* imagePath, float width, float height) {

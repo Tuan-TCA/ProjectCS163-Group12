@@ -19,6 +19,25 @@ Vertex* Graph::getFirstVertexClicked(){
             isPlaying = true;
             return &v;
         } 
+        else if(!textbox.nums.empty()){
+            int value = textbox.nums[0];
+            textbox.nums.erase(textbox.nums.begin());
+            if(v.value == value){
+            got1stV = true;
+            isAnimating = true;
+            isPlaying = true;
+            return &v;
+            }
+        }
+        else if (AlgorithmOptionButton.IsClicked()){
+            int value = rand()% (vertex.size() - 1);
+            if(v.value == value){
+                got1stV = true;
+            isAnimating = true;
+            isPlaying = true;
+            return &v;
+            }
+        }
     }
     return nullptr;
 }

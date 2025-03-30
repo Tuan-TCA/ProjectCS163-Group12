@@ -12,7 +12,8 @@ enum class Operation {
     Create,
     Delete,
     Search,
-    Update
+    Update,
+    Algorithm
 };
 
 enum class InputType {
@@ -21,6 +22,8 @@ enum class InputType {
     File
 };
 class Page {
+protected:
+vector<string> OperationOptions;
 public:
     //input
     InputType currentInput;
@@ -34,7 +37,7 @@ public:
     virtual void FILE_INPUT();
     //operations
     Operation currentOperation;
-    vector<string> OperationOptions = {"INSERT", "CREATE", "UPDATE", "DELETE", "SEARCH"};
+    
     int selectedOperationIndex;
     Button OperationOptionButton;
     Button OperationPrevButton;
@@ -57,7 +60,7 @@ public:
     ButtonFromImage back2, next2, pause2, play2;
     ButtonFromImage home, home2;
     Texture2D background1, background2;
- 
+    Rectangle codeDisplayPLace;
 
     virtual void init();
     virtual void draw();

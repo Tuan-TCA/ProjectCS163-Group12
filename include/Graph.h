@@ -7,8 +7,21 @@
 #include "Edge.h"
 #include "ControlAnimation.h"
 using namespace std;
+
+enum class Algorithm{
+    BFS,
+    MST
+};
+
 class Graph : public Page{
     public:
+    Algorithm currentALgorithm;
+    vector<string> AlgorithmOptions = {"BFS", "MST"};
+    int selectedAlgorithmIndex; 
+    Button AlgorithmOptionButton; 
+    Button AlgorithmPrevButton; 
+    Button AlgorithmNextButton;
+
     bool added;
     vector<Vertex> vertex;
     vector<Edge> edge;
@@ -16,12 +29,7 @@ class Graph : public Page{
     Button MSTbutton;
     float minDistance;
     vector<vector<Drawable*>> arrayQueue;
-    vector<string> pseudocode = {
-        "BFS (G, s)",
-        " while !Q.empty // Q is a normal queue",
-        "   for each neighbor v of u = Q.front, Q.pop",
-        "       if v is unvisited, tree edge, Q.push(v)",
-    };
+    vector<string> pseudocode;
     int currentStep = 0;
     vector<vector<int>> StepQueue;
     float duration;
@@ -40,15 +48,16 @@ class Graph : public Page{
     void init() override;
     void draw() override;
     void event() override;
-    void update();
-    void handleInput() override;
     
     void startAnimation( float duration);
 
-   
+   void handleChoice();
     Vertex* findVertex(int value);
     Edge* findEdge(Vertex* v1, Vertex* v2);
     void addFromMatrix();
     void reset();
+    void resetAnimation();
     void handleCollision();
+
+    void FILE_INPUT() override;
 };

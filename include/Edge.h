@@ -12,6 +12,7 @@ public:
     Color color, textColor;
     float animationTime;
     Color targetColor;
+    bool doneAnimation;
     float duration; 
     Vector2 endEdge;
     Edge(){color = MyColor4;}
@@ -20,14 +21,15 @@ public:
         end(e), 
         w(w), 
         color(MyColor4),
-        textColor(MyColor4)
-         {}
+        textColor(MyColor4),
+        doneAnimation(false)
+        {}
 
 
     void Update(float deltaTime) override;
     void Draw() override;
     bool isClicked();
- 
+
     void startAnimation(Color target, float duration) override;
     void print();
     float length();

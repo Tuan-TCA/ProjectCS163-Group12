@@ -23,6 +23,8 @@ extern Color MyColor2;
 extern Color MyColor3;
 extern Color MyColor4;
 extern Color MyColor5;
+extern Color MyColor6;
+
 extern Texture2D resizedImage(const char* imagePath, float width, float height);
 extern void UpdateColorsBasedOnSwitchState();
 extern Vector2 operator+(Vector2 a, Vector2 b);

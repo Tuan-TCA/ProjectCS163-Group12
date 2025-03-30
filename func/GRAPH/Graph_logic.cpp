@@ -4,6 +4,7 @@
 #include <cmath>
 #include "Variables.h"
 #include <algorithm>
+#include <vector>
 #include "ControlAnimation.h"
 #include <unordered_set>
 
@@ -14,7 +15,12 @@ float distance(Vector2 pos1, Vector2 pos2){
 }
 void Graph::init(){
     Page::init();
-    MSTbutton =  Button(5, screenHeight / 2 - screenHeight*0.63f * 0.5f + 5, screenWidth*0.24f - 10, screenHeight*0.63f * 0.15f, "MST", MyColor1, Fade(MyColor1, 0.8f), WHITE); 
+    if(find(OperationOptions.begin(), OperationOptions.end(), "ALGORITHM") == OperationOptions.end()) OperationOptions.push_back("ALGORITHM");
+    selectedAlgorithmIndex = 0;
+    currentALgorithm = Algorithm::BFS;
+    AlgorithmOptionButton = Button(screenWidth * 0.24f * 0.15f,screenHeight / 2 - screenHeight*0.63f * 0.35f + 10 , screenWidth*0.24f * 0.7f, screenHeight*0.63f * 0.15f, AlgorithmOptions[selectedAlgorithmIndex].c_str(), WHITE, LIGHTGRAY, MyColor5);
+    AlgorithmPrevButton = Button(5,screenHeight / 2 - screenHeight*0.63f * 0.35f + 10 ,  screenWidth*0.24f * 0.15f - 10, screenHeight*0.63f * 0.15f, "<", WHITE, LIGHTGRAY, MyColor5);
+    AlgorithmNextButton = Button(screenWidth*0.24f * 0.85f + 5, screenHeight / 2 - screenHeight*0.63f * 0.35f + 10 ,  screenWidth*0.24f * 0.15f - 10, screenHeight*0.63f * 0.15f, ">", WHITE, LIGHTGRAY, MyColor5);
     added = false;
     minDistance = 100.0f;
     got1stV = false;
@@ -24,14 +30,20 @@ void Graph::init(){
 void Graph::draw(){
     Page::draw();
 
-
     for(auto& e: edge){
-        // cout << "edge draw" << endl;
         e.Draw();
     }
     for(auto& v: vertex){
         v.Draw();
     }
+
+    //Algorithm
+    if(currentOperation == Operation::Algorithm){
+        AlgorithmOptionButton.Draw(LIGHTGRAY, WHITE);
+        AlgorithmPrevButton.Draw(LIGHTGRAY, WHITE);
+        AlgorithmNextButton.Draw(LIGHTGRAY, WHITE);
+    }
+    //code state
 
     float pseudocodeX = screenWidth * 0.01f;
     float pseudocodeY = screenHeight * 0.5f;
@@ -46,10 +58,10 @@ void Graph::draw(){
         else{
             currentColor.a = 0;
         }
-        
+
         // DrawText(pseudocode[i].c_str(), pseudocodeX, pseudocodeY + i * lineHeight, 20, currentColor);
         float textWidth = MeasureText(pseudocode[i].c_str(), 14);
-        DrawRectangleRounded(Rectangle{pseudocodeX - 5, pseudocodeY + i * lineHeight - 5, screenWidth*0.23f,  lineHeight}, 1, 5, currentColor);
+        DrawRectangleRounded(Rectangle{pseudocodeX - 5, pseudocodeY + i * lineHeight - 5, screenWidth*0.23f,  lineHeight}, 0, 5, currentColor);
         DrawTextEx(FONT, pseudocode[i].c_str(), {pseudocodeX, pseudocodeY + i * lineHeight} , 10, 2, MyColor4);
         
     }
@@ -67,7 +79,27 @@ void Graph::event(){
        added = true;
    }
 
-     
+    //ALgorithm operation
+    if(OperationOptions[selectedOperationIndex] == "ALGORITHM") currentOperation = Operation::Algorithm;
+
+    if (AlgorithmPrevButton.IsClicked()) {
+        resetAnimation();
+        selectedAlgorithmIndex = (selectedAlgorithmIndex - 1 + AlgorithmOptions.size()) % AlgorithmOptions.size();
+        AlgorithmOptionButton.label = AlgorithmOptions[selectedAlgorithmIndex].c_str(); 
+    }
+
+    if (AlgorithmNextButton.IsClicked()) {
+        resetAnimation();
+        selectedAlgorithmIndex = (selectedAlgorithmIndex + 1) % AlgorithmOptions.size();
+        AlgorithmOptionButton.label = AlgorithmOptions[selectedAlgorithmIndex].c_str(); 
+    }
+
+    if(AlgorithmOptions[selectedAlgorithmIndex] == "BFS") currentALgorithm = Algorithm::BFS;
+    if(AlgorithmOptions[selectedAlgorithmIndex] == "MST") currentALgorithm = Algorithm::MST;
+
+    // if(currentALgorithm == Algorithm::BFS) cout << "bfs" << endl;
+    // if(currentALgorithm == Algorithm::MST) cout << "mst" << endl;
+    //vertex
     for(auto& v: vertex){
         if(IsMouseButtonDown(MOUSE_LEFT_BUTTON)){
             if(CheckCollisionPointCircle(GetMousePosition(), v.position, v.radius) || v.isPressing){
@@ -132,16 +164,50 @@ void Graph::event(){
     }
 
 
-   handleBFS();
+   handleChoice();
     // cout << currentIndex << endl
    
 }
-
+void Graph::handleChoice(){
+    if(currentOperation == Operation::Algorithm){
+        switch (currentALgorithm)
+        {
+        case Algorithm::BFS:
+            pseudocode = {
+                "BFS (G, s)",
+                " while !Q.empty // Q is a normal queue",
+                "   for each neighbor v of u = Q.front, Q.pop",
+                "       if v is unvisited, tree edge, Q.push(v)",
+            };
+            handleBFS();
+            break;
+        default:
+            break;
+        }
+    }
+    else{
+        resetAnimation();
+    }
+}
 void Graph::startAnimation(float duration){
     this->duration = duration;
     currentQueueIndex = 0;
 }
 
+void Graph::resetAnimation(){
+    isAnimating  = false;
+    got1stV = false;
+    bfsCalled = false;
+    clickedV = nullptr;
+    currentQueueIndex = 0;
+    currentStep = 0;
+    for(auto& v: vertex){
+        v.reset();
+    }
+    for(auto& e: edge){
+        e.reset();
+    }
+}
 
 
 
@@ -191,50 +257,35 @@ void Graph::addFromMatrix(){
         e.print();
     }
 }
-void Graph::handleInput(){
-    
-    switch (currentInput) {
-            case InputType::Random:
-            if (InputOptionButton.IsClicked()) {
-                 // Lấy số ngẫu nhiên
-            }
-            break;
-            case InputType::Keyboard:
-                textbox.HandleInput(7); 
-                break;
-            case InputType::File:
-                if(IsFileDropped()){
-                    
-                    FilePathList droppedFiles = LoadDroppedFiles();
-                    TextCopy(filePath,droppedFiles.paths[0]);
-                    ifstream fin(filePath);
-                    if(!fin.is_open()) cout << "Cannot open dropped file";
-                    else{
-                        cout << "File path: " << filePath << endl;
-                        reset(); // reset graph;
-                        textbox.resetTextbox();
-                        matrix.clear();
-                        int n;
-                        fin >> n;
-                        matrix.resize(n, vector<int>(n));
-                        for(int i = 0; i < n; i ++){
-                            for(int j = 0; j < n; j++){
-                                fin >> matrix[i][j];
-                                cout << "matrix[" << i << "][" << j << "] = " << matrix[i][j] << endl;
-                            }
-                        }     
-                        fin.close();
-                    }
-                    UnloadDroppedFiles(droppedFiles); 
-                }
-                break;
-            default:
-                break;
-        }
 
+void Graph::FILE_INPUT(){
+    if(IsFileDropped()){        
+        FilePathList droppedFiles = LoadDroppedFiles();
+        TextCopy(filePath,droppedFiles.paths[0]);
+        ifstream fin(filePath);
+        if(!fin.is_open()) cout << "Cannot open dropped file";
+        else{
+            cout << "File path: " << filePath << endl;
+            reset(); // reset graph;
+            textbox.resetTextbox();
+            matrix.clear();
+            int n;
+            fin >> n;
+            matrix.resize(n, vector<int>(n));
+            for(int i = 0; i < n; i ++){
+                for(int j = 0; j < n; j++){
+                    fin >> matrix[i][j];
+                    cout << "matrix[" << i << "][" << j << "] = " << matrix[i][j] << endl;
+                }
+            }     
+            fin.close();
+        }
+        UnloadDroppedFiles(droppedFiles); 
+    }
 }
 
 void Graph::reset(){
+    Page::reset();
     added = false;
     vertex.clear();
     edge.clear();
@@ -246,13 +297,10 @@ void Graph::reset(){
     clickedV = nullptr;
     currentQueueIndex = 0;
     currentStep = 0;
+    selectedAlgorithmIndex = 0;
 }
 
-void Graph::update(){
-    float deltaTime = GetFrameTime();
 
-
-}
 
 void Graph::handleCollision(){
     

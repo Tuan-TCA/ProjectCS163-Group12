@@ -29,6 +29,7 @@ void Page::init() {
     InputNextButton = Button(screenWidth*0.24f * 0.85f + 5, screenHeight / 2 - screenHeight*0.63f * 0.35f + 10 ,  screenWidth*0.24f * 0.15f - 10, screenHeight*0.63f * 0.15f, ">", WHITE, LIGHTGRAY, MyColor5);
     currentInput = InputType::Keyboard;
 
+    OperationOptions  = {"INSERT", "CREATE", "UPDATE", "DELETE", "SEARCH"};
     selectedOperationIndex = 0;
     OperationOptionButton = Button(screenWidth * 0.24f * 0.15f, screenHeight / 2 - screenHeight*0.63f * 0.5f + 5, screenWidth*0.24f * 0.7f, screenHeight*0.63f * 0.15f, OperationOptions[selectedOperationIndex].c_str(), MyColor1, Fade(MyColor1, 0.8f), WHITE);
     OperationPrevButton = Button(5, screenHeight / 2 - screenHeight*0.63f * 0.5f + 5,screenWidth*0.24f * 0.15f - 10, screenHeight*0.63f * 0.15f, "<", MyColor1, Fade(MyColor1, 0.8f), WHITE);
@@ -51,6 +52,7 @@ void Page::init() {
     play2 = ButtonFromImage("res/button/2-play.png", "res/button/2-play.png", screenWidth / 2 -   screenWidth * 0.05f / 2  , screenHeight*0.92f,  screenWidth * 0.05f, screenWidth*0.05f);
     timeSlider = Slider({screenWidth * 0.05f , screenHeight*0.936f,  screenWidth * 0.3f ,screenHeight * 0.095f / 3 * 0.9f}, 0.0f, 1.0f);
     
+    codeDisplayPLace = Rectangle{7, screenHeight / 2.0f, side.width - 14.0f, side.height / 2.0f - 7};
     speedSliding = MyRec(screenWidth * 0.723f , screenHeight*0.936f,  screenWidth * 0.182f * 0.38f,screenHeight * 0.095f / 3 * 0.9f, "", MyColor3, WHITE);
     background1 = resizedImage("res/BackGround.png", screenWidth, screenHeight);   
     background2 = resizedImage("res/background_theme2.png", screenWidth, screenHeight);    
@@ -77,6 +79,7 @@ void Page::draw() {
     head.Draw(MyColor2, getMODE());
     DrawRectangleRec(bottom, MyColor2);
     DrawRectangleRec(side, MyColor3);
+    DrawRectangleRec(codeDisplayPLace, MyColor6);
     DrawRectangleRounded({screenWidth * 0.7f , screenHeight*0.934f , screenWidth * 0.182f,screenHeight * 0.095f / 3}, 20, 20, WHITE); //speed control
     speedSliding.DrawRounded(MyColor3);
     timeSlider.Draw();
@@ -101,6 +104,7 @@ void Page::draw() {
         DrawText("DROP FILE HERE", 30, screenHeight / 2 - screenHeight*0.63f * 0.118f, 25, GRAY);
         //drop file field
     }
+    
 
     if(switchState){
         isPlaying ? play2.Draw() : pause2.Draw();
@@ -114,10 +118,11 @@ void Page::draw() {
         home.Draw();
     }
     //Input
-    InputOptionButton.Draw(LIGHTGRAY, WHITE);
-    InputPrevButton.Draw(LIGHTGRAY, WHITE);
-    InputNextButton.Draw(LIGHTGRAY, WHITE);
-
+    if(currentOperation != Operation::Algorithm){
+        InputOptionButton.Draw(LIGHTGRAY, WHITE);
+        InputPrevButton.Draw(LIGHTGRAY, WHITE);
+        InputNextButton.Draw(LIGHTGRAY, WHITE);
+    }
     //Operation
     OperationOptionButton.Draw( Fade(MyColor1, 0.8f), MyColor1);
     OperationPrevButton.Draw(Fade(MyColor1, 0.8f), MyColor1);
@@ -132,7 +137,7 @@ void Page::event() {
         return;
     }
 
-    if(mode != MODE::GRAPH) {handleInput();}
+    handleInput();
 
     //speed sliding event
     Vector2 mousePoint = GetMousePosition();
@@ -192,7 +197,6 @@ void Page::event() {
          InputOptionButton.label = InputOptions[selectedInputIndex].c_str(); 
     }
     
-\
 
     if (InputOptions[selectedInputIndex] == "KEYBOARD") currentInput = InputType::Keyboard;
     if (InputOptions[selectedInputIndex] == "RANDOM") currentInput = InputType::Random;

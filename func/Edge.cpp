@@ -10,6 +10,7 @@ void Edge::Update(float deltaTime){
          float t = animationTime / (duration / animationSpeed);
         if(t > 1) {
             t = 1; 
+            doneAnimation = true;
             isAnimating = false;
         }
 
@@ -19,12 +20,9 @@ void Edge::Update(float deltaTime){
         endEdge = start->position + delta;
         
     }
-    else {
-        if(endEdge != start->position) endEdge = end->position;
-    }
 
-    if (endEdge != end->position){
-        color = color;
+    if (!doneAnimation){
+        color = MyColor4;
     }else{
         color = targetColor;
     }
@@ -39,7 +37,8 @@ void Edge::startAnimation(Color target, float duration) {
 void Edge::Draw() {
     DrawLineEx(start->position, end->position, 4,  color);
     if (isAnimating) {
-        DrawLineEx(start->position, endEdge, 4, targetColor);
+        
+        if(endEdge != end->position) DrawLineEx(start->position, endEdge, 4, targetColor);
     } 
     DrawText(to_string(w).c_str(), (start->position.x + end->position.x + 20) / 2 , (start->position.y + end->position.y + 30) / 2 , 20, textColor);
 }
@@ -67,4 +66,5 @@ void Edge::reset(){
     endEdge = start->position;
     animationTime = 0.0f;
     isAnimating = false;
+    doneAnimation = false;
 }
