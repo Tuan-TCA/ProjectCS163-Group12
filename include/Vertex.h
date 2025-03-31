@@ -15,11 +15,12 @@ public:
     float duration;
     Color targetColor;
     float animationTime;
+    bool doneAnimation;
     bool fullColor;
     Vertex(){
         radius = 20; 
         color = WHITE;
-    
+        doneAnimation = false;
         isAnimating = false;
         ringColor = MyColor4;
         textColor = MyColor4;

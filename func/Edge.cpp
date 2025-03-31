@@ -58,6 +58,7 @@ float Edge::length(){
 void Edge::SetColor(Color target){
     this->textColor = target;
     this->color = target;
+    doneAnimation = true;
 }
 
 void Edge::reset(){

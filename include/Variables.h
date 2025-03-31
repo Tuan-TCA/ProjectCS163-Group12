@@ -44,5 +44,6 @@ public:
     virtual void SetColor(Color targetColor) = 0;
      virtual void print() = 0;
     virtual void reset() = 0;
+     bool doneAnimation = 0;
 };
 

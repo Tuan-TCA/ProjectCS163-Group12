@@ -60,4 +60,5 @@ class Graph : public Page{
     void handleCollision();
 
     void FILE_INPUT() override;
+    // void handleInput() override;
 };

@@ -148,7 +148,8 @@ void Graph::event(){
             vector<Drawable*> current = arrayQueue[currentQueueIndex];
             for (auto& elem : current) {
                 elem->SetColor(ORANGE);
-                elem->isAnimating = false;
+                elem->isAnimating = false;  
+                elem->doneAnimation = true; 
             }
             currentQueueIndex++;
             if (currentQueueIndex > arrayQueue.size() - 1) currentQueueIndex = arrayQueue.size() - 1;
@@ -156,7 +157,8 @@ void Graph::event(){
                 vector<Drawable*> next = arrayQueue[currentQueueIndex];
                 for (auto& elem : next) {
                     elem->SetColor(ORANGE);
-                    elem->isAnimating = false; // ready to be animating
+                    elem->isAnimating = false;
+                    elem->doneAnimation = true;
                 }
             }
         }
@@ -170,6 +172,7 @@ void Graph::event(){
 }
 void Graph::handleChoice(){
     if(currentOperation == Operation::Algorithm){
+        // currentInput = InputType::Keyboard;
         switch (currentALgorithm)
         {
         case Algorithm::BFS:
@@ -180,6 +183,9 @@ void Graph::handleChoice(){
                 "       if v is unvisited, tree edge, Q.push(v)",
             };
             handleBFS();
+            break;
+        case Algorithm::MST:
+
             break;
         default:
             break;
@@ -267,7 +273,7 @@ void Graph::FILE_INPUT(){
         else{
             cout << "File path: " << filePath << endl;
             reset(); // reset graph;
-            textbox.resetTextbox();
+            textbox.reset();
             matrix.clear();
             int n;
             fin >> n;
@@ -303,7 +309,6 @@ void Graph::reset(){
 
 
 void Graph::handleCollision(){
-    
     for(int i = 0; i < vertex.size(); i++){
         for(int j = 0; j < vertex.size(); j++){
             float dis = distance(vertex[i].position, vertex[j].position);
@@ -314,8 +319,18 @@ void Graph::handleCollision(){
                 if(vertex[i].isPressing){
                     vertex[j].position = vertex[j].position - delta;
                 }
+                else{
+                    vertex[i].position = vertex[i].position + delta;
+                }
             }
         }
     }
 
 }
+
+// void Graph::handleInput(){
+//     Page::handleInput();
+//     if(currentOperation == Operation::Algorithm){
+//         textbox.HandleInput(20);
+//     }
+// }

@@ -82,20 +82,22 @@ public:
         Update();
         DrawRectangleRec(bounds, isHovered ? hoverColor : color);
         int textWidth = MeasureText(label, 20);
-        DrawText(label, bounds.x + (bounds.width - textWidth) / 2, bounds.y + (bounds.height - 20) / 2, 20, textColor);
+        // DrawText(label, bounds.x + (bounds.width - textWidth) / 2, bounds.y + (bounds.height - 20) / 2, 20, textColor);
+        DrawTextEx(FONT, label, {bounds.x + (bounds.width - textWidth) / 2, bounds.y + (bounds.height - 20) / 2}, 20, 3, textColor );
     }
 
     virtual void Draw(Color HoverColor, Color color){
         Update();
         DrawRectangleRec(bounds, isHovered ? HoverColor : color);
         int textWidth = MeasureText(label, 20);
-        DrawText(label, bounds.x + (bounds.width - textWidth) / 2, bounds.y + (bounds.height - 20) / 2, 20, textColor);
+                DrawTextEx(FONT, label, {bounds.x + (bounds.width - textWidth) / 2, bounds.y + (bounds.height - 20) / 2}, 20, 3, textColor );
+
     }
     void DrawRounded(){
         Update();
         DrawRectangleRounded(bounds, 20, 0,isHovered ? MyColor2 : MyColor1);
         int textWidth = MeasureText(label, 20);
-        DrawText(label, bounds.x + (bounds.width - textWidth) / 2, bounds.y + (bounds.height - 20) / 2, 20, textColor);
+        DrawTextEx(FONT, label, {bounds.x + (bounds.width - textWidth) / 2, bounds.y + (bounds.height - 20) / 2}, 20, 3, textColor );
     }
 
     void DrawText2D () {
@@ -119,68 +121,220 @@ public:
 
 class TextBox: public Button {
 public:
-    string inputText;
+    vector<string> inputText;
+    int currentIndex;
+    int startRowIndex;
+    int startColumnIndex;
+    int maxVisibleLength;
     bool active;
+    vector<int> SubIndex;
     vector<int> nums;
 
     TextBox() : Button() {
-        inputText = "";
+        inputText = {""};
         active = false;
+        SubIndex = {0};
         nums.clear();
+        maxVisibleLength = 15; 
+        startColumnIndex = 0;
     }
 
     TextBox(float x, float y, float width, float height, const char* labelText, 
             Color buttonColor, Color hoverCol, Color textCol)
         : Button(x, y, width, height, labelText, buttonColor, hoverCol, textCol) { 
-        inputText = "";  
+        inputText = {""};  
+        SubIndex = {0};
         active = false;  
-        nums.clear();    
+        nums.clear();  
+        currentIndex = 0; 
+        maxVisibleLength = 15; 
+        startColumnIndex = 0;
     }
     void update(){
         if (IsMouseButtonPressed(MOUSE_LEFT_BUTTON)) {
         Vector2 mousePos = GetMousePosition();
         active = (mousePos.x >= bounds.x && mousePos.x <=  bounds.x + bounds.width && mousePos.y >= bounds.y && mousePos.y <= bounds.y + bounds.height);
         }
-    }
-    void Draw() override {
-        update();
-        Button::Draw();
-        string displayText = inputText;
-        if (active && ((int)(GetTime() * 2) % 2 == 0)) { 
-            displayText += "|";
+
+        if(active){
+            if(IsKeyPressed(KEY_DOWN)){
+                currentIndex++;
+                if(currentIndex >= inputText.size()) currentIndex = inputText.size() - 1;
+                if(currentIndex - startRowIndex > 2) startRowIndex++;
+                startColumnIndex = 0;
+            }
+
+            if(IsKeyPressed(KEY_UP)){
+                currentIndex--;
+                if(currentIndex < 0) currentIndex = 0;
+                if(currentIndex - startRowIndex < 0) startRowIndex--;
+                startColumnIndex = 0;
+            }
+
+            if (!SubIndex.empty() && currentIndex >= 0 && currentIndex < SubIndex.size()) { 
+                if(IsKeyPressed(KEY_LEFT)){
+                    SubIndex[currentIndex]--;
+                    if(SubIndex[currentIndex] < 0) {
+                        SubIndex[currentIndex] = 0;
+                        if(startColumnIndex > 0 && SubIndex[currentIndex] < startColumnIndex) startColumnIndex--;
+                    } else if (SubIndex[currentIndex] < startColumnIndex) {
+                        startColumnIndex = SubIndex[currentIndex];
+                    }
+                }
+
+                if (!inputText.empty() && currentIndex >= 0 && currentIndex < inputText.size()) { 
+                    if(IsKeyPressed(KEY_RIGHT)){
+                        SubIndex[currentIndex]++;
+                         if(SubIndex[currentIndex] > inputText[currentIndex].size()) {
+                            SubIndex[currentIndex] = inputText[currentIndex].size();
+                        } 
+                        else if (SubIndex[currentIndex] >= startColumnIndex + maxVisibleLength) {
+                            startColumnIndex++;
+                        }
+                    }
+                }
+            }
+
         }
-        DrawText(displayText.c_str(), bounds.x + bounds.width / 2 - MeasureText(displayText.c_str(), 40) / 2, bounds.y + bounds.height / 3 - 3 , 40, textColor);
+    }
+    void Draw() override {  
+        Button::Draw();
+        int cnt = 0;
+        for(int i = startRowIndex; i < inputText.size() && i < startRowIndex + 3; i++){
+            string currentText = inputText[i];
+            int subIndex = (i == currentIndex && !SubIndex.empty() && i < SubIndex.size()) ? SubIndex[i] : currentText.size();
+
+            string visibleText = "";
+            int cursorPositionInVisibleText = -1;
+
+            if (!currentText.empty()) {
+                int endIndex = min((int)currentText.size(), startColumnIndex + maxVisibleLength - 1);
+                visibleText = currentText.substr(startColumnIndex, endIndex);
+                cout << visibleText << endl;
+                if (i == currentIndex) {
+                    cursorPositionInVisibleText = subIndex - startColumnIndex;
+                    if (cursorPositionInVisibleText < 0 || cursorPositionInVisibleText > visibleText.size()) {
+                        cursorPositionInVisibleText = visibleText.size(); 
+                    }
+                }
+            } else if (i == currentIndex) {
+                    cursorPositionInVisibleText = 0;
+            }
+            string displayText = visibleText;
+            if (active && i == currentIndex && ((int)(GetTime() * 2) % 2 == 0) && cursorPositionInVisibleText >= 0 && cursorPositionInVisibleText <= displayText.size()) {
+            displayText.insert(displayText.begin() + cursorPositionInVisibleText, '|');
+            }
+
+            float lineHeight = 25;
+            Vector2 textHeight = MeasureTextEx(FONT, displayText.c_str(), 25, 1);
+            DrawText(displayText.c_str(), bounds.x + 5 , bounds.y + 5  + cnt * lineHeight, 25, textColor);
+            cnt++;
+            
+        }
     }
 
-    void Draw(int fontSize){
-        update();
+    void Draw(int fontSize)  {
         Button::Draw();
-        string displayText = inputText;
-        if (active && ((int)(GetTime() * 2) % 2 == 0)) { 
-            displayText += "|";
+        for(int i = startRowIndex; i < inputText.size() && i < startRowIndex + 3; i++){
+            std::string displayText = inputText[i];
+            if (active && i == currentIndex && ((int)(GetTime() * 2) % 2 == 0)) {
+                displayText.insert(displayText.begin() + SubIndex[currentIndex], '|');
+            }
+            DrawText(displayText.c_str(), bounds.x + 5, bounds.y + bounds.height / 3 - MeasureTextEx(FONT, displayText.c_str(), fontSize, 1).y / 2, fontSize, textColor);
         }
-        DrawText(displayText.c_str(), bounds.x + bounds.width * 0.7 - MeasureText(displayText.c_str(), fontSize) / 2, bounds.y + bounds.height / 3 + 5 , fontSize, textColor);
-    }
+    }   
 
-    void HandleInput(int maxSize) {
-        update();
-        if (active) {
-            int key = GetCharPressed();
-            while (key > 0 && inputText.size() < maxSize) {
+    // void MultiplesInputDraw(){
+    //      update();
+    //     Button::Draw();
+    //     string displayText = inputText;
+    //     if (active && ((int)(GetTime() * 2) % 2 == 0)) { 
+    //         displayText += "|";
+    //     }
+    //     DrawText(displayText.c_str(), bounds.x + bounds.width * 0.7 - MeasureText(displayText.c_str(), 12) / 2, bounds.y + bounds.height / 3 + 5 , 12, textColor);
+    // }
+    void HandleInput() {
+    if (active) {
+        int key = GetCharPressed();
+        if (!inputText.empty() && currentIndex >= 0 && currentIndex < inputText.size() &&
+            !SubIndex.empty() && currentIndex >= 0 && currentIndex < SubIndex.size()) { 
+            while (key > 0 ) {
                 if (key >= '0' && key <= '9' || key == ' ') {
-                    inputText += (char)key;
+                    int idx = SubIndex[currentIndex];
+                    inputText[currentIndex].insert(inputText[currentIndex].begin() + idx,(char)key);
+                    SubIndex[currentIndex]++;
+                    if (SubIndex[currentIndex] >= startColumnIndex + maxVisibleLength) {
+                        startColumnIndex++;
+                    }
                 }
                 key = GetCharPressed();
             }
         }
 
-    }
+        if(IsKeyPressed(KEY_ENTER)){
+            inputText.push_back("");
+            SubIndex.push_back(0);
+            currentIndex++;
+             if(currentIndex - startRowIndex > 2) startRowIndex++;
+             startColumnIndex = 0;
+        }
 
-    void resetTextbox(){
-        inputText = "";
+        if (!inputText.empty() && currentIndex >= 0 && currentIndex < inputText.size() &&
+            !SubIndex.empty() && currentIndex >= 0 && currentIndex < SubIndex.size()) { 
+            if(IsKeyPressed(KEY_BACKSPACE)){
+                if (SubIndex[currentIndex] > 0) {
+                    SubIndex[currentIndex]--;
+                    int idx = SubIndex[currentIndex];
+                    inputText[currentIndex].erase(inputText[currentIndex].begin() + idx);
+                    if (SubIndex[currentIndex] < startColumnIndex) {
+                        startColumnIndex--;
+                        if (startColumnIndex < 0) startColumnIndex = 0;
+                    }
+                } else if (inputText.size() > 1) { 
+                    inputText.erase(inputText.begin() + currentIndex);
+                    SubIndex.erase(SubIndex.begin() + currentIndex);
+                    currentIndex--;
+                    if (currentIndex < 0) currentIndex = 0;
+                    if (!SubIndex.empty() && currentIndex >= 0 && currentIndex < SubIndex.size()) {
+                        SubIndex[currentIndex] = inputText[currentIndex].size();
+                        startColumnIndex = max(0, (int)inputText[currentIndex].size() - maxVisibleLength); 
+                    }
+                    if(currentIndex - startRowIndex < 0) startRowIndex--;
+                }
+                else startColumnIndex = 0;
+            }
+        }
+    }
+}
+
+    
+
+  
+    void reset(){
+        inputText.clear();
+        inputText = {""};
+        currentIndex = 0;
+        SubIndex.clear();
+        SubIndex.push_back(0);
+        startRowIndex = 0;
+        startColumnIndex = 0;
         active = false;
         nums.clear();
     }
+
+    void resetTextbox(){
+        inputText.clear();
+        inputText = {""};
+        currentIndex = 0;
+        SubIndex.clear();
+        SubIndex.push_back(0);
+        startRowIndex = 0;
+        startColumnIndex = 0;
+        active = false;
+        // nums.clear();
+    }
+
+    
 
     
 };

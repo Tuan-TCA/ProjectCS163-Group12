@@ -20,6 +20,7 @@ void Vertex::Update(float deltaTime){
                 t = 1; 
                 animationTime = 0;
                  isAnimating = false;
+                 doneAnimation = true;
             }
             textColor = ColorLerp(textColor, targetColor, t);
             color = ColorLerp(color, WHITE, t);
@@ -65,6 +66,7 @@ void Vertex::SetColor(Color target){
 }
 
 void Vertex::reset(){
+    doneAnimation = false;
      isAnimating = false;
         color = WHITE;
         ringColor = MyColor4;

@@ -33,7 +33,6 @@ void LinkedList::init(){
 void LinkedList::event() {
     Page::event();
 
-
     //Choose Operation
     if(currentOperation == Operation::Create) {
         //CreateLL;
@@ -44,7 +43,7 @@ void LinkedList::event() {
             lastInsertedKey = textbox.nums[0];
             textbox.nums.erase(textbox.nums.begin());
             isInserting = true;
-            textbox.inputText = "";
+            textbox.inputText = {""};
         }   
         // Node* cur = head; while(cur) {cout<<cur->val<<" "; cur = cur->next;} cout<<endl;
     }
@@ -53,7 +52,7 @@ void LinkedList::event() {
             SearchKey = textbox.nums[0];
             textbox.nums.erase(textbox.nums.begin());
             isSearching = true;
-            textbox.inputText = "";
+            textbox.inputText = {""};
         }
     }
     if(currentOperation == Operation::Delete) {
@@ -61,7 +60,7 @@ void LinkedList::event() {
             DeleteKey = textbox.nums[0];
             textbox.nums.erase(textbox.nums.begin());
             isDeleting = true;
-            textbox.inputText = "";
+            textbox.inputText = {""};
         }
     }
 
@@ -71,7 +70,7 @@ void LinkedList::event() {
             textbox.nums.erase(textbox.nums.begin());
             newVal = textbox.nums[1];
             isUpdating = true;
-            textbox.inputText = "";
+            textbox.inputText = {""};
         }
     }
 
@@ -342,7 +341,7 @@ void LinkedList::DrawArrow(Vector2 start, Vector2 end) {
                     arrowHead.y - arrow_size * sin(angle + arrowAngle)};
     Vector2 right = {arrowHead.x - arrow_size * cos(angle - arrowAngle), 
                      arrowHead.y - arrow_size * sin(angle - arrowAngle)};
-
+    Color arrow_color = MyColor1;
     DrawLineEx(start, arrowHead, 5, arrow_color);
     DrawLineEx(arrowHead, left, 3, arrow_color);
     DrawLineEx(arrowHead, right, 3, arrow_color);
@@ -379,7 +378,7 @@ void LinkedList::DrawNode(Vector2 center, int key, int choose){
 void LinkedList::DrawLL(Vector2 pos, bool last) {
 
     if (!head){
-        cout << "Head is null\n";
+        // cout << "Head is null\n";
         return;
     }
     Node * cur = head;

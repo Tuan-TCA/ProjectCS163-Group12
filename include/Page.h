@@ -55,7 +55,7 @@ public:
     TextBox newTextBox;
     
     MyRec speedSliding;
-    Slider timeSlider;
+    // Slider timeSlider;
     ButtonFromImage back1, next1, pause1, play1;
     ButtonFromImage back2, next2, pause2, play2;
     ButtonFromImage home, home2;

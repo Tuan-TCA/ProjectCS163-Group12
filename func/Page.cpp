@@ -50,17 +50,17 @@ void Page::init() {
     next2 = ButtonFromImage("res/button/2-next.png", "res/button/2-next.png", screenWidth / 2 +   screenWidth * 0.05f , screenHeight*0.926f,  screenWidth * 0.04f, screenWidth*0.04f);
     pause2 = ButtonFromImage("res/button/2-pause.png", "res/button/2-pause.png", screenWidth / 2 -   screenWidth * 0.05f / 2  , screenHeight*0.92f,  screenWidth * 0.05f, screenWidth*0.05f);
     play2 = ButtonFromImage("res/button/2-play.png", "res/button/2-play.png", screenWidth / 2 -   screenWidth * 0.05f / 2  , screenHeight*0.92f,  screenWidth * 0.05f, screenWidth*0.05f);
-    timeSlider = Slider({screenWidth * 0.05f , screenHeight*0.936f,  screenWidth * 0.3f ,screenHeight * 0.095f / 3 * 0.9f}, 0.0f, 1.0f);
+    // timeSlider = Slider({screenWidth * 0.05f , screenHeight*0.936f,  screenWidth * 0.3f ,screenHeight * 0.095f / 3 * 0.9f}, 0.0f, 1.0f);
     
     codeDisplayPLace = Rectangle{7, screenHeight / 2.0f, side.width - 14.0f, side.height / 2.0f - 7};
     speedSliding = MyRec(screenWidth * 0.723f , screenHeight*0.936f,  screenWidth * 0.182f * 0.38f,screenHeight * 0.095f / 3 * 0.9f, "", MyColor3, WHITE);
     background1 = resizedImage("res/BackGround.png", screenWidth, screenHeight);   
     background2 = resizedImage("res/background_theme2.png", screenWidth, screenHeight);    
-    bottom = {0,screenHeight*0.905f,(float)screenWidth,screenHeight*0.095f};
+    bottom = {screenWidth / 2 -   screenWidth * 0.05f * 3 / 2 - 50,screenHeight*0.905f,(float) (screenWidth * 0.23),screenHeight*0.09f};
     side = {0,screenHeight / 2 - screenHeight * 0.64f / 2,screenWidth*0.24f,screenHeight*0.64f};
     textbox = TextBox(5, screenHeight / 2 - screenHeight*0.63f * 0.17f, screenWidth*0.25f - 100, screenHeight*0.63f * 0.15f, "", WHITE, WHITE, BLACK);
-    oldTextBox = TextBox(5, screenHeight / 2 - screenHeight*0.63f * 0.17f, screenWidth*0.08, screenHeight*0.63f * 0.15f, "old:      ", WHITE, WHITE, BLACK);
-    newTextBox = TextBox(screenWidth*0.08f + 10, screenHeight / 2 - screenHeight*0.63f * 0.17f, screenWidth*0.08, screenHeight*0.63f * 0.15f, "new:       ", WHITE, WHITE, BLACK);
+    oldTextBox = TextBox(5, screenHeight / 2 - screenHeight*0.63f * 0.13f, screenWidth*0.08, screenHeight*0.63f * 0.11f, "", WHITE, WHITE, BLACK);
+    newTextBox = TextBox(screenWidth*0.08f + 10, screenHeight / 2 - screenHeight*0.63f * 0.13f, screenWidth*0.08, screenHeight*0.63f * 0.11f, "", WHITE, WHITE, BLACK);
 }
 
 void Page::reset(){
@@ -68,21 +68,21 @@ void Page::reset(){
     currentInput = InputType::Random;
     selectedInputIndex = 0;
     selectedOperationIndex = 0;
-    textbox.resetTextbox();
-    oldTextBox.resetTextbox();
-    newTextBox.resetTextbox();
+    textbox.reset();
+    oldTextBox.reset();
+    newTextBox.reset();
 }
 
 void Page::draw() {
     ClearBackground(RAYWHITE);
     DrawTexture(switchState ? background2 : background1, 0, 0, WHITE);
     head.Draw(MyColor2, getMODE());
-    DrawRectangleRec(bottom, MyColor2);
+    DrawRectangleRounded(bottom, 20, 20, MyColor2);
     DrawRectangleRec(side, MyColor3);
     DrawRectangleRec(codeDisplayPLace, MyColor6);
     DrawRectangleRounded({screenWidth * 0.7f , screenHeight*0.934f , screenWidth * 0.182f,screenHeight * 0.095f / 3}, 20, 20, WHITE); //speed control
     speedSliding.DrawRounded(MyColor3);
-    timeSlider.Draw();
+    // timeSlider.Draw();
     stringstream ss;
     ss << fixed << std::setprecision(1) << animationSpeed;
     std::string formattedSpeed = ss.str();
@@ -91,8 +91,11 @@ void Page::draw() {
 
     if(currentInput != InputType::File){
         if (currentOperation == Operation::Update) {
-        oldTextBox.Draw(20);  
-        newTextBox.Draw(20); 
+            DrawTextEx(FONT, "OLD", {oldTextBox.bounds.x + oldTextBox.bounds.width /2 - 20, oldTextBox.bounds.y - 20}, 20, 2, WHITE);
+            DrawTextEx(FONT ,"NEW", {newTextBox.bounds.x + newTextBox.bounds.width / 2 - 20, newTextBox.bounds.y - 20}, 20, 2, WHITE);
+            
+            newTextBox.Draw(20); 
+            oldTextBox.Draw(20);
         }
         else {
             textbox.Draw();
@@ -137,7 +140,7 @@ void Page::event() {
         return;
     }
 
-    handleInput();
+    
 
     //speed sliding event
     Vector2 mousePoint = GetMousePosition();
@@ -151,7 +154,7 @@ void Page::event() {
     animationSpeed = round(animationSpeed * 10.0) / 10.0; // round up to 1 decimal
 
     //time slider
-    timeSlider.Update();
+    // timeSlider.Update();
 
     if(play1.IsClicked() || play2.IsClicked() || pause1.IsClicked() || pause2.IsClicked() || IsKeyPressed(KEY_SPACE)){
         isPlaying = !isPlaying;
@@ -179,7 +182,15 @@ void Page::event() {
     if(OperationOptions[selectedOperationIndex] == "DELETE") currentOperation = Operation::Delete;
 
     //INPUT Event
-
+    if(currentOperation != Operation::Update){
+        textbox.update();
+    }
+    else{
+        oldTextBox.update();
+        newTextBox.update();
+       
+    }
+    handleInput();
     if (InputPrevButton.IsClicked()) {
         selectedInputIndex = (selectedInputIndex - 1 + InputOptions.size()) % InputOptions.size();
         if(currentOperation != Operation::Insert && currentOperation != Operation::Create){
@@ -196,7 +207,6 @@ void Page::event() {
         }
          InputOptionButton.label = InputOptions[selectedInputIndex].c_str(); 
     }
-    
 
     if (InputOptions[selectedInputIndex] == "KEYBOARD") currentInput = InputType::Keyboard;
     if (InputOptions[selectedInputIndex] == "RANDOM") currentInput = InputType::Random;
@@ -207,11 +217,11 @@ std::mt19937 rng(std::random_device{}());
 void Page::RANDOM_INPUT(){
     if (InputOptionButton.IsClicked()) {
                 std::uniform_int_distribution<int> dist(0, 999); // Giới hạn số từ 0-999
-                textbox.inputText = to_string(dist(rng)); // Lấy số ngẫu nhiên
+                textbox.inputText = {to_string(dist(rng))}; // Lấy số ngẫu nhiên
     }
 }
 void Page::KEYBOARD_INPUT(){
-     textbox.HandleInput(8);
+     textbox.HandleInput();
 }
 void Page::FILE_INPUT(){
     if(IsFileDropped()){
@@ -220,7 +230,7 @@ void Page::FILE_INPUT(){
         ifstream fin(filePath);
         if(!fin.is_open()) cout << "Cannot open dropped file";
         else{
-            textbox.resetTextbox();
+            textbox.reset();
             int val;
                 while (fin >> val) {
                 textbox.nums.push_back(val);
@@ -232,6 +242,7 @@ void Page::FILE_INPUT(){
 }
 
 void Page::handleInput(){
+    if(!oldTextBox.inputText.empty()) cout << oldTextBox.inputText[0] << endl;
      switch (currentOperation) {
         case Operation::Insert:
         case Operation::Create:
@@ -249,6 +260,7 @@ void Page::handleInput(){
             default:
                 break;
             }
+            break;
 
         case Operation::Search:
         case Operation::Delete:
@@ -263,58 +275,50 @@ void Page::handleInput(){
                 break;
             }
 
+            break;
+
         case Operation::Update:
             switch (currentInput) {
                 case InputType::Random:
                     if (InputOptionButton.IsClicked()) {
                         std::uniform_int_distribution<int> dist(0, 999); 
-                        newTextBox.inputText = to_string(dist(rng)); 
-                        oldTextBox.inputText = to_string(dist(rng)); 
+                        newTextBox.inputText = {to_string(dist(rng))}; 
+                        oldTextBox.inputText = {to_string(dist(rng))}; 
                     }
                     break;
                 case InputType::Keyboard:
-                    newTextBox.HandleInput(4);
-                    oldTextBox.HandleInput(4);
+                    newTextBox.HandleInput();
+                    oldTextBox.HandleInput();
                     break;
             }
             break;
+        // case Operation::Algorithm:
+        //     textbox.HandleInput(4);
     }
 
-        if (IsKeyPressed(KEY_BACKSPACE)) {
+        if ((Ok.IsClicked())) {
             if(currentOperation == Operation::Update){
-                if(oldTextBox.active && !oldTextBox.inputText.empty()){
-                    oldTextBox.inputText.pop_back();
-                }
-                if(newTextBox.active && !newTextBox.inputText.empty()){
-                    newTextBox.inputText.pop_back();
-                }
-            }
-            else {
-                if (!textbox.inputText.empty()) textbox.inputText.pop_back();
-            }
-        }
-
-        if ((Ok.IsClicked() || IsKeyPressed(KEY_ENTER) || IsKeyPressed(KEY_KP_ENTER))) {
-            if(currentOperation == Operation::Update){
-                if(!oldTextBox.inputText.empty() && !newTextBox.inputText.empty()){
-                    int val = stoi(oldTextBox.inputText);
+                if(!oldTextBox.inputText.empty() &&  !oldTextBox.inputText[0].empty() 
+                && !newTextBox.inputText.empty() && !newTextBox.inputText[0].empty()){
+                    int val = stoi(oldTextBox.inputText[0]);
                     textbox.nums.push_back(val);
-                    val = stoi(newTextBox.inputText);
+                    val = stoi(newTextBox.inputText[0]);
                     textbox.nums.push_back(val);
                     //textbox.nums[0] is old value, [1] is new
-                    oldTextBox.inputText = "";
-                    newTextBox.inputText = "";
+                    oldTextBox.resetTextbox();
+                    newTextBox.resetTextbox();
                 }
             }
             else{
                 if(!textbox.inputText.empty()){
                     int val;
-                    stringstream ss(textbox.inputText);
-                    while(ss >> val){
-                        textbox.nums.push_back(val);
+                    for(auto& s : textbox.inputText){
+                        stringstream ss(s);
+                        while(ss >> val){
+                            textbox.nums.push_back(val);
+                        }
                     }
-                    // TraceLog(LOG_INFO, textbox.inputText.c_str());
-                    textbox.inputText = "";
+                    textbox.resetTextbox();
                 }
             }
 

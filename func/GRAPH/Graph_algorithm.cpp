@@ -13,14 +13,15 @@ Edge* Graph::findEdge(Vertex* v1, Vertex* v2){
 }
 Vertex* Graph::getFirstVertexClicked(){
     for(auto& v: vertex){
-        if(v.isClicked()) {
+        if(v.isClicked()) { //We can click on specific vertex to start animating
             got1stV = true;
             isAnimating = true;
             isPlaying = true;
             return &v;
         } 
-        else if(!textbox.nums.empty()){
+        else if(textbox.nums.size() > 0){ // Or get from textbox
             int value = textbox.nums[0];
+            cout << value << endl;
             textbox.nums.erase(textbox.nums.begin());
             if(v.value == value){
             got1stV = true;
@@ -48,57 +49,10 @@ Vertex* Graph::findVertex(int value){
     }
     return nullptr;
 }
-void Graph::handleBFS(){
-    float deltaTime = GetFrameTime();
-     if(!got1stV){
-        clickedV = getFirstVertexClicked();
-    }
-    
-    if( isAnimating && clickedV){
-         if (!bfsCalled) {
-            bfs(clickedV);
-            startAnimation(1);
-            arrayQueue[currentQueueIndex][0]->startAnimation(ORANGE, 1);
-            bfsCalled = true;
-        }
-            if (!arrayQueue.empty() && currentQueueIndex < arrayQueue.size()) {
-            
-            vector<Drawable*> current = arrayQueue[currentQueueIndex];
- 
-            int checkDoneAnimating = 0;
-            for(int i = 0; i < current.size(); i++){
-                if (!current[i]->isAnimating) { // done or hasn't started yet
-                checkDoneAnimating++;      
-                }
-               
-                if(isPlaying) current[i]->Update(deltaTime);
-            }
-            if(checkDoneAnimating == current.size()) {
-                if(!arrayQueue.empty() && currentQueueIndex + 1 < arrayQueue.size()){
-                        
-                        current = arrayQueue[++currentQueueIndex];
-                        for(auto& elem: current){
-                            elem->startAnimation(ORANGE, 1);
-                        }
-
-                    }
-                else if(currentQueueIndex >= arrayQueue.size()){
-                    isPlaying = false;
-                }
-            }
-        }
-        else{
-            isAnimating = false;
-        }
-    }
-    else {
-        bfsCalled = false;
-        
-    } 
-    
-}
 
 
+
+// BREADTH FIRST SEARCH
 void Graph::bfs(Vertex* source) {
     // cout << "bfs\n";
     int n = matrix.size();
@@ -170,5 +124,56 @@ void Graph::bfs(Vertex* source) {
         for(auto& s: elem) s->print();
     }
 }
+
+void Graph::handleBFS(){
+    float deltaTime = GetFrameTime();
+     if(!got1stV){
+        clickedV = getFirstVertexClicked();
+    }
+    
+    if( isAnimating && clickedV){
+         if (!bfsCalled) {
+            bfs(clickedV);
+            startAnimation(1);
+            arrayQueue[currentQueueIndex][0]->startAnimation(ORANGE, 1);
+            bfsCalled = true;
+        }
+            if (!arrayQueue.empty() && currentQueueIndex < arrayQueue.size()) {
+            
+            vector<Drawable*> current = arrayQueue[currentQueueIndex];
+ 
+            int checkDoneAnimating = 0;
+            for(int i = 0; i < current.size(); i++){
+                if (!current[i]->isAnimating) { // done or hasn't started yet
+                checkDoneAnimating++;      
+                }
+               
+                if(isPlaying) current[i]->Update(deltaTime);
+            }
+            if(checkDoneAnimating == current.size()) {
+                if(!arrayQueue.empty() && currentQueueIndex + 1 < arrayQueue.size()){
+                        
+                        current = arrayQueue[++currentQueueIndex];
+                        for(auto& elem: current){
+                            elem->startAnimation(ORANGE, 1);
+                        }
+
+                    }
+                else if(currentQueueIndex >= arrayQueue.size()){
+                    isPlaying = false;
+                }
+            }
+        }
+        else{
+            isAnimating = false;
+        }
+    }
+    else {
+        bfsCalled = false;
+        
+    } 
+    
+}
+
 
 
