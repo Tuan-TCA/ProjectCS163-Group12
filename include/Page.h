@@ -54,6 +54,7 @@ public:
     TextBox oldTextBox;
     TextBox newTextBox;
     
+    Rectangle workplace = {screenWidth * 0.28f, screenHeight * 0.14f, screenWidth * 0.68f, screenHeight * 0.72f};
     MyRec speedSliding;
     // Slider timeSlider;
     ButtonFromImage back1, next1, pause1, play1;
@@ -65,6 +66,6 @@ public:
     virtual void init();
     virtual void draw();
     virtual void event();
-    void reset();
-    virtual void handleInput();
+    virtual void reset();
+    void handleInput();
 };

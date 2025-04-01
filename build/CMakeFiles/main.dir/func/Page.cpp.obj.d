@@ -1,6 +1,5 @@
 CMakeFiles/main.dir/func/Page.cpp.obj: \
- D:\Project\PROJECT163\testtest\func\Page.cpp \
- D:/Project/PROJECT163/testtest/include/Page.h C:/raylib/include/raylib.h \
+ D:\Project\PROJECT163\testtest\func\Page.cpp C:/raylib/include/raylib.h \
  C:/SFML/mingw64/lib/gcc/x86_64-w64-mingw32/14.2.0/include/stdarg.h \
  C:/SFML/mingw64/x86_64-w64-mingw32/include/stdarg.h \
  C:/SFML/mingw64/x86_64-w64-mingw32/include/_mingw_stdarg.h \
@@ -9,8 +8,6 @@ CMakeFiles/main.dir/func/Page.cpp.obj: \
  C:/SFML/mingw64/x86_64-w64-mingw32/include/_mingw_mac.h \
  C:/SFML/mingw64/x86_64-w64-mingw32/include/_mingw_secapi.h \
  C:/SFML/mingw64/x86_64-w64-mingw32/include/sdks/_mingw_ddk.h \
- D:/Project/PROJECT163/testtest/include/Button.h \
- D:/Project/PROJECT163/testtest/include/Variables.h \
  C:/SFML/mingw64/include/c++/14.2.0/string \
  C:/SFML/mingw64/include/c++/14.2.0/bits/requires_hosted.h \
  C:/SFML/mingw64/include/c++/14.2.0/x86_64-w64-mingw32/bits/c++config.h \
@@ -150,19 +147,6 @@ CMakeFiles/main.dir/func/Page.cpp.obj: \
  C:/SFML/mingw64/include/c++/14.2.0/bits/ostream.tcc \
  C:/SFML/mingw64/include/c++/14.2.0/istream \
  C:/SFML/mingw64/include/c++/14.2.0/bits/istream.tcc \
- C:/SFML/mingw64/include/c++/14.2.0/algorithm \
- C:/SFML/mingw64/include/c++/14.2.0/bits/stl_algo.h \
- C:/SFML/mingw64/include/c++/14.2.0/bits/algorithmfwd.h \
- C:/SFML/mingw64/include/c++/14.2.0/bits/stl_heap.h \
- C:/SFML/mingw64/include/c++/14.2.0/bits/uniform_int_dist.h \
- C:/SFML/mingw64/include/c++/14.2.0/bits/stl_tempbuf.h \
- C:/SFML/mingw64/include/c++/14.2.0/pstl/glue_algorithm_defs.h \
- C:/SFML/mingw64/include/c++/14.2.0/pstl/execution_defs.h \
- C:/SFML/mingw64/include/c++/14.2.0/vector \
- C:/SFML/mingw64/include/c++/14.2.0/bits/stl_uninitialized.h \
- C:/SFML/mingw64/include/c++/14.2.0/bits/stl_vector.h \
- C:/SFML/mingw64/include/c++/14.2.0/bits/stl_bvector.h \
- C:/SFML/mingw64/include/c++/14.2.0/bits/vector.tcc \
  C:/SFML/mingw64/include/c++/14.2.0/fstream \
  C:/SFML/mingw64/include/c++/14.2.0/bits/codecvt.h \
  C:/SFML/mingw64/include/c++/14.2.0/x86_64-w64-mingw32/bits/basic_file.h \
@@ -200,11 +184,18 @@ CMakeFiles/main.dir/func/Page.cpp.obj: \
  C:/SFML/mingw64/lib/gcc/x86_64-w64-mingw32/14.2.0/include/stdint.h \
  C:/SFML/mingw64/x86_64-w64-mingw32/include/stdint.h \
  C:/SFML/mingw64/include/c++/14.2.0/bits/random.h \
+ C:/SFML/mingw64/include/c++/14.2.0/vector \
+ C:/SFML/mingw64/include/c++/14.2.0/bits/stl_uninitialized.h \
+ C:/SFML/mingw64/include/c++/14.2.0/bits/stl_vector.h \
+ C:/SFML/mingw64/include/c++/14.2.0/bits/stl_bvector.h \
+ C:/SFML/mingw64/include/c++/14.2.0/bits/vector.tcc \
+ C:/SFML/mingw64/include/c++/14.2.0/bits/uniform_int_dist.h \
  C:/SFML/mingw64/include/c++/14.2.0/x86_64-w64-mingw32/bits/opt_random.h \
  C:/SFML/mingw64/include/c++/14.2.0/bits/random.tcc \
  C:/SFML/mingw64/include/c++/14.2.0/numeric \
  C:/SFML/mingw64/include/c++/14.2.0/bits/stl_numeric.h \
  C:/SFML/mingw64/include/c++/14.2.0/pstl/glue_numeric_defs.h \
+ C:/SFML/mingw64/include/c++/14.2.0/pstl/execution_defs.h \
  D:/Project/PROJECT163/testtest/include/ControlAnimation.h \
  C:/SFML/mingw64/include/c++/14.2.0/functional \
  C:/SFML/mingw64/include/c++/14.2.0/bits/std_function.h \
@@ -217,4 +208,13 @@ CMakeFiles/main.dir/func/Page.cpp.obj: \
  C:/SFML/mingw64/include/c++/14.2.0/bits/node_handle.h \
  C:/SFML/mingw64/include/c++/14.2.0/bits/erase_if.h \
  C:/SFML/mingw64/include/c++/14.2.0/array \
- C:/SFML/mingw64/include/c++/14.2.0/compare
+ C:/SFML/mingw64/include/c++/14.2.0/compare \
+ D:/Project/PROJECT163/testtest/include/Page.h \
+ D:/Project/PROJECT163/testtest/include/Button.h \
+ D:/Project/PROJECT163/testtest/include/Variables.h \
+ C:/SFML/mingw64/include/c++/14.2.0/algorithm \
+ C:/SFML/mingw64/include/c++/14.2.0/bits/stl_algo.h \
+ C:/SFML/mingw64/include/c++/14.2.0/bits/algorithmfwd.h \
+ C:/SFML/mingw64/include/c++/14.2.0/bits/stl_heap.h \
+ C:/SFML/mingw64/include/c++/14.2.0/bits/stl_tempbuf.h \
+ C:/SFML/mingw64/include/c++/14.2.0/pstl/glue_algorithm_defs.h

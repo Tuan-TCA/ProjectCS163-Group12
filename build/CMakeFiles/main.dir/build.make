@@ -83,11 +83,26 @@ CMakeFiles/main.dir/func/Edge.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/main.dir/func/Edge.cpp.s"
 	C:\SFML\mingw64\bin\c++.exe $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S D:\Project\PROJECT163\testtest\func\Edge.cpp -o CMakeFiles\main.dir\func\Edge.cpp.s
 
+CMakeFiles/main.dir/func/GRAPH/Graph.cpp.obj: CMakeFiles/main.dir/flags.make
+CMakeFiles/main.dir/func/GRAPH/Graph.cpp.obj: CMakeFiles/main.dir/includes_CXX.rsp
+CMakeFiles/main.dir/func/GRAPH/Graph.cpp.obj: D:/Project/PROJECT163/testtest/func/GRAPH/Graph.cpp
+CMakeFiles/main.dir/func/GRAPH/Graph.cpp.obj: CMakeFiles/main.dir/compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=D:\Project\PROJECT163\testtest\build\CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Building CXX object CMakeFiles/main.dir/func/GRAPH/Graph.cpp.obj"
+	C:\SFML\mingw64\bin\c++.exe $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/main.dir/func/GRAPH/Graph.cpp.obj -MF CMakeFiles\main.dir\func\GRAPH\Graph.cpp.obj.d -o CMakeFiles\main.dir\func\GRAPH\Graph.cpp.obj -c D:\Project\PROJECT163\testtest\func\GRAPH\Graph.cpp
+
+CMakeFiles/main.dir/func/GRAPH/Graph.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/main.dir/func/GRAPH/Graph.cpp.i"
+	C:\SFML\mingw64\bin\c++.exe $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E D:\Project\PROJECT163\testtest\func\GRAPH\Graph.cpp > CMakeFiles\main.dir\func\GRAPH\Graph.cpp.i
+
+CMakeFiles/main.dir/func/GRAPH/Graph.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/main.dir/func/GRAPH/Graph.cpp.s"
+	C:\SFML\mingw64\bin\c++.exe $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S D:\Project\PROJECT163\testtest\func\GRAPH\Graph.cpp -o CMakeFiles\main.dir\func\GRAPH\Graph.cpp.s
+
 CMakeFiles/main.dir/func/GRAPH/Graph_algorithm.cpp.obj: CMakeFiles/main.dir/flags.make
 CMakeFiles/main.dir/func/GRAPH/Graph_algorithm.cpp.obj: CMakeFiles/main.dir/includes_CXX.rsp
 CMakeFiles/main.dir/func/GRAPH/Graph_algorithm.cpp.obj: D:/Project/PROJECT163/testtest/func/GRAPH/Graph_algorithm.cpp
 CMakeFiles/main.dir/func/GRAPH/Graph_algorithm.cpp.obj: CMakeFiles/main.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=D:\Project\PROJECT163\testtest\build\CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Building CXX object CMakeFiles/main.dir/func/GRAPH/Graph_algorithm.cpp.obj"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=D:\Project\PROJECT163\testtest\build\CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "Building CXX object CMakeFiles/main.dir/func/GRAPH/Graph_algorithm.cpp.obj"
 	C:\SFML\mingw64\bin\c++.exe $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/main.dir/func/GRAPH/Graph_algorithm.cpp.obj -MF CMakeFiles\main.dir\func\GRAPH\Graph_algorithm.cpp.obj.d -o CMakeFiles\main.dir\func\GRAPH\Graph_algorithm.cpp.obj -c D:\Project\PROJECT163\testtest\func\GRAPH\Graph_algorithm.cpp
 
 CMakeFiles/main.dir/func/GRAPH/Graph_algorithm.cpp.i: cmake_force
@@ -97,21 +112,6 @@ CMakeFiles/main.dir/func/GRAPH/Graph_algorithm.cpp.i: cmake_force
 CMakeFiles/main.dir/func/GRAPH/Graph_algorithm.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/main.dir/func/GRAPH/Graph_algorithm.cpp.s"
 	C:\SFML\mingw64\bin\c++.exe $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S D:\Project\PROJECT163\testtest\func\GRAPH\Graph_algorithm.cpp -o CMakeFiles\main.dir\func\GRAPH\Graph_algorithm.cpp.s
-
-CMakeFiles/main.dir/func/GRAPH/Graph_logic.cpp.obj: CMakeFiles/main.dir/flags.make
-CMakeFiles/main.dir/func/GRAPH/Graph_logic.cpp.obj: CMakeFiles/main.dir/includes_CXX.rsp
-CMakeFiles/main.dir/func/GRAPH/Graph_logic.cpp.obj: D:/Project/PROJECT163/testtest/func/GRAPH/Graph_logic.cpp
-CMakeFiles/main.dir/func/GRAPH/Graph_logic.cpp.obj: CMakeFiles/main.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=D:\Project\PROJECT163\testtest\build\CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "Building CXX object CMakeFiles/main.dir/func/GRAPH/Graph_logic.cpp.obj"
-	C:\SFML\mingw64\bin\c++.exe $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/main.dir/func/GRAPH/Graph_logic.cpp.obj -MF CMakeFiles\main.dir\func\GRAPH\Graph_logic.cpp.obj.d -o CMakeFiles\main.dir\func\GRAPH\Graph_logic.cpp.obj -c D:\Project\PROJECT163\testtest\func\GRAPH\Graph_logic.cpp
-
-CMakeFiles/main.dir/func/GRAPH/Graph_logic.cpp.i: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/main.dir/func/GRAPH/Graph_logic.cpp.i"
-	C:\SFML\mingw64\bin\c++.exe $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E D:\Project\PROJECT163\testtest\func\GRAPH\Graph_logic.cpp > CMakeFiles\main.dir\func\GRAPH\Graph_logic.cpp.i
-
-CMakeFiles/main.dir/func/GRAPH/Graph_logic.cpp.s: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/main.dir/func/GRAPH/Graph_logic.cpp.s"
-	C:\SFML\mingw64\bin\c++.exe $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S D:\Project\PROJECT163\testtest\func\GRAPH\Graph_logic.cpp -o CMakeFiles\main.dir\func\GRAPH\Graph_logic.cpp.s
 
 CMakeFiles/main.dir/func/LinkedList.cpp.obj: CMakeFiles/main.dir/flags.make
 CMakeFiles/main.dir/func/LinkedList.cpp.obj: CMakeFiles/main.dir/includes_CXX.rsp
@@ -221,8 +221,8 @@ CMakeFiles/main.dir/src/main.cpp.s: cmake_force
 # Object files for target main
 main_OBJECTS = \
 "CMakeFiles/main.dir/func/Edge.cpp.obj" \
+"CMakeFiles/main.dir/func/GRAPH/Graph.cpp.obj" \
 "CMakeFiles/main.dir/func/GRAPH/Graph_algorithm.cpp.obj" \
-"CMakeFiles/main.dir/func/GRAPH/Graph_logic.cpp.obj" \
 "CMakeFiles/main.dir/func/LinkedList.cpp.obj" \
 "CMakeFiles/main.dir/func/Menu.cpp.obj" \
 "CMakeFiles/main.dir/func/Page.cpp.obj" \
@@ -235,8 +235,8 @@ main_OBJECTS = \
 main_EXTERNAL_OBJECTS =
 
 main.exe: CMakeFiles/main.dir/func/Edge.cpp.obj
+main.exe: CMakeFiles/main.dir/func/GRAPH/Graph.cpp.obj
 main.exe: CMakeFiles/main.dir/func/GRAPH/Graph_algorithm.cpp.obj
-main.exe: CMakeFiles/main.dir/func/GRAPH/Graph_logic.cpp.obj
 main.exe: CMakeFiles/main.dir/func/LinkedList.cpp.obj
 main.exe: CMakeFiles/main.dir/func/Menu.cpp.obj
 main.exe: CMakeFiles/main.dir/func/Page.cpp.obj

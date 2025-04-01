@@ -1,5 +1,3 @@
-#include "Page.h"
-#include "Variables.h"
 #include <raylib.h>
 #include <string>
 #include <iostream>
@@ -7,7 +5,10 @@
 #include <iomanip>
 #include <sstream>
 #include <random>
+
 #include "ControlAnimation.h"
+#include "Page.h"
+#include "Variables.h"
 using namespace std;
 
 int lastInsertedKey;
@@ -52,7 +53,7 @@ void Page::init() {
     play2 = ButtonFromImage("res/button/2-play.png", "res/button/2-play.png", screenWidth / 2 -   screenWidth * 0.05f / 2  , screenHeight*0.92f,  screenWidth * 0.05f, screenWidth*0.05f);
     // timeSlider = Slider({screenWidth * 0.05f , screenHeight*0.936f,  screenWidth * 0.3f ,screenHeight * 0.095f / 3 * 0.9f}, 0.0f, 1.0f);
     
-    codeDisplayPLace = Rectangle{7, screenHeight / 2.0f, side.width - 14.0f, side.height / 2.0f - 7};
+    codeDisplayPLace = Rectangle{7, screenHeight / 2.0f, side.width - 12.0f, side.height / 2.0f - 7};
     speedSliding = MyRec(screenWidth * 0.723f , screenHeight*0.936f,  screenWidth * 0.182f * 0.38f,screenHeight * 0.095f / 3 * 0.9f, "", MyColor3, WHITE);
     background1 = resizedImage("res/BackGround.png", screenWidth, screenHeight);   
     background2 = resizedImage("res/background_theme2.png", screenWidth, screenHeight);    
@@ -82,6 +83,7 @@ void Page::draw() {
     DrawRectangleRec(codeDisplayPLace, MyColor6);
     DrawRectangleRounded({screenWidth * 0.7f , screenHeight*0.934f , screenWidth * 0.182f,screenHeight * 0.095f / 3}, 20, 20, WHITE); //speed control
     speedSliding.DrawRounded(MyColor3);
+
     // timeSlider.Draw();
     stringstream ss;
     ss << fixed << std::setprecision(1) << animationSpeed;
@@ -164,13 +166,13 @@ void Page::event() {
 
     //Operation event
    if (OperationPrevButton.IsClicked()) {
-
+        textbox.reset();
         selectedOperationIndex = (selectedOperationIndex - 1 + OperationOptions.size()) % OperationOptions.size();
         OperationOptionButton.label = OperationOptions[selectedOperationIndex].c_str(); 
     }
 
     if (OperationNextButton.IsClicked()) {
-
+        textbox.reset();
         selectedOperationIndex = (selectedOperationIndex + 1) % OperationOptions.size();
         OperationOptionButton.label = OperationOptions[selectedOperationIndex].c_str(); 
     }
@@ -191,6 +193,7 @@ void Page::event() {
        
     }
     handleInput();
+
     if (InputPrevButton.IsClicked()) {
         selectedInputIndex = (selectedInputIndex - 1 + InputOptions.size()) % InputOptions.size();
         if(currentOperation != Operation::Insert && currentOperation != Operation::Create){
@@ -215,10 +218,8 @@ void Page::event() {
 
 std::mt19937 rng(std::random_device{}());
 void Page::RANDOM_INPUT(){
-    if (InputOptionButton.IsClicked()) {
-                std::uniform_int_distribution<int> dist(0, 999); // Giới hạn số từ 0-999
-                textbox.inputText = {to_string(dist(rng))}; // Lấy số ngẫu nhiên
-    }
+    std::uniform_int_distribution<int> dist(0, 999); // Giới hạn số từ 0-999
+    textbox.inputText = {to_string(dist(rng))}; // Lấy số ngẫu nhiên
 }
 void Page::KEYBOARD_INPUT(){
      textbox.HandleInput();
@@ -242,14 +243,14 @@ void Page::FILE_INPUT(){
 }
 
 void Page::handleInput(){
-    if(!oldTextBox.inputText.empty()) cout << oldTextBox.inputText[0] << endl;
+    
      switch (currentOperation) {
         case Operation::Insert:
         case Operation::Create:
 
             switch (currentInput) {
             case InputType::Random:
-                RANDOM_INPUT();
+                    if (InputOptionButton.IsClicked()) RANDOM_INPUT();
             break;
             case InputType::Keyboard:
                 KEYBOARD_INPUT();
@@ -266,7 +267,7 @@ void Page::handleInput(){
         case Operation::Delete:
             switch (currentInput) {
             case InputType::Random:
-                RANDOM_INPUT();
+                if (InputOptionButton.IsClicked()) RANDOM_INPUT();
             break;
             case InputType::Keyboard:
                 KEYBOARD_INPUT();
@@ -293,13 +294,13 @@ void Page::handleInput(){
             }
             break;
         // case Operation::Algorithm:
-        //     textbox.HandleInput(4);
+        //     textbox.HandleInput();
+        //     break;
     }
 
         if ((Ok.IsClicked())) {
             if(currentOperation == Operation::Update){
-                if(!oldTextBox.inputText.empty() &&  !oldTextBox.inputText[0].empty() 
-                && !newTextBox.inputText.empty() && !newTextBox.inputText[0].empty()){
+                if(!oldTextBox.inputText.empty() && !newTextBox.inputText.empty() ){
                     int val = stoi(oldTextBox.inputText[0]);
                     textbox.nums.push_back(val);
                     val = stoi(newTextBox.inputText[0]);

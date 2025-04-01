@@ -2,17 +2,17 @@
 #include <fstream>
 #include <iostream>
 #include <cmath>
-#include "Variables.h"
 #include <algorithm>
 #include <vector>
-#include "ControlAnimation.h"
 #include <unordered_set>
-
+#include <random>
+#include <sstream>
 using namespace std;
 
 float distance(Vector2 pos1, Vector2 pos2){
     return sqrt(pow(pos1.x - pos2.x, 2) + pow(pos1.y - pos2.y, 2));
 }
+
 void Graph::init(){
     Page::init();
     if(find(OperationOptions.begin(), OperationOptions.end(), "ALGORITHM") == OperationOptions.end()) OperationOptions.push_back("ALGORITHM");
@@ -43,12 +43,13 @@ void Graph::draw(){
         AlgorithmPrevButton.Draw(LIGHTGRAY, WHITE);
         AlgorithmNextButton.Draw(LIGHTGRAY, WHITE);
     }
+
     //code state
 
     float pseudocodeX = screenWidth * 0.01f;
-    float pseudocodeY = screenHeight * 0.5f;
+    float pseudocodeY = screenHeight * 0.54f;
     float lineHeight = 20.0f;
-    Color highlightColor = YELLOW;
+    Color highlightColor = Color{255, 222, 89, 255};
      if(isAnimating){
     for (size_t i = 0; i < pseudocode.size(); ++i) {
         Color currentColor = highlightColor;
@@ -60,7 +61,7 @@ void Graph::draw(){
         }
 
         // DrawText(pseudocode[i].c_str(), pseudocodeX, pseudocodeY + i * lineHeight, 20, currentColor);
-        float textWidth = MeasureText(pseudocode[i].c_str(), 14);
+        // float textWidth = MeasureText(pseudocode[i].c_str(), 14);
         DrawRectangleRounded(Rectangle{pseudocodeX - 5, pseudocodeY + i * lineHeight - 5, screenWidth*0.23f,  lineHeight}, 0, 5, currentColor);
         DrawTextEx(FONT, pseudocode[i].c_str(), {pseudocodeX, pseudocodeY + i * lineHeight} , 10, 2, MyColor4);
         
@@ -72,13 +73,17 @@ void Graph::draw(){
 
 void Graph::event(){
     Page::event();
-
-    handleInput();
+    HandleInput();
    if(!added){
         addFromMatrix(); 
        added = true;
    }
 
+    if( currentOperation == Operation::Create){
+        addFromTextbox();
+    }
+    
+    if(currentQueueIndex > arrayQueue.size()) isPlaying = false;
     //ALgorithm operation
     if(OperationOptions[selectedOperationIndex] == "ALGORITHM") currentOperation = Operation::Algorithm;
 
@@ -104,13 +109,32 @@ void Graph::event(){
         if(IsMouseButtonDown(MOUSE_LEFT_BUTTON)){
             if(CheckCollisionPointCircle(GetMousePosition(), v.position, v.radius) || v.isPressing){
                 v.position = GetMousePosition();
-                
+                // cout << v.position.x / screenWidth << " - " << v.position.y / screenHeight << endl;
                 v.isPressing = true;
             }
-        }else{
+        }
+        else{
             v.isPressing = false;
         }
+        
     }
+   
+    // for(auto& v: vertex){
+    //             if(IsMouseButtonDown(MOUSE_RIGHT_BUTTON)){
+    //          if(CheckCollisionPointCircle(GetMousePosition(), v.position, v.radius) || v.isPressing){
+    //             Vector2 mousePos = GetMousePosition();
+    //             Vector2 delta = mousePos - v.position;
+    //             v.isPressing = true;
+    //             for(auto& v_ : vertex){
+    //                 v_.position = v_.position + delta;
+    //             }
+                
+    //         }
+            
+    //     }
+    //     else v.isPressing = false;
+        
+    // }
    
     for(auto& e: edge){
         
@@ -185,7 +209,7 @@ void Graph::handleChoice(){
             handleBFS();
             break;
         case Algorithm::MST:
-
+            
             break;
         default:
             break;
@@ -264,8 +288,86 @@ void Graph::addFromMatrix(){
     }
 }
 
+void Graph::addFromTextbox(){
+    if(textbox.nums.size() > 0){
+        
+        reset();
+        int n = textbox.nums[0];
+        matrix.resize(n, vector<int>(n));
+        int idx = 1;
+        for(int i = 0; i < n; i++){
+            for(int j = 0; j < n; j++){
+                matrix[i][j] = textbox.nums[idx++];
+            }
+        }
+
+        textbox.nums.clear();
+        
+    }
+}
+
+
+
+void Graph::RANDOM_INPUT() {
+    std::mt19937 rng(std::random_device{}());
+    
+    switch (currentOperation) {
+
+        case Operation::Create: {
+            textbox.reset();
+            std::uniform_int_distribution<int> vertexDist(5, 20); 
+            int numVertices = vertexDist(rng);
+            std::uniform_int_distribution<int> weightDist(0, 1); 
+
+            vector<vector<int>> adjMatrix(numVertices, vector<int>(numVertices, 0));
+            vector<string> lines;
+            stringstream ss;
+
+            for (int i = 0; i < numVertices; ++i) {
+                for (int j = i; j < numVertices; ++j) {
+                    if (i == j) {
+                        adjMatrix[i][j] = 0;
+                    } else {
+                        int weight = weightDist(rng);
+                        adjMatrix[i][j] = weight;
+                        adjMatrix[j][i] = weight; 
+                    }
+                }
+            }
+
+        //    matrix = adjMatrix;
+            ss << numVertices;
+            lines.push_back(ss.str());
+            ss.str(""); 
+
+            for (int i = 0; i < numVertices; ++i) {
+                for (int j = 0; j < numVertices; ++j) {
+                    ss << adjMatrix[i][j] << (j == numVertices - 1 ? "" : " ");
+                }
+                lines.push_back(ss.str());
+                ss.str(""); 
+            }
+
+            textbox.inputText = lines;
+            textbox.SubIndex.clear();
+            for (const auto& line : lines) {
+                textbox.SubIndex.push_back(line.length()); 
+            }
+            textbox.currentIndex = 0;
+            break;
+        }
+        default:
+            break;
+    }
+}
 void Graph::FILE_INPUT(){
-    if(IsFileDropped()){        
+    switch (currentOperation)
+    {
+    case Operation::Insert:
+        //Insert graph
+        break;
+    case Operation::Create:
+        if(IsFileDropped()){        
         FilePathList droppedFiles = LoadDroppedFiles();
         TextCopy(filePath,droppedFiles.paths[0]);
         ifstream fin(filePath);
@@ -288,6 +390,12 @@ void Graph::FILE_INPUT(){
         }
         UnloadDroppedFiles(droppedFiles); 
     }
+        break;
+    
+    default:
+        break;
+    }
+    
 }
 
 void Graph::reset(){
@@ -297,6 +405,7 @@ void Graph::reset(){
     edge.clear();
     matrix.clear();
     arrayQueue.clear();
+    StepQueue.clear();
     isAnimating  = false;
     got1stV = false;
     bfsCalled = false;
@@ -326,11 +435,18 @@ void Graph::handleCollision(){
         }
     }
 
+    //bound the position
+    for(auto& s : vertex){
+        if(s.position.x < workplace.x) s.position.x = workplace.x;
+        if(s.position.y < workplace.y) s.position.y = workplace.y;
+        if(s.position.x > workplace.x + workplace.width) s.position.x = workplace.x + workplace.width;
+        if(s.position.y > workplace.y + workplace.height) s.position.y = workplace.y + workplace.height;
+    }
+
 }
 
-// void Graph::handleInput(){
-//     Page::handleInput();
-//     if(currentOperation == Operation::Algorithm){
-//         textbox.HandleInput(20);
-//     }
-// }
+void Graph::HandleInput(){
+    if(currentOperation == Operation::Algorithm){
+        textbox.HandleInput();
+    }
+}

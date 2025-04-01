@@ -208,9 +208,14 @@ public:
             int cursorPositionInVisibleText = -1;
 
             if (!currentText.empty()) {
-                int endIndex = min((int)currentText.size(), startColumnIndex + maxVisibleLength - 1);
-                visibleText = currentText.substr(startColumnIndex, endIndex);
-                cout << visibleText << endl;
+                int endIndex = min((int)currentText.size(), startColumnIndex + maxVisibleLength);
+                int length = endIndex - startColumnIndex;
+                if (length > 0) {
+                    visibleText = currentText.substr(startColumnIndex, length);
+                } else {
+                    visibleText = "";
+                }
+                // cout << visibleText << endl;
                 if (i == currentIndex) {
                     cursorPositionInVisibleText = subIndex - startColumnIndex;
                     if (cursorPositionInVisibleText < 0 || cursorPositionInVisibleText > visibleText.size()) {
@@ -226,7 +231,7 @@ public:
             }
 
             float lineHeight = 25;
-            Vector2 textHeight = MeasureTextEx(FONT, displayText.c_str(), 25, 1);
+            // Vector2 textHeight = MeasureTextEx(FONT, displayText.c_str(), 25, 1);
             DrawText(displayText.c_str(), bounds.x + 5 , bounds.y + 5  + cnt * lineHeight, 25, textColor);
             cnt++;
             

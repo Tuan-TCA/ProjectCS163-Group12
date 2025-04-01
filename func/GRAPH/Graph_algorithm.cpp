@@ -19,24 +19,24 @@ Vertex* Graph::getFirstVertexClicked(){
             isPlaying = true;
             return &v;
         } 
-        else if(textbox.nums.size() > 0){ // Or get from textbox
+        if(textbox.nums.size() > 0){ // Or get from textbox
             int value = textbox.nums[0];
             cout << value << endl;
             textbox.nums.erase(textbox.nums.begin());
             if(v.value == value){
-            got1stV = true;
-            isAnimating = true;
-            isPlaying = true;
-            return &v;
+                got1stV = true;
+                isAnimating = true;
+                isPlaying = true;
+                return &v;
             }
         }
-        else if (AlgorithmOptionButton.IsClicked()){
+        if (AlgorithmOptionButton.IsClicked()){ //or click directly on the button(randomly pick any vertex)
             int value = rand()% (vertex.size() - 1);
             if(v.value == value){
                 got1stV = true;
-            isAnimating = true;
-            isPlaying = true;
-            return &v;
+                isAnimating = true;
+                isPlaying = true;
+                return &v;
             }
         }
     }

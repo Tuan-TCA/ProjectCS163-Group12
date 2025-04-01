@@ -9,8 +9,8 @@ set(CMAKE_DEPENDS_LANGUAGES
 # The set of dependency files which are needed:
 set(CMAKE_DEPENDS_DEPENDENCY_FILES
   "D:/Project/PROJECT163/testtest/func/Edge.cpp" "CMakeFiles/main.dir/func/Edge.cpp.obj" "gcc" "CMakeFiles/main.dir/func/Edge.cpp.obj.d"
+  "D:/Project/PROJECT163/testtest/func/GRAPH/Graph.cpp" "CMakeFiles/main.dir/func/GRAPH/Graph.cpp.obj" "gcc" "CMakeFiles/main.dir/func/GRAPH/Graph.cpp.obj.d"
   "D:/Project/PROJECT163/testtest/func/GRAPH/Graph_algorithm.cpp" "CMakeFiles/main.dir/func/GRAPH/Graph_algorithm.cpp.obj" "gcc" "CMakeFiles/main.dir/func/GRAPH/Graph_algorithm.cpp.obj.d"
-  "D:/Project/PROJECT163/testtest/func/GRAPH/Graph_logic.cpp" "CMakeFiles/main.dir/func/GRAPH/Graph_logic.cpp.obj" "gcc" "CMakeFiles/main.dir/func/GRAPH/Graph_logic.cpp.obj.d"
   "D:/Project/PROJECT163/testtest/func/LinkedList.cpp" "CMakeFiles/main.dir/func/LinkedList.cpp.obj" "gcc" "CMakeFiles/main.dir/func/LinkedList.cpp.obj.d"
   "D:/Project/PROJECT163/testtest/func/Menu.cpp" "CMakeFiles/main.dir/func/Menu.cpp.obj" "gcc" "CMakeFiles/main.dir/func/Menu.cpp.obj.d"
   "D:/Project/PROJECT163/testtest/func/Page.cpp" "CMakeFiles/main.dir/func/Page.cpp.obj" "gcc" "CMakeFiles/main.dir/func/Page.cpp.obj.d"

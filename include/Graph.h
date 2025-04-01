@@ -1,11 +1,10 @@
 #pragma once
-#include "Page.h"
-#include "Variables.h"
 #include <vector>
 #include <queue>
 #include "Vertex.h"
 #include "Edge.h"
-#include "ControlAnimation.h"
+#include "Page.h"
+#include "Variables.h"
 using namespace std;
 
 enum class Algorithm{
@@ -48,17 +47,18 @@ class Graph : public Page{
     void init() override;
     void draw() override;
     void event() override;
-    
-    void startAnimation( float duration);
+    void reset() override;
 
-   void handleChoice();
+    void startAnimation( float duration);
+    void handleChoice();
     Vertex* findVertex(int value);
     Edge* findEdge(Vertex* v1, Vertex* v2);
     void addFromMatrix();
-    void reset();
+
     void resetAnimation();
     void handleCollision();
-
+    void addFromTextbox();
     void FILE_INPUT() override;
-    // void handleInput() override;
+    void RANDOM_INPUT() override; 
+    void HandleInput();
 };

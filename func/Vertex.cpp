@@ -39,7 +39,7 @@ void Vertex::Draw() {
         {position.x - MeasureText(to_string(value).c_str(), 20) / 2, 
         position.y - MeasureText(to_string(value).c_str(), 20) / 2 - radius * 0.2f}, 
         20,
-        12,
+        1,
         textColor
         );
     DrawRing(position, radius, radius + 5, 0, 360, 200, ringColor);
