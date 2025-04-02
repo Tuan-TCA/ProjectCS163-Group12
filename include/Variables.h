@@ -1,6 +1,7 @@
 #pragma once
 #include <string>
 #include <iostream>
+#include <vector>
 #include<raylib.h>
 using namespace std;
 
@@ -42,9 +43,10 @@ public:
    
     virtual ~Drawable() {} 
     bool isAnimating;
-    virtual void SetColor(Color targetColor) = 0;
+    virtual void SetColor() = 0;
      virtual void print() = 0;
     virtual void reset() = 0;
+
      bool doneAnimation = 0;
 };
 

@@ -67,8 +67,8 @@ void Page::init() {
     play2 = ButtonFromImage("res/button/2-play.png", "res/button/2-play.png", screenWidth / 2 -   screenWidth * 0.05f / 2  , screenHeight*0.92f,  screenWidth * 0.05f, screenWidth*0.05f);
     // timeSlider = Slider({screenWidth * 0.05f , screenHeight*0.936f,  screenWidth * 0.3f ,screenHeight * 0.095f / 3 * 0.9f}, 0.0f, 1.0f);
     
-    codeDisplayPLace = Rectangle{screenWidth * 0.01f, screenHeight / 2.0f, screenWidth * 0.24f - 12.0f, screenHeight * 0.35f};
-    speedSliding = MyRec(screenWidth * 0.723f , screenHeight*0.936f,  screenWidth * 0.182f * 0.38f,screenHeight * 0.095f / 3 * 0.9f, "", MyColor3, WHITE);
+    codeDisplayPLace = Rectangle{screenWidth * 0.01f, screenHeight * 0.56f, screenWidth * 0.24f - 12.0f, screenHeight * 0.35f};
+    speedSliding = MyRec(screenWidth * 0.712f , screenHeight*0.936f,  screenWidth * 0.182f * 0.38f,screenHeight * 0.095f / 3 * 0.9f, "", MyColor3, WHITE);
     background1 = resizedImage("res/BackGround.png", screenWidth, screenHeight);   
     background2 = resizedImage("res/background_theme2.png", screenWidth, screenHeight);    
     bottom = {screenWidth / 2 -   screenWidth * 0.05f * 3 / 2 - 50,screenHeight*0.905f,(float) (screenWidth * 0.23),screenHeight*0.09f};
@@ -98,7 +98,7 @@ void Page::draw() {
     DrawRectangleRounded({-10, screenHeight / 2 - screenHeight * 0.64f / 2, 30,screenHeight*0.305f }, 0.5f, 30, MyColor3);
     DrawText(">", 5, screenHeight / 2 - screenHeight * 0.64f / 2 + screenHeight*0.305f /2.0f, 20, WHITE);
     DrawRectangleRounded(codeDisplayPLace, 0.1f, 40,MyColor6);
-    // DrawRectangleRoundedLinesEx(codeDisplayPLace, 0.1f, 20, 4, MyColor7);
+    DrawRectangleRoundedLinesEx(codeDisplayPLace, 0.1f, 20, 4, MyColor3);
     DrawRectangleRounded({screenWidth * 0.7f , screenHeight*0.934f , screenWidth * 0.182f,screenHeight * 0.095f / 3}, 20, 20, WHITE); //speed control
     speedSliding.DrawRounded(MyColor3);
 
@@ -148,7 +148,7 @@ void Page::draw() {
         InputNextButton.Draw(LIGHTGRAY, WHITE);
     }
     //Operation
-    OperationOptionButton.Draw( Fade(MyColor7, 0.8f), MyColor7);
+    OperationOptionButton.Draw(Fade(MyColor7, 0.8f), MyColor7);
     OperationPrevButton.Draw(Fade(MyColor7, 0.8f), MyColor7);
     OperationNextButton.Draw(Fade(MyColor7, 0.8f), MyColor7);
 }
@@ -163,9 +163,44 @@ void Page::event() {
         reset();
         return;
     }
+    float deltaTime = GetFrameTime();
+    //Code box event
+    Rectangle targetCodePlace = Rectangle{screenWidth * 0.01f, screenHeight * 0.56f, screenWidth * 0.24f - 12.0f, screenHeight * 0.35f};
+    Rectangle closeCodePlace = Rectangle{-codeDisplayPLace.width, screenHeight * 0.56f, screenWidth * 0.24f - 12.0f, screenHeight * 0.35f};
+    if(currentOperation == Operation::Algorithm){
+        isClosingCodePlace = false;
+        isExpandingCodePlace = true;
+        animatingTime = 0;
+    }
+    else{
+        isClosingCodePlace = true;
+        isExpandingCodePlace = false;
+        animatingTime = 0;
+    }
+
+    if(isExpandingCodePlace){
+        animatingTime += deltaTime;
+        float t = animatingTime / 0.2f; // 0.2 is the time interval when animating
+        if (t > 1.0f) {
+            t = 1.0f;
+            animatingTime = 0.0f;
+            isExpandingCodePlace = false;
+        }
+        codeDisplayPLace.x = Lerp(codeDisplayPLace.x, targetCodePlace.x, t); 
+    }
+    else if (isClosingCodePlace) {
+        animatingTime += deltaTime;
+        float t = animatingTime / 0.2f; // 0.2 is the time interval when animating
+        if (t > 1.0f) {
+            t = 1.0f;
+            animatingTime = 0.0f;
+            isClosingCodePlace = false;
+        }
+        codeDisplayPLace.x = Lerp(codeDisplayPLace.x, closeCodePlace.x, t); 
+    }
 
     //side event
-    float deltaTime = GetFrameTime();
+    
     float sideDuration =0.2f; 
     Vector2 mousePos = GetMousePosition();
     Rectangle targetPlace = Rectangle{0, screenHeight / 2 - screenHeight * 0.64f / 2, screenWidth * 0.24f, screenHeight * 0.32f}; 
@@ -173,32 +208,32 @@ void Page::event() {
     Rectangle sidePlace = Rectangle{0,screenHeight / 2 - screenHeight * 0.64f / 2,screenWidth*0.12f,screenHeight*0.32f};
     if (CheckCollisionPointRec(mousePos, targetPlace)) {
         if(CheckCollisionPointRec(mousePos, sidePlace)){
-        isExpanding = true;
-        isClosing = false;
+        isExpandingSide = true;
+        isClosingSide = false;
         animatingTime = 0;
         }
     } else {
-        isClosing = true;
-        isExpanding = false;
+        isClosingSide = true;
+        isExpandingSide = false;
         animatingTime = 0;
     }
 
-    if (isExpanding) {
+    if (isExpandingSide) {
         animatingTime += deltaTime;
         float t = animatingTime / sideDuration;
         if (t > 1.0f) {
             t = 1.0f;
             animatingTime = 0.0f;
-            isExpanding = false;
+            isExpandingSide = false;
         }
         side.x = Lerp(side.x, targetPlace.x, t); 
-    } else if (isClosing) {
+    } else if (isClosingSide) {
         animatingTime += deltaTime;
         float t = animatingTime / sideDuration;
         if (t > 1.0f) {
             t = 1.0f;
             animatingTime = 0.0f;
-            isClosing = false;
+            isClosingSide = false;
         }
         side.x = Lerp(side.x, closedPlace.x, t);
     }
@@ -214,7 +249,7 @@ void Page::event() {
         float clampedMouseX = clamp(mousePoint.x - speedSliding.bounds.width / 2, minX, maxX);
         speedSliding.bounds.x = clampedMouseX;
     }
-    animationSpeed = clamp(static_cast<float>((speedSliding.bounds.x - minX) * 5 / (maxX - minX)), 0.1f, 5.0f);
+    animationSpeed = clamp(static_cast<float>((speedSliding.bounds.x - minX) * 10 / (maxX - minX)), 0.1f, 10.0f);
     animationSpeed = round(animationSpeed * 10.0) / 10.0; // round up to 1 decimal
 
     //time slider

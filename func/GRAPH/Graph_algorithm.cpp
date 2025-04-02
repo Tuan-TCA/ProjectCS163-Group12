@@ -76,7 +76,7 @@ void Graph::bfs(Vertex* source) {
     while (!q.empty()) {
        
         Vertex* v = q.front();
-       
+       v->targetColor = ORANGE;
         // v->print();
         q.pop();
         vector<Vertex*> vertexStorage;
@@ -89,11 +89,13 @@ void Graph::bfs(Vertex* source) {
                     Edge* e = findEdge(v, nextVertex);
                     if (e != nullptr && visitedEdge.find(e) == visitedEdge.end()){
                         edgeStorage.push_back(e);
+                        e->targetColor = ORANGE; // set edge's color
                         visitedEdge.insert(e);
                         // e->print();
                         // cout << "yes\n"; 
                     }
                     q.push(nextVertex);
+                
                     vertexStorage.push_back(nextVertex);
                     visitedVertices.insert(nextVertex);
                 }
@@ -132,11 +134,11 @@ void Graph::handleBFS(){
     }
     
     if( isAnimating && clickedV){
-         if (!bfsCalled) {
+         if (!AlgoCalled) {
             bfs(clickedV);
             startAnimation(1);
             arrayQueue[currentQueueIndex][0]->startAnimation(ORANGE, 1);
-            bfsCalled = true;
+            AlgoCalled = true;
         }
             if (!arrayQueue.empty() && currentQueueIndex < arrayQueue.size()) {
             
@@ -169,11 +171,124 @@ void Graph::handleBFS(){
         }
     }
     else {
-        bfsCalled = false;
+        AlgoCalled = false;
         
     } 
     
 }
 
+//Kruskal's
+void Graph::mst(){
 
+    //sort lai edge inorder
+    cout << " size vertex: "<< vertex.size() << endl;
+    int n = vertex.size();
+    dsu.init(n + 1);
+    sort(edge.begin(), edge.end(), [](Edge & x, Edge & y) {
+        return x.w < y.w;
+    });
+    
+    StepQueue.push_back({0});
+    arrayQueue.push_back({});
+    
+    vector<bool> AnimatedVertex(n + 1, false);
+    for(auto& e: edge){
+        int v1 = e.start->value, v2 = e.end->value;
+        Vertex* v1Ptr = findVertex(v1);
+        Vertex* v2Ptr = findVertex(v2);
+        v1Ptr->targetColor = ORANGE;
+        v2Ptr->targetColor = ORANGE;
+        if (v1Ptr == nullptr || v2Ptr == nullptr) {
+            continue;
+        }
 
+         if (!dsu.join(v1, v2)){ // cannot be unioned
+            // e.targetColor = GRAY;
+            e.targetColor = Color{176, 232, 197, 255};
+            
+            StepQueue.push_back({5});
+            arrayQueue.push_back({&e});
+             continue;
+         }
+            e.targetColor = ORANGE;
+        if(!AnimatedVertex[v1] && !AnimatedVertex[v2]){
+            AnimatedVertex[v1] = true;
+            AnimatedVertex[v2] = true;
+            StepQueue.push_back({3});
+            arrayQueue.push_back({v1Ptr});
+
+            StepQueue.push_back({3});
+            StepQueue.push_back({4});
+            arrayQueue.push_back({&e});
+            arrayQueue.push_back({v2Ptr});
+            
+        }
+        else if(AnimatedVertex[v1] && AnimatedVertex[v2]){
+            StepQueue.push_back({4});
+            arrayQueue.push_back({&e});
+        }
+        else {
+            if(!AnimatedVertex[v1] && AnimatedVertex[v2]){ // dam bao animation luon start tu v1
+            swap(e.start, e.end);
+            swap(v1Ptr, v2Ptr);
+            swap(v1, v2);
+            
+            }
+            
+            StepQueue.push_back({3});
+            StepQueue.push_back({4});
+            arrayQueue.push_back({&e});
+            arrayQueue.push_back({v2Ptr});
+        }
+            
+    }
+    StepQueue.push_back({6});
+    arrayQueue.push_back({});
+}
+
+void Graph::handleMST(){
+    float deltaTime = GetFrameTime();
+    if(AlgorithmOptionButton.IsClicked() || Ok.IsClicked()){
+        isAnimating = true;
+        isPlaying = true;
+    }
+
+    if( isAnimating){
+        if (!AlgoCalled) {
+            mst();
+            startAnimation(1);
+            if (!arrayQueue.empty() && !arrayQueue[0].empty()) {
+                arrayQueue[currentQueueIndex][0]->startAnimation(ORANGE, 1);
+            }
+            AlgoCalled = true;
+        }
+        if (!arrayQueue.empty() && currentQueueIndex < arrayQueue.size()) {
+
+            vector<Drawable*> current = arrayQueue[currentQueueIndex];
+
+            int checkDoneAnimating = 0;
+            for(int i = 0; i < current.size(); i++){
+                if (!current[i]->isAnimating) { // done or hasn't started yet
+                    checkDoneAnimating++;
+                }
+
+                if(isPlaying) current[i]->Update(deltaTime);
+            }
+            if(checkDoneAnimating == current.size()) {
+                if(!arrayQueue.empty() && currentQueueIndex + 1 < arrayQueue.size()){
+                    current = arrayQueue[++currentQueueIndex];
+                    for(auto& elem: current){
+                        elem->startAnimation(ORANGE, 1);
+                    }
+                }
+                else if(currentQueueIndex >= arrayQueue.size() -1 ){ 
+                    isPlaying = false;
+                    isAnimating = false;
+                }
+            }
+        }
+    }
+    else{
+        AlgoCalled = false;
+    }
+}

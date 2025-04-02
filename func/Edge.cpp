@@ -29,7 +29,7 @@ void Edge::Update(float deltaTime){
 
 }
 void Edge::startAnimation(Color target, float duration) {
-    targetColor = target;
+    // targetColor = target;
     animationTime = 0.0f;
     isAnimating = true;
     this->duration = duration;
@@ -55,13 +55,13 @@ float Edge::length(){
     return sqrt(pow( start->position.x - end->position.x,2) + pow(start->position.y - end->position.y, 2));
 }
 
-void Edge::SetColor(Color target){
-    this->textColor = target;
-    this->color = target;
+void Edge::SetColor(){ // after having done an animation
+    this->textColor = targetColor;
+    this->color = targetColor;
     doneAnimation = true;
 }
 
-void Edge::reset(){
+void Edge::reset(){ // before ...
     textColor = MyColor4;
     color = MyColor4;
     endEdge = start->position;
@@ -69,3 +69,4 @@ void Edge::reset(){
     isAnimating = false;
     doneAnimation = false;
 }
+

@@ -15,7 +15,7 @@ float distance(Vector2 pos1, Vector2 pos2){
 
 void Graph::init(){
     Page::init();
-    // if(find(OperationOptions.begin(), OperationOptions.end(), "ALGORITHM") == OperationOptions.end()) OperationOptions.push_back("ALGORITHM");
+
     OperationOptions = {"CREATE", "ALGORITHM"};
     selectedAlgorithmIndex = 0;
     currentALgorithm = Algorithm::BFS;
@@ -50,8 +50,15 @@ void Graph::draw(){
     float pseudocodeX = codeDisplayPLace.x  + 5;
     float pseudocodeY = codeDisplayPLace.y  + 10;
     float lineHeight = 20.0f;
+    float textWidth = 0;
+    for(auto& e: pseudocode){
+        textWidth = max(textWidth,(float) MeasureText(e.c_str(), 10));
+    }
+    
+    codeDisplayPLace.height = pseudocode.size() * lineHeight + 10;
+    codeDisplayPLace.width = textWidth * 1.3f;
     Color highlightColor = Color{255, 222, 89, 255};
-     if(isAnimating){
+     if(isAnimating || currentOperation == Operation::Algorithm){
     for (size_t i = 0; i < pseudocode.size(); ++i) {
         Color currentColor = highlightColor;
         if(!StepQueue.empty() && find(StepQueue[currentQueueIndex].begin(), StepQueue[currentQueueIndex].end(), i) != StepQueue[currentQueueIndex].end()){
@@ -60,9 +67,6 @@ void Graph::draw(){
         else{
             currentColor.a = 0;
         }
-
-        // DrawText(pseudocode[i].c_str(), pseudocodeX, pseudocodeY + i * lineHeight, 20, currentColor);
-        // float textWidth = MeasureText(pseudocode[i].c_str(), 14);
         DrawRectangleRounded(Rectangle{pseudocodeX - 5, pseudocodeY + i * lineHeight - 5, screenWidth*0.23f,  lineHeight}, 0, 5, currentColor);
         DrawTextEx(FONT, pseudocode[i].c_str(), {pseudocodeX, pseudocodeY + i * lineHeight} , 10, 2, MyColor4);
         
@@ -165,18 +169,14 @@ void Graph::event(){
         if (!arrayQueue.empty() && currentQueueIndex < arrayQueue.size()) {
             vector<Drawable*> current = arrayQueue[currentQueueIndex];
             for (auto& elem : current) {
-                elem->SetColor(ORANGE);
-                elem->isAnimating = false;  
-                elem->doneAnimation = true; 
+                elem->SetColor();
             }
             currentQueueIndex++;
             if (currentQueueIndex > arrayQueue.size() - 1) currentQueueIndex = arrayQueue.size() - 1;
             if (currentQueueIndex < arrayQueue.size()) {
                 vector<Drawable*> next = arrayQueue[currentQueueIndex];
                 for (auto& elem : next) {
-                    elem->SetColor(ORANGE);
-                    elem->isAnimating = false;
-                    elem->doneAnimation = true;
+                    elem->SetColor();
                 }
             }
         }
@@ -204,8 +204,15 @@ void Graph::handleChoice(){
             break;
         case Algorithm::MST:
             pseudocode = {
-
+                "Sort E edges by increasing weight", //0
+                "T = {}",
+                "for (i = 0; i < edgeList.length; i++)", // 2
+                "  if adding e = edgelist[i] does not form a cycle", //3
+                "    add e to T", // 4
+                "  else ignore e", // 5
+                "MST = T",
             };
+            handleMST();
             break;
         default:
             break;
@@ -221,9 +228,11 @@ void Graph::startAnimation(float duration){
 }
 
 void Graph::resetAnimation(){
+    StepQueue.clear();
+    arrayQueue.clear();
     isAnimating  = false;
     got1stV = false;
-    bfsCalled = false;
+    AlgoCalled = false;
     clickedV = nullptr;
     currentQueueIndex = 0;
     currentStep = 0;
@@ -278,6 +287,8 @@ void Graph::addFromMatrix(){
             }
         }
     }
+
+    if(currentALgorithm == Algorithm::MST) dsu.init(vertex.size()); // init dsu with n sets
     cout << "EDGE: " << endl;
     for(auto& e: edge){
         e.print();
@@ -313,20 +324,25 @@ void Graph::RANDOM_INPUT() {
             textbox.reset();
             std::uniform_int_distribution<int> vertexDist(5, 20); 
             int numVertices = vertexDist(rng);
-            std::uniform_int_distribution<int> weightDist(0, 1); 
+           std::uniform_int_distribution<int> fullWeightDist(0, 10);
+            std::uniform_real_distribution<double> zeroProbDist(0.0, 1.0);
+            double probabilityOfZero = 0.6; // 60 % to get 0
 
-            vector<vector<int>> adjMatrix(numVertices, vector<int>(numVertices, 0));
-            vector<string> lines;
-            stringstream ss;
+            std::vector<std::vector<int>> adjMatrix(numVertices, std::vector<int>(numVertices, 0));
+            std::vector<std::string> lines;
+            std::stringstream ss;
 
             for (int i = 0; i < numVertices; ++i) {
                 for (int j = i; j < numVertices; ++j) {
                     if (i == j) {
                         adjMatrix[i][j] = 0;
                     } else {
-                        int weight = weightDist(rng);
-                        adjMatrix[i][j] = weight;
-                        adjMatrix[j][i] = weight; 
+                        if (zeroProbDist(rng) < probabilityOfZero) {
+                            adjMatrix[i][j] = 0;
+                        } else {
+                            adjMatrix[i][j] = fullWeightDist(rng);
+                        }
+                        adjMatrix[j][i] = adjMatrix[i][j];
                     }
                 }
             }
@@ -404,7 +420,7 @@ void Graph::reset(){
     StepQueue.clear();
     isAnimating  = false;
     got1stV = false;
-    bfsCalled = false;
+    AlgoCalled = false;
     clickedV = nullptr;
     currentQueueIndex = 0;
     currentStep = 0;

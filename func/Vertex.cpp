@@ -49,7 +49,7 @@ bool Vertex::isClicked(){
 }
 
 void Vertex::startAnimation(Color target, float duration) {
-        targetColor = target;
+        // targetColor = target;
         animationTime = 0.0f;
         isAnimating = true;
         fullColor = false;
@@ -59,10 +59,12 @@ void Vertex::print(){
     cout << value << endl;
 }
 
-void Vertex::SetColor(Color target){
+void Vertex::SetColor(){
     this->color = WHITE;
-    this->ringColor = target;
-    this->textColor = target;
+    this->ringColor = targetColor;
+    this->textColor = targetColor;
+    doneAnimation = true;
+    isAnimating = false;
 }
 
 void Vertex::reset(){

@@ -49,8 +49,8 @@ public:
     MyRec head;
     Rectangle bottom;
     Rectangle side;
-    bool isExpanding = false;
-    bool isClosing = false;
+    bool isExpandingSide = false;
+    bool isClosingSide = false;
     float animatingTime = 0;
     Button Ok;
     TextBox textbox;
@@ -58,6 +58,8 @@ public:
     TextBox newTextBox;
     
     Rectangle workplace = {screenWidth * 0.28f, screenHeight * 0.14f, screenWidth * 0.68f, screenHeight * 0.72f};
+    bool isExpandingCodePlace = false;
+    bool isClosingCodePlace = false;
     MyRec speedSliding;
     // Slider timeSlider;
     ButtonFromImage back1, next1, pause1, play1;

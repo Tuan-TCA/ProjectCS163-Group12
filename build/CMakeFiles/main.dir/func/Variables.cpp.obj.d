@@ -145,6 +145,11 @@ CMakeFiles/main.dir/func/Variables.cpp.obj: \
  C:/SFML/mingw64/include/c++/14.2.0/bits/ostream.tcc \
  C:/SFML/mingw64/include/c++/14.2.0/istream \
  C:/SFML/mingw64/include/c++/14.2.0/bits/istream.tcc \
+ C:/SFML/mingw64/include/c++/14.2.0/vector \
+ C:/SFML/mingw64/include/c++/14.2.0/bits/stl_uninitialized.h \
+ C:/SFML/mingw64/include/c++/14.2.0/bits/stl_vector.h \
+ C:/SFML/mingw64/include/c++/14.2.0/bits/stl_bvector.h \
+ C:/SFML/mingw64/include/c++/14.2.0/bits/vector.tcc \
  C:/raylib/include/raylib.h \
  C:/SFML/mingw64/lib/gcc/x86_64-w64-mingw32/14.2.0/include/stdarg.h \
  C:/SFML/mingw64/x86_64-w64-mingw32/include/stdarg.h \

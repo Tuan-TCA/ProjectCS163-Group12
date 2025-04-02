@@ -35,6 +35,6 @@ public:
     void Draw() override;
     bool isClicked();
     void print();
-    void SetColor(Color targetColor) override;
+    void SetColor() override;
     void reset() override;
 };
