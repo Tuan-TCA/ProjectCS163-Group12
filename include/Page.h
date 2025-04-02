@@ -49,6 +49,9 @@ public:
     MyRec head;
     Rectangle bottom;
     Rectangle side;
+    bool isExpanding = false;
+    bool isClosing = false;
+    float animatingTime = 0;
     Button Ok;
     TextBox textbox;
     TextBox oldTextBox;
@@ -67,5 +70,6 @@ public:
     virtual void draw();
     virtual void event();
     virtual void reset();
+    virtual void updateSide();
     void handleInput();
 };

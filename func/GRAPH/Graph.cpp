@@ -15,7 +15,8 @@ float distance(Vector2 pos1, Vector2 pos2){
 
 void Graph::init(){
     Page::init();
-    if(find(OperationOptions.begin(), OperationOptions.end(), "ALGORITHM") == OperationOptions.end()) OperationOptions.push_back("ALGORITHM");
+    // if(find(OperationOptions.begin(), OperationOptions.end(), "ALGORITHM") == OperationOptions.end()) OperationOptions.push_back("ALGORITHM");
+    OperationOptions = {"CREATE", "ALGORITHM"};
     selectedAlgorithmIndex = 0;
     currentALgorithm = Algorithm::BFS;
     AlgorithmOptionButton = Button(screenWidth * 0.24f * 0.15f,screenHeight / 2 - screenHeight*0.63f * 0.35f + 10 , screenWidth*0.24f * 0.7f, screenHeight*0.63f * 0.15f, AlgorithmOptions[selectedAlgorithmIndex].c_str(), WHITE, LIGHTGRAY, MyColor5);
@@ -46,8 +47,8 @@ void Graph::draw(){
 
     //code state
 
-    float pseudocodeX = screenWidth * 0.01f;
-    float pseudocodeY = screenHeight * 0.54f;
+    float pseudocodeX = codeDisplayPLace.x  + 5;
+    float pseudocodeY = codeDisplayPLace.y  + 10;
     float lineHeight = 20.0f;
     Color highlightColor = Color{255, 222, 89, 255};
      if(isAnimating){
@@ -113,29 +114,22 @@ void Graph::event(){
                 v.isPressing = true;
             }
         }
-        else{
-            v.isPressing = false;
+        else  if(IsMouseButtonDown(MOUSE_RIGHT_BUTTON)){
+            if(CheckCollisionPointCircle(GetMousePosition(), v.position, v.radius) || v.isPressing){
+                Vector2 mousePos = GetMousePosition();
+                Vector2 delta = mousePos - v.position;
+                v.isPressing = true;
+                for(auto& v_ : vertex){
+                    v_.position = v_.position + delta;
+                }
+                
+            }
+        
         }
+        else v.isPressing = false;
         
     }
-   
-    // for(auto& v: vertex){
-    //             if(IsMouseButtonDown(MOUSE_RIGHT_BUTTON)){
-    //          if(CheckCollisionPointCircle(GetMousePosition(), v.position, v.radius) || v.isPressing){
-    //             Vector2 mousePos = GetMousePosition();
-    //             Vector2 delta = mousePos - v.position;
-    //             v.isPressing = true;
-    //             for(auto& v_ : vertex){
-    //                 v_.position = v_.position + delta;
-    //             }
-                
-    //         }
-            
-    //     }
-    //     else v.isPressing = false;
-        
-    // }
-   
+
     for(auto& e: edge){
         
         if(!e.isAnimating || (e.isAnimating && e.endEdge != e.start->position && e.endEdge != e.end->position)) e.Update(0);
@@ -209,7 +203,9 @@ void Graph::handleChoice(){
             handleBFS();
             break;
         case Algorithm::MST:
-            
+            pseudocode = {
+
+            };
             break;
         default:
             break;
@@ -246,8 +242,8 @@ void Graph::addFromMatrix(){
      srand(static_cast<unsigned int>(time(0) + rand()));
     int n = matrix.size();
     //random vertices in workplace 
-    int minX = screenWidth * 0.3f, maxX = screenWidth - 100;  
-    int minY = screenHeight * 0.2f, maxY = screenHeight * 0.8f;
+    int minX = workplace.x, maxX = workplace.x + workplace.width;  
+    int minY = workplace.y, maxY = workplace.y + workplace.height;
     vertex.clear();
     vertex.resize(n);
     for(int i = 0; i < n; i++){
@@ -449,4 +445,11 @@ void Graph::HandleInput(){
     if(currentOperation == Operation::Algorithm){
         textbox.HandleInput();
     }
+}
+
+void Graph::updateSide(){
+    Page::updateSide();
+    AlgorithmOptionButton.bounds =Rectangle{side.x + (side.x + side.width) * 0.15f, side.y + screenHeight*0.63f * 0.15f + 10 , screenWidth*0.24f * 0.7f, screenHeight*0.63f * 0.15f};
+    AlgorithmPrevButton.bounds = Rectangle{side.x + 5,side.y + screenHeight*0.63f * 0.15f + 10 ,  screenWidth*0.24f * 0.15f - 10, screenHeight*0.63f * 0.15f}; 
+    AlgorithmNextButton.bounds = Rectangle{side.x + (side.x + side.width) * 0.85f + 5, side.y + screenHeight*0.63f * 0.15f + 10,  screenWidth*0.24f * 0.15f - 10, screenHeight*0.63f * 0.15f};;
 }

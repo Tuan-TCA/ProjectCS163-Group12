@@ -308,6 +308,13 @@ public:
                 }
                 else startColumnIndex = 0;
             }
+
+            // if(IsKeyPressed(KEY_DELETE)){
+            //     if(SubIndex[currentIndex] < inputText[currentIndex].size()){
+            //         int deletedIdx = SubIndex[currentIndex] + 1;
+            //         inputText[currentIndex].erase(inputText[currentIndex].begin() + deletedIdx);
+            //     } 
+            // }
         }
     }
 }

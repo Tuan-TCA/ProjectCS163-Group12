@@ -61,4 +61,5 @@ class Graph : public Page{
     void FILE_INPUT() override;
     void RANDOM_INPUT() override; 
     void HandleInput();
+    void updateSide() override;
 };

@@ -21,23 +21,37 @@ string getMODE() {
     return "";
 }
 
+void Page::updateSide(){
+    InputOptionButton.bounds = Rectangle{side.x + (side.x + side.width) * 0.15f, side.y + screenHeight*0.63f * 0.15f + 10 , screenWidth*0.24f * 0.7f, screenHeight*0.63f * 0.15f};
+    InputPrevButton.bounds = Rectangle{side.x + 5,side.y + screenHeight*0.63f * 0.15f + 10 ,  screenWidth*0.24f * 0.15f - 10, screenHeight*0.63f * 0.15f};
+    InputNextButton.bounds = Rectangle{side.x + (side.x + side.width) * 0.85f + 5, side.y + screenHeight*0.63f * 0.15f + 10,  screenWidth*0.24f * 0.15f - 10, screenHeight*0.63f * 0.15f};
+    OperationOptionButton.bounds = Rectangle{side.x + (side.x + side.width) * 0.15f, side.y + 5, screenWidth*0.24f * 0.7f, screenHeight*0.63f * 0.15f};
+    OperationPrevButton.bounds = Rectangle{side.x + 5, side.y + 5, screenWidth*0.24f * 0.15f - 10, screenHeight*0.63f * 0.15f};
+    OperationNextButton.bounds = Rectangle{side.x + (side.x + side.width) * 0.85f + 5,side.y + 5,  screenWidth*0.24f * 0.15f - 10,screenHeight*0.63f * 0.15f};
+     Ok.bounds = Rectangle{side.x + (side.x  + side.width) * 0.74f, side.y + screenHeight*0.63f * 0.3f + 15, 73, screenHeight*0.63f * 0.15f};
+     textbox.bounds = Rectangle{side.x + 5, side.y + screenHeight*0.63f * 0.3f + 15, screenWidth*0.25f - 100, screenHeight*0.63f * 0.15f};
+    oldTextBox.bounds = Rectangle{side. x + 5, side.y + screenHeight*0.63f * 0.36f, screenWidth*0.08f, screenHeight*0.63f * 0.11f};
+    newTextBox.bounds = Rectangle{side.x + screenWidth*0.08f + 10, side.y + screenHeight*0.63f * 0.36f, screenWidth*0.08f, screenHeight*0.63f * 0.11f};
+
+
+}
 
 void Page::init() {
 
     selectedInputIndex = 0;
-    InputOptionButton = Button(screenWidth * 0.24f * 0.15f,screenHeight / 2 - screenHeight*0.63f * 0.35f + 10 , screenWidth*0.24f * 0.7f, screenHeight*0.63f * 0.15f, InputOptions[selectedInputIndex].c_str(), WHITE, LIGHTGRAY, MyColor5);
-    InputPrevButton = Button(5,screenHeight / 2 - screenHeight*0.63f * 0.35f + 10 ,  screenWidth*0.24f * 0.15f - 10, screenHeight*0.63f * 0.15f, "<", WHITE, LIGHTGRAY, MyColor5);
-    InputNextButton = Button(screenWidth*0.24f * 0.85f + 5, screenHeight / 2 - screenHeight*0.63f * 0.35f + 10 ,  screenWidth*0.24f * 0.15f - 10, screenHeight*0.63f * 0.15f, ">", WHITE, LIGHTGRAY, MyColor5);
+    InputOptionButton = Button((side.x + side.width) * 0.15f, side.y + screenHeight*0.63f * 0.15f + 10 , screenWidth*0.24f * 0.7f, screenHeight*0.63f * 0.15f, InputOptions[selectedInputIndex].c_str(), WHITE, LIGHTGRAY, MyColor5);
+    InputPrevButton = Button(side.x + 5,side.y + screenHeight*0.63f * 0.15f + 10 ,  screenWidth*0.24f * 0.15f - 10, screenHeight*0.63f * 0.15f, "<", WHITE, LIGHTGRAY, MyColor5);
+    InputNextButton = Button((side.x + side.width) * 0.85f + 5, side.y + screenHeight*0.63f * 0.15f + 10,  screenWidth*0.24f * 0.15f - 10, screenHeight*0.63f * 0.15f, ">", WHITE, LIGHTGRAY, MyColor5);
     currentInput = InputType::Keyboard;
 
     OperationOptions  = {"INSERT", "CREATE", "UPDATE", "DELETE", "SEARCH"};
     selectedOperationIndex = 0;
-    OperationOptionButton = Button(screenWidth * 0.24f * 0.15f, screenHeight / 2 - screenHeight*0.63f * 0.5f + 5, screenWidth*0.24f * 0.7f, screenHeight*0.63f * 0.15f, OperationOptions[selectedOperationIndex].c_str(), MyColor1, Fade(MyColor1, 0.8f), WHITE);
-    OperationPrevButton = Button(5, screenHeight / 2 - screenHeight*0.63f * 0.5f + 5,screenWidth*0.24f * 0.15f - 10, screenHeight*0.63f * 0.15f, "<", MyColor1, Fade(MyColor1, 0.8f), WHITE);
-    OperationNextButton = Button(screenWidth*0.24f * 0.85f + 5,screenHeight / 2 - screenHeight*0.63f * 0.5f + 5,  screenWidth*0.24f * 0.15f - 10,screenHeight*0.63f * 0.15f, ">", MyColor1, Fade(MyColor1, 0.8f), WHITE);
+    OperationOptionButton = Button((side.x + side.width) * 0.15f, side.y + 5, screenWidth*0.24f * 0.7f, screenHeight*0.63f * 0.15f, OperationOptions[selectedOperationIndex].c_str(), MyColor7, Fade(MyColor7, 0.8f), WHITE);
+    OperationPrevButton = Button(side.x + 5, side.y + 5, screenWidth*0.24f * 0.15f - 10, screenHeight*0.63f * 0.15f, "<", MyColor7, Fade(MyColor7, 0.8f), WHITE);
+    OperationNextButton = Button((side.x + side.width) * 0.85f + 5,side.y + 5,  screenWidth*0.24f * 0.15f - 10,screenHeight*0.63f * 0.15f, ">", MyColor7, Fade(MyColor7, 0.8f), WHITE);
     currentOperation = Operation::Insert;
 
-    Ok = Button(10 + screenWidth*0.25f - 100, screenHeight / 2 - screenHeight*0.63f * 0.17f, 73, screenHeight*0.63f * 0.15f, "OK", MyColor1, MyColor2, WHITE);
+    Ok = Button((side.x  + side.width) * 0.74f, side.y + screenHeight*0.63f * 0.3f + 15, 73, screenHeight*0.63f * 0.15f, "OK", MyColor1, MyColor2, WHITE);
     head = MyRec(0, 10, (float) screenWidth, screenHeight*0.08f, getMODE().c_str(), MyColor2, WHITE);
     home = ButtonFromImage("res/button/back.png", "res/button/back-isOver.png", screenWidth*0.016f, screenHeight*0.016f, screenWidth*0.05f, screenWidth*0.05f); 
     home2 = ButtonFromImage("res/button/homeII_1.png", "res/button/homeII_2.png", screenWidth*0.016f, screenHeight*0.016f, screenWidth*0.05f, screenWidth*0.05f); 
@@ -53,15 +67,16 @@ void Page::init() {
     play2 = ButtonFromImage("res/button/2-play.png", "res/button/2-play.png", screenWidth / 2 -   screenWidth * 0.05f / 2  , screenHeight*0.92f,  screenWidth * 0.05f, screenWidth*0.05f);
     // timeSlider = Slider({screenWidth * 0.05f , screenHeight*0.936f,  screenWidth * 0.3f ,screenHeight * 0.095f / 3 * 0.9f}, 0.0f, 1.0f);
     
-    codeDisplayPLace = Rectangle{7, screenHeight / 2.0f, side.width - 12.0f, side.height / 2.0f - 7};
+    codeDisplayPLace = Rectangle{screenWidth * 0.01f, screenHeight / 2.0f, screenWidth * 0.24f - 12.0f, screenHeight * 0.35f};
     speedSliding = MyRec(screenWidth * 0.723f , screenHeight*0.936f,  screenWidth * 0.182f * 0.38f,screenHeight * 0.095f / 3 * 0.9f, "", MyColor3, WHITE);
     background1 = resizedImage("res/BackGround.png", screenWidth, screenHeight);   
     background2 = resizedImage("res/background_theme2.png", screenWidth, screenHeight);    
     bottom = {screenWidth / 2 -   screenWidth * 0.05f * 3 / 2 - 50,screenHeight*0.905f,(float) (screenWidth * 0.23),screenHeight*0.09f};
-    side = {0,screenHeight / 2 - screenHeight * 0.64f / 2,screenWidth*0.24f,screenHeight*0.64f};
-    textbox = TextBox(5, screenHeight / 2 - screenHeight*0.63f * 0.17f, screenWidth*0.25f - 100, screenHeight*0.63f * 0.15f, "", WHITE, WHITE, BLACK);
-    oldTextBox = TextBox(5, screenHeight / 2 - screenHeight*0.63f * 0.13f, screenWidth*0.08, screenHeight*0.63f * 0.11f, "", WHITE, WHITE, BLACK);
-    newTextBox = TextBox(screenWidth*0.08f + 10, screenHeight / 2 - screenHeight*0.63f * 0.13f, screenWidth*0.08, screenHeight*0.63f * 0.11f, "", WHITE, WHITE, BLACK);
+
+    side = {0,screenHeight / 2 - screenHeight * 0.64f / 2,screenWidth*0.24f,screenHeight*0.305f};
+    textbox = TextBox(side.x + 5, side.y + screenHeight*0.63f * 0.3f + 15, screenWidth*0.25f - 100, screenHeight*0.63f * 0.15f, "", WHITE, WHITE, BLACK);
+    oldTextBox = TextBox(side. x + 5, side.y + screenHeight*0.63f * 0.36f, screenWidth*0.08, screenHeight*0.63f * 0.11f, "", WHITE, WHITE, BLACK);
+    newTextBox = TextBox(side.x + screenWidth*0.08f + 10, side.y + screenHeight*0.63f * 0.36f, screenWidth*0.08, screenHeight*0.63f * 0.11f, "", WHITE, WHITE, BLACK);
 }
 
 void Page::reset(){
@@ -80,7 +95,10 @@ void Page::draw() {
     head.Draw(MyColor2, getMODE());
     DrawRectangleRounded(bottom, 20, 20, MyColor2);
     DrawRectangleRec(side, MyColor3);
-    DrawRectangleRec(codeDisplayPLace, MyColor6);
+    DrawRectangleRounded({-10, screenHeight / 2 - screenHeight * 0.64f / 2, 30,screenHeight*0.305f }, 0.5f, 30, MyColor3);
+    DrawText(">", 5, screenHeight / 2 - screenHeight * 0.64f / 2 + screenHeight*0.305f /2.0f, 20, WHITE);
+    DrawRectangleRounded(codeDisplayPLace, 0.1f, 40,MyColor6);
+    // DrawRectangleRoundedLinesEx(codeDisplayPLace, 0.1f, 20, 4, MyColor7);
     DrawRectangleRounded({screenWidth * 0.7f , screenHeight*0.934f , screenWidth * 0.182f,screenHeight * 0.095f / 3}, 20, 20, WHITE); //speed control
     speedSliding.DrawRounded(MyColor3);
 
@@ -102,11 +120,12 @@ void Page::draw() {
         else {
             textbox.Draw();
         }
-        Ok.Draw(MyColor1, MyColor2);
+
+        Ok.Draw(Fade(MyColor2, 0.7f), MyColor2);
     }
     else{
-        DrawRectangle(5, screenHeight / 2 - screenHeight*0.63f * 0.17f, screenWidth*0.24f - 10, screenHeight*0.63f * 0.15f, WHITE);
-        DrawText("DROP FILE HERE", 30, screenHeight / 2 - screenHeight*0.63f * 0.118f, 25, GRAY);
+        DrawRectangle(side.x * 1.2f + 5, side.y + screenHeight*0.63f * 0.3f + 15, screenWidth*0.24f - 10, screenHeight*0.63f * 0.15f, WHITE);
+        DrawText("DROP FILE HERE", side.x * 1.2f + 30, screenHeight / 2 - screenHeight*0.63f * 0.118f, 25, GRAY);
         //drop file field
     }
     
@@ -129,9 +148,12 @@ void Page::draw() {
         InputNextButton.Draw(LIGHTGRAY, WHITE);
     }
     //Operation
-    OperationOptionButton.Draw( Fade(MyColor1, 0.8f), MyColor1);
-    OperationPrevButton.Draw(Fade(MyColor1, 0.8f), MyColor1);
-    OperationNextButton.Draw(Fade(MyColor1, 0.8f), MyColor1);
+    OperationOptionButton.Draw( Fade(MyColor7, 0.8f), MyColor7);
+    OperationPrevButton.Draw(Fade(MyColor7, 0.8f), MyColor7);
+    OperationNextButton.Draw(Fade(MyColor7, 0.8f), MyColor7);
+}
+float Lerp(float start, float end, float amount) {
+    return start + amount * (end - start);
 }
 
 void Page::event() {
@@ -142,7 +164,47 @@ void Page::event() {
         return;
     }
 
-    
+    //side event
+    float deltaTime = GetFrameTime();
+    float sideDuration =0.2f; 
+    Vector2 mousePos = GetMousePosition();
+    Rectangle targetPlace = Rectangle{0, screenHeight / 2 - screenHeight * 0.64f / 2, screenWidth * 0.24f, screenHeight * 0.32f}; 
+    Rectangle closedPlace = Rectangle{-side.width, screenHeight / 2 - screenHeight * 0.64f / 2, screenWidth * 0.24f, screenHeight * 0.32f}; 
+    Rectangle sidePlace = Rectangle{0,screenHeight / 2 - screenHeight * 0.64f / 2,screenWidth*0.12f,screenHeight*0.32f};
+    if (CheckCollisionPointRec(mousePos, targetPlace)) {
+        if(CheckCollisionPointRec(mousePos, sidePlace)){
+        isExpanding = true;
+        isClosing = false;
+        animatingTime = 0;
+        }
+    } else {
+        isClosing = true;
+        isExpanding = false;
+        animatingTime = 0;
+    }
+
+    if (isExpanding) {
+        animatingTime += deltaTime;
+        float t = animatingTime / sideDuration;
+        if (t > 1.0f) {
+            t = 1.0f;
+            animatingTime = 0.0f;
+            isExpanding = false;
+        }
+        side.x = Lerp(side.x, targetPlace.x, t); 
+    } else if (isClosing) {
+        animatingTime += deltaTime;
+        float t = animatingTime / sideDuration;
+        if (t > 1.0f) {
+            t = 1.0f;
+            animatingTime = 0.0f;
+            isClosing = false;
+        }
+        side.x = Lerp(side.x, closedPlace.x, t);
+    }
+
+    updateSide();
+
 
     //speed sliding event
     Vector2 mousePoint = GetMousePosition();
@@ -247,10 +309,11 @@ void Page::handleInput(){
      switch (currentOperation) {
         case Operation::Insert:
         case Operation::Create:
-
             switch (currentInput) {
             case InputType::Random:
-                    if (InputOptionButton.IsClicked()) RANDOM_INPUT();
+                    if (InputOptionButton.IsClicked()) {
+                        RANDOM_INPUT();
+                    }
             break;
             case InputType::Keyboard:
                 KEYBOARD_INPUT();

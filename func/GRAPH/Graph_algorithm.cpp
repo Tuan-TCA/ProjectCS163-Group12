@@ -19,7 +19,7 @@ Vertex* Graph::getFirstVertexClicked(){
             isPlaying = true;
             return &v;
         } 
-        if(textbox.nums.size() > 0){ // Or get from textbox
+        if(!textbox.nums.empty()){ // Or get from textbox
             int value = textbox.nums[0];
             cout << value << endl;
             textbox.nums.erase(textbox.nums.begin());
