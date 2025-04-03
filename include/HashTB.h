@@ -27,7 +27,7 @@ private:
     // Vector2 arrowEnd = { nodePos.x, nodePos.y };
     // Vector2 nodePos = { origin.x + bucket_width + spacing, origin.y + bucket_height / 2.0f };
 public:
-
+    Vector2 origin;
     int tableSize = 3;
     vector<HashNode*> table; // Khởi tạo bảng băm với kích thước tableSize
     // HashNode* table[tableSize]; // Bảng băm
@@ -73,7 +73,6 @@ public:
     HashTableChaining(){};
     ~HashTableChaining();
     HashTableChaining(int size);
-    HashTableChaining * B = nullptr;
 
     // Core functions
     void Insert(int key);
@@ -86,11 +85,11 @@ public:
 
     // Drawing functions
     void DrawArrow(Vector2 start, Vector2 end);
-    void DrawHashTable(Vector2 origin);
-    void DrawInsertEffect(Vector2 origin);
-    void DrawSearchEffect(Vector2 origin);
-    void DrawDeleteEffect(Vector2 origin);
-    void DrawInsertDuplicateEffect(Vector2 origin);
+    void DrawHashTable();
+    void DrawInsertEffect();
+    void DrawSearchEffect();
+    void DrawDeleteEffect();
+    void DrawInsertDuplicateEffect();
 
 
     // Integration with Page
@@ -98,5 +97,7 @@ public:
     void draw() override;
     void event() override;
     void reset() override;
+
+    void RANDOM_INPUT() override;
     
 };

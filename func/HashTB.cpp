@@ -4,6 +4,8 @@
 #include <thread>
 #include <chrono>
 #include <iostream>
+#include <random>
+#include <sstream>
 #include "DrawUtils.h"
 #include "Program.h"
 using namespace std;
@@ -18,6 +20,7 @@ using namespace std;
 
 void HashTableChaining::init(){
     Page::init();
+    origin = { 350, 100 };
     table.resize(tableSize, nullptr);
     isInserting = false;
     lastInsertedKey = -1;
@@ -78,7 +81,7 @@ bool HashTableChaining::Search(int key) {
 }
 
 
-void HashTableChaining::DrawHashTable(Vector2 origin) {
+void HashTableChaining::DrawHashTable() {
     Rectangle bucket = {
         origin.x ,
         origin.y + 50,
@@ -86,6 +89,7 @@ void HashTableChaining::DrawHashTable(Vector2 origin) {
         (float)spacing * (tableSize)
     };
     bucket_color = MyColor6;
+    cout << bucket.x << " " << bucket.y << endl;
     DrawRectangleRec(bucket, bucket_color);
     //DrawRectangleLines(bucket.x, bucket.y, bucket.width, bucket.height, BLACK);
     for (int i = 0; i < tableSize; ++i) {
@@ -101,13 +105,13 @@ void HashTableChaining::DrawHashTable(Vector2 origin) {
         // DrawRectangleLines(bucket.x, bucket.y, bucket.width, bucket.height, BLACK);
 
         string label = to_string(i);
-        DrawText(label.c_str(), bucket.x + 8, (i+2) * spacing + 35, font_size, text_color);
+        DrawText(label.c_str(), bucket.x + 8, (i) * spacing + 35 + bucket.y, font_size, text_color);
 
         // Vẽ dãy node trong bucket[i]
         HashNode* current = table[i];
         Vector2 nodePos = {
             bucket.x + spacing,
-            (i+2) * spacing + 25 + bucket_height / 2.0f
+            (i) * spacing + 25 + bucket_height / 2.0f + bucket.y
         };
 
         while (current) {
@@ -136,11 +140,11 @@ void HashTableChaining::DrawHashTable(Vector2 origin) {
 }
 }
 
-void HashTableChaining::DrawInsertEffect(Vector2 origin) {
+void HashTableChaining::DrawInsertEffect() {
     if (!isInserting) return;
 
     int index = HashFunction(lastInsertedKey);
-    float y = (index + 2) * spacing + 25 + bucket_height / 2.0f;
+    float y = (index) * spacing + 25 + bucket_height / 2.0f + (origin.y + 50);
 
     // Tính vị trí node đầu tiên trong bucket
     Vector2 nodePos = { origin.x + spacing, y };
@@ -152,15 +156,15 @@ void HashTableChaining::DrawInsertEffect(Vector2 origin) {
         ClearBackground(RAYWHITE);
         // page.draw();
         Page::draw();
-        DrawHashTable(origin);
+        DrawHashTable();
     
         // Highlight node đang duyệt
         DrawNode(nodePos, cur->key, -1, radius, font_size,
                  ring, circle, choose_color, visit_color, text_color);
     
         EndDrawing();
-        std::this_thread::sleep_for(std::chrono::milliseconds(300));
-    
+        std::this_thread::sleep_for(std::chrono::milliseconds((int) (300 / animationSpeed)));
+
         cur = cur->next;
     
         // ✅ Luôn cập nhật nodePos sau mỗi node (kể cả node cuối)
@@ -173,7 +177,7 @@ void HashTableChaining::DrawInsertEffect(Vector2 origin) {
     ClearBackground(RAYWHITE);
     // page.draw();
     Page::draw();
-    DrawHashTable(origin);
+    DrawHashTable();
     // 👉 Nếu có node trước đó → vẽ mũi tên từ node cũ đến node mới
     if (table[index]) {
         Vector2 arrowStart = { nodePos.x - spacing, nodePos.y };
@@ -196,12 +200,12 @@ void HashTableChaining::DrawInsertEffect(Vector2 origin) {
         cur->next = newNode;
     }
     EndDrawing();
-    std::this_thread::sleep_for(std::chrono::milliseconds(500));
+    std::this_thread::sleep_for(std::chrono::milliseconds((int) (500 / animationSpeed)));
 
     isInserting = false;
 }
 
-void HashTableChaining::DrawSearchEffect(Vector2 origin) {
+void HashTableChaining::DrawSearchEffect() {
     if (!isSearching) return;
 
     int index = HashFunction(searchKey);
@@ -214,27 +218,27 @@ void HashTableChaining::DrawSearchEffect(Vector2 origin) {
         ClearBackground(RAYWHITE);
         // page.draw();
         Page::draw();
-        DrawHashTable(origin);
+        DrawHashTable();
 
         // highlight node đang kiểm tra
         DrawNode(nodePos, cur->key, -1, radius, font_size,
                  ring, circle, choose_color, visit_color, text_color);
 
         EndDrawing();
-        std::this_thread::sleep_for(std::chrono::milliseconds(300));
+        std::this_thread::sleep_for(std::chrono::milliseconds((int) (300 / animationSpeed)));
 
         if (cur->key == searchKey) {
             BeginDrawing();
             ClearBackground(RAYWHITE);
             // page.draw();
             Page::draw();
-            DrawHashTable(origin);
+            DrawHashTable();
 
             DrawNode(nodePos, cur->key, 1, radius, font_size,
                      ring, circle, choose_color, visit_color, text_color);
 
             EndDrawing();
-            std::this_thread::sleep_for(std::chrono::milliseconds(600));
+            std::this_thread::sleep_for(std::chrono::milliseconds((int) (600 / animationSpeed)));
 
             isSearching = false;
             return;
@@ -249,15 +253,15 @@ void HashTableChaining::DrawSearchEffect(Vector2 origin) {
     ClearBackground(RAYWHITE);
     // page.draw();
     Page::draw();
-    DrawHashTable(origin);
+    DrawHashTable();
     DrawText("Not Found", origin.x + 400, y - 10, font_size, RED);
     EndDrawing();
-    std::this_thread::sleep_for(std::chrono::milliseconds(800));
+    std::this_thread::sleep_for(std::chrono::milliseconds((int) (800 / animationSpeed)));
 
     isSearching = false;
 }
 
-void HashTableChaining::DrawDeleteEffect(Vector2 origin) {
+void HashTableChaining::DrawDeleteEffect() {
     if (!isDeleting) return;
 
     int index = HashFunction(deleteKey);
@@ -272,14 +276,14 @@ void HashTableChaining::DrawDeleteEffect(Vector2 origin) {
         ClearBackground(RAYWHITE);
         // page.draw();
         Page::draw();
-        DrawHashTable(origin);
+        DrawHashTable();
 
         // Highlight node đang kiểm tra
         DrawNode(nodePos, cur->key, -1, radius, font_size,
                  ring, circle, choose_color, visit_color, text_color);
 
         EndDrawing();
-        std::this_thread::sleep_for(std::chrono::milliseconds(300));
+        std::this_thread::sleep_for(std::chrono::milliseconds((int) (300 / animationSpeed)));
 
         if (cur->key == deleteKey) {
             // Animation xoá: chỉ không vẽ node nữa
@@ -290,13 +294,13 @@ void HashTableChaining::DrawDeleteEffect(Vector2 origin) {
                 ClearBackground(RAYWHITE);
                 // page.draw();
                 Page::draw();
-                DrawHashTable(origin);
+                DrawHashTable();
             
                 // Vẽ node đang mờ dần/
                 DrawFadingNode(nodePos, cur->key, alpha, radius, font_size, circle, text_color);
             
                 EndDrawing();
-                std::this_thread::sleep_for(std::chrono::milliseconds(40));
+                std::this_thread::sleep_for(std::chrono::milliseconds((int) (40 / animationSpeed)));
             }
             
 
@@ -322,25 +326,26 @@ void HashTableChaining::DrawDeleteEffect(Vector2 origin) {
 void HashTableChaining::draw() {
     Page::draw();
     
-    Vector2 origin = { 350, 100 };
+    DrawHashTable();
+    DrawSearchEffect();
+    DrawInsertEffect();
+    DrawDeleteEffect();
+    DrawInsertDuplicateEffect();
 
-    DrawHashTable(origin);
-    DrawSearchEffect(origin);
-    DrawInsertEffect(origin);
-    DrawDeleteEffect(origin);
-    DrawInsertDuplicateEffect(origin);
-
+    //avoid override
+    head.Draw(MyColor2, getMODE());
+    switchState ? home2.Draw() : home.Draw();
     // 👇 Add auto-create nếu đang tạo từ array
     if (isCreating && !createKeys.empty()) {
         Insert(createKeys.front());
         createKeys.erase(createKeys.begin());
-        std::this_thread::sleep_for(std::chrono::milliseconds(300));
+        std::this_thread::sleep_for(std::chrono::milliseconds((int) (300 / animationSpeed)));
     }
     if (createKeys.empty()) isCreating = false;
 }
 
 
-void HashTableChaining::DrawInsertDuplicateEffect(Vector2 origin) {
+void HashTableChaining::DrawInsertDuplicateEffect() {
     if (!isDuplicateInsert) return;
 
     int index = HashFunction(lastInsertedKey);
@@ -359,7 +364,7 @@ void HashTableChaining::DrawInsertDuplicateEffect(Vector2 origin) {
                 ClearBackground(RAYWHITE);
                 // page.draw();
                 Page::draw();
-                DrawHashTable(origin);
+                DrawHashTable();
 
                 // Overlay đỏ với alpha
                 Color overlay = RED;
@@ -367,7 +372,7 @@ void HashTableChaining::DrawInsertDuplicateEffect(Vector2 origin) {
                 DrawFadingNode(nodePos, cur->key, alpha, radius, font_size, overlay, text_color);
 
                 EndDrawing();
-                std::this_thread::sleep_for(std::chrono::milliseconds(40));
+                std::this_thread::sleep_for(std::chrono::milliseconds((int) (40 / animationSpeed)));
             }
             break;
         }
@@ -425,7 +430,7 @@ void HashTableChaining::event() {
         }
         
     }    
-
+        
         // Xử lý CREATE với table size nhập từ bàn phím
         //     if (currentOperation == Operation::Create && !textbox.nums.empty()) {
         //     int size = textbox.nums[0];  // Lấy table size từ input
@@ -443,6 +448,10 @@ void HashTableChaining::event() {
         //     B = new HashTableChaining(3);
         //     B->draw();
         // }
+
+    //Mouse handling
+     float wheelMove = GetMouseWheelMove();
+        origin.y -= (int)wheelMove * 23;
 }
 
 void HashTableChaining::reset(){
@@ -454,4 +463,48 @@ void HashTableChaining::reset(){
     isCreating = false;
     isDuplicateInsert = false;
     createKeys.clear();
+}
+
+void HashTableChaining::RANDOM_INPUT(){
+    std::mt19937 rng(std::random_device{}());
+    
+    if(currentOperation == Operation::Create){
+            textbox.reset();
+            std::uniform_int_distribution<int> bucket(2, 25); 
+            int numBucket = bucket(rng);
+            std::uniform_int_distribution<int> value(0, 1999);
+            std::uniform_int_distribution<int> valueSize(0, 30);
+            int size = valueSize(rng);
+            std::vector<int> Values;
+            std::vector<std::string> lines;
+            std::ostringstream ss;
+
+            for (int i = 0; i < size; ++i) {
+                int num = value(rng);
+                // Ensure uniqueness of the number
+                while (find(Values.begin(), Values.end(), num) != Values.end()) {
+                    num = value(rng);
+                }
+                Values.push_back(num);  // Add the unique number to the vector
+            }
+
+            // Convert the number of buckets to string
+            ss << numBucket;
+            lines.push_back(ss.str());
+            ss.str("");  // Clear the stringstream
+
+            // Convert each value to string and add to lines
+            for (int i = 0; i < Values.size(); ++i) {
+                ss << Values[i] << " ";
+            }
+            lines.push_back(ss.str());
+            cout << ss.str() << endl;
+            ss.str("");  // Clear the stringstream again
+            
+            textbox.inputText = lines;
+            
+    }
+    else{
+        Page::RANDOM_INPUT();
+    }
 }

@@ -50,3 +50,4 @@ public:
      bool doneAnimation = 0;
 };
 
+extern string getMODE();

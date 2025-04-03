@@ -13,13 +13,7 @@ using namespace std;
 
 int lastInsertedKey;
 
-string getMODE() {
-    if(mode == MODE::LL) return "Linked List";
-    if(mode == MODE::HASHTB) return "Hash Table";
-    if(mode == MODE::AVL) return "AVL Tree";
-    if(mode == MODE::GRAPH) return "Graph";
-    return "";
-}
+
 
 void Page::updateSide(){
     InputOptionButton.bounds = Rectangle{side.x + (side.x + side.width) * 0.15f, side.y + screenHeight*0.63f * 0.15f + 10 , screenWidth*0.24f * 0.7f, screenHeight*0.63f * 0.15f};

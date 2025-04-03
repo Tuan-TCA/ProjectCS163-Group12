@@ -1,6 +1,13 @@
 #include "Variables.h"
 
 MODE mode; //pointer của trang 
+string getMODE() {
+    if(mode == MODE::LL) return "Linked List";
+    if(mode == MODE::HASHTB) return "Hash Table";
+    if(mode == MODE::AVL) return "AVL Tree";
+    if(mode == MODE::GRAPH) return "Graph";
+    return "";
+}
 const int screenWidth = 1267, screenHeight =  950;
 const float subWidth = screenHeight*0.63f * 0.15f;
 const float subHeight = screenHeight*0.63f * 0.15f;
