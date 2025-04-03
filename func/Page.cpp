@@ -28,8 +28,8 @@ void Page::updateSide(){
     OperationOptionButton.bounds = Rectangle{side.x + (side.x + side.width) * 0.15f, side.y + 5, screenWidth*0.24f * 0.7f, screenHeight*0.63f * 0.15f};
     OperationPrevButton.bounds = Rectangle{side.x + 5, side.y + 5, screenWidth*0.24f * 0.15f - 10, screenHeight*0.63f * 0.15f};
     OperationNextButton.bounds = Rectangle{side.x + (side.x + side.width) * 0.85f + 5,side.y + 5,  screenWidth*0.24f * 0.15f - 10,screenHeight*0.63f * 0.15f};
-     Ok.bounds = Rectangle{side.x + (side.x  + side.width) * 0.74f, side.y + screenHeight*0.63f * 0.3f + 15, 73, screenHeight*0.63f * 0.15f};
-     textbox.bounds = Rectangle{side.x + 5, side.y + screenHeight*0.63f * 0.3f + 15, screenWidth*0.25f - 100, screenHeight*0.63f * 0.15f};
+    Ok.bounds = Rectangle{side.x + (side.x  + side.width) * 0.74f, side.y + screenHeight*0.63f * 0.3f + 15, 73, screenHeight*0.63f * 0.15f};
+    textbox.bounds = Rectangle{side.x + 5, side.y + screenHeight*0.63f * 0.3f + 15, screenWidth*0.25f - 100, screenHeight*0.63f * 0.15f};
     oldTextBox.bounds = Rectangle{side. x + 5, side.y + screenHeight*0.63f * 0.36f, screenWidth*0.08f, screenHeight*0.63f * 0.11f};
     newTextBox.bounds = Rectangle{side.x + screenWidth*0.08f + 10, side.y + screenHeight*0.63f * 0.36f, screenWidth*0.08f, screenHeight*0.63f * 0.11f};
 
@@ -72,7 +72,9 @@ void Page::init() {
     background1 = resizedImage("res/BackGround.png", screenWidth, screenHeight);   
     background2 = resizedImage("res/background_theme2.png", screenWidth, screenHeight);    
     bottom = {screenWidth / 2 -   screenWidth * 0.05f * 3 / 2 - 50,screenHeight*0.905f,(float) (screenWidth * 0.23),screenHeight*0.09f};
-
+    pseudocode = {""};
+    pseudocodeX = codeDisplayPLace.x  + 5;
+    pseudocodeY = codeDisplayPLace.y  + 10;
     side = {0,screenHeight / 2 - screenHeight * 0.64f / 2,screenWidth*0.24f,screenHeight*0.305f};
     textbox = TextBox(side.x + 5, side.y + screenHeight*0.63f * 0.3f + 15, screenWidth*0.25f - 100, screenHeight*0.63f * 0.15f, "", WHITE, WHITE, BLACK);
     oldTextBox = TextBox(side. x + 5, side.y + screenHeight*0.63f * 0.36f, screenWidth*0.08, screenHeight*0.63f * 0.11f, "", WHITE, WHITE, BLACK);
@@ -164,6 +166,22 @@ void Page::event() {
         return;
     }
     float deltaTime = GetFrameTime();
+
+
+    //Code state
+    pseudocodeX = codeDisplayPLace.x  + 5;
+    pseudocodeY = codeDisplayPLace.y  + 10;
+    
+    float textWidth = 0;
+    for(auto& e: pseudocode){
+        textWidth = max(textWidth,(float) MeasureText(e.c_str(), 10));
+    }
+    
+    codeDisplayPLace.height = pseudocode.size() * lineHeight + 10;
+    codeDisplayPLace.width = textWidth * 1.3f;
+    
+    // TỰ LÀM PHẦN HIGHLIGHT!!!! tham khảo Graph.draw() của Graph.cpp 
+
     //Code box event
     Rectangle targetCodePlace = Rectangle{screenWidth * 0.01f, screenHeight * 0.56f, screenWidth * 0.24f - 12.0f, screenHeight * 0.35f};
     Rectangle closeCodePlace = Rectangle{-codeDisplayPLace.width, screenHeight * 0.56f, screenWidth * 0.24f - 12.0f, screenHeight * 0.35f};

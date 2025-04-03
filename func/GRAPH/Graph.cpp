@@ -47,16 +47,6 @@ void Graph::draw(){
 
     //code state
 
-    float pseudocodeX = codeDisplayPLace.x  + 5;
-    float pseudocodeY = codeDisplayPLace.y  + 10;
-    float lineHeight = 20.0f;
-    float textWidth = 0;
-    for(auto& e: pseudocode){
-        textWidth = max(textWidth,(float) MeasureText(e.c_str(), 10));
-    }
-    
-    codeDisplayPLace.height = pseudocode.size() * lineHeight + 10;
-    codeDisplayPLace.width = textWidth * 1.3f;
     Color highlightColor = Color{255, 222, 89, 255};
      if(isAnimating || currentOperation == Operation::Algorithm){
     for (size_t i = 0; i < pseudocode.size(); ++i) {

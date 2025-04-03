@@ -48,7 +48,6 @@ class Graph : public Page{
     Button MSTbutton;
     float minDistance;
     vector<vector<Drawable*>> arrayQueue;
-    vector<string> pseudocode;
     int currentStep = 0;
     vector<vector<int>> StepQueue;
     float duration;

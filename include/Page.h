@@ -66,6 +66,10 @@ public:
     ButtonFromImage back2, next2, pause2, play2;
     ButtonFromImage home, home2;
     Texture2D background1, background2;
+    //code state
+    vector<string> pseudocode;
+    float pseudocodeX, pseudocodeY;
+    float lineHeight = 20.0f;
     Rectangle codeDisplayPLace;
 
     virtual void init();
