@@ -4,7 +4,7 @@
 
 Program::Program () {
     InitWindow(screenWidth, screenHeight, "Visualization App - CS 163 - Group 12");
-    SetTargetFPS(60);
+    SetTargetFPS(90);
     mode = MODE::MENU;
 }
 

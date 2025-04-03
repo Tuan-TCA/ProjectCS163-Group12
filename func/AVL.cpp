@@ -1,45 +1,9 @@
 #include "AVL.h"
 #include "ControlAnimation.h"
 #include <iostream>
+#include <vector>
 
-
-
-void AVL::insert(int key, TreeNode*& root, TreeNode* parent) {
-    // if (root) {
-    //     root->isHighLight = true;
-    //     addStep(this->root);  // Capture state before going down
-    //     root->isHighLight = false;
-    // }
-    if (!root) {
-        Vector2 pos;
-        if (!parent) {
-            pos = rootPos;
-            root = new TreeNode(key, nullptr, nullptr, nullptr, 
-                pos, 1, 1, 0);
-            
-        } else {
-            bool isLeft = key < parent->val;
-            pos = calculateChildPos(parent->Pos, isLeft, parent->level+1);
-            root = new TreeNode(key, nullptr, nullptr,parent, 
-                pos, 1, parent->level+1, 0);
-        }
-        // Don't add step here yet
-        root->isHighLight = -1;
-        addStep(this->root);  // Capture state before going down
-        root->isHighLight = 0;
-        return;
-    }
-    
-    if (key < root->val) {
-        insert(key, root->left, root);
-
-    } 
-    else if (key > root->val) {
-        insert(key, root->right, root);
-    }
-    else return;
-
-    // Update height and balance
+void AVL::balance(TreeNode * &root, TreeNode *& parent, int key) {
     root->height = 1 + max(getHeight(root->left), getHeight(root->right));
     root->parent = parent;
     root->level = getLevel(parent) + 1;
@@ -65,52 +29,262 @@ void AVL::insert(int key, TreeNode*& root, TreeNode* parent) {
                 RightRotate(root->right);
                 LeftRotate(root);
             }
-        }
-        // root->isHighLight = false;
-        // addStep(this->root);
+        } 
     }
-    //addStep(this->root);
-    // Recalculate all positions after any potential rotations
-    //CalculateAllPos(this->root, nullptr, true);
     
-    // Only add step after everything is complete
-    //addStep(this->root);  
+    
+    if (root) {
+        root->isHighLight = 0;
+    }
+
+    if(parent)
+        CalculateAllPos(root, parent, root == parent->left);
+    else CalculateAllPos(root, parent, true);
+    
+    root->isHighLight = -1;
+    addStep(this->root);  
+    root->isHighLight = 0;
+    cout<<"-IV";
+}
+
+bool AVL::deleteAVL(TreeNode* &root, TreeNode* &parent, int key) {
+    if(!root) return false;
+
+    root->isHighLight = -1;
+    addStep(this->root);  
+    root->isHighLight = 0;
+    cout<<"-0";
+    if(root->val == key) {
+        if(root->left && root->right) {
+            //Find MinSuccessor
+            cout<<"___";
+            TreeNode* tmp = root->right;
+            while(tmp->left) tmp = tmp->left;
+
+            root->val = tmp->val;
+            TraceLog(LOG_INFO, "Most Left %d", tmp->val);
+            deleteAVL(root->right, root, tmp->val); 
+            cout<<"ok";
+        }
+        else { //trg hop 1 con
+            TreeNode* tmp = root;
+            if(root->left) {
+                // root->left->level = root->level;
+                // root->left->Pos = root->Pos;
+                root = root->left;
+            }
+            else {
+                // root->right->level = root->level;
+                // root->right->Pos = root->Pos;
+                root = root->right;
+            }
+        }
+
+        // root->isHighLight = -1;
+        // addStep(this->root);  
+        // root->isHighLight = 0;
+        cout<<"-III";
+        if(root) TraceLog(LOG_INFO, "Root val %d", root->val);
+        if(parent)
+        CalculateAllPos(root, parent, root == parent->left);
+        else CalculateAllPos(root, parent, true);
+        
+        cout<<"-IV";
+        return true;
+    
+    }
+
+    if(root) {
+        if(key < root->val) {
+            bool flag = deleteAVL(root->left, root, key); 
+            //if(flag) 
+            {                     
+            root->isHighLight = -1;
+            addStep(this->root);  
+            root->isHighLight = 0;
+            balance(root,root->parent,key);
+            }
+            return flag;
+        }
+            
+        else {
+            bool flag = deleteAVL(root->right, root, key);     
+            //if(flag) 
+            {                 
+            root->isHighLight = -1;
+            addStep(this->root);  
+            root->isHighLight = 0;
+            balance(root,root->parent,key);
+            }
+            return flag;
+        }
+    }
+
+}
+
+
+bool AVL::search(int key, TreeNode*& root, TreeNode* parent) {   
+    if (!root) {
+        return false;
+    }
+    if(root->val == key) {
+        root->isHighLight = 1;
+        addStep(this->root);
+        root->isHighLight = 0;
+        return true;
+    }
+
+    root->isHighLight = -1;
+    addStep(this->root);  
+    root->isHighLight = 0;
+
+
+    if (key < root->val) {
+        return search(key, root->left, root);
+    } 
+    else {
+        return search(key, root->right, root);
+    }
+    
+}
+
+
+void AVL::insert(int key, TreeNode*& root, TreeNode* parent) {   
+    if (!root) {
+        Vector2 pos;
+        if (!parent) {
+            pos = rootPos;
+            root = new TreeNode(key, nullptr, nullptr, nullptr, 
+                pos, 1, 1, 0);
+            
+        } else {
+            bool isLeft = key < parent->val;
+            pos = calculateChildPos(parent->Pos, isLeft, parent->level+1);
+            root = new TreeNode(key, nullptr, nullptr,parent, 
+                pos, 1, parent->level+1, 0);
+        }
+        
+        root->isHighLight = -1;
+        addStep(this->root);  
+        root->isHighLight = 0;
+        return;
+    }
+
+    root->isHighLight = -1;
+    addStep(this->root);  
+    root->isHighLight = 0;
+    
+    if (key < root->val) {
+        insert(key, root->left, root);
+
+    } 
+    else if (key > root->val) {
+        insert(key, root->right, root);
+    }
+    else return;
+
+    
+    root->height = 1 + max(getHeight(root->left), getHeight(root->right));
+    root->parent = parent;
+    root->level = getLevel(parent) + 1;
+    int balance = getHeight(root->left) - getHeight(root->right);
+    
+    if(abs(balance) >= 2) {
+        if(balance > 1) {
+            cout<<"LL";
+            if(key < root->left->val) {
+                RightRotate(root);
+            }
+            else {
+                LeftRotate(root->left);
+                RightRotate(root);
+                cout<<"LL";
+            }
+        }
+        else {
+            if(key > root->right->val) {
+                LeftRotate(root);
+            }
+            else {
+                RightRotate(root->right);
+                LeftRotate(root);
+            }
+        } 
+    }
+    
+    
     if (root) {
         root->isHighLight = 0;
     }
 
     root->isHighLight = -1;
-    addStep(this->root);  // Capture state before going down
+    addStep(this->root);  
     root->isHighLight = 0;
 
 }
 
-int cur;
+void AVL::drawStep(AVLpaint a, int Found) {
+    DrawTree(a.root);
+    if(Found == 0)
+        a.noti();
+}
+
 void AVL::draw() {
     Page::draw();
 
     static float elapsedTime = 0.0f;
     const float stepDuration = 0.5f / animationSpeed;
+
+    // if (!isPlaying && steps.empty()) {
+    //     DrawTree(root);
+    // }
+    
     if(IsKeyPressed(KEY_A)) {
+        Vector2 k = GetMousePosition();
+        auto t = root->Pos;
+        root->Pos = k;
         DrawTree(root);
+        root->Pos = t;
     }
+
+    if(currentOperation == Operation::Create) {
+        if (isCreating) {
+            hasCreate = true;
+            random_device rd;
+            mt19937 gen(rd());
+            uniform_int_distribution<int> dist(2,11);
+            uniform_int_distribution<int> dist2(100,999);
+
+            int t = dist(gen);
+            while(t--) {
+                int k = dist2(gen);
+                this->insert(k, root);
+            }
+            steps.clear();
+            isCreating = false;
+            isPlaying = true;
+        }
+        else {
+            DrawTree(root);
+            isPlaying = false;
+        }
+    }
+
     if (currentOperation == Operation::Insert) {
         if (isInserting) {
-            steps.clear(); // Xóa các bước cũ
             this->insert(lastInsertedKey, root); // Thêm node và lưu các bước
             addStep(this->root);
             isInserting = false;
             isPlaying = true;
-            cur = 0; // Bắt đầu từ bước đầu tiên
             elapsedTime = 0.0f;
         } else {
             if (!steps.empty()) {
-                // Đảm bảo cur nằm trong khoảng hợp lệ
+
                 if(cur >= 0 && cur< steps.size()) {
-                    DrawTree(steps[cur].root);
+                    drawStep(steps[cur]);
                 }
 
-                // Tự động chạy tiếp nếu đang ở chế độ play
+                
                 if (isPlaying) {
                     elapsedTime += GetFrameTime();
                     if (elapsedTime >= stepDuration) {
@@ -120,38 +294,147 @@ void AVL::draw() {
                         }
                     }
                 }
+
                 
                 if(cur == steps.size() && cur!=0) {
-                    DrawTree(steps[cur-1].root);
+                    drawStep(steps[cur-1]);
                     isPlaying = false;
                 }
             }
         }
     }
-    // ... (Xử lý các operation khác nếu cần)
+    
+    
+    if (currentOperation == Operation::Delete) {
+        if (isDeleting) {
+            Found = (this->deleteAVL(root, root->parent, DeleteKey)) ? 1 : 0;
+            cout<<"Found: "<<Found<<"-";
+            this->root->Pos = rootPos;
+            CalculateAllPos(this->root,this->root->parent, true);
+            addStep(this->root);
+            isDeleting = false;
+            isPlaying = true;
+            elapsedTime = 0.0f;
+        } else {
+            if (!steps.empty()) {
+                //cout<<cur<<" ";
+                if (!steps.empty()) {
+                    if(cur >= 0 && cur< steps.size()) {
+                        
+                        if(cur == steps.size()-2) 
+                            drawStep(steps[cur], Found);
+                        else 
+                            drawStep(steps[cur]);
+                    }
+
+    
+                    if (isPlaying) {
+                        elapsedTime += GetFrameTime();
+                        if (elapsedTime >= stepDuration) {
+                            if (cur < steps.size() ) {
+                                cur++;
+                                elapsedTime = 0.0f;
+                            }
+                        }
+                    }
+                    
+                    if(cur == steps.size() && cur!=0) {  
+                        drawStep(steps[cur-1]);         
+                        isPlaying = false;
+                    }
+                }
+            }
+        }
+    }
+
+    if (currentOperation == Operation::Search) {
+        if (isSearching) {
+            Found = (this->search(SearchKey, root)) ? 1 : 0;
+            cout<<"Found: "<<Found<<"-";
+            addStep(this->root);
+            isPlaying = true;
+            isSearching = false;                 
+            elapsedTime = 0.0f;                  
+        } else {
+                cout<<cur<<" ";
+                if (!steps.empty()) {
+                    if(cur >= 0 && cur< steps.size()) {
+                        
+                        if(cur == steps.size()-2) 
+                            drawStep(steps[cur], Found);
+                        else 
+                            drawStep(steps[cur]);
+                    }
+
+    
+                    if (isPlaying) {
+                        elapsedTime += GetFrameTime();
+                        if (elapsedTime >= stepDuration) {
+                            if (cur < steps.size() ) {
+                                cur++;
+                                elapsedTime = 0.0f;
+                            }
+                        }
+                    }
+                    
+                    if(cur == steps.size() && cur!=0) {  
+                        drawStep(steps[cur-1]);         
+                        isPlaying = false;
+                    }
+                }
+        }
+    }
 }
 
 
 
 void AVL::event() {
+
     Page::event();
-
-
-    //Choose Operation
+   
     if(currentOperation == Operation::Create) {
-        //CreateLL;
+        hasInsert = false;
+        hasSearch = false;
+        hasDelete = false;
+        hasCreate = true;
+        if(Page::Ok.IsClicked()) {
+            DestroyRecursive(root);
+            root = nullptr;
+            isCreating = true;
+        }
+            
+        
     }
     if(currentOperation == Operation::Insert) {
-        
+        if(!hasInsert) {
+            hasInsert = true;
+            hasSearch = false;
+            hasDelete = false;
+            hasCreate = false;
+            cur = 0;
+            DrawTree(root);
+            steps.clear();
+            addStep(this->root);
+            cout<<"@@@";
+        }
         if(textbox.nums.size() > 0) {
             lastInsertedKey = textbox.nums[0];
             textbox.nums.erase(textbox.nums.begin());
             isInserting = true;
             textbox.inputText = "";
         }   
-        // Node* cur = head; while(cur) {cout<<cur->val<<" "; cur = cur->next;} cout<<endl;
+        
     }
     if(currentOperation == Operation::Search) {
+        if(!hasSearch) {
+            hasInsert = false;
+            hasSearch = true;
+            hasDelete = false;
+            hasCreate = false;
+            cur = 0;
+            steps.clear();
+            addStep(this->root);
+        }
         if(textbox.nums.size() > 0) {
             SearchKey = textbox.nums[0];
             textbox.nums.erase(textbox.nums.begin());
@@ -160,6 +443,15 @@ void AVL::event() {
         }
     }
     if(currentOperation == Operation::Delete) {
+        if(!hasDelete) {
+            hasInsert = false;
+            hasSearch = false;
+            hasDelete = true;
+            hasCreate = false;
+            cur = 0;
+            steps.clear();
+            addStep(this->root);
+        }
         if(textbox.nums.size() > 0) {
             DeleteKey = textbox.nums[0];
             textbox.nums.erase(textbox.nums.begin());
@@ -168,49 +460,36 @@ void AVL::event() {
         }
     }
 
-    if(currentOperation == Operation::Update) {
-        if(textbox.nums.size() > 0) {
-            UpdateKey = textbox.nums[0];
-            textbox.nums.erase(textbox.nums.begin());
-            newVal = textbox.nums[1];
-            isUpdating = true;
-            textbox.inputText = "";
-        }
-    }
-
-    //Run step-by-step
 
     if(!isPlaying){
         if(!switchState ? play1.IsClicked() : play2.IsClicked()){
-            animationController.isPaused = !animationController.isPaused;
             isPlaying = true;
             TraceLog(LOG_INFO, "is playing");
         }
     }
     else{
-        if( isPlaying && !switchState ? pause1.IsClicked() : pause2.IsClicked())
+        if(!switchState ? pause1.IsClicked() : pause2.IsClicked())
         {
-            animationController.isPaused = !animationController.isPaused;
             isPlaying = false;
             TraceLog(LOG_INFO, "is pausing");
         }
     }
 
-    // Điều khiển step-by-step
-    if (back1.IsClicked() || back2.IsClicked()) { // Nút back
+    
+    if (back1.IsClicked() || back2.IsClicked()) { 
         if (cur > 0) {
             cur--;
         }
-        isPlaying = false; // Tạm dừng khi lùi
+        isPlaying = false; 
     } 
-    else if (next1.IsClicked() || next2.IsClicked()) { // Nút next
+    else if (next1.IsClicked() || next2.IsClicked()) { 
         if (cur < steps.size() - 1) {
             cur++;
         }
-        isPlaying = false; // Tạm dừng khi tiến
+        isPlaying = false; 
     }
 
-    // Phím mũi tên trái/phải
+    
     if (IsKeyPressed(KEY_LEFT)) {
         if (cur > 0) {
             cur--;
@@ -231,25 +510,33 @@ void AVL::init() {
     root = nullptr;
     workplace = {screenWidth*0.24f,screenHeight*0.2f,(float) screenWidth *(1-0.24f),screenHeight*(1-0.095f)};
     rootPos= {workplace.x + workplace.width / 2, workplace.y};      
-    //int a[]={8, 4, 12, 2, 6, 10, 14, 1, 3, 5, 7, 9, 11, 13, 15, 16};  for (int i = 0; i < 16; i++) this->insert(a[i],root);
+    
     steps.clear();
 
     isInserting = false;
     isSearching = false;
     isDeleting = false;
     isUpdating = false;
+    isCreating = false;
+
+    hasInsert = false;
+    hasSearch = false;
+    hasDelete = false;
+
+    cur = -1;
        
 }
 
 void AVL::DestroyRecursive(TreeNode* node)
 {
+    if(!node) return;
     if (node)
     {
         DestroyRecursive(node->left);
         DestroyRecursive(node->right);
         delete node;
     }
-}
+}       
 
 AVL::~AVL() {
     DestroyRecursive(root);
@@ -270,7 +557,7 @@ Vector2 AVL::calculateChildPos(Vector2 parentPos, bool isLeft, int level) {
     float xOffset = workplace.width / pow(2, level + 2);
     return {
         isLeft ? parentPos.x - 3.5*xOffset : parentPos.x + 3.5*xOffset,
-        parentPos.y + 3.5*radius  // Khoảng cách dọc giữa các mức
+        parentPos.y + 3.5*radius  
     };
 }
 
@@ -281,6 +568,10 @@ void AVL::CalculateAllPos(TreeNode* &root, TreeNode* parent, bool isLeft) {
     if(parent) {
         root->Pos = calculateChildPos(parent->Pos, isLeft, parent->level + 1);
         root->level = parent->level + 1;
+    }
+    else {
+        root->Pos = rootPos;
+        root->level = 1;
     }
 
     
@@ -298,22 +589,22 @@ void AVL::RightRotate(TreeNode* &root) {
     TreeNode *tmp = root->left;
     TreeNode *tmpRight = tmp->right;
 
-    // Cập nhật liên kết
+    
     tmp->right = root;
     root->left = tmpRight;
 
-    // Cập nhật parent
-    if (tmpRight) tmpRight->parent = root;  // Nếu có node tmpLeft
-    tmp->parent = root->parent;           // Kế thừa parent từ root cũ
-    root->parent = tmp;                   // Root cũ trở thành con trái của tmp
     
-    // Cập nhật root mới
+    if (tmpRight) tmpRight->parent = root;  
+    tmp->parent = root->parent;           
+    root->parent = tmp;                   
+    
+    
     root = tmp;
     root->Pos = oldPos;
     root->level = oldLevel;
 
 
-    // Cập nhật height: cập nhật node cũ (root cũ) trước, node mới (tmp) sau
+    
     if(root->left)
     root->left->height = 1 + max(getHeight(root->left->left), getHeight(root->left->right));
     if(root->right)
@@ -321,11 +612,11 @@ void AVL::RightRotate(TreeNode* &root) {
     
     root->height = 1 + max(getHeight(root->left), getHeight(root->right));
 
-    // Tính toán lại vị trí từ node gốc mới (không cần gán thủ công Pos/level)
+    
     if(root->parent)
-        CalculateAllPos(root, root->parent, root->val < root->parent->val);  // Giả sử CalculateAllPos xử lý parent
+        CalculateAllPos(root, root->parent, root->val < root->parent->val);  
     else 
-        CalculateAllPos(root, root->parent, true);  // Giả sử CalculateAllPos xử lý parent
+        CalculateAllPos(root, root->parent, true);  
     
 }
 
@@ -338,21 +629,21 @@ void AVL::LeftRotate(TreeNode* &root) {
     TreeNode *tmp = root->right;
     TreeNode *tmpLeft = tmp->left;
 
-    // Cập nhật liên kết
+    
     tmp->left = root;
     root->right = tmpLeft;
     
-    // Cập nhật parent
-    if (tmpLeft) tmpLeft->parent = root;  // Nếu có node tmpLeft
-    tmp->parent = root->parent;           // Kế thừa parent từ root cũ
-    root->parent = tmp;                   // Root cũ trở thành con trái của tmp
+    
+    if (tmpLeft) tmpLeft->parent = root;  
+    tmp->parent = root->parent;           
+    root->parent = tmp;                   
 
-    // Cập nhật root mới
+    
     root = tmp;
     root->Pos = oldPos;
     root->level = oldLevel;
     
-    // Cập nhật height: cập nhật node cũ (root cũ) trước, node mới (tmp) sau
+    
     if(root->left)
     root->left->height = 1 + max(getHeight(root->left->left), getHeight(root->left->right));
     if(root->right)
@@ -360,11 +651,11 @@ void AVL::LeftRotate(TreeNode* &root) {
    
     root->height = 1 + max(getHeight(root->left), getHeight(root->right));
     
-    // Tính toán lại vị trí từ node gốc mới (không cần gán thủ công Pos/level)
+    
     if(root->parent)
-        CalculateAllPos(root, root->parent, root->val < root->parent->val);  // Giả sử CalculateAllPos xử lý parent
+        CalculateAllPos(root, root->parent, root->val < root->parent->val);  
     else 
-        CalculateAllPos(root, root->parent, true);  // Giả sử CalculateAllPos xử lý parent
+        CalculateAllPos(root, root->parent, true);  
     
 }
 
@@ -379,7 +670,7 @@ bool AVL::isNodeHighlighted(int key) {
     return false;
 }
 
-//choose = 1=green -1=red, 0=white
+
 void AVL::DrawTN(TreeNode *a){
     
     Vector2 center = a->Pos;
@@ -389,8 +680,8 @@ void AVL::DrawTN(TreeNode *a){
     string s = to_string(key);
     if (choose == 1)
         DrawCircleV(center, radius, choose_color);
-    if (choose ==-1)//isNodeHighlighted(key))
-        //cout << center.x << ' ' << key << '\n';
+    if (choose ==-1)
+        
         DrawCircleV(center, radius, visit_color);
     if (choose == 0)
         DrawCircleV(center, radius, WHITE);
@@ -399,11 +690,11 @@ void AVL::DrawTN(TreeNode *a){
     DrawCircleV(center, radius - 10, MyColor2);
 
     int Fs = max(10, static_cast<int>(font_size-s.size()*3));
-    //Draw text
+    
     int wNode =  MeasureText(s.c_str(), Fs);
     DrawText(s.c_str(), center.x - wNode / 2, center.y - Fs/2, Fs, text_color);
     
-    // EndDrawing();
+    
 }
 
 void AVL::DrawArrow(Vector2 start, Vector2 end) {
@@ -439,7 +730,7 @@ void AVL::DrawTree(TreeNode* root) {
     if (!root) return;
 
     DrawTN(root);
-    //TraceLog(LOG_INFO, "Draw %d at (%f, %f)", root->val, root->Pos.x, root->Pos.y);
+    
     if (root->left) {
         DrawArrow(root->Pos, root->left->Pos);
         DrawTree(root->left);

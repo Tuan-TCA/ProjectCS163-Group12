@@ -2,6 +2,7 @@
 #include <string>
 #include <math.h>
 #include <iostream>
+#include <random>
 using namespace std;
 #include <raylib.h>
 #include "Variables.h"
@@ -39,7 +40,13 @@ public:
         parent = nullptr;
     }
 
-    
+    void absorb(TreeNode* tmp) {
+        if(!tmp) return;
+        this->val = tmp->val;
+        tmp->level = this->level;
+        tmp->Pos = this->Pos;
+        
+    }
 
 };
 
@@ -63,7 +70,15 @@ class AVLpaint {
         root = nullptr;
         rootPos = {600,500};
     }
+                      
+    int textW = MeasureText("NOT FOUND", font_size*2); 
+    int posX = 800;
+    int posY = 800;
+    void noti() {
+        DrawText("NOT FOUND", posX, posY, font_size*2, RED);
+    }
 
+    
     
     TreeNode* copyTree(TreeNode* root) {
         if (!root) return nullptr;
@@ -85,12 +100,8 @@ class AVLpaint {
 };
 
 
-
-
 class AVL : public Page{
 public:
-
-
     TreeNode *root;
     Rectangle workplace;
     Vector2 rootPos;
@@ -112,6 +123,10 @@ public:
    
     //Model
     void insert(int key, TreeNode*& root, TreeNode* parent = nullptr);
+    bool search(int key, TreeNode*& root, TreeNode* parent = nullptr);
+    bool deleteAVL(TreeNode* &root, TreeNode* &parent, int key);
+    void balance(TreeNode * &root, TreeNode *& parent, int key);
+
     void RightRotate(TreeNode* &root);
     void LeftRotate(TreeNode* &root);
     void CalculateAllPos(TreeNode* &root, TreeNode* parent, bool isLeft);
@@ -123,6 +138,10 @@ public:
         tmp.copy(root);
         steps.push_back(tmp);
     }
+    int cur = -1; //Current Step
+
+    void drawAnimation();
+    void drawStep(AVLpaint a, int Found = -1);
 
     vector<TreeNode* > hightlightNodes;
     bool isNodeHighlighted(int key);
@@ -136,13 +155,21 @@ public:
     //Page control
     ControlAnimation animationController;
     bool isInserting;
+    bool hasInsert = false;
     int lastInsertedKey;
 
     bool isSearching;
+    bool hasSearch = false;
     int SearchKey;
+    int Found = -1;
 
     bool isDeleting;
+    bool hasDelete = false;
     int DeleteKey;
+
+    bool isCreating;
+    bool hasCreate = false;
+
 
     bool isUpdating;
     int UpdateKey;
