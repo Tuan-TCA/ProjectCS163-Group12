@@ -13,6 +13,7 @@ void Program::init(){
     menu.init();
     LL.init();
     graph.init();
+    hashtable.init();
 }
 void Program::run() {
     init();
@@ -38,7 +39,7 @@ void Program::event() {
         }
         else if(x == 2) {
             mode = MODE::HASHTB;
-            page.init();
+            hashtable.init();
             
         }
         else if(x == 3) {
@@ -59,9 +60,8 @@ void Program::event() {
         LL.event();
         //cout<<"K";
     }
-    if(mode == MODE::HASHTB) {
-        // Hash Table
-        // hashtable.event();
+    else if (mode == MODE::HASHTB) {
+        hashtable.event();
     }
     if(mode == MODE::AVL) {
         // AVL Tree
@@ -82,8 +82,8 @@ void Program::draw() {
     }
      
     if (mode == MODE::HASHTB) {
-
-        // hashtable.draw();
+        //LL.draw();
+        hashtable.draw();
     }
     if (mode == MODE::AVL) {
         // avl.draw();

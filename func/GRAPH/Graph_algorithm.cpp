@@ -181,7 +181,6 @@ void Graph::handleBFS(){
 void Graph::mst(){
 
     //sort lai edge inorder
-    cout << " size vertex: "<< vertex.size() << endl;
     int n = vertex.size();
     dsu.init(n + 1);
     sort(edge.begin(), edge.end(), [](Edge & x, Edge & y) {
@@ -239,6 +238,7 @@ void Graph::mst(){
             StepQueue.push_back({4});
             arrayQueue.push_back({&e});
             arrayQueue.push_back({v2Ptr});
+            AnimatedVertex[v2] = true;
         }
             
     }
