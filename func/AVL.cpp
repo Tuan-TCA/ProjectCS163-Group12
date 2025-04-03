@@ -7,23 +7,25 @@ void AVL::balance(TreeNode * &root, TreeNode *& parent, int key) {
     root->height = 1 + max(getHeight(root->left), getHeight(root->right));
     root->parent = parent;
     root->level = getLevel(parent) + 1;
+    Vector2 oldPos = root->Pos;
     int balance = getHeight(root->left) - getHeight(root->right);
     
     if(abs(balance) >= 2) {
         if(balance > 1) {
-            cout<<"LL";
+    
             if(key < root->left->val) {
                 RightRotate(root);
             }
             else {
                 LeftRotate(root->left);
                 RightRotate(root);
-                cout<<"LL";
+        
             }
         }
         else {
             if(key > root->right->val) {
                 LeftRotate(root);
+
             }
             else {
                 RightRotate(root->right);
@@ -37,39 +39,33 @@ void AVL::balance(TreeNode * &root, TreeNode *& parent, int key) {
         root->isHighLight = 0;
     }
 
-    if(parent)
-        CalculateAllPos(root, parent, root == parent->left);
-    else CalculateAllPos(root, parent, true);
-    
+    root->Pos = oldPos;
+    TraceLog(LOG_INFO, "root val %d", root->val);
+
     root->isHighLight = -1;
     addStep(this->root);  
     root->isHighLight = 0;
-    cout<<"-IV";
 }
+
 bool AVL::deleteAVL(TreeNode*& root, TreeNode*& parent, int key) {
     if (!root) return false;
-
     // Highlight for visualization
     root->isHighLight = -1;
     addStep(this->root);
     root->isHighLight = 0;
 
     if (root->val == key) {
-        // Case 1: Node has two children
         if (root->left && root->right) {
             TreeNode* successor = root->right;
             TreeNode* successorParent = root;
             
-            // Find minimum value in right subtree
-            while (successor->left) {
+            while (successor && successor->left) {
                 successorParent = successor;
                 successor = successor->left;
             }
 
             root->val = successor->val;
             TraceLog(LOG_INFO, "Replacing with successor value %d", successor->val);
-
-            // Delete the successor
             if (successorParent->left == successor) {
                 successorParent->left = successor->right;
             } else {
@@ -77,18 +73,17 @@ bool AVL::deleteAVL(TreeNode*& root, TreeNode*& parent, int key) {
             }
             delete successor;
         }
-        // Case 2: Node has one or no children
         else {
             TreeNode* temp = root;
             if (root->left) {
                 root = root->left;
+
             } else {
                 root = root->right;
             }
             delete temp;
         }
 
-        // Update tree structure and balance if root exists
         if (root) {
             CalculateAllPos(root, parent, parent && root == parent->left);
             balance(root, parent, key);
@@ -97,7 +92,6 @@ bool AVL::deleteAVL(TreeNode*& root, TreeNode*& parent, int key) {
         return true;
     }
 
-    // Recursive search
     bool deleted;
     if (key < root->val) {
         deleted = deleteAVL(root->left, root, key);
@@ -105,7 +99,6 @@ bool AVL::deleteAVL(TreeNode*& root, TreeNode*& parent, int key) {
         deleted = deleteAVL(root->right, root, key);
     }
 
-    // If deletion occurred, update and balance
     if (deleted) {
         root->isHighLight = -1;
         addStep(this->root);
@@ -185,14 +178,14 @@ void AVL::insert(int key, TreeNode*& root, TreeNode* parent) {
     
     if(abs(balance) >= 2) {
         if(balance > 1) {
-            cout<<"LL";
+    
             if(key < root->left->val) {
                 RightRotate(root);
             }
             else {
                 LeftRotate(root->left);
                 RightRotate(root);
-                cout<<"LL";
+        
             }
         }
         else {
@@ -229,9 +222,6 @@ void AVL::draw() {
     static float elapsedTime = 0.0f;
     const float stepDuration = 0.5f / animationSpeed;
 
-    // if (!isPlaying && steps.empty()) {
-    //     DrawTree(root);
-    // }
     
     if(IsKeyPressed(KEY_A)) {
         Vector2 k = GetMousePosition();
@@ -302,18 +292,13 @@ void AVL::draw() {
     if (currentOperation == Operation::Delete) {
         if (isDeleting) {
             Found = (this->deleteAVL(root, root->parent, DeleteKey)) ? 1 : 0;
-            cout<<"Found: "<<Found<<"-";
-            if(this->root) {
-            this->root->Pos = rootPos;
-            CalculateAllPos(this->root,this->root->parent, true);
-            }
             addStep(this->root);
             isDeleting = false;
             isPlaying = true;
             elapsedTime = 0.0f;
         } else {
             if (!steps.empty()) {
-                //cout<<cur<<" ";
+                
                 if (!steps.empty()) {
                     if(cur >= 0 && cur< steps.size()) {
                         
@@ -346,13 +331,12 @@ void AVL::draw() {
     if (currentOperation == Operation::Search) {
         if (isSearching) {
             Found = (this->search(SearchKey, root)) ? 1 : 0;
-            cout<<"Found: "<<Found<<"-";
             addStep(this->root);
             isPlaying = true;
             isSearching = false;                 
             elapsedTime = 0.0f;                  
         } else {
-                cout<<cur<<" ";
+        
                 if (!steps.empty()) {
                     if(cur >= 0 && cur< steps.size()) {
                         
@@ -397,9 +381,7 @@ void AVL::event() {
             DestroyRecursive(root);
             root = nullptr;
             isCreating = true;
-        }
-            
-        
+        }       
     }
     if(currentOperation == Operation::Insert) {
         if(!hasInsert) {
@@ -411,7 +393,7 @@ void AVL::event() {
             DrawTree(root);
             steps.clear();
             addStep(this->root);
-            cout<<"@@@";
+    
         }
         if(textbox.nums.size() > 0) {
             lastInsertedKey = textbox.nums[0];
