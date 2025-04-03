@@ -3,9 +3,8 @@
 #include <iostream>
 
 Program::Program () {
-
     InitWindow(screenWidth, screenHeight, "Visualization App - CS 163 - Group 12");
-    SetTargetFPS(60);
+    SetTargetFPS(90);
     mode = MODE::MENU;
 }
 
@@ -14,13 +13,23 @@ void Program::init(){
     LL.init();
     graph.init();
     hashtable.init();
+    avl.init();
 }
 void Program::run() {
     init();
+    //cout<<1;
     while(!WindowShouldClose()) {
         BeginDrawing();
         ClearBackground(RAYWHITE);
         event();
+
+        Vector2 mousePos = GetMousePosition();
+        char posText[50];
+        snprintf(posText, sizeof(posText), "(%d, %d)", (int)mousePos.x, (int)mousePos.y);
+        
+        // Vẽ text ngay bên cạnh chuột (+10px offset)
+        DrawText(posText, mousePos.x + 10, mousePos.y + 10, 20, DARKGRAY);
+
         draw();
         EndDrawing();
     }
@@ -44,7 +53,7 @@ void Program::event() {
         }
         else if(x == 3) {
             mode = MODE::AVL;
-            page.init();
+            avl.init();
             
         }
         else if(x == 4) {
@@ -65,7 +74,7 @@ void Program::event() {
     }
     if(mode == MODE::AVL) {
         // AVL Tree
-        // avl.event();
+         avl.event();
     }
     if(mode == MODE::GRAPH) {
         // Graph   
@@ -74,6 +83,7 @@ void Program::event() {
 }
 
 void Program::draw() {
+
     if (mode == MODE::MENU) {
         menu.draw();
     } 
@@ -86,7 +96,8 @@ void Program::draw() {
         hashtable.draw();
     }
     if (mode == MODE::AVL) {
-        // avl.draw();
+        avl.draw();
+    
     }
     if (mode == MODE::GRAPH) {
 

@@ -128,6 +128,30 @@ main/fast:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles\main.dir\build.make CMakeFiles/main.dir/build
 .PHONY : main/fast
 
+func/AVL.obj: func/AVL.cpp.obj
+.PHONY : func/AVL.obj
+
+# target to build an object file
+func/AVL.cpp.obj:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\main.dir\build.make CMakeFiles/main.dir/func/AVL.cpp.obj
+.PHONY : func/AVL.cpp.obj
+
+func/AVL.i: func/AVL.cpp.i
+.PHONY : func/AVL.i
+
+# target to preprocess a source file
+func/AVL.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\main.dir\build.make CMakeFiles/main.dir/func/AVL.cpp.i
+.PHONY : func/AVL.cpp.i
+
+func/AVL.s: func/AVL.cpp.s
+.PHONY : func/AVL.s
+
+# target to generate assembly for a file
+func/AVL.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\main.dir\build.make CMakeFiles/main.dir/func/AVL.cpp.s
+.PHONY : func/AVL.cpp.s
+
 func/Edge.obj: func/Edge.cpp.obj
 .PHONY : func/Edge.obj
 
@@ -425,6 +449,9 @@ help:
 	@echo ... edit_cache
 	@echo ... rebuild_cache
 	@echo ... main
+	@echo ... func/AVL.obj
+	@echo ... func/AVL.i
+	@echo ... func/AVL.s
 	@echo ... func/Edge.obj
 	@echo ... func/Edge.i
 	@echo ... func/Edge.s

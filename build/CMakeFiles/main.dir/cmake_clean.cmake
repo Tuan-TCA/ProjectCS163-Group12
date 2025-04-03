@@ -1,4 +1,6 @@
 file(REMOVE_RECURSE
+  "CMakeFiles/main.dir/func/AVL.cpp.obj"
+  "CMakeFiles/main.dir/func/AVL.cpp.obj.d"
   "CMakeFiles/main.dir/func/Edge.cpp.obj"
   "CMakeFiles/main.dir/func/Edge.cpp.obj.d"
   "CMakeFiles/main.dir/func/GRAPH/Graph.cpp.obj"

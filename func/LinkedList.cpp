@@ -113,6 +113,8 @@ void LinkedList::event() {
 
     //...Lưu ý: Cần chỉnh sửa hiển thị nút play, pause cho phù hợp
 }
+
+
 void LinkedList::draw() {
     Page::draw();
 
