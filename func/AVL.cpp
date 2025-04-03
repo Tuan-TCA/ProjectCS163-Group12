@@ -46,82 +46,76 @@ void AVL::balance(TreeNode * &root, TreeNode *& parent, int key) {
     root->isHighLight = 0;
     cout<<"-IV";
 }
+bool AVL::deleteAVL(TreeNode*& root, TreeNode*& parent, int key) {
+    if (!root) return false;
 
-bool AVL::deleteAVL(TreeNode* &root, TreeNode* &parent, int key) {
-    if(!root) return false;
-
+    // Highlight for visualization
     root->isHighLight = -1;
-    addStep(this->root);  
+    addStep(this->root);
     root->isHighLight = 0;
-    cout<<"-0";
-    if(root->val == key) {
-        if(root->left && root->right) {
-            //Find MinSuccessor
-            cout<<"___";
-            TreeNode* tmp = root->right;
-            while(tmp->left) tmp = tmp->left;
 
-            root->val = tmp->val;
-            TraceLog(LOG_INFO, "Most Left %d", tmp->val);
-            deleteAVL(root->right, root, tmp->val); 
-            cout<<"ok";
-        }
-        else { //trg hop 1 con
-            TreeNode* tmp = root;
-            if(root->left) {
-                // root->left->level = root->level;
-                // root->left->Pos = root->Pos;
-                root = root->left;
+    if (root->val == key) {
+        // Case 1: Node has two children
+        if (root->left && root->right) {
+            TreeNode* successor = root->right;
+            TreeNode* successorParent = root;
+            
+            // Find minimum value in right subtree
+            while (successor->left) {
+                successorParent = successor;
+                successor = successor->left;
             }
-            else {
-                // root->right->level = root->level;
-                // root->right->Pos = root->Pos;
+
+            root->val = successor->val;
+            TraceLog(LOG_INFO, "Replacing with successor value %d", successor->val);
+
+            // Delete the successor
+            if (successorParent->left == successor) {
+                successorParent->left = successor->right;
+            } else {
+                successorParent->right = successor->right;
+            }
+            delete successor;
+        }
+        // Case 2: Node has one or no children
+        else {
+            TreeNode* temp = root;
+            if (root->left) {
+                root = root->left;
+            } else {
                 root = root->right;
             }
+            delete temp;
         }
 
-        // root->isHighLight = -1;
-        // addStep(this->root);  
-        // root->isHighLight = 0;
-        cout<<"-III";
-        if(root) TraceLog(LOG_INFO, "Root val %d", root->val);
-        if(parent)
-        CalculateAllPos(root, parent, root == parent->left);
-        else CalculateAllPos(root, parent, true);
-        
-        cout<<"-IV";
+        // Update tree structure and balance if root exists
+        if (root) {
+            CalculateAllPos(root, parent, parent && root == parent->left);
+            balance(root, parent, key);
+            TraceLog(LOG_INFO, "Root value after deletion %d", root->val);
+        }
         return true;
-    
     }
 
-    if(root) {
-        if(key < root->val) {
-            bool flag = deleteAVL(root->left, root, key); 
-            //if(flag) 
-            {                     
-            root->isHighLight = -1;
-            addStep(this->root);  
-            root->isHighLight = 0;
-            balance(root,root->parent,key);
-            }
-            return flag;
-        }
-            
-        else {
-            bool flag = deleteAVL(root->right, root, key);     
-            //if(flag) 
-            {                 
-            root->isHighLight = -1;
-            addStep(this->root);  
-            root->isHighLight = 0;
-            balance(root,root->parent,key);
-            }
-            return flag;
-        }
+    // Recursive search
+    bool deleted;
+    if (key < root->val) {
+        deleted = deleteAVL(root->left, root, key);
+    } else {
+        deleted = deleteAVL(root->right, root, key);
     }
 
+    // If deletion occurred, update and balance
+    if (deleted) {
+        root->isHighLight = -1;
+        addStep(this->root);
+        root->isHighLight = 0;
+        CalculateAllPos(root, parent, parent && root == parent->left);
+        balance(root, parent, key);
+    }
+
+    return deleted;
 }
-
 
 bool AVL::search(int key, TreeNode*& root, TreeNode* parent) {   
     if (!root) {
@@ -309,8 +303,10 @@ void AVL::draw() {
         if (isDeleting) {
             Found = (this->deleteAVL(root, root->parent, DeleteKey)) ? 1 : 0;
             cout<<"Found: "<<Found<<"-";
+            if(this->root) {
             this->root->Pos = rootPos;
             CalculateAllPos(this->root,this->root->parent, true);
+            }
             addStep(this->root);
             isDeleting = false;
             isPlaying = true;
