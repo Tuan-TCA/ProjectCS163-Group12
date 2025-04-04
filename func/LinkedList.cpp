@@ -674,27 +674,23 @@ void LinkedList::DrawCreateNode(int numbers) {
         }
     }
 
-    // 3. Cập nhật lại vị trí và vẽ lại danh sách liên kết
     Pos = GetPosition(CountNode(head)); // Cập nhật vị trí để vẽ
     NewPos = Pos;
     Vector2 center = Pos;
 
-    // 4. Vẽ lại danh sách liên kết
-    animationController.Reset();  // Reset lại animation controller
+    animationController.Reset(); 
     animationController.AddStep([this, center]() {
-        DrawLL(Pos, true); // Vẽ lại danh sách liên kết mới
+        DrawLL(Pos, true); 
     });
 
-    // Thực hiện vẽ node cho từng phần tử trong danh sách
     Node* temp = head;
     while (temp) {
         animationController.AddStep([this, temp, center]() {
-            DrawNode(center, temp->val, 0); // Vẽ node với giá trị
+            DrawNode(center, temp->val, 0); 
         });
         temp = temp->next;
-        center.x += (2 * radius + spacing); // Cập nhật vị trí vẽ cho node tiếp theo
+        center.x += (2 * radius + spacing); 
     }
 
-    // Chạy animation
     animationController.NextStep();
 }
