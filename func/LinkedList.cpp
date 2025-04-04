@@ -661,7 +661,6 @@ void LinkedList::DrawCreateNode(int numbers) {
         int newKey = GetRandomValue(1, 100); // Tạo số ngẫu nhiên từ 1 đến 100
         Node* newNode = new Node(newKey, nullptr);
 
-        // Nếu danh sách rỗng, node này sẽ là head
         if (!head) {
             head = newNode;
         } else {
