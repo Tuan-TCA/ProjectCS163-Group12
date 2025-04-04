@@ -665,7 +665,6 @@ void LinkedList::DrawCreateNode(int numbers) {
         if (!head) {
             head = newNode;
         } else {
-            // Nếu danh sách không rỗng, thêm node vào cuối danh sách
             Node* temp = head;
             while (temp->next) {
                 temp = temp->next;
@@ -674,7 +673,7 @@ void LinkedList::DrawCreateNode(int numbers) {
         }
     }
 
-    Pos = GetPosition(CountNode(head)); // Cập nhật vị trí để vẽ
+    Pos = GetPosition(CountNode(head)); 
     NewPos = Pos;
     Vector2 center = Pos;
 
