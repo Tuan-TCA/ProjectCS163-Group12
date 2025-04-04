@@ -656,7 +656,6 @@ void LinkedList::DrawCreateNode(int numbers) {
         delete tmp;
     }
 
-    // 2. Tạo danh sách mới với số lượng phần tử `numbers` (random phần tử)
     for (int i = 0; i < numbers; ++i) {
         int newKey = GetRandomValue(1, 100); 
         Node* newNode = new Node(newKey, nullptr);
