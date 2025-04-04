@@ -12,6 +12,7 @@ LinkedList::LinkedList() {
     isSearching = false;
     isDeleting = false;
     isUpdating = false;
+    isCreating = false;
 }
 
 void LinkedList::init(){
@@ -28,6 +29,7 @@ void LinkedList::init(){
     isSearching = false;
     isDeleting = false;
     isUpdating = false;
+    isCreating = false;
 }
 
 void LinkedList::event() {
@@ -35,7 +37,12 @@ void LinkedList::event() {
 
     //Choose Operation
     if(currentOperation == Operation::Create) {
-        //CreateLL;
+        if(textbox.nums.size() > 0) {
+            numbers = textbox.nums[0];
+            textbox.nums.erase(textbox.nums.begin());
+            isCreating = true;
+            textbox.inputText = {""};
+        }
     }
     if(currentOperation == Operation::Insert) {
         
@@ -120,6 +127,43 @@ void LinkedList::draw() {
 
     static float elapsedTime = 0.0f; 
     const float stepDuration = 0.5f/animationSpeed;
+    if (currentOperation == Operation::Create) {
+        if (isCreating) {
+            animationController.Reset();         
+            // DrawInsert(lastInsertedKey);         
+            isCreating = false;                 
+            elapsedTime = 0.0f;                  
+            hasFinishedOnce = false;        
+        } else {
+            if (!animationController.steps.empty()) {
+                if (animationController.currentStep < animationController.steps.size()) {
+                    animationController.steps[animationController.currentStep](); 
+                }
+
+                if (!animationController.IsPaused()) {
+                    elapsedTime += GetFrameTime(); 
+                    if (elapsedTime >= stepDuration && !animationController.IsFinished()) {
+                        animationController.NextStep();
+                        elapsedTime = 0.0f;            
+                        cout << animationController.currentStep << endl; 
+                    }
+                }
+            }
+
+            if (animationController.IsFinished()) {
+                DrawLL(Pos); 
+                if (!hasFinishedOnce) {
+                    finishedPos = Pos;    
+                    hasFinishedOnce = true; 
+                }
+                if (Pos.x > NewPos.x) {
+                    Pos = {Pos.x - 5, Pos.y}; 
+                } else {
+                    Pos = NewPos; 
+                }
+            }
+        }
+    }
 
     if (currentOperation == Operation::Insert) {
         if (isInserting) {
@@ -603,4 +647,54 @@ void LinkedList::DrawUpDateNode(int first, int second){
         center = newCenter;
         std::this_thread::sleep_for(std::chrono::milliseconds((int)(500.0f / animationSpeed)));
     }
+}
+
+void LinkedList::DrawCreateNode(int numbers) {
+    while (head) {
+        Node* tmp = head;
+        head = head->next;
+        delete tmp;
+    }
+
+    // 2. Tạo danh sách mới với số lượng phần tử `numbers` (random phần tử)
+    for (int i = 0; i < numbers; ++i) {
+        int newKey = GetRandomValue(1, 100); // Tạo số ngẫu nhiên từ 1 đến 100
+        Node* newNode = new Node(newKey, nullptr);
+
+        // Nếu danh sách rỗng, node này sẽ là head
+        if (!head) {
+            head = newNode;
+        } else {
+            // Nếu danh sách không rỗng, thêm node vào cuối danh sách
+            Node* temp = head;
+            while (temp->next) {
+                temp = temp->next;
+            }
+            temp->next = newNode;
+        }
+    }
+
+    // 3. Cập nhật lại vị trí và vẽ lại danh sách liên kết
+    Pos = GetPosition(CountNode(head)); // Cập nhật vị trí để vẽ
+    NewPos = Pos;
+    Vector2 center = Pos;
+
+    // 4. Vẽ lại danh sách liên kết
+    animationController.Reset();  // Reset lại animation controller
+    animationController.AddStep([this, center]() {
+        DrawLL(Pos, true); // Vẽ lại danh sách liên kết mới
+    });
+
+    // Thực hiện vẽ node cho từng phần tử trong danh sách
+    Node* temp = head;
+    while (temp) {
+        animationController.AddStep([this, temp, center]() {
+            DrawNode(center, temp->val, 0); // Vẽ node với giá trị
+        });
+        temp = temp->next;
+        center.x += (2 * radius + spacing); // Cập nhật vị trí vẽ cho node tiếp theo
+    }
+
+    // Chạy animation
+    animationController.NextStep();
 }

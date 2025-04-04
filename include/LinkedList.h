@@ -60,6 +60,9 @@ class LinkedList : public Page{
         bool isUpdating;
         int UpdateKey;
         int newVal;
+
+        bool isCreating;
+        int numbers;
     
         LinkedList();
     
@@ -86,6 +89,7 @@ class LinkedList : public Page{
         bool DrawSearchNode(int key);
         void DrawDeleteNode(int key);
         void DrawUpDateNode(int first, int second);
+        void DrawCreateNode(int n);
 
         void event() override;
         void init() override;
