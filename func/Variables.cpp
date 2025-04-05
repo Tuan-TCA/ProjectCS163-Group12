@@ -31,7 +31,7 @@ void UpdateColorsBasedOnSwitchState() {
     if (switchState) {
         MyColor1 = Color{143, 50, 81, 255};  
         MyColor2 = Color{212, 87, 107, 255}; 
-        MyColor3 = Color{255, 150, 150, 255};//ok
+        MyColor3 = Color{255, 134, 154, 255};//ok
         MyColor4 = Color{88, 33, 64, 255};//ok
         MyColor5 = Color{163, 62, 53, 255};
         MyColor6 = Color{255, 211, 207, 255};
@@ -77,4 +77,18 @@ Vector2 operator/(Vector2 a, float b){
 
 bool operator!=(Color a, Color b){
     return a.a != b.a || a.b != b.b || a.g != b.g || a.r != b.r;
+}
+
+Rectangle operator-(Rectangle a, Rectangle b){
+    return{a.x - b.x, a.y - b.y, a.width - b.width, a.height - b.height};
+}
+Rectangle operator+(Rectangle a, Rectangle b){
+    return{a.x + b.x, a.y + b.y, a.width + b.width, a.height + b.height};
+}
+Rectangle operator*(Rectangle a, float b){
+    return{a.x * b, a.y * b, a.width *b, a.height * b};
+}
+
+bool operator!=(Rectangle a, Rectangle b){
+    return a.x != b.x || a.y != b.y || a.width != b.width || a.height != b.height;
 }

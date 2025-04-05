@@ -15,6 +15,10 @@ public:
     bool doneAnimation;
     float duration; 
     Vector2 endEdge;
+
+    int kind_ani = 0;
+    // bool isDisappearing;
+    bool fullRED;
     Edge(){color = MyColor4;}
     Edge(Vertex* s, Vertex* e, int w) : 
         start(s), 
@@ -22,7 +26,9 @@ public:
         w(w), 
         color(MyColor4),
         textColor(MyColor4),
-        doneAnimation(false)
+        doneAnimation(false),
+    
+        fullRED(true)
         {}
 
 

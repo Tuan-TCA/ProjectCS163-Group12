@@ -58,12 +58,13 @@ public:
     TextBox newTextBox;
     
     Rectangle workplace = {screenWidth * 0.28f, screenHeight * 0.14f, screenWidth * 0.68f, screenHeight * 0.72f};
+    bool isExpanding = false;
     bool isExpandingCodePlace = false;
     bool isClosingCodePlace = false;
     MyRec speedSliding;
     // Slider timeSlider;
-    ButtonFromImage back1, next1, pause1, play1;
-    ButtonFromImage back2, next2, pause2, play2;
+    ButtonFromImage back1, next1, pause1, play1, backward1, forward1;
+    ButtonFromImage back2, next2, pause2, play2, backward2, forward2;
     ButtonFromImage home, home2;
     Texture2D background1, background2;
     //code state

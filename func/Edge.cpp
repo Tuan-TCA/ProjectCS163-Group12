@@ -5,24 +5,53 @@
 void Edge::Update(float deltaTime){
 
     if(isAnimating){
-        animationTime += deltaTime;
         
-         float t = animationTime / (duration / animationSpeed);
-        if(t > 1) {
-            t = 1; 
-            doneAnimation = true;
-            isAnimating = false;
-        }
+        if(kind_ani == 1){
+             animationTime += deltaTime;
+            float t = animationTime / (duration / 2.0 / animationSpeed);
+            if(!fullRED){
+            
+             if(t > 1) {
+                t = 1; 
+                fullRED = true;
+                animationTime = 0;
+            }
+                color = ColorLerp(color, SKYBLUE, t);
+                textColor = ColorLerp(textColor, SKYBLUE, t);
+            }
+            else{
+                if(t > 1) {
+                t = 1; 
+     
+                doneAnimation = true;
+                isAnimating = false;
 
-        textColor = ColorLerp(textColor, targetColor, t);
-       Vector2 delta = end->position - start->position;   
-        delta = delta * t;     
-        endEdge = start->position + delta;
-        
+                animationTime = 0;
+                }
+                color = ColorLerp(color, targetColor, t);
+                textColor = ColorLerp(color, targetColor, t);
+            }
+        }
+        if(kind_ani == 0){
+            animationTime += deltaTime;
+            float t = animationTime / (duration / animationSpeed);
+            if(t > 1) {
+                t = 1; 
+                animationTime = 0;
+                doneAnimation = true;
+                isAnimating = false;
+                fullRED = false;
+            }
+
+            textColor = ColorLerp(textColor, targetColor, t);
+        Vector2 delta = end->position - start->position;   
+            delta = delta * t;     
+            endEdge = start->position + delta;
+        }
     }
 
-    if (!doneAnimation){
-        color = MyColor4;
+    if (!doneAnimation ){
+        if(kind_ani == 0) color = MyColor4;
     }else{
         color = targetColor;
     }
@@ -32,11 +61,14 @@ void Edge::startAnimation(Color target, float duration) {
     // targetColor = target;
     animationTime = 0.0f;
     isAnimating = true;
+    // isDisappearing = false;
     this->duration = duration;
+    fullRED = false;
+    
 }
 void Edge::Draw() {
     DrawLineEx(start->position, end->position, 4,  color);
-    if (isAnimating) {
+    if (isAnimating && kind_ani == 0) {
         
         if(endEdge != end->position) DrawLineEx(start->position, endEdge, 4, targetColor);
     } 
@@ -59,6 +91,8 @@ void Edge::SetColor(){ // after having done an animation
     this->textColor = targetColor;
     this->color = targetColor;
     doneAnimation = true;
+    // isDisappearing = false;
+    fullRED = false;
 }
 
 void Edge::reset(){ // before ...
@@ -68,5 +102,7 @@ void Edge::reset(){ // before ...
     animationTime = 0.0f;
     isAnimating = false;
     doneAnimation = false;
+    // isDisappearing = false;
+    fullRED= false;
 }
 

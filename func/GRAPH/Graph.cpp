@@ -57,8 +57,8 @@ void Graph::draw(){
         else{
             currentColor.a = 0;
         }
-        DrawRectangleRounded(Rectangle{pseudocodeX - 5, pseudocodeY + i * lineHeight - 5, screenWidth*0.23f,  lineHeight}, 0, 5, currentColor);
-        DrawTextEx(FONT, pseudocode[i].c_str(), {pseudocodeX, pseudocodeY + i * lineHeight} , 10, 2, MyColor4);
+        DrawRectangleRounded(Rectangle{codeDisplayPLace.x, codeDisplayPLace.y + 10 + i * lineHeight - 5, codeDisplayPLace.width,  lineHeight}, 0, 5, currentColor);
+        DrawTextEx(FONT, pseudocode[i].c_str(), {codeDisplayPLace.x + 5, codeDisplayPLace.y + 10 + i * lineHeight} , 10, 2, MyColor4);
         
     }
     }
@@ -95,8 +95,10 @@ void Graph::event(){
     }
 
     if(AlgorithmOptions[selectedAlgorithmIndex] == "BFS") currentALgorithm = Algorithm::BFS;
+    if(AlgorithmOptions[selectedAlgorithmIndex] == "DFS") currentALgorithm = Algorithm::DFS;
     if(AlgorithmOptions[selectedAlgorithmIndex] == "MST") currentALgorithm = Algorithm::MST;
-
+    if(AlgorithmOptions[selectedAlgorithmIndex] == "Connected\nComponents") currentALgorithm = Algorithm::CC;
+    
     // if(currentALgorithm == Algorithm::BFS) cout << "bfs" << endl;
     // if(currentALgorithm == Algorithm::MST) cout << "mst" << endl;
     //vertex
@@ -131,7 +133,7 @@ void Graph::event(){
     }
     handleCollision();
     
-    if (back1.IsClicked() || back2.IsClicked()) {
+    if (back1.IsClicked() || back2.IsClicked() || (!textbox.active && IsKeyPressed(KEY_LEFT))) {
         
         isPlaying = false;
 
@@ -152,7 +154,7 @@ void Graph::event(){
         }
 
     } 
-    else if (next1.IsClicked() || next2.IsClicked()) {
+    else if (next1.IsClicked() || next2.IsClicked() || (!textbox.active && IsKeyPressed(KEY_RIGHT))) {
 
         isPlaying = false; 
 
@@ -173,7 +175,43 @@ void Graph::event(){
 
     }
 
+    if(backward1.IsClicked() || backward2.IsClicked() || (IsKeyDown(KEY_LEFT_SHIFT) && IsKeyPressed(KEY_LEFT))){
+        isPlaying = false;  
+        if(!arrayQueue.empty() && currentQueueIndex < arrayQueue.size()){
+            for(auto& s: arrayQueue){
+                for(auto& elem: s){
+                    elem->reset();
+                }
+            }
+            currentQueueIndex = 0;
+            for(auto& s: arrayQueue[0]){
+                s->isAnimating = true;
+            }
+        }
+    }
+    else if (forward1.IsClicked() || forward2.IsClicked() || (IsKeyDown(KEY_LEFT_SHIFT) && IsKeyPressed(KEY_RIGHT))){
+        isPlaying = false;
+        if(!arrayQueue.empty() && currentQueueIndex < arrayQueue.size()){
+        for(auto& s: arrayQueue){
+            for(auto& elem : s){
+                elem->SetColor();
+            }
+        }    
+        currentQueueIndex = arrayQueue.size() - 1;
+        }
+    }
 
+
+
+    if(currentOperation == Operation::Algorithm && currentALgorithm == Algorithm::MST){
+    Ok.label = "START";
+    Ok.bounds = Rectangle{side.x * 1.2f + 5, side.y + screenHeight*0.63f * 0.3f + 15, screenWidth*0.24f - 10, screenHeight*0.63f * 0.15f};
+    }
+    else{
+        Ok.label = "OK";
+        Ok.bounds = Rectangle{ side.x + (side.x  + side.width) * 0.74f, side.y + screenHeight*0.63f * 0.3f + 15, 73, screenHeight*0.63f * 0.15f};
+       
+    }
    handleChoice();
     // cout << currentIndex << endl
    
@@ -204,8 +242,17 @@ void Graph::handleChoice(){
             };
             handleMST();
             break;
-        default:
+        case Algorithm::DFS:
+            pseudocode = {
+
+            };
             break;
+            case Algorithm::CC:
+            pseudocode = {};
+            handleCC();
+            break;
+        default:
+           break;
         }
     }
     else{
@@ -359,6 +406,7 @@ void Graph::RANDOM_INPUT() {
             break;
         }
         default:
+        // Page::handleInput();
             break;
     }
 }
@@ -395,6 +443,7 @@ void Graph::FILE_INPUT(){
         break;
     
     default:
+    Page::handleInput();
         break;
     }
     

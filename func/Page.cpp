@@ -38,7 +38,7 @@ void Page::init() {
     InputNextButton = Button((side.x + side.width) * 0.85f + 5, side.y + screenHeight*0.63f * 0.15f + 10,  screenWidth*0.24f * 0.15f - 10, screenHeight*0.63f * 0.15f, ">", WHITE, LIGHTGRAY, MyColor5);
     currentInput = InputType::Keyboard;
 
-    OperationOptions  = {"INSERT", "CREATE", "UPDATE", "DELETE", "SEARCH"};
+    OperationOptions  = {"INSERT", "CREATE", "DELETE", "SEARCH"};
     selectedOperationIndex = 0;
     OperationOptionButton = Button((side.x + side.width) * 0.15f, side.y + 5, screenWidth*0.24f * 0.7f, screenHeight*0.63f * 0.15f, OperationOptions[selectedOperationIndex].c_str(), MyColor7, Fade(MyColor7, 0.8f), WHITE);
     OperationPrevButton = Button(side.x + 5, side.y + 5, screenWidth*0.24f * 0.15f - 10, screenHeight*0.63f * 0.15f, "<", MyColor7, Fade(MyColor7, 0.8f), WHITE);
@@ -51,12 +51,16 @@ void Page::init() {
     home2 = ButtonFromImage("res/button/homeII_1.png", "res/button/homeII_2.png", screenWidth*0.016f, screenHeight*0.016f, screenWidth*0.05f, screenWidth*0.05f); 
 
     isPlaying = false;
-    back1 = ButtonFromImage("res/button/1-prev.png", "res/button/1-prev.png", screenWidth / 2 -   screenWidth * 0.05f * 3 / 2 - 20 , screenHeight*0.926f,  screenWidth * 0.04f, screenWidth*0.04f);
-    next1 = ButtonFromImage("res/button/1-next.png", "res/button/1-next.png", screenWidth / 2 +   screenWidth * 0.05f , screenHeight*0.926f,  screenWidth * 0.04f, screenWidth*0.04f);
+    back1 = ButtonFromImage("res/button/1_backward.png", "res/button/1_backward.png", screenWidth / 2 -   screenWidth * 0.05f * 3 / 2 , screenHeight*0.926f,  screenWidth * 0.04f, screenWidth*0.04f );
+    backward1 = ButtonFromImage("res/button/1-prev.png", "res/button/1-prev.png", screenWidth / 2 -   screenWidth * 0.05f * 3 / 2 - 25  - screenWidth * 0.04f, screenHeight*0.926f,  screenWidth * 0.04f, screenWidth*0.04f);
+    next1 = ButtonFromImage("res/button/1_forward.png", "res/button/1_forward.png", screenWidth / 2 +   screenWidth * 0.05f - 20, screenHeight*0.926f,  screenWidth * 0.04f, screenWidth*0.04f );
+    forward1 = ButtonFromImage("res/button/1-next.png", "res/button/1-next.png", screenWidth / 2 +   screenWidth * 0.05f  + 5 + screenWidth * 0.04f, screenHeight*0.926f,  screenWidth * 0.04f, screenWidth*0.04f);
     play1 = ButtonFromImage("res/button/1-play.png", "res/button/1-play.png", screenWidth / 2 -   screenWidth * 0.05f / 2  , screenHeight*0.92f,  screenWidth * 0.05f, screenWidth*0.05f);
     pause1 = ButtonFromImage("res/button/1-pause.png", "res/button/1-pause.png", screenWidth / 2 -   screenWidth * 0.05f / 2  , screenHeight*0.92f,  screenWidth * 0.05f, screenWidth*0.05f);
-    back2 = ButtonFromImage("res/button/2-prev.png", "res/button/2-prev.png", screenWidth / 2 -   screenWidth * 0.05f * 3 / 2 - 20 , screenHeight*0.926f,  screenWidth * 0.04f, screenWidth*0.04f);
-    next2 = ButtonFromImage("res/button/2-next.png", "res/button/2-next.png", screenWidth / 2 +   screenWidth * 0.05f , screenHeight*0.926f,  screenWidth * 0.04f, screenWidth*0.04f);
+    backward2 = ButtonFromImage("res/button/2-prev.png", "res/button/2-prev.png",screenWidth / 2 -   screenWidth * 0.05f * 3 / 2 - 25  - screenWidth * 0.04f, screenHeight*0.926f,  screenWidth * 0.04f, screenWidth*0.04f);
+    back2 = ButtonFromImage("res/button/2_backward.png", "res/button/2_backward.png", screenWidth / 2 -   screenWidth * 0.05f * 3 / 2 , screenHeight*0.926f,  screenWidth * 0.04f, screenWidth*0.04f );
+    next2 = ButtonFromImage("res/button/2_forward.png", "res/button/2_forward.png", screenWidth / 2 +   screenWidth * 0.05f - 20, screenHeight*0.926f,  screenWidth * 0.04f, screenWidth*0.04f );
+    forward2 = ButtonFromImage("res/button/2-next.png", "res/button/2-next.png", screenWidth / 2 +   screenWidth * 0.05f  + 5 + screenWidth * 0.04f, screenHeight*0.926f,  screenWidth * 0.04f, screenWidth*0.04f);
     pause2 = ButtonFromImage("res/button/2-pause.png", "res/button/2-pause.png", screenWidth / 2 -   screenWidth * 0.05f / 2  , screenHeight*0.92f,  screenWidth * 0.05f, screenWidth*0.05f);
     play2 = ButtonFromImage("res/button/2-play.png", "res/button/2-play.png", screenWidth / 2 -   screenWidth * 0.05f / 2  , screenHeight*0.92f,  screenWidth * 0.05f, screenWidth*0.05f);
     // timeSlider = Slider({screenWidth * 0.05f , screenHeight*0.936f,  screenWidth * 0.3f ,screenHeight * 0.095f / 3 * 0.9f}, 0.0f, 1.0f);
@@ -65,7 +69,7 @@ void Page::init() {
     speedSliding = MyRec(screenWidth * 0.712f , screenHeight*0.936f,  screenWidth * 0.182f * 0.38f,screenHeight * 0.095f / 3 * 0.9f, "", MyColor3, WHITE);
     background1 = resizedImage("res/BackGround.png", screenWidth, screenHeight);   
     background2 = resizedImage("res/background_theme2.png", screenWidth, screenHeight);    
-    bottom = {screenWidth / 2 -   screenWidth * 0.05f * 3 / 2 - 50,screenHeight*0.905f,(float) (screenWidth * 0.23),screenHeight*0.09f};
+    bottom = {screenWidth / 2 -   screenWidth * 0.05f * 3 / 2 - 50 - screenWidth * 0.04f,screenHeight*0.905f,(float) (screenWidth * 0.31),screenHeight*0.09f};
     pseudocode = {""};
     pseudocodeX = codeDisplayPLace.x  + 5;
     pseudocodeY = codeDisplayPLace.y  + 10;
@@ -128,11 +132,15 @@ void Page::draw() {
 
     if(switchState){
         isPlaying ? play2.Draw() : pause2.Draw();
+        backward2.Draw();
+        forward2.Draw();
         back2.Draw();
         next2.Draw();
         home2.Draw(); }
     else{ 
         isPlaying ? play1.Draw() : pause1.Draw();
+        backward1.Draw();
+        forward1.Draw();
         back1.Draw();
         next1.Draw();
         home.Draw();
@@ -170,11 +178,22 @@ void Page::event() {
     for(auto& e: pseudocode){
         textWidth = max(textWidth,(float) MeasureText(e.c_str(), 10));
     }
-    
-    codeDisplayPLace.height = pseudocode.size() * lineHeight + 10;
-    codeDisplayPLace.width = textWidth * 1.3f;
-    
-    // TỰ LÀM PHẦN HIGHLIGHT!!!! tham khảo Graph.draw() của Graph.cpp 
+    Rectangle targetPlace1 = codeDisplayPLace;
+    targetPlace1.height = pseudocode.size() * lineHeight + 10;
+    targetPlace1.width = textWidth * 1.3f;
+    Rectangle deltaRec = targetPlace1 - codeDisplayPLace;
+    if(deltaRec != Rectangle{0,0,0,0}) isExpanding = true;
+    if(isExpanding){
+    animatingTime += deltaTime;
+    float t = animatingTime / 0.2f;
+    if(t > 1){
+        t = 1;
+        isExpanding = false;
+        animatingTime = 0;
+    }
+    codeDisplayPLace = codeDisplayPLace + deltaRec * t;
+    }
+    // TỰ LÀM PHẦN HIGHLIGHT!!!! tham khảo Graph.draw() && psuedo code thi tuy phan
 
     //Code box event
     Rectangle targetCodePlace = Rectangle{screenWidth * 0.01f, screenHeight * 0.56f, screenWidth * 0.24f - 12.0f, screenHeight * 0.35f};
@@ -267,7 +286,7 @@ void Page::event() {
     //time slider
     // timeSlider.Update();
 
-    if(play1.IsClicked() || play2.IsClicked() || pause1.IsClicked() || pause2.IsClicked() || IsKeyPressed(KEY_SPACE)){
+    if(play1.IsClicked() || play2.IsClicked() || pause1.IsClicked() || pause2.IsClicked() || (!textbox.active &&  IsKeyPressed(KEY_SPACE))){
         isPlaying = !isPlaying;
         if(!isPlaying) TraceLog(LOG_INFO, "is pausing");
         else TraceLog(LOG_INFO, "is playing");

@@ -182,6 +182,7 @@ void Graph::mst(){
 
     //sort lai edge inorder
     int n = vertex.size();
+    dsu.parent.clear();
     dsu.init(n + 1);
     sort(edge.begin(), edge.end(), [](Edge & x, Edge & y) {
         return x.w < y.w;
@@ -203,8 +204,8 @@ void Graph::mst(){
 
          if (!dsu.join(v1, v2)){ // cannot be unioned
             // e.targetColor = GRAY;
-            e.targetColor = Color{176, 232, 197, 255};
-            
+            e.targetColor = Color{176, 232, 197, 0};
+            e.kind_ani = 1;
             StepQueue.push_back({5});
             arrayQueue.push_back({&e});
              continue;
@@ -281,14 +282,153 @@ void Graph::handleMST(){
                         elem->startAnimation(ORANGE, 1);
                     }
                 }
-                else if(currentQueueIndex >= arrayQueue.size() -1 ){ 
+                else if(currentQueueIndex >= arrayQueue.size() - 1){ 
                     isPlaying = false;
-                    isAnimating = false;
+                    
                 }
             }
         }
+        else isAnimating = false;
     }
     else{
         AlgoCalled = false;
     }
+}
+
+//Connected Components
+
+void Graph::bfsComponents(Vertex* source, Color CC_COLOR, unordered_set<Vertex*>& visitedVertices){
+    int n = matrix.size();
+    if (n == 0) return;
+    
+    
+    queue<Vertex*> q;
+  
+    unordered_set<Edge*> visitedEdge;
+    source->targetColor = CC_COLOR;
+    q.push(source);  // Start with the source vertex 
+    arrayQueue.push_back({source});
+    //Mark as visited nhe
+    visitedVertices.insert(source);
+
+    
+
+    while (!q.empty()) {
+       
+        Vertex* v = q.front();
+       v->targetColor = CC_COLOR;
+        // v->print();
+        q.pop();
+        vector<Vertex*> vertexStorage;
+        vector<Edge*> edgeStorage;
+        
+        for (int i = 0; i < n; i++) {
+            if (matrix[v->value][i] != 0) {
+                Vertex* nextVertex = findVertex(i);
+                if(nextVertex == nullptr) continue;
+                if ( visitedVertices.find(nextVertex) == visitedVertices.end()) { 
+                    Edge* e = findEdge(nextVertex, v);
+                    if (e != nullptr && visitedEdge.find(e) == visitedEdge.end()){
+                        edgeStorage.push_back(e);
+                        e->targetColor = CC_COLOR; // set edge's color
+                        visitedEdge.insert(e);
+                    }
+                    q.push(nextVertex);
+                
+                    vertexStorage.push_back(nextVertex);
+                    visitedVertices.insert(nextVertex);
+                }
+                else{
+                    //neu vertex da visited
+                    Edge* e = findEdge(nextVertex, v);
+                    if(e && visitedEdge.find(e) == visitedEdge.end()){
+                        edgeStorage.push_back(e);
+                        e->targetColor = CC_COLOR;
+                        
+                        visitedEdge.insert(e);
+                    }
+                    
+                }
+                
+            }
+        }
+        vector<Drawable*> drawableVertexStorage;
+            for (auto& v : vertexStorage) {
+                drawableVertexStorage.push_back(static_cast<Drawable*>(v)); // ép kiểu Vertex* thành Drawable*
+            }
+        vector<Drawable*> drawableEdgeStorage;
+            for (auto& e : edgeStorage) {
+                drawableEdgeStorage.push_back(static_cast<Drawable*>(e)); 
+            }
+        if (!drawableEdgeStorage.empty()) {
+            arrayQueue.push_back(drawableEdgeStorage);
+        }
+        if (!drawableVertexStorage.empty()) {
+            arrayQueue.push_back(drawableVertexStorage);
+        }
+
+        
+    }
+}
+
+void Graph::findConnectedComponents(){
+    unordered_set<Vertex*> visited;
+    vector<Color> colors = {ORANGE, RED, GREEN, BLUE, YELLOW, PURPLE, PINK, SKYBLUE, LIME, MAGENTA, RAYWHITE, DARKGREEN, DARKPURPLE, DARKBROWN}; // Nhiều màu hơn
+    int colorIndex = 0;
+
+    for (auto& v : vertex) {
+        if (!visited.count(&v)) {
+            bfsComponents(&v, colors[colorIndex % colors.size()], visited);
+            colorIndex++;
+        }
+    }
+}
+
+void Graph::handleCC(){
+     float deltaTime = GetFrameTime();
+     if(AlgorithmOptionButton.IsClicked() || Ok.IsClicked()){
+        isAnimating = true;
+        isPlaying = true;
+    }
+    
+    if( isAnimating){
+         if (!AlgoCalled) {
+            findConnectedComponents();
+            startAnimation(1);
+            arrayQueue[currentQueueIndex][0]->startAnimation(ORANGE, 1);
+            AlgoCalled = true;
+        }
+            if (!arrayQueue.empty() && currentQueueIndex < arrayQueue.size()) {
+            
+            vector<Drawable*> current = arrayQueue[currentQueueIndex];
+ 
+            int checkDoneAnimating = 0;
+            for(int i = 0; i < current.size(); i++){
+                if (!current[i]->isAnimating) { // done or hasn't started yet
+                checkDoneAnimating++;      
+                }
+               
+                if(isPlaying) current[i]->Update(deltaTime);
+            }
+            if(checkDoneAnimating == current.size()) {
+                if(!arrayQueue.empty() && currentQueueIndex + 1 < arrayQueue.size()){
+                        
+                        current = arrayQueue[++currentQueueIndex];
+                        for(auto& elem: current){
+                            elem->startAnimation(ORANGE, 1);
+                        }
+
+                    }
+                else if(currentQueueIndex >= arrayQueue.size()){
+                    isPlaying = false;
+                }
+            }
+        }
+        else{
+            isAnimating = false;
+        }
+    }
+    else {
+        AlgoCalled = false;   
+    } 
 }
