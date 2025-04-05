@@ -404,7 +404,7 @@ void Graph::handleCC(){
  
             int checkDoneAnimating = 0;
             for(int i = 0; i < current.size(); i++){
-                if (!current[i]->isAnimating) { // done or hasn't started yet
+                if (!current[i]->isAnimating) { // done or hasn't started yet nha nha nha
                 checkDoneAnimating++;      
                 }
                
