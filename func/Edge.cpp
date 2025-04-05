@@ -34,7 +34,7 @@ void Edge::Update(float deltaTime){
         }
         if(kind_ani == 0){
             animationTime += deltaTime;
-            float t = animationTime / (duration / animationSpeed);
+            float t = animationTime / (0.6  / animationSpeed);
             if(t > 1) {
                 t = 1; 
                 animationTime = 0;

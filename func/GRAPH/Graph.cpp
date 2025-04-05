@@ -22,6 +22,9 @@ void Graph::init(){
     AlgorithmOptionButton = Button(screenWidth * 0.24f * 0.15f,screenHeight / 2 - screenHeight*0.63f * 0.35f + 10 , screenWidth*0.24f * 0.7f, screenHeight*0.63f * 0.15f, AlgorithmOptions[selectedAlgorithmIndex].c_str(), WHITE, LIGHTGRAY, MyColor5);
     AlgorithmPrevButton = Button(5,screenHeight / 2 - screenHeight*0.63f * 0.35f + 10 ,  screenWidth*0.24f * 0.15f - 10, screenHeight*0.63f * 0.15f, "<", WHITE, LIGHTGRAY, MyColor5);
     AlgorithmNextButton = Button(screenWidth*0.24f * 0.85f + 5, screenHeight / 2 - screenHeight*0.63f * 0.35f + 10 ,  screenWidth*0.24f * 0.15f - 10, screenHeight*0.63f * 0.15f, ">", WHITE, LIGHTGRAY, MyColor5);
+    vertex_textbox = TextBox(side. x + 5, side.y + screenHeight*0.63f * 0.61f, screenWidth*0.08, screenHeight*0.63f * 0.11f, "", WHITE, WHITE, BLACK);
+    edge_textbox = TextBox(side.x + screenWidth*0.08f + 10, side.y + screenHeight*0.63f * 0.61f, screenWidth*0.08, screenHeight*0.63f * 0.11f, "", WHITE, WHITE, BLACK);
+    // textbox.bounds = Rectangle{side.x + 5, side.y + screenHeight*0.63f * 0.45f + 20 , screenWidth*0.25f - 100, screenHeight*0.63f * 0.15f};
     added = false;
     minDistance = 100.0f;
     got1stV = false;
@@ -45,6 +48,14 @@ void Graph::draw(){
         AlgorithmNextButton.Draw(LIGHTGRAY, WHITE);
     }
 
+    if (currentOperation == Operation::Create && currentInput != InputType::File) {
+            // DrawTextEx(FONT, "V = ", {vertex_textbox.bounds.x + vertex_textbox.bounds.width /2 - 20, oldTextBox.bounds.y - 20}, 20, 2, WHITE);
+            // DrawTextEx(FONT ,"E = ", {vertex_textbox.bounds.x + vertex_textbox.bounds.width / 2 - 20, newTextBox.bounds.y - 20}, 20, 2, WHITE);
+            
+            // vertex_textbox.Draw(20); 
+            // edge_textbox.Draw(20);
+            // textbox.Draw();
+    }
     //code state
 
     Color highlightColor = Color{255, 222, 89, 255};
@@ -74,9 +85,16 @@ void Graph::event(){
        added = true;
    }
 
-    if( currentOperation == Operation::Create){
+    if( currentOperation == Operation::Create && currentInput != InputType::File){
+        // textbox.bounds = Rectangle{side.x + 5, side.y + screenHeight*0.63f * 0.45f + 20 , screenWidth*0.25f - 100, screenHeight*0.63f * 0.15f};
+        // side.height = screenHeight*0.305f + screenHeight * 0.63f * 0.15f + 5;
         addFromTextbox();
+
     }
+    // else{
+    //     textbox.bounds = Rectangle{side.x + 5, side.y + screenHeight*0.63f * 0.3f + 15, screenWidth*0.25f - 100, screenHeight*0.63f * 0.15f};
+    //     side.height = screenHeight*0.305f;
+    // }
     
     if(currentQueueIndex > arrayQueue.size()) isPlaying = false;
     //ALgorithm operation
@@ -212,6 +230,8 @@ void Graph::event(){
         Ok.bounds = Rectangle{ side.x + (side.x  + side.width) * 0.74f, side.y + screenHeight*0.63f * 0.3f + 15, 73, screenHeight*0.63f * 0.15f};
        
     }
+
+
    handleChoice();
     // cout << currentIndex << endl
    
@@ -506,5 +526,7 @@ void Graph::updateSide(){
     Page::updateSide();
     AlgorithmOptionButton.bounds =Rectangle{side.x + (side.x + side.width) * 0.15f, side.y + screenHeight*0.63f * 0.15f + 10 , screenWidth*0.24f * 0.7f, screenHeight*0.63f * 0.15f};
     AlgorithmPrevButton.bounds = Rectangle{side.x + 5,side.y + screenHeight*0.63f * 0.15f + 10 ,  screenWidth*0.24f * 0.15f - 10, screenHeight*0.63f * 0.15f}; 
-    AlgorithmNextButton.bounds = Rectangle{side.x + (side.x + side.width) * 0.85f + 5, side.y + screenHeight*0.63f * 0.15f + 10,  screenWidth*0.24f * 0.15f - 10, screenHeight*0.63f * 0.15f};;
+    AlgorithmNextButton.bounds = Rectangle{side.x + (side.x + side.width) * 0.85f + 5, side.y + screenHeight*0.63f * 0.15f + 10,  screenWidth*0.24f * 0.15f - 10, screenHeight*0.63f * 0.15f};
+     vertex_textbox = TextBox(side. x + 5, side.y + screenHeight*0.63f * 0.36f, screenWidth*0.08, screenHeight*0.63f * 0.11f, "", WHITE, WHITE, BLACK);
+    edge_textbox = TextBox(side.x + screenWidth*0.08f + 10, side.y + screenHeight*0.63f * 0.36f, screenWidth*0.08, screenHeight*0.63f * 0.11f, "", WHITE, WHITE, BLACK);
 }

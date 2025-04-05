@@ -56,7 +56,8 @@ class Graph : public Page{
     float duration;
     bool isAnimating;
     int currentQueueIndex;
-
+    TextBox vertex_textbox;
+    TextBox edge_textbox;
 
     //bfs
     bool got1stV;
