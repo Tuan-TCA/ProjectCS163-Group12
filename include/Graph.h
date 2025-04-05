@@ -1,6 +1,7 @@
 #pragma once
 #include <vector>
 #include <queue>
+#include <unordered_set>
 #include "Vertex.h"
 #include "Edge.h"
 #include "Page.h"
@@ -9,7 +10,9 @@ using namespace std;
 
 enum class Algorithm{
     BFS,
-    MST
+    DFS,
+    MST,
+    CC
 };
 struct Dsu {
     vector<int> parent;
@@ -35,7 +38,7 @@ struct Dsu {
 class Graph : public Page{
     public:
     Algorithm currentALgorithm;
-    vector<string> AlgorithmOptions = {"BFS", "MST"};
+    vector<string> AlgorithmOptions = {"BFS", "MST", "DFS", "Connected\nComponents"};
     int selectedAlgorithmIndex; 
     Button AlgorithmOptionButton; 
     Button AlgorithmPrevButton; 
@@ -66,6 +69,12 @@ class Graph : public Page{
     Dsu dsu;
     void mst();
     void handleMST();
+
+    //ConnectedComponents
+    void bfsComponents(Vertex* source, Color CC_COLOR, unordered_set<Vertex*>& visitedVertices);
+    void findConnectedComponents();
+    void handleCC();
+
 
     void init() override;
     void draw() override;

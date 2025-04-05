@@ -451,7 +451,7 @@ void HashTableChaining::event() {
 
     //Mouse handling
      float wheelMove = GetMouseWheelMove();
-        origin.y -= (int)wheelMove * 23;
+        origin.y += (int)wheelMove * 23;
 }
 
 void HashTableChaining::reset(){

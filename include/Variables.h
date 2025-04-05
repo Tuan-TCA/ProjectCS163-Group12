@@ -35,6 +35,10 @@ extern Vector2 operator*(Vector2 a, float b);
 extern Vector2 operator/(Vector2 a, float b);
 extern bool operator!=(Vector2 a, Vector2 b);
 extern bool operator!=(Color a, Color b);
+extern Rectangle operator-(Rectangle a, Rectangle b);
+extern Rectangle operator+(Rectangle a, Rectangle b);
+extern Rectangle operator*(Rectangle a, float b);
+extern bool operator!=(Rectangle a, Rectangle b);
 class Drawable { // base class of vertex, edge
 public:
     virtual void startAnimation(Color target, float duration) = 0;
