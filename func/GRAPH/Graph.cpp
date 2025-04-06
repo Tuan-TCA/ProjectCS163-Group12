@@ -30,6 +30,8 @@ void Graph::init(){
     got1stV = false;
     isAnimating = false;
     setting_menu = Rectangle{screenWidth * 0.8f, screenHeight * 0.7f, screenWidth * 0.19f, screenHeight * 0.18f};
+    theme = SwitchThemeButton(setting_menu.x + 5, setting_menu.y + 5, setting_menu.width*0.43f, 50, "", MyColor1, MyColor1, WHITE);
+    show_weight = SwitchButton(setting_menu.x + setting_menu.width * 0.5f, setting_menu.y + 10 + setting_menu.width*0.3f * 0.61f, setting_menu.width*0.3f, setting_menu.width*0.3f * 0.61f, "", MyColor1,MyColor1, WHITE);
     tes = TextBox{500, 500, 100 , 100, "", WHITE, WHITE, BLACK};
 }
 
@@ -44,8 +46,11 @@ void Graph::draw(){
     }
 
     //setting
-
     DrawRectangleRounded(setting_menu, 0.42f, 30, MyColor3);
+    theme.Draw();
+    show_weight.Draw();
+    DrawTextEx(FONT, "THEME", {setting_menu.x + 20, setting_menu.y + 18}, 30, 2, WHITE);
+    DrawTextEx(FONT, "WEIGHT", {setting_menu.x + 20, setting_menu.y + 18 + setting_menu.width*0.3f * 0.61f}, 30, 2, WHITE);
     //Algorithm
     if(currentOperation == Operation::Algorithm){
         AlgorithmOptionButton.Draw(LIGHTGRAY, WHITE);
@@ -102,6 +107,9 @@ void Graph::event(){
     if( currentOperation == Operation::Create && currentInput != InputType::File){
         addFromTextbox();
     }
+
+    //SETTING
+
     float deltaTime = GetFrameTime();
     Vector2 mousePos = GetMousePosition();
     Rectangle targetPlace = Rectangle{screenWidth * 0.8f, screenHeight * 0.7f, screenWidth * 0.19f, screenHeight * 0.18f};
@@ -139,7 +147,16 @@ void Graph::event(){
         }
         setting_menu.x = Lerp(setting_menu.x, closedPlace.x, t);
     }
-   
+       if(show_weight.isOpening){
+        for(auto& e: edge){
+            e.isWeightVisible = false;
+        }
+    }
+    else{
+        for(auto& e: edge){
+            e.isWeightVisible = true;
+        }
+    }
     if(currentQueueIndex > arrayQueue.size()) isPlaying = false;
     //ALgorithm operation
     if(OperationOptions[selectedOperationIndex] == "ALGORITHM") currentOperation = Operation::Algorithm;
@@ -594,4 +611,6 @@ void Graph::updateSide(){
     AlgorithmNextButton.bounds = Rectangle{side.x + (side.x + side.width) * 0.85f + 5, side.y + screenHeight*0.63f * 0.15f + 10,  screenWidth*0.24f * 0.15f - 10, screenHeight*0.63f * 0.15f};
     vertex_textbox.bounds = {side.x + 5, side.y + screenHeight*0.63f * 0.54f, screenWidth*0.08f, screenHeight*0.63f * 0.11f};
     edge_textbox.bounds = {side.x + screenWidth*0.08f + 10, side.y + screenHeight*0.63f * 0.54f, screenWidth*0.08f, screenHeight*0.63f * 0.11f};
+    theme.bounds = {setting_menu.x + setting_menu.width * 0.6f, setting_menu.y + 5, setting_menu.width*0.3f, setting_menu.width*0.3f * 0.61f};
+    show_weight.bounds = {setting_menu.x + setting_menu.width * 0.6f, setting_menu.y + 10 + setting_menu.width*0.3f * 0.61f, setting_menu.width*0.3f, setting_menu.width*0.3f * 0.61f};
 }

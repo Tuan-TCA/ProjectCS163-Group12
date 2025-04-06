@@ -497,14 +497,14 @@ class AnimatedImageButton : public AnimatedButton{
 
 };
 
-class SwitchButton : public Button {
+class SwitchThemeButton : public Button {
 public:
     float switchPos;  
     bool isSwitching; 
     float switchSpeed; 
     
-    SwitchButton(){}
-    SwitchButton(float x, float y, float width, float height, const char* labelText, Color buttonColor, Color hoverCol, Color textCol)
+    SwitchThemeButton(){}
+    SwitchThemeButton(float x, float y, float width, float height, const char* labelText, Color buttonColor, Color hoverCol, Color textCol)
         : Button(x, y, width, height, labelText, buttonColor, hoverCol, textCol) {
         switchPos = 0.0f; 
         switchState = false; // is turning off
@@ -548,6 +548,54 @@ public:
     }
 };
 
+class SwitchButton : public Button {
+public:
+    float switchPos;  
+    bool isSwitching; 
+    float switchSpeed; 
+    bool isOpening = false;
+    SwitchButton(){}
+    SwitchButton(float x, float y, float width, float height, const char* labelText, Color buttonColor, Color hoverCol, Color textCol)
+        : Button(x, y, width, height, labelText, buttonColor, hoverCol, textCol) {
+        switchPos = 0.0f; 
+        isSwitching = false; 
+        switchSpeed = 0.05f;
+    }
+
+
+    void UpdateSwitch() {
+        Vector2 mousePos = GetMousePosition();
+       
+        if (IsClicked()) {
+            isOpening = !isOpening; 
+            isSwitching = true;  
+        }
+
+        if (isSwitching) {
+            if (isOpening && switchPos < 1.0f) {
+                switchPos += switchSpeed;
+                if (switchPos >= 1.0f) {
+                    switchPos = 1.0f;
+                    isSwitching = false; 
+                }
+            }
+            else if (!isOpening && switchPos > 0.0f) {
+                switchPos -= switchSpeed;
+                if (switchPos <= 0.0f) {
+                    switchPos = 0.0f;
+                    isSwitching = false;  
+                }
+            }
+        }
+    }
+
+    void Draw() override {
+        UpdateSwitch();
+        
+        DrawRectangleRounded(bounds, bounds.height / 2, 10, MyColor4);
+        DrawCircle(bounds.x + bounds.width * 0.3f +switchPos * (bounds.width - bounds.height), bounds.y + bounds.height / 2, bounds.height / 2 - 5, WHITE);
+    }
+};
 
 class Slider {
 public:

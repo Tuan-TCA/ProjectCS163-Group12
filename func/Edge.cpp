@@ -72,7 +72,7 @@ void Edge::Draw() {
         
         if(endEdge != end->position) DrawLineEx(start->position, endEdge, 4, targetColor);
     } 
-    DrawText(to_string(w).c_str(), (start->position.x + end->position.x + 20) / 2 , (start->position.y + end->position.y + 30) / 2 , 20, textColor);
+    if(isWeightVisible) DrawText(to_string(w).c_str(), (start->position.x + end->position.x + 20) / 2 , (start->position.y + end->position.y + 30) / 2 , 20, textColor);
 }
 
 bool Edge::isClicked(){

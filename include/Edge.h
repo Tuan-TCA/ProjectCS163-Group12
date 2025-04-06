@@ -15,7 +15,7 @@ public:
     bool doneAnimation;
     float duration; 
     Vector2 endEdge;
-
+    bool isWeightVisible = true;
     int kind_ani = 0;
     // bool isDisappearing;
     bool fullRED;

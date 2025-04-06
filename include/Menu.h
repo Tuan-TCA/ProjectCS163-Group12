@@ -7,7 +7,7 @@ using namespace std;
 class Menu
 {
 public:
-    SwitchButton SwitchTheme;
+    SwitchThemeButton SwitchTheme;
     vector<AnimatedImageButton> buttons1;
     vector<AnimatedImageButton> buttons2;
     Font font; 

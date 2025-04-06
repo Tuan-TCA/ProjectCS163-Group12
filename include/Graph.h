@@ -46,6 +46,7 @@ class Graph : public Page{
 
     //Setting
     Rectangle setting_menu;
+    SwitchThemeButton theme;
     SwitchButton show_weight;
     bool setting_IsOpening = false,
          setting_IsClosing = false;
