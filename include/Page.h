@@ -79,4 +79,5 @@ public:
     virtual void reset();
     virtual void updateSide();
     virtual void handleInput();
+    float Lerp(float start, float end, float amount);
 };

@@ -156,7 +156,7 @@ void Page::draw() {
     OperationPrevButton.Draw(Fade(MyColor7, 0.8f), MyColor7);
     OperationNextButton.Draw(Fade(MyColor7, 0.8f), MyColor7);
 }
-float Lerp(float start, float end, float amount) {
+float Page::Lerp(float start, float end, float amount) {
     return start + amount * (end - start);
 }
 

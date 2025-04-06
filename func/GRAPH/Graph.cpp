@@ -29,7 +29,7 @@ void Graph::init(){
     minDistance = 100.0f;
     got1stV = false;
     isAnimating = false;
-
+    setting_menu = Rectangle{screenWidth * 0.8f, screenHeight * 0.7f, screenWidth * 0.19f, screenHeight * 0.18f};
     tes = TextBox{500, 500, 100 , 100, "", WHITE, WHITE, BLACK};
 }
 
@@ -43,6 +43,9 @@ void Graph::draw(){
         v.Draw();
     }
 
+    //setting
+
+    DrawRectangleRounded(setting_menu, 0.42f, 30, MyColor3);
     //Algorithm
     if(currentOperation == Operation::Algorithm){
         AlgorithmOptionButton.Draw(LIGHTGRAY, WHITE);
@@ -97,16 +100,46 @@ void Graph::event(){
 
     
     if( currentOperation == Operation::Create && currentInput != InputType::File){
-        // textbox.bounds = Rectangle{side.x + 5, side.y + screenHeight*0.63f * 0.45f + 20 , screenWidth*0.25f - 100, screenHeight*0.63f * 0.15f};
-        // side.height = screenHeight*0.305f + screenHeight * 0.63f * 0.15f + 5;
         addFromTextbox();
-
     }
-    // else{
-    //     textbox.bounds = Rectangle{side.x + 5, side.y + screenHeight*0.63f * 0.3f + 15, screenWidth*0.25f - 100, screenHeight*0.63f * 0.15f};
-    //     side.height = screenHeight*0.305f;
-    // }
-    
+    float deltaTime = GetFrameTime();
+    Vector2 mousePos = GetMousePosition();
+    Rectangle targetPlace = Rectangle{screenWidth * 0.8f, screenHeight * 0.7f, screenWidth * 0.19f, screenHeight * 0.18f};
+    Rectangle closedPlace = Rectangle{(float) screenWidth * 0.99f, screenHeight * 0.7f, screenWidth * 0.19f, screenHeight * 0.18f};
+    Rectangle checkPlace = Rectangle{screenWidth * 0.9f, screenHeight * 0.7f, screenWidth * 0.5f, screenHeight * 0.18f};
+    float sideDuration = 0.1;
+        if (CheckCollisionPointRec(mousePos, targetPlace)) {
+        if(CheckCollisionPointRec(mousePos, checkPlace)){
+        setting_IsOpening = true;
+        setting_IsClosing = false;
+        animatingTime = 0;
+        }
+    } else {
+        setting_IsClosing = true;
+        setting_IsOpening = false;
+        animatingTime = 0;
+    }
+
+    if (setting_IsOpening) {
+        animatingTime += deltaTime;
+        float t = animatingTime / sideDuration;
+        if (t > 1.0f) {
+            t = 1.0f;
+            animatingTime = 0.0f;
+            setting_IsOpening = false;
+        }
+        setting_menu.x = Lerp(setting_menu.x, targetPlace.x, t); 
+    } else if (setting_IsClosing) {
+        animatingTime += deltaTime;
+        float t = animatingTime / sideDuration;
+        if (t > 1.0f) {
+            t = 1.0f;
+            animatingTime = 0.0f;
+            setting_IsClosing = false;
+        }
+        setting_menu.x = Lerp(setting_menu.x, closedPlace.x, t);
+    }
+   
     if(currentQueueIndex > arrayQueue.size()) isPlaying = false;
     //ALgorithm operation
     if(OperationOptions[selectedOperationIndex] == "ALGORITHM") currentOperation = Operation::Algorithm;
@@ -382,6 +415,7 @@ void Graph::addFromTextbox(){
 }
 
 
+
 void Graph::RANDOM_INPUT() {
     std::mt19937 rng(std::random_device{}());
 
@@ -390,40 +424,39 @@ void Graph::RANDOM_INPUT() {
             textbox.reset();
             std::uniform_int_distribution<int> vertexDist(5, 20);
             int numVertices = vertex_textbox.inputText.empty() || vertex_textbox.inputText[0].empty() ? vertexDist(rng) : stoi(vertex_textbox.inputText[0]);
-            if(vertex_textbox.inputText[0].empty()) vertex_textbox.inputText[0] = to_string(numVertices);
+            if (vertex_textbox.inputText[0].empty()) vertex_textbox.inputText[0] = to_string(numVertices);
 
-             int maxEdges = numVertices * (numVertices - 1) / 2;
-            std::uniform_int_distribution<int> edgeDist(0, maxEdges); 
+            int maxEdges = numVertices * (numVertices - 1) / 2;
+            std::uniform_int_distribution<int> edgeDist(0, maxEdges);
             int numEdges = 0;
             if (!edge_textbox.inputText.empty() && !edge_textbox.inputText[0].empty()) {
                 numEdges = stoi(edge_textbox.inputText[0]);
-            }
-            else {
+            } else {
                 numEdges = edgeDist(rng);
                 edge_textbox.inputText[0] = to_string(numEdges);
             }
-            std::uniform_int_distribution<int> weightDist(1, 10); 
-            std::uniform_real_distribution<double> probDist(0.0, 1.0);
+            std::uniform_int_distribution<int> weightDist(1, 10);
 
             std::vector<std::vector<int>> adjMatrix(numVertices, std::vector<int>(numVertices, 0));
             std::vector<std::string> lines;
             std::stringstream ss;
 
-
-            int targetEdges = min(numEdges, maxEdges);
-            int currentEdges = 0;
-
+            int targetEdges = std::min(numEdges, maxEdges);
+            std::vector<std::pair<int, int>> allPossibleEdges;
             for (int i = 0; i < numVertices; ++i) {
                 for (int j = i + 1; j < numVertices; ++j) {
-
-                    double probabilityOfEdge = (double)(targetEdges - currentEdges) / (maxEdges - (i * (i - 1) / 2 + j - i - 1));
-                    if (probDist(rng) < probabilityOfEdge && currentEdges < targetEdges) {
-                        int weight = weightDist(rng);
-                        adjMatrix[i][j] = weight;
-                        adjMatrix[j][i] = weight;
-                        currentEdges++;
-                    }
+                    allPossibleEdges.push_back({i, j});
                 }
+            }
+
+            std::shuffle(allPossibleEdges.begin(), allPossibleEdges.end(), rng);
+
+            for (int k = 0; k < std::min((int)allPossibleEdges.size(), targetEdges); ++k) {
+                int u = allPossibleEdges[k].first;
+                int v = allPossibleEdges[k].second;
+                int weight = weightDist(rng);
+                adjMatrix[u][v] = weight;
+                adjMatrix[v][u] = weight;
             }
 
             ss << numVertices;
@@ -547,22 +580,11 @@ void Graph::handleInput(){
     if(currentOperation == Operation::Create){
         if(vertex_textbox.active) vertex_textbox.HandleInput();
                 if(edge_textbox.active) edge_textbox.HandleInput();
-        switch (currentInput) {
-                case InputType::Random:
-                    if (InputOptionButton.IsClicked()) {
-                        std::mt19937 rng(std::random_device{}());
-                        std::uniform_int_distribution<int> dist(0, 999); 
-                        // vertex_textbox.inputText = {to_string(dist(rng))}; 
-                        // edge_textbox.inputText = {to_string(dist(rng))}; 
-                    }
-                    break;
-                case InputType::Keyboard:
-                    
-                    
-                    break;
-            }
     }
-    if(!edge_textbox.inputText.empty()) cout << edge_textbox.inputText[0] << endl;
+    if(Ok.IsClicked()) {
+        vertex_textbox.reset();
+        edge_textbox.reset();
+    }
 }
 
 void Graph::updateSide(){
