@@ -153,7 +153,7 @@ void LinkedList::draw() {
                     if (elapsedTime >= stepDuration && !animationController.IsFinished()) {
                         animationController.NextStep();
                         elapsedTime = 0.0f;            
-                        cout << animationController.currentStep << endl; 
+                        // cout << animationController.currentStep << endl; 
                     }
                 }
             }
@@ -191,7 +191,7 @@ void LinkedList::draw() {
                     if (elapsedTime >= stepDuration && !animationController.IsFinished()) {
                         animationController.NextStep(); 
                         elapsedTime = 0.0f;             
-                        cout << animationController.currentStep << endl; 
+                        // cout << animationController.currentStep << endl; 
                     }
                 }
             }
@@ -229,7 +229,7 @@ void LinkedList::draw() {
                     if (elapsedTime >= stepDuration && !animationController.IsFinished()) {
                         animationController.NextStep(); 
                         elapsedTime = 0.0f;             
-                        cout << animationController.currentStep << endl; 
+                        // cout << animationController.currentStep << endl; 
                     }
                 }
             }
@@ -267,7 +267,7 @@ void LinkedList::draw() {
                     if (elapsedTime >= stepDuration && !animationController.IsFinished()) {
                         animationController.NextStep(); 
                         elapsedTime = 0.0f;             
-                        cout << animationController.currentStep << endl; 
+                        // cout << animationController.currentStep << endl; 
                     }
                 }
             }

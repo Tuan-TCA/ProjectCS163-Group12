@@ -215,7 +215,7 @@ public:
                 } else {
                     visibleText = "";
                 }
-                // cout << visibleText << endl;
+     
                 if (i == currentIndex) {
                     cursorPositionInVisibleText = subIndex - startColumnIndex;
                     if (cursorPositionInVisibleText < 0 || cursorPositionInVisibleText > visibleText.size()) {

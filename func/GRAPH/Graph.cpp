@@ -180,14 +180,11 @@ void Graph::event(){
     if(AlgorithmOptions[selectedAlgorithmIndex] == "MST") currentALgorithm = Algorithm::MST;
     if(AlgorithmOptions[selectedAlgorithmIndex] == "Connected\nComponents") currentALgorithm = Algorithm::CC;
     
-    // if(currentALgorithm == Algorithm::BFS) cout << "bfs" << endl;
-    // if(currentALgorithm == Algorithm::MST) cout << "mst" << endl;
     //vertex
     for(auto& v: vertex){
         if(IsMouseButtonDown(MOUSE_LEFT_BUTTON)){
             if(CheckCollisionPointCircle(GetMousePosition(), v.position, v.radius) || v.isPressing){
                 v.position = GetMousePosition();
-                // cout << v.position.x / screenWidth << " - " << v.position.y / screenHeight << endl;
                 v.isPressing = true;
             }
         }
@@ -296,7 +293,6 @@ void Graph::event(){
 
 
    handleChoice();
-    // cout << currentIndex << endl
    
 }
 void Graph::handleChoice(){
@@ -393,7 +389,6 @@ void Graph::addFromMatrix(){
         }
         vertex_.position.x =  newPosX;
         vertex_.position.y =  newPosY;    
-         cout << "Vertex " << i << " position: (" << vertex_.position.x << ", " << vertex_.position.y << ")" << endl;
         vertex[i] = vertex_;
         
     }
@@ -409,10 +404,6 @@ void Graph::addFromMatrix(){
     }
 
     if(currentALgorithm == Algorithm::MST) dsu.init(vertex.size()); // init dsu with n sets
-    cout << "EDGE: " << endl;
-    for(auto& e: edge){
-        e.print();
-    }
 }
 
 void Graph::addFromTextbox(){
@@ -515,7 +506,6 @@ void Graph::FILE_INPUT(){
         ifstream fin(filePath);
         if(!fin.is_open()) cout << "Cannot open dropped file";
         else{
-            cout << "File path: " << filePath << endl;
             reset(); // reset graph;
             textbox.reset();
             matrix.clear();
@@ -525,7 +515,6 @@ void Graph::FILE_INPUT(){
             for(int i = 0; i < n; i ++){
                 for(int j = 0; j < n; j++){
                     fin >> matrix[i][j];
-                    cout << "matrix[" << i << "][" << j << "] = " << matrix[i][j] << endl;
                 }
             }     
             fin.close();

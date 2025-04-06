@@ -91,7 +91,6 @@ void HashTableChaining::DrawHashTable() {
         (float)spacing * (tableSize)
     };
     bucket_color = MyColor6;
-    cout << bucket.x << " " << bucket.y << endl;
     DrawRectangleRec(bucket, bucket_color);
     //DrawRectangleLines(bucket.x, bucket.y, bucket.width, bucket.height, BLACK);
     for (int i = 0; i < tableSize; ++i) {
@@ -491,25 +490,24 @@ void HashTableChaining::RANDOM_INPUT(){
 
             for (int i = 0; i < size; ++i) {
                 int num = value(rng);
-                // Ensure uniqueness of the number
+        
                 while (find(Values.begin(), Values.end(), num) != Values.end()) {
                     num = value(rng);
                 }
-                Values.push_back(num);  // Add the unique number to the vector
+                Values.push_back(num);  
             }
 
-            // Convert the number of buckets to string
+         
             ss << numBucket;
             lines.push_back(ss.str());
-            ss.str("");  // Clear the stringstream
+            ss.str("");  
 
-            // Convert each value to string and add to lines
+          
             for (int i = 0; i < Values.size(); ++i) {
                 ss << Values[i] << " ";
             }
             lines.push_back(ss.str());
-            cout << ss.str() << endl;
-            ss.str("");  // Clear the stringstream again
+            ss.str("");  
             
             textbox.inputText = lines;
             

@@ -17,7 +17,7 @@ void Program::init(){
 }
 void Program::run() {
     init();
-    //cout<<1;
+
     while(!WindowShouldClose()) {
         BeginDrawing();
         ClearBackground(RAYWHITE);
@@ -60,7 +60,6 @@ void Program::event() {
     else if(mode == MODE::LL) {
         // Linked List
         LL.event();
-        //cout<<"K";
     }
     else if (mode == MODE::HASHTB) {
         hashtable.event();
