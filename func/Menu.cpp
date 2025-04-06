@@ -2,7 +2,7 @@
 #include "Variables.h"
 
 void Menu::init() {
-    SwitchTheme = SwitchButton(screenWidth*0.9f, screenHeight*0.016f, screenWidth*0.082f, screenWidth*0.05f, "", MyColor1, MyColor1, WHITE);
+    SwitchTheme = SwitchThemeButton(screenWidth*0.9f, screenHeight*0.016f, screenWidth*0.082f, screenWidth*0.05f, "", MyColor1, MyColor1, WHITE);
     font = LoadFont("res/font/romulus.png");
     buttons1.push_back(AnimatedImageButton("res/button/Menu/1_LL.png", screenWidth * 0.1f, screenHeight * 0.4, screenWidth * 0.18, screenWidth * 0.18 / 0.844f));
     buttons1.push_back(AnimatedImageButton("res/button/Menu/1_HT.png", screenWidth * 0.3f, screenHeight * 0.4, screenWidth * 0.18, screenWidth * 0.18 / 0.844f));

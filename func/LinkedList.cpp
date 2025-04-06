@@ -29,6 +29,20 @@ void LinkedList::init(){
     isDeleting = false;
     isUpdating = false;
 }
+void LinkedList::reset(){
+    Page::reset();
+     while (head){
+        Node * tmp = head;
+        head = head->next;
+        delete tmp;
+    }
+    head = nullptr;
+    workplace = {400,300,600,600};
+    isInserting = false;
+    isSearching = false;
+    isDeleting = false;
+    isUpdating = false;
+}
 
 void LinkedList::event() {
     Page::event();
@@ -139,7 +153,7 @@ void LinkedList::draw() {
                     if (elapsedTime >= stepDuration && !animationController.IsFinished()) {
                         animationController.NextStep();
                         elapsedTime = 0.0f;            
-                        cout << animationController.currentStep << endl; 
+                        // cout << animationController.currentStep << endl; 
                     }
                 }
             }
@@ -177,7 +191,7 @@ void LinkedList::draw() {
                     if (elapsedTime >= stepDuration && !animationController.IsFinished()) {
                         animationController.NextStep(); 
                         elapsedTime = 0.0f;             
-                        cout << animationController.currentStep << endl; 
+                        // cout << animationController.currentStep << endl; 
                     }
                 }
             }
@@ -215,7 +229,7 @@ void LinkedList::draw() {
                     if (elapsedTime >= stepDuration && !animationController.IsFinished()) {
                         animationController.NextStep(); 
                         elapsedTime = 0.0f;             
-                        cout << animationController.currentStep << endl; 
+                        // cout << animationController.currentStep << endl; 
                     }
                 }
             }
@@ -253,7 +267,7 @@ void LinkedList::draw() {
                     if (elapsedTime >= stepDuration && !animationController.IsFinished()) {
                         animationController.NextStep(); 
                         elapsedTime = 0.0f;             
-                        cout << animationController.currentStep << endl; 
+                        // cout << animationController.currentStep << endl; 
                     }
                 }
             }

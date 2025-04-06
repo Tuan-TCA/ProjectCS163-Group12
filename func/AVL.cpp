@@ -321,15 +321,15 @@ void AVL::insert(int key, TreeNode*& root, TreeNode* parent) {
 
 void AVL::drawStep(AVLpaint a, int Found) {
 
-    pseudocodeX = 20;
-    pseudocodeY = 500;
-    lineHeight = 30;
+     pseudocodeX = codeDisplayPLace.x  + 5;
+    pseudocodeY = codeDisplayPLace.y  + 10;
+    
     FONT = GetFontDefault();
     
     Color highlightColor = Color{255, 222, 89, 255};
     Color textColor = MyColor4;
-    
-    Vector2 maxWidth = {0,0};
+
+    Vector2 maxWidth = {0 ,0};
     if(currentOperation != Operation::Algorithm) {
         // Tìm dòng dài nhất để làm kích thước chuẩn
         
@@ -337,6 +337,7 @@ void AVL::drawStep(AVLpaint a, int Found) {
             Vector2 lineWidth = MeasureTextEx(FONT, line.c_str(), 20, 3);
             if(lineWidth.x > maxWidth.x) maxWidth = lineWidth;
         }
+        textWidth = maxWidth.x ;
 
         for(size_t i = 0; i < pseudocode.size(); ++i) {
             // Vẽ highlight cho toàn bộ chiều rộng
@@ -593,6 +594,17 @@ void AVL::event() {
             textbox.inputText = {""};
         }
     }
+    
+     if(currentOperation != Operation::Create){
+        isClosingCodePlace = false;
+        isExpandingCodePlace = true;
+        animatingTime = 0;
+    }
+    else{
+        isClosingCodePlace = true;
+        isExpandingCodePlace = false;
+        animatingTime = 0;
+    }
 
     static Operation lastOp = Operation::Algorithm;
     if(currentOperation != lastOp) {
@@ -730,7 +742,27 @@ void AVL::init() {
     cur = -1;
     curCode = -1;
     pseudocode = {};
-       
+    lineHeight = 30;
+}
+void AVL::reset(){
+    Page::reset();
+        root = nullptr;
+    workplace = {screenWidth*0.24f,screenHeight*0.2f,(float) screenWidth *(1-0.24f),screenHeight*(1-0.095f)};
+    rootPos= {workplace.x + workplace.width / 2, workplace.y};      
+    
+    steps.clear();
+
+    isInserting = false;
+    isSearching = false;
+    isDeleting = false;
+    isUpdating = false;
+    isCreating = false;
+
+    hasInsert = false;
+    hasSearch = false;
+    hasDelete = false;
+
+    cur = -1;
 }
 
 void AVL::DestroyRecursive(TreeNode* node)

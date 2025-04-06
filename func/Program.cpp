@@ -17,7 +17,7 @@ void Program::init(){
 }
 void Program::run() {
     init();
-    //cout<<1;
+
     while(!WindowShouldClose()) {
         BeginDrawing();
         ClearBackground(RAYWHITE);
@@ -43,23 +43,16 @@ void Program::event() {
         //init LinkedList
         if(x == 1) {
             mode = MODE::LL;
-            // std::cout<<"Linked list"; 
-            LL.init();
         }
         else if(x == 2) {
             mode = MODE::HASHTB;
-            hashtable.init();
-            
         }
         else if(x == 3) {
             mode = MODE::AVL;
-            avl.init();
             
         }
         else if(x == 4) {
             mode = MODE::GRAPH;
-            graph.init();
-            
         }
     }
 
@@ -67,7 +60,6 @@ void Program::event() {
     else if(mode == MODE::LL) {
         // Linked List
         LL.event();
-        //cout<<"K";
     }
     else if (mode == MODE::HASHTB) {
         hashtable.event();

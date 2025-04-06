@@ -77,16 +77,19 @@ void Page::init() {
     textbox = TextBox(side.x + 5, side.y + screenHeight*0.63f * 0.3f + 15, screenWidth*0.25f - 100, screenHeight*0.63f * 0.15f, "", WHITE, WHITE, BLACK);
     oldTextBox = TextBox(side. x + 5, side.y + screenHeight*0.63f * 0.36f, screenWidth*0.08, screenHeight*0.63f * 0.11f, "", WHITE, WHITE, BLACK);
     newTextBox = TextBox(side.x + screenWidth*0.08f + 10, side.y + screenHeight*0.63f * 0.36f, screenWidth*0.08, screenHeight*0.63f * 0.11f, "", WHITE, WHITE, BLACK);
+    textbox.resetTextbox();
+    lineHeight = 20.0f;
 }
 
 void Page::reset(){
-    currentOperation = Operation::Insert;
-    currentInput = InputType::Random;
-    selectedInputIndex = 0;
-    selectedOperationIndex = 0;
+    isExpanding             = false;
+    isExpandingCodePlace    = false;
+    isClosingCodePlace      = false;
+    isExpandingSide         = false;
+    isClosingSide           = false;
+    selectedInputIndex      = 0;
+    selectedOperationIndex  = 0;
     textbox.reset();
-    oldTextBox.reset();
-    newTextBox.reset();
 }
 
 void Page::draw() {
@@ -156,7 +159,7 @@ void Page::draw() {
     OperationPrevButton.Draw(Fade(MyColor7, 0.8f), MyColor7);
     OperationNextButton.Draw(Fade(MyColor7, 0.8f), MyColor7);
 }
-float Lerp(float start, float end, float amount) {
+float Page::Lerp(float start, float end, float amount) {
     return start + amount * (end - start);
 }
 
@@ -174,40 +177,30 @@ void Page::event() {
     pseudocodeX = codeDisplayPLace.x  + 5;
     pseudocodeY = codeDisplayPLace.y  + 10;
     
-    float textWidth = 0;
-    for(auto& e: pseudocode){
-        textWidth = max(textWidth,(float) MeasureText(e.c_str(), 10));
-    }
-    Rectangle targetPlace1 = codeDisplayPLace;
-    targetPlace1.height = pseudocode.size() * lineHeight + 10;
-    targetPlace1.width = textWidth * 1.3f;
-    Rectangle deltaRec = targetPlace1 - codeDisplayPLace;
-    if(deltaRec != Rectangle{0,0,0,0}) isExpanding = true;
-    if(isExpanding){
-    animatingTime += deltaTime;
-    float t = animatingTime / 0.2f;
-    if(t > 1){
-        t = 1;
-        isExpanding = false;
-        animatingTime = 0;
-    }
-    codeDisplayPLace = codeDisplayPLace + deltaRec * t;
-    }
+    
+    cout << lineHeight << endl;
+    //animation thui
+            Rectangle targetPlace1 = codeDisplayPLace;
+            targetPlace1.height = pseudocode.size() * lineHeight + 10;
+            targetPlace1.width = textWidth * 1.02f;
+            Rectangle deltaRec = targetPlace1 - codeDisplayPLace;
+            if(deltaRec != Rectangle{0,0,0,0}) isExpanding = true;
+            if(isExpanding){
+            animatingTime += deltaTime;
+            float t = animatingTime / 0.2f;
+            if(t > 1){
+                t = 1;
+                isExpanding = false;
+                animatingTime = 0;
+            }
+            codeDisplayPLace = codeDisplayPLace + deltaRec * t;
+            }
     // TỰ LÀM PHẦN HIGHLIGHT!!!! tham khảo Graph.draw() && psuedo code thi tuy phan
 
     //Code box event
     Rectangle targetCodePlace = Rectangle{screenWidth * 0.01f, screenHeight * 0.56f, screenWidth * 0.24f - 12.0f, screenHeight * 0.35f};
     Rectangle closeCodePlace = Rectangle{-codeDisplayPLace.width, screenHeight * 0.56f, screenWidth * 0.24f - 12.0f, screenHeight * 0.35f};
-    if(currentOperation == Operation::Algorithm){
-        isClosingCodePlace = false;
-        isExpandingCodePlace = true;
-        animatingTime = 0;
-    }
-    else{
-        isClosingCodePlace = true;
-        isExpandingCodePlace = false;
-        animatingTime = 0;
-    }
+
 
     if(isExpandingCodePlace){
         animatingTime += deltaTime;
@@ -234,7 +227,7 @@ void Page::event() {
     
     float sideDuration =0.2f; 
     Vector2 mousePos = GetMousePosition();
-    Rectangle targetPlace = Rectangle{0, screenHeight / 2 - screenHeight * 0.64f / 2, screenWidth * 0.24f, screenHeight * 0.32f}; 
+    Rectangle targetPlace = Rectangle{0, screenHeight / 2 - screenHeight * 0.64f / 2, screenWidth * 0.24f, screenHeight * 0.45f}; 
     Rectangle closedPlace = Rectangle{-side.width, screenHeight / 2 - screenHeight * 0.64f / 2, screenWidth * 0.24f, screenHeight * 0.32f}; 
     Rectangle sidePlace = Rectangle{0,screenHeight / 2 - screenHeight * 0.64f / 2,screenWidth*0.12f,screenHeight*0.32f};
     if (CheckCollisionPointRec(mousePos, targetPlace)) {
@@ -296,15 +289,13 @@ void Page::event() {
    if (OperationPrevButton.IsClicked()) {
         textbox.reset();
         selectedOperationIndex = (selectedOperationIndex - 1 + OperationOptions.size()) % OperationOptions.size();
-        OperationOptionButton.label = OperationOptions[selectedOperationIndex].c_str(); 
     }
 
     if (OperationNextButton.IsClicked()) {
         textbox.reset();
         selectedOperationIndex = (selectedOperationIndex + 1) % OperationOptions.size();
-        OperationOptionButton.label = OperationOptions[selectedOperationIndex].c_str(); 
     }
-
+     OperationOptionButton.label = OperationOptions[selectedOperationIndex].c_str(); 
     if(OperationOptions[selectedOperationIndex] == "INSERT") currentOperation = Operation::Insert;
     if(OperationOptions[selectedOperationIndex] == "CREATE") currentOperation = Operation::Create;
     if(OperationOptions[selectedOperationIndex] == "SEARCH") currentOperation = Operation::Search;
@@ -312,14 +303,7 @@ void Page::event() {
     if(OperationOptions[selectedOperationIndex] == "DELETE") currentOperation = Operation::Delete;
 
     //INPUT Event
-    if(currentOperation != Operation::Update){
         textbox.update();
-    }
-    else{
-        oldTextBox.update();
-        newTextBox.update();
-       
-    }
     handleInput();
 
     if (InputPrevButton.IsClicked()) {
@@ -328,7 +312,7 @@ void Page::event() {
             if(selectedInputIndex == 2) selectedInputIndex = 1;
             
         }
-        InputOptionButton.label = InputOptions[selectedInputIndex].c_str(); 
+        
     }
 
     if (InputNextButton.IsClicked()) {
@@ -336,9 +320,8 @@ void Page::event() {
         if(currentOperation != Operation::Insert && currentOperation != Operation::Create){
             if(selectedInputIndex == 2) selectedInputIndex = 0;
         }
-         InputOptionButton.label = InputOptions[selectedInputIndex].c_str(); 
     }
-
+    InputOptionButton.label = InputOptions[selectedInputIndex].c_str(); 
     if (InputOptions[selectedInputIndex] == "KEYBOARD") currentInput = InputType::Keyboard;
     if (InputOptions[selectedInputIndex] == "RANDOM") currentInput = InputType::Random;
     if (InputOptions[selectedInputIndex] == "FILE") currentInput = InputType::File;

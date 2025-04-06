@@ -34,7 +34,7 @@ void Edge::Update(float deltaTime){
         }
         if(kind_ani == 0){
             animationTime += deltaTime;
-            float t = animationTime / (duration / animationSpeed);
+            float t = animationTime / (0.6  / animationSpeed);
             if(t > 1) {
                 t = 1; 
                 animationTime = 0;
@@ -72,7 +72,7 @@ void Edge::Draw() {
         
         if(endEdge != end->position) DrawLineEx(start->position, endEdge, 4, targetColor);
     } 
-    DrawText(to_string(w).c_str(), (start->position.x + end->position.x + 20) / 2 , (start->position.y + end->position.y + 30) / 2 , 20, textColor);
+    if(isWeightVisible) DrawText(to_string(w).c_str(), (start->position.x + end->position.x + 20) / 2 , (start->position.y + end->position.y + 30) / 2 , 20, textColor);
 }
 
 bool Edge::isClicked(){
@@ -92,6 +92,7 @@ void Edge::SetColor(){ // after having done an animation
     this->color = targetColor;
     doneAnimation = true;
     // isDisappearing = false;
+    animationTime = 0;
     fullRED = false;
 }
 
@@ -104,5 +105,6 @@ void Edge::reset(){ // before ...
     doneAnimation = false;
     // isDisappearing = false;
     fullRED= false;
+    // kind_ani = 0;
 }
 

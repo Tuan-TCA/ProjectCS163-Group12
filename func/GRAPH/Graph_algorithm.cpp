@@ -21,7 +21,6 @@ Vertex* Graph::getFirstVertexClicked(){
         } 
         if(!textbox.nums.empty()){ // Or get from textbox
             int value = textbox.nums[0];
-            cout << value << endl;
             textbox.nums.erase(textbox.nums.begin());
             if(v.value == value){
                 got1stV = true;
@@ -54,7 +53,6 @@ Vertex* Graph::findVertex(int value){
 
 // BREADTH FIRST SEARCH
 void Graph::bfs(Vertex* source) {
-    // cout << "bfs\n";
     int n = matrix.size();
     if (n == 0) return;
     arrayQueue.clear();
@@ -91,8 +89,6 @@ void Graph::bfs(Vertex* source) {
                         edgeStorage.push_back(e);
                         e->targetColor = ORANGE; // set edge's color
                         visitedEdge.insert(e);
-                        // e->print();
-                        // cout << "yes\n"; 
                     }
                     q.push(nextVertex);
                 
@@ -119,11 +115,6 @@ void Graph::bfs(Vertex* source) {
         }
 
         
-    }
-    int i = 0;
-    for (auto& elem : arrayQueue) {
-        cout << "Index " << i++ << endl;
-        for(auto& s: elem) s->print();
     }
 }
 

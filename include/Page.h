@@ -57,6 +57,7 @@ public:
     TextBox oldTextBox;
     TextBox newTextBox;
     
+    float textWidth = 0;
     Rectangle workplace = {screenWidth * 0.28f, screenHeight * 0.14f, screenWidth * 0.68f, screenHeight * 0.72f};
     bool isExpanding = false;
     bool isExpandingCodePlace = false;
@@ -70,7 +71,7 @@ public:
     //code state
     vector<string> pseudocode;
     float pseudocodeX, pseudocodeY;
-    float lineHeight = 20.0f;
+    float lineHeight;
     Rectangle codeDisplayPLace;
 
     virtual void init();
@@ -78,5 +79,6 @@ public:
     virtual void event();
     virtual void reset();
     virtual void updateSide();
-    void handleInput();
+    virtual void handleInput();
+    float Lerp(float start, float end, float amount);
 };

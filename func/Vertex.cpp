@@ -4,7 +4,7 @@ void Vertex::Update(float deltaTime){
     if(isAnimating){
         animationTime += deltaTime;
         if(!fullColor){
-            float t = animationTime / (duration / 2.0 / animationSpeed);
+            float t = animationTime / (0.6 / 2.0 / animationSpeed);
             if(t > 1) {
                 t = 1; 
                 animationTime = 0;
@@ -15,7 +15,7 @@ void Vertex::Update(float deltaTime){
             ringColor = ColorLerp(ringColor, targetColor, t);
         }
         else{
-            float t = animationTime / (duration / 2.0 / animationSpeed);
+            float t = animationTime / (0.6  / 2.0 / animationSpeed);
             if(t > 1) {
                 t = 1; 
                 animationTime = 0;

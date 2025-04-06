@@ -44,6 +44,13 @@ class Graph : public Page{
     Button AlgorithmPrevButton; 
     Button AlgorithmNextButton;
 
+    //Setting
+    Rectangle setting_menu;
+    SwitchThemeButton theme;
+    SwitchButton show_weight;
+    bool setting_IsOpening = false,
+         setting_IsClosing = false;
+
     bool added;
     vector<Vertex> vertex;
     vector<Edge> edge;
@@ -56,8 +63,10 @@ class Graph : public Page{
     float duration;
     bool isAnimating;
     int currentQueueIndex;
+    TextBox vertex_textbox;
+    TextBox edge_textbox;
 
-
+    TextBox tes;
     //bfs
     bool got1stV;
     bool AlgoCalled = false;
@@ -92,6 +101,6 @@ class Graph : public Page{
     void addFromTextbox();
     void FILE_INPUT() override;
     void RANDOM_INPUT() override; 
-    void HandleInput();
+    void handleInput() override;
     void updateSide() override;
 };
