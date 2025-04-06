@@ -51,6 +51,7 @@ void Graph::draw(){
     }
 
     if (currentOperation == Operation::Create && currentInput != InputType::File) {
+            DrawRectangle(vertex_textbox.bounds.x - 5, vertex_textbox.bounds.y - 5 - 20, 5 + 5 + 5 + vertex_textbox.bounds.width * 2, 10 + 20 + vertex_textbox.bounds.height, MyColor3);
             DrawTextEx(FONT, "V = ", {vertex_textbox.bounds.x + vertex_textbox.bounds.width /2 - 20, vertex_textbox.bounds.y - 20}, 20, 2, WHITE);
             DrawTextEx(FONT ,"E = ", {edge_textbox.bounds.x + edge_textbox.bounds.width / 2 - 20, edge_textbox.bounds.y - 20}, 20, 2, WHITE);
               
@@ -408,14 +409,13 @@ void Graph::RANDOM_INPUT() {
             std::vector<std::string> lines;
             std::stringstream ss;
 
-            // Số cạnh tối đa trong đồ thị vô hướng đơn giản
+
             int targetEdges = min(numEdges, maxEdges);
             int currentEdges = 0;
 
-            // Tạo ma trận kề ngẫu nhiên với số lượng cạnh gần đúng
             for (int i = 0; i < numVertices; ++i) {
                 for (int j = i + 1; j < numVertices; ++j) {
-                    // Quyết định thêm cạnh hay không dựa trên tỷ lệ
+
                     double probabilityOfEdge = (double)(targetEdges - currentEdges) / (maxEdges - (i * (i - 1) / 2 + j - i - 1));
                     if (probDist(rng) < probabilityOfEdge && currentEdges < targetEdges) {
                         int weight = weightDist(rng);
@@ -570,6 +570,6 @@ void Graph::updateSide(){
     AlgorithmOptionButton.bounds =Rectangle{side.x + (side.x + side.width) * 0.15f, side.y + screenHeight*0.63f * 0.15f + 10 , screenWidth*0.24f * 0.7f, screenHeight*0.63f * 0.15f};
     AlgorithmPrevButton.bounds = Rectangle{side.x + 5,side.y + screenHeight*0.63f * 0.15f + 10 ,  screenWidth*0.24f * 0.15f - 10, screenHeight*0.63f * 0.15f}; 
     AlgorithmNextButton.bounds = Rectangle{side.x + (side.x + side.width) * 0.85f + 5, side.y + screenHeight*0.63f * 0.15f + 10,  screenWidth*0.24f * 0.15f - 10, screenHeight*0.63f * 0.15f};
-    vertex_textbox.bounds = {side.x + 5, side.y + screenHeight*0.63f * 0.51f, screenWidth*0.08f, screenHeight*0.63f * 0.11f};
-    edge_textbox.bounds = {side.x + screenWidth*0.08f + 10, side.y + screenHeight*0.63f * 0.51f, screenWidth*0.08f, screenHeight*0.63f * 0.11f};
+    vertex_textbox.bounds = {side.x + 5, side.y + screenHeight*0.63f * 0.54f, screenWidth*0.08f, screenHeight*0.63f * 0.11f};
+    edge_textbox.bounds = {side.x + screenWidth*0.08f + 10, side.y + screenHeight*0.63f * 0.54f, screenWidth*0.08f, screenHeight*0.63f * 0.11f};
 }
