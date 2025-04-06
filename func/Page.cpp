@@ -182,7 +182,7 @@ void Page::event() {
     //animation thui
             Rectangle targetPlace1 = codeDisplayPLace;
             targetPlace1.height = pseudocode.size() * lineHeight + 10;
-            targetPlace1.width = textWidth * 1.3f;
+            targetPlace1.width = textWidth * 1.02f;
             Rectangle deltaRec = targetPlace1 - codeDisplayPLace;
             if(deltaRec != Rectangle{0,0,0,0}) isExpanding = true;
             if(isExpanding){

@@ -337,7 +337,7 @@ void AVL::drawStep(AVLpaint a, int Found) {
             Vector2 lineWidth = MeasureTextEx(FONT, line.c_str(), 20, 3);
             if(lineWidth.x > maxWidth.x) maxWidth = lineWidth;
         }
-        textWidth = maxWidth.x * 0.9f;
+        textWidth = maxWidth.x ;
 
         for(size_t i = 0; i < pseudocode.size(); ++i) {
             // Vẽ highlight cho toàn bộ chiều rộng

@@ -70,11 +70,11 @@ void Graph::draw(){
     }
     //code state
         for(auto& e: pseudocode){
-        textWidth = max(textWidth,(float) MeasureText(e.c_str(), 10));
-    }
+        textWidth = max(textWidth,(float) MeasureTextEx(FONT, e.c_str(),  10, 2).x);
+        }
     Color highlightColor = Color{255, 222, 89, 255};
      if(isAnimating || currentOperation == Operation::Algorithm){
-    for (size_t i = 0; i < pseudocode.size(); ++i) {
+    for (int i = 0; i < pseudocode.size(); ++i) {
         Color currentColor = highlightColor;
         if(!StepQueue.empty() && find(StepQueue[currentQueueIndex].begin(), StepQueue[currentQueueIndex].end(), i) != StepQueue[currentQueueIndex].end()){
             currentColor.a = 255;
