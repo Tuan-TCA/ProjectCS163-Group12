@@ -381,62 +381,72 @@ void Graph::addFromTextbox(){
 }
 
 
-
 void Graph::RANDOM_INPUT() {
     std::mt19937 rng(std::random_device{}());
-    
-    switch (currentOperation) {
 
+    switch (currentOperation) {
         case Operation::Create: {
             textbox.reset();
-            std::uniform_int_distribution<int> vertexDist(5, 20); 
-            int numVertices = vertexDist(rng);
-           std::uniform_int_distribution<int> fullWeightDist(0, 10);
-            std::uniform_real_distribution<double> zeroProbDist(0.0, 1.0);
-            double probabilityOfZero = 0.6; // 60 % to  get 0
+            std::uniform_int_distribution<int> vertexDist(5, 20);
+            int numVertices = vertex_textbox.inputText.empty() || vertex_textbox.inputText[0].empty() ? vertexDist(rng) : stoi(vertex_textbox.inputText[0]);
+            if(vertex_textbox.inputText[0].empty()) vertex_textbox.inputText[0] = to_string(numVertices);
+
+             int maxEdges = numVertices * (numVertices - 1) / 2;
+            std::uniform_int_distribution<int> edgeDist(0, maxEdges); 
+            int numEdges = 0;
+            if (!edge_textbox.inputText.empty() && !edge_textbox.inputText[0].empty()) {
+                numEdges = stoi(edge_textbox.inputText[0]);
+            }
+            else {
+                numEdges = edgeDist(rng);
+                edge_textbox.inputText[0] = to_string(numEdges);
+            }
+            std::uniform_int_distribution<int> weightDist(1, 10); 
+            std::uniform_real_distribution<double> probDist(0.0, 1.0);
 
             std::vector<std::vector<int>> adjMatrix(numVertices, std::vector<int>(numVertices, 0));
             std::vector<std::string> lines;
             std::stringstream ss;
 
+            // Số cạnh tối đa trong đồ thị vô hướng đơn giản
+            int targetEdges = min(numEdges, maxEdges);
+            int currentEdges = 0;
+
+            // Tạo ma trận kề ngẫu nhiên với số lượng cạnh gần đúng
             for (int i = 0; i < numVertices; ++i) {
-                for (int j = i; j < numVertices; ++j) {
-                    if (i == j) {
-                        adjMatrix[i][j] = 0;
-                    } else {
-                        if (zeroProbDist(rng) < probabilityOfZero) {
-                            adjMatrix[i][j] = 0;
-                        } else {
-                            adjMatrix[i][j] = fullWeightDist(rng);
-                        }
-                        adjMatrix[j][i] = adjMatrix[i][j];
+                for (int j = i + 1; j < numVertices; ++j) {
+                    // Quyết định thêm cạnh hay không dựa trên tỷ lệ
+                    double probabilityOfEdge = (double)(targetEdges - currentEdges) / (maxEdges - (i * (i - 1) / 2 + j - i - 1));
+                    if (probDist(rng) < probabilityOfEdge && currentEdges < targetEdges) {
+                        int weight = weightDist(rng);
+                        adjMatrix[i][j] = weight;
+                        adjMatrix[j][i] = weight;
+                        currentEdges++;
                     }
                 }
             }
 
-        //    matrix = adjMatrix;
             ss << numVertices;
             lines.push_back(ss.str());
-            ss.str(""); 
+            ss.str("");
 
             for (int i = 0; i < numVertices; ++i) {
                 for (int j = 0; j < numVertices; ++j) {
                     ss << adjMatrix[i][j] << (j == numVertices - 1 ? "" : " ");
                 }
                 lines.push_back(ss.str());
-                ss.str(""); 
+                ss.str("");
             }
 
             textbox.inputText = lines;
             textbox.SubIndex.clear();
             for (const auto& line : lines) {
-                textbox.SubIndex.push_back(line.length()); 
+                textbox.SubIndex.push_back(line.length());
             }
             textbox.currentIndex = 0;
             break;
         }
         default:
-        // Page::handleInput();
             break;
     }
 }
@@ -535,19 +545,20 @@ void Graph::handleInput(){
         textbox.HandleInput();
     }
     if(currentOperation == Operation::Create){
+        if(vertex_textbox.active) vertex_textbox.HandleInput();
+                if(edge_textbox.active) edge_textbox.HandleInput();
         switch (currentInput) {
                 case InputType::Random:
                     if (InputOptionButton.IsClicked()) {
                         std::mt19937 rng(std::random_device{}());
                         std::uniform_int_distribution<int> dist(0, 999); 
-                        vertex_textbox.inputText = {to_string(dist(rng))}; 
-                        edge_textbox.inputText = {to_string(dist(rng))}; 
+                        // vertex_textbox.inputText = {to_string(dist(rng))}; 
+                        // edge_textbox.inputText = {to_string(dist(rng))}; 
                     }
                     break;
                 case InputType::Keyboard:
                     
-                    if(vertex_textbox.active) vertex_textbox.HandleInput();
-                    if(edge_textbox.active) edge_textbox.HandleInput();
+                    
                     break;
             }
     }
