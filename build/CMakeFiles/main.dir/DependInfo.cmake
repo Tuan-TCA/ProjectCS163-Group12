@@ -8,19 +8,19 @@ set(CMAKE_DEPENDS_LANGUAGES
 
 # The set of dependency files which are needed:
 set(CMAKE_DEPENDS_DEPENDENCY_FILES
-  "D:/Project/PROJECT163/testtest/func/AVL.cpp" "CMakeFiles/main.dir/func/AVL.cpp.obj" "gcc" "CMakeFiles/main.dir/func/AVL.cpp.obj.d"
-  "D:/Project/PROJECT163/testtest/func/Edge.cpp" "CMakeFiles/main.dir/func/Edge.cpp.obj" "gcc" "CMakeFiles/main.dir/func/Edge.cpp.obj.d"
-  "D:/Project/PROJECT163/testtest/func/GRAPH/Graph.cpp" "CMakeFiles/main.dir/func/GRAPH/Graph.cpp.obj" "gcc" "CMakeFiles/main.dir/func/GRAPH/Graph.cpp.obj.d"
-  "D:/Project/PROJECT163/testtest/func/GRAPH/Graph_algorithm.cpp" "CMakeFiles/main.dir/func/GRAPH/Graph_algorithm.cpp.obj" "gcc" "CMakeFiles/main.dir/func/GRAPH/Graph_algorithm.cpp.obj.d"
-  "D:/Project/PROJECT163/testtest/func/HashTB.cpp" "CMakeFiles/main.dir/func/HashTB.cpp.obj" "gcc" "CMakeFiles/main.dir/func/HashTB.cpp.obj.d"
-  "D:/Project/PROJECT163/testtest/func/LinkedList.cpp" "CMakeFiles/main.dir/func/LinkedList.cpp.obj" "gcc" "CMakeFiles/main.dir/func/LinkedList.cpp.obj.d"
-  "D:/Project/PROJECT163/testtest/func/Menu.cpp" "CMakeFiles/main.dir/func/Menu.cpp.obj" "gcc" "CMakeFiles/main.dir/func/Menu.cpp.obj.d"
-  "D:/Project/PROJECT163/testtest/func/Page.cpp" "CMakeFiles/main.dir/func/Page.cpp.obj" "gcc" "CMakeFiles/main.dir/func/Page.cpp.obj.d"
-  "D:/Project/PROJECT163/testtest/func/Program.cpp" "CMakeFiles/main.dir/func/Program.cpp.obj" "gcc" "CMakeFiles/main.dir/func/Program.cpp.obj.d"
-  "D:/Project/PROJECT163/testtest/func/Variables.cpp" "CMakeFiles/main.dir/func/Variables.cpp.obj" "gcc" "CMakeFiles/main.dir/func/Variables.cpp.obj.d"
-  "D:/Project/PROJECT163/testtest/func/Vertex.cpp" "CMakeFiles/main.dir/func/Vertex.cpp.obj" "gcc" "CMakeFiles/main.dir/func/Vertex.cpp.obj.d"
-  "D:/Project/PROJECT163/testtest/func/drawutils.cpp" "CMakeFiles/main.dir/func/drawutils.cpp.obj" "gcc" "CMakeFiles/main.dir/func/drawutils.cpp.obj.d"
-  "D:/Project/PROJECT163/testtest/src/main.cpp" "CMakeFiles/main.dir/src/main.cpp.obj" "gcc" "CMakeFiles/main.dir/src/main.cpp.obj.d"
+  "C:/Users/Tuan TCA/OneDrive/Desktop/New folder/func/AVL.cpp" "CMakeFiles/main.dir/func/AVL.cpp.obj" "gcc" "CMakeFiles/main.dir/func/AVL.cpp.obj.d"
+  "C:/Users/Tuan TCA/OneDrive/Desktop/New folder/func/Edge.cpp" "CMakeFiles/main.dir/func/Edge.cpp.obj" "gcc" "CMakeFiles/main.dir/func/Edge.cpp.obj.d"
+  "C:/Users/Tuan TCA/OneDrive/Desktop/New folder/func/GRAPH/Graph.cpp" "CMakeFiles/main.dir/func/GRAPH/Graph.cpp.obj" "gcc" "CMakeFiles/main.dir/func/GRAPH/Graph.cpp.obj.d"
+  "C:/Users/Tuan TCA/OneDrive/Desktop/New folder/func/GRAPH/Graph_algorithm.cpp" "CMakeFiles/main.dir/func/GRAPH/Graph_algorithm.cpp.obj" "gcc" "CMakeFiles/main.dir/func/GRAPH/Graph_algorithm.cpp.obj.d"
+  "C:/Users/Tuan TCA/OneDrive/Desktop/New folder/func/HashTB.cpp" "CMakeFiles/main.dir/func/HashTB.cpp.obj" "gcc" "CMakeFiles/main.dir/func/HashTB.cpp.obj.d"
+  "C:/Users/Tuan TCA/OneDrive/Desktop/New folder/func/LinkedList.cpp" "CMakeFiles/main.dir/func/LinkedList.cpp.obj" "gcc" "CMakeFiles/main.dir/func/LinkedList.cpp.obj.d"
+  "C:/Users/Tuan TCA/OneDrive/Desktop/New folder/func/Menu.cpp" "CMakeFiles/main.dir/func/Menu.cpp.obj" "gcc" "CMakeFiles/main.dir/func/Menu.cpp.obj.d"
+  "C:/Users/Tuan TCA/OneDrive/Desktop/New folder/func/Page.cpp" "CMakeFiles/main.dir/func/Page.cpp.obj" "gcc" "CMakeFiles/main.dir/func/Page.cpp.obj.d"
+  "C:/Users/Tuan TCA/OneDrive/Desktop/New folder/func/Program.cpp" "CMakeFiles/main.dir/func/Program.cpp.obj" "gcc" "CMakeFiles/main.dir/func/Program.cpp.obj.d"
+  "C:/Users/Tuan TCA/OneDrive/Desktop/New folder/func/Variables.cpp" "CMakeFiles/main.dir/func/Variables.cpp.obj" "gcc" "CMakeFiles/main.dir/func/Variables.cpp.obj.d"
+  "C:/Users/Tuan TCA/OneDrive/Desktop/New folder/func/Vertex.cpp" "CMakeFiles/main.dir/func/Vertex.cpp.obj" "gcc" "CMakeFiles/main.dir/func/Vertex.cpp.obj.d"
+  "C:/Users/Tuan TCA/OneDrive/Desktop/New folder/func/drawutils.cpp" "CMakeFiles/main.dir/func/drawutils.cpp.obj" "gcc" "CMakeFiles/main.dir/func/drawutils.cpp.obj.d"
+  "C:/Users/Tuan TCA/OneDrive/Desktop/New folder/src/main.cpp" "CMakeFiles/main.dir/src/main.cpp.obj" "gcc" "CMakeFiles/main.dir/src/main.cpp.obj.d"
   )
 
 # Targets to which this target links which contain Fortran sources.
