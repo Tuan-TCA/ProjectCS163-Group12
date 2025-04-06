@@ -15,7 +15,7 @@ public:
     TreeNode *left, *right, *parent;
     int height;
     int level;
-    // 1=green, -1=red, 0=White
+    // 1=green, -1=red, 0=White, 2=Yellow
     int isHighLight = 0;
     Vector2 Pos;
 
@@ -66,6 +66,8 @@ class AVLpaint {
     const Color text_color = WHITE;
     const float arrow_size = 15.0;
     const Color arrow_color = MyColor1;
+    
+    int curCode = -1; //Current Pseudocode
     AVLpaint() {
         root = nullptr;
         rootPos = {600,500};
@@ -133,12 +135,16 @@ public:
     
     //Animation
     vector<AVLpaint> steps;
-    void addStep(TreeNode*  root) {
-        AVLpaint tmp;
+    void addStep(TreeNode*  root, int curCode = -1) {
+        AVLpaint tmp; 
         tmp.copy(root);
+        tmp.curCode = curCode;
         steps.push_back(tmp);
     }
     int cur = -1; //Current Step
+    int curCode = -1; //Current Pseudocode
+    void updatePseudocode(Operation op);
+
 
     void drawAnimation();
     void drawStep(AVLpaint a, int Found = -1);
@@ -188,5 +194,9 @@ public:
     void draw() override;
     void reset() override;
     
+
+    float pseudocodeX = side.x + 10;
+    float pseudocodeY = side.y + 200;
+
 
 };

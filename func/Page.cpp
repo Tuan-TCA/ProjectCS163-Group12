@@ -78,6 +78,7 @@ void Page::init() {
     oldTextBox = TextBox(side. x + 5, side.y + screenHeight*0.63f * 0.36f, screenWidth*0.08, screenHeight*0.63f * 0.11f, "", WHITE, WHITE, BLACK);
     newTextBox = TextBox(side.x + screenWidth*0.08f + 10, side.y + screenHeight*0.63f * 0.36f, screenWidth*0.08, screenHeight*0.63f * 0.11f, "", WHITE, WHITE, BLACK);
     textbox.resetTextbox();
+    lineHeight = 20.0f;
 }
 
 void Page::reset(){
@@ -176,40 +177,30 @@ void Page::event() {
     pseudocodeX = codeDisplayPLace.x  + 5;
     pseudocodeY = codeDisplayPLace.y  + 10;
     
-    float textWidth = 0;
-    for(auto& e: pseudocode){
-        textWidth = max(textWidth,(float) MeasureText(e.c_str(), 10));
-    }
-    Rectangle targetPlace1 = codeDisplayPLace;
-    targetPlace1.height = pseudocode.size() * lineHeight + 10;
-    targetPlace1.width = textWidth * 1.3f;
-    Rectangle deltaRec = targetPlace1 - codeDisplayPLace;
-    if(deltaRec != Rectangle{0,0,0,0}) isExpanding = true;
-    if(isExpanding){
-    animatingTime += deltaTime;
-    float t = animatingTime / 0.2f;
-    if(t > 1){
-        t = 1;
-        isExpanding = false;
-        animatingTime = 0;
-    }
-    codeDisplayPLace = codeDisplayPLace + deltaRec * t;
-    }
+    
+    cout << lineHeight << endl;
+    //animation thui
+            Rectangle targetPlace1 = codeDisplayPLace;
+            targetPlace1.height = pseudocode.size() * lineHeight + 10;
+            targetPlace1.width = textWidth * 1.3f;
+            Rectangle deltaRec = targetPlace1 - codeDisplayPLace;
+            if(deltaRec != Rectangle{0,0,0,0}) isExpanding = true;
+            if(isExpanding){
+            animatingTime += deltaTime;
+            float t = animatingTime / 0.2f;
+            if(t > 1){
+                t = 1;
+                isExpanding = false;
+                animatingTime = 0;
+            }
+            codeDisplayPLace = codeDisplayPLace + deltaRec * t;
+            }
     // TỰ LÀM PHẦN HIGHLIGHT!!!! tham khảo Graph.draw() && psuedo code thi tuy phan
 
     //Code box event
     Rectangle targetCodePlace = Rectangle{screenWidth * 0.01f, screenHeight * 0.56f, screenWidth * 0.24f - 12.0f, screenHeight * 0.35f};
     Rectangle closeCodePlace = Rectangle{-codeDisplayPLace.width, screenHeight * 0.56f, screenWidth * 0.24f - 12.0f, screenHeight * 0.35f};
-    if(currentOperation == Operation::Algorithm){
-        isClosingCodePlace = false;
-        isExpandingCodePlace = true;
-        animatingTime = 0;
-    }
-    else{
-        isClosingCodePlace = true;
-        isExpandingCodePlace = false;
-        animatingTime = 0;
-    }
+
 
     if(isExpandingCodePlace){
         animatingTime += deltaTime;

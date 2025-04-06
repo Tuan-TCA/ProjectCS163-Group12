@@ -33,14 +33,23 @@ void AVL::balance(TreeNode * &root, TreeNode *& parent, int key) {
             }
         } 
     }
+    else 
+        return;
     
     
     if (root) {
         root->isHighLight = 0;
     }
 
+
+
     root->Pos = oldPos;
     TraceLog(LOG_INFO, "root val %d", root->val);
+    if (root->parent) {
+        CalculateAllPos(root, root->parent, root == root->parent->left);
+    } else {
+        CalculateAllPos(root, nullptr, true);
+    }
 
     root->isHighLight = -1;
     addStep(this->root);  
@@ -50,30 +59,86 @@ void AVL::balance(TreeNode * &root, TreeNode *& parent, int key) {
 bool AVL::deleteAVL(TreeNode*& root, TreeNode*& parent, int key) {
     if (!root) return false;
     // Highlight for visualization
-    root->isHighLight = -1;
-    addStep(this->root);
-    root->isHighLight = 0;
-
+    
     if (root->val == key) {
+        root->isHighLight = 1;
+        addStep(this->root,3);
+        root->isHighLight = 0;
+        
+        
+        root->isHighLight = 1;
+        addStep(this->root,4);
+        root->isHighLight = 0;
+
         if (root->left && root->right) {
+            root->isHighLight = -1;
+            addStep(this->root,5);
+            root->isHighLight = 0;
+
             TreeNode* successor = root->right;
+            successor->isHighLight = 2;
+            addStep(this->root,6);
+            successor->isHighLight = 0;
+
             TreeNode* successorParent = root;
             
             while (successor && successor->left) {
                 successorParent = successor;
                 successor = successor->left;
+                successor->isHighLight = 2;
+                addStep(this->root,6);
+                successor->isHighLight = 0;
             }
 
+            
+
+
+            // successor->isHighLight = 1;
+            // addStep(this->root,6);
+            // successor->isHighLight = 0;
+
+            
             root->val = successor->val;
-            TraceLog(LOG_INFO, "Replacing with successor value %d", successor->val);
-            if (successorParent->left == successor) {
-                successorParent->left = successor->right;
-            } else {
-                successorParent->right = successor->right;
-            }
-            delete successor;
+            deleteAVL(root->right, root,root->val);
+
+            // TraceLog(LOG_INFO, "Replacing with successor value %d", successor->val);
+            // if (successorParent->left == successor) {
+            //     successorParent->left = successor->right;
+            //     if (successor->right) 
+            //         successor->right->parent = successorParent;
+            // } else {
+            //     successorParent->right = successor->right;
+            //     if (successor->right) 
+            //         successor->right->parent = successorParent;
+
+            // }
+            // delete successor;
+            // successor = nullptr;
+            
+            // TreeNode* tmpSSparent = successorParent;
+            // //cout<<successorParent->right->val<<"@@@"<<endl;
+            
+            // while(tmpSSparent != nullptr) {
+            //     tmpSSparent->isHighLight = -1;
+            //     addStep(this->root, 9);
+            //     tmpSSparent->isHighLight = 0;
+
+            //     balance(tmpSSparent, tmpSSparent->parent, key);
+            //     tmpSSparent = tmpSSparent->parent;
+
+            // }
+
+            // root->isHighLight = -1;
+            // addStep(this->root,7);
+            // root->isHighLight = 0;
+
         }
         else {
+
+            root->isHighLight = -1;
+            addStep(this->root,8);
+            root->isHighLight = 0;
+
             TreeNode* temp = root;
             if (root->left) {
                 root = root->left;
@@ -87,6 +152,9 @@ bool AVL::deleteAVL(TreeNode*& root, TreeNode*& parent, int key) {
         if (root) {
             CalculateAllPos(root, parent, parent && root == parent->left);
             balance(root, parent, key);
+            root->isHighLight = -1;
+            addStep(this->root,9);
+            root->isHighLight = 0;
             TraceLog(LOG_INFO, "Root value after deletion %d", root->val);
         }
         return true;
@@ -94,17 +162,29 @@ bool AVL::deleteAVL(TreeNode*& root, TreeNode*& parent, int key) {
 
     bool deleted;
     if (key < root->val) {
+        
+        root->isHighLight = -1;
+        addStep(this->root,1);
+        root->isHighLight = 0;
         deleted = deleteAVL(root->left, root, key);
+            
     } else {
+        
+        root->isHighLight = -1;
+        addStep(this->root,1);
+        root->isHighLight = 0;
         deleted = deleteAVL(root->right, root, key);
+            
     }
 
     if (deleted) {
-        root->isHighLight = -1;
-        addStep(this->root);
-        root->isHighLight = 0;
         CalculateAllPos(root, parent, parent && root == parent->left);
         balance(root, parent, key);
+
+        
+        root->isHighLight = -1;
+        addStep(this->root,9);
+        root->isHighLight = 0;
     }
 
     return deleted;
@@ -114,22 +194,31 @@ bool AVL::search(int key, TreeNode*& root, TreeNode* parent) {
     if (!root) {
         return false;
     }
+
+    root->isHighLight = -1;
+    addStep(this->root,1);  
+    root->isHighLight = 0;
+
+
     if(root->val == key) {
         root->isHighLight = 1;
-        addStep(this->root);
+        addStep(this->root,2);
         root->isHighLight = 0;
         return true;
     }
 
-    root->isHighLight = -1;
-    addStep(this->root);  
-    root->isHighLight = 0;
-
-
     if (key < root->val) {
+        
+        root->isHighLight = -1;
+        addStep(this->root,3);
+        root->isHighLight = 0;
         return search(key, root->left, root);
     } 
     else {
+        
+        root->isHighLight = -1;
+        addStep(this->root,4);
+        root->isHighLight = 0;
         return search(key, root->right, root);
     }
     
@@ -152,13 +241,13 @@ void AVL::insert(int key, TreeNode*& root, TreeNode* parent) {
         }
         
         root->isHighLight = -1;
-        addStep(this->root);  
+        addStep(this->root,1);  
         root->isHighLight = 0;
         return;
     }
 
     root->isHighLight = -1;
-    addStep(this->root);  
+    addStep(this->root,1);  
     root->isHighLight = 0;
     
     if (key < root->val) {
@@ -176,13 +265,26 @@ void AVL::insert(int key, TreeNode*& root, TreeNode* parent) {
     root->level = getLevel(parent) + 1;
     int balance = getHeight(root->left) - getHeight(root->right);
     
+    root->isHighLight = -1;
+    addStep(this->root,2);  
+    root->isHighLight = 0;
+
     if(abs(balance) >= 2) {
+        root->isHighLight = -1;
+        addStep(this->root,4);  
+        root->isHighLight = 0;
         if(balance > 1) {
     
             if(key < root->left->val) {
+                root->isHighLight = -1;
+                addStep(this->root,5);  
+                root->isHighLight = 0;
                 RightRotate(root);
             }
             else {
+                root->isHighLight = -1;
+                addStep(this->root,6);  
+                root->isHighLight = 0;
                 LeftRotate(root->left);
                 RightRotate(root);
         
@@ -190,30 +292,75 @@ void AVL::insert(int key, TreeNode*& root, TreeNode* parent) {
         }
         else {
             if(key > root->right->val) {
+                root->isHighLight = -1;
+                addStep(this->root,7);  
+                root->isHighLight = 0;
                 LeftRotate(root);
             }
             else {
+                root->isHighLight = -1;
+                addStep(this->root,8);  
+                root->isHighLight = 0;
                 RightRotate(root->right);
                 LeftRotate(root);
             }
         } 
     }
-    
-    
-    if (root) {
+    else {
+        root->isHighLight = -1;
+        addStep(this->root,3);  
         root->isHighLight = 0;
+        return;
     }
-
+    
     root->isHighLight = -1;
-    addStep(this->root);  
+    addStep(this->root,9);  
     root->isHighLight = 0;
 
 }
 
 void AVL::drawStep(AVLpaint a, int Found) {
-    DrawTree(a.root);
-    if(Found == 0)
+
+     pseudocodeX = codeDisplayPLace.x  + 5;
+    pseudocodeY = codeDisplayPLace.y  + 10;
+    
+    FONT = GetFontDefault();
+    
+    Color highlightColor = Color{255, 222, 89, 255};
+    Color textColor = MyColor4;
+
+    Vector2 maxWidth = {0 ,0};
+    if(currentOperation != Operation::Algorithm) {
+        // Tìm dòng dài nhất để làm kích thước chuẩn
+        
+        for(const auto& line : pseudocode) {
+            Vector2 lineWidth = MeasureTextEx(FONT, line.c_str(), 20, 3);
+            if(lineWidth.x > maxWidth.x) maxWidth = lineWidth;
+        }
+        textWidth = maxWidth.x * 0.9f;
+
+        for(size_t i = 0; i < pseudocode.size(); ++i) {
+            // Vẽ highlight cho toàn bộ chiều rộng
+            if(a.curCode == i) {
+                DrawRectangleRounded(
+                    Rectangle{pseudocodeX - 10, pseudocodeY + i*lineHeight - 5, 
+                             maxWidth.x + 20, lineHeight}, // Dùng maxWidth thay vì textWidth
+                    0.3f, 5, highlightColor);
+            }
+            
+            // Vẽ chữ
+            DrawTextEx(FONT, pseudocode[i].c_str(), 
+                      {pseudocodeX, pseudocodeY + i*lineHeight}, 
+                      20, 3, textColor);
+        }
+    }
+
+    if(Found == 0) {
         a.noti();
+    }
+
+    DrawTree(a.root);
+
 }
 
 void AVL::draw() {
@@ -256,6 +403,7 @@ void AVL::draw() {
 
     if (currentOperation == Operation::Insert) {
         if (isInserting) {
+
             this->insert(lastInsertedKey, root); // Thêm node và lưu các bước
             addStep(this->root);
             isInserting = false;
@@ -292,6 +440,9 @@ void AVL::draw() {
     if (currentOperation == Operation::Delete) {
         if (isDeleting) {
             Found = (this->deleteAVL(root, root->parent, DeleteKey)) ? 1 : 0;
+            if(!Found) {
+                addStep(this->root, 2);
+            }
             addStep(this->root);
             isDeleting = false;
             isPlaying = true;
@@ -329,19 +480,25 @@ void AVL::draw() {
     }
 
     if (currentOperation == Operation::Search) {
+        
         if (isSearching) {
             Found = (this->search(SearchKey, root)) ? 1 : 0;
+            if(!Found) {
+                addStep(this->root, 5);
+            }
             addStep(this->root);
             isPlaying = true;
             isSearching = false;                 
-            elapsedTime = 0.0f;                  
+            elapsedTime = 0.0f;      
+            
         } else {
         
                 if (!steps.empty()) {
                     if(cur >= 0 && cur< steps.size()) {
                         
-                        if(cur == steps.size()-2) 
+                        if(cur == steps.size()-2) {
                             drawStep(steps[cur], Found);
+                        }
                         else 
                             drawStep(steps[cur]);
                     }
@@ -437,7 +594,23 @@ void AVL::event() {
             textbox.inputText = {""};
         }
     }
+    
+     if(currentOperation != Operation::Create){
+        isClosingCodePlace = false;
+        isExpandingCodePlace = true;
+        animatingTime = 0;
+    }
+    else{
+        isClosingCodePlace = true;
+        isExpandingCodePlace = false;
+        animatingTime = 0;
+    }
 
+    static Operation lastOp = Operation::Algorithm;
+    if(currentOperation != lastOp) {
+        updatePseudocode(currentOperation);
+        lastOp = currentOperation;
+    }
 
     if(!isPlaying){
         if(!switchState ? play1.IsClicked() : play2.IsClicked()){
@@ -483,11 +656,76 @@ void AVL::event() {
 }
 
 
+
+void AVL::updatePseudocode(Operation op) {
+    switch(op) {
+        case Operation::Insert:
+            pseudocode = {
+                "AVL Insert(key):",
+                "1. Perform standard BST insert",
+                "3. Get balance factor (left - right)",
+                "3. If balanced: Done",
+                "4. If unbalanced:",
+                "   a. Left-Left case: Right Rotate",
+                "   b. Left-Right case: Left then Right",
+                "   c. Right-Right case: Left Rotate",
+                "   d. Right-Left case: Right then Left",
+                "5. Balance the tree",
+            };
+            break;
+            
+        case Operation::Delete:
+            pseudocode = {
+                "AVL Delete(key):",
+                "1. Search for the node to delete",
+                "   a. If not found: return",
+                "   b. If found: Go to step 2",
+                "2. Delete the node",
+                "   a. If node has two children:",
+                "     i. Find successor (min in right)",
+                "     ii. Replace and delete successor",
+                "   b. Else: Delete node",
+                "5. Rebalance the tree",
+            };
+            break;
+            
+        case Operation::Search:
+            pseudocode = {
+                "AVL Search: ",
+                "1. While current node exists:",
+                "   a. If key == current: found",
+                "   b. If key < current: go left",
+                "   c. Else: go right",
+                "2. Return not found"
+            };
+            break;
+            
+        case Operation::Create:
+            pseudocode = {
+                "AVL Create:",
+                "1. Initialize empty tree",
+                "2. Generate random nodes",
+                "3. For each node:",
+                "   a. Insert with balancing",
+                "4. Calculate positions for display"
+            };
+            break;
+            
+        default:
+            pseudocode = {
+                "AVL Tree Operations",
+                "Select operation to view pseudocode"
+            };
+    }
+}
+
+
+
 void AVL::init() {
     Page::init();
     root = nullptr;
     workplace = {screenWidth*0.24f,screenHeight*0.2f,(float) screenWidth *(1-0.24f),screenHeight*(1-0.095f)};
-    rootPos= {workplace.x + workplace.width / 2, workplace.y};      
+    rootPos= {workplace.x + workplace.width / 2 + 50, workplace.y};      
     
     steps.clear();
 
@@ -502,7 +740,9 @@ void AVL::init() {
     hasDelete = false;
 
     cur = -1;
-       
+    curCode = -1;
+    pseudocode = {};
+    lineHeight = 30;
 }
 void AVL::reset(){
     Page::reset();
@@ -536,6 +776,8 @@ void AVL::DestroyRecursive(TreeNode* node)
     }
 }       
 
+
+
 AVL::~AVL() {
     DestroyRecursive(root);
     root = nullptr;
@@ -552,9 +794,9 @@ int AVL::getLevel(TreeNode *root) {
 
 
 Vector2 AVL::calculateChildPos(Vector2 parentPos, bool isLeft, int level) {
-    float xOffset = workplace.width / pow(2, level + 2);
+    float xOffset = 850 / pow(2, level + 2);
     return {
-        isLeft ? parentPos.x - 3.5f * xOffset : parentPos.x + 3.5f *xOffset,
+        isLeft ? parentPos.x - 4.2f * xOffset : parentPos.x + 4.2f *xOffset,
         parentPos.y + 3.5f *radius  
     };
 }
@@ -583,7 +825,7 @@ void AVL::RightRotate(TreeNode* &root) {
     if (!root || !root->left) return;
     Vector2 oldPos = root->Pos;
     int oldLevel = root->level;
-    
+    TreeNode* oldParent = root->parent;
     TreeNode *tmp = root->left;
     TreeNode *tmpRight = tmp->right;
 
@@ -593,7 +835,7 @@ void AVL::RightRotate(TreeNode* &root) {
 
     
     if (tmpRight) tmpRight->parent = root;  
-    tmp->parent = root->parent;           
+    tmp->parent = oldParent;           
     root->parent = tmp;                   
     
     
@@ -623,7 +865,7 @@ void AVL::LeftRotate(TreeNode* &root) {
 
     Vector2 oldPos = root->Pos;
     int oldLevel = root->level;
-
+    TreeNode* oldParent = root->parent;
     TreeNode *tmp = root->right;
     TreeNode *tmpLeft = tmp->left;
 
@@ -633,7 +875,7 @@ void AVL::LeftRotate(TreeNode* &root) {
     
     
     if (tmpLeft) tmpLeft->parent = root;  
-    tmp->parent = root->parent;           
+    tmp->parent = oldParent;           
     root->parent = tmp;                   
 
     
@@ -683,6 +925,9 @@ void AVL::DrawTN(TreeNode *a){
         DrawCircleV(center, radius, visit_color);
     if (choose == 0)
         DrawCircleV(center, radius, WHITE);
+
+    if (choose == 2)
+        DrawCircleV(center, radius, YELLOW);
 
     DrawCircleV(center, radius - 9, MyColor2);
     DrawCircleV(center, radius - 10, MyColor2);

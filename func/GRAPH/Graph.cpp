@@ -67,16 +67,11 @@ void Graph::draw(){
               
             vertex_textbox.Draw(22); 
             edge_textbox.Draw(22);
-    
-        
-        
-            // textbox.Draw();
     }
-    // tes.update();
-    // tes.HandleInput();
-    // tes.Draw(22);
     //code state
-
+        for(auto& e: pseudocode){
+        textWidth = max(textWidth,(float) MeasureText(e.c_str(), 10));
+    }
     Color highlightColor = Color{255, 222, 89, 255};
      if(isAnimating || currentOperation == Operation::Algorithm){
     for (size_t i = 0; i < pseudocode.size(); ++i) {
@@ -109,9 +104,18 @@ void Graph::event(){
     if( currentOperation == Operation::Create && currentInput != InputType::File){
         addFromTextbox();
     }
-
+    //code display event
+        if(currentOperation == Operation::Algorithm){
+        isClosingCodePlace = false;
+        isExpandingCodePlace = true;
+        animatingTime = 0;
+    }
+    else{
+        isClosingCodePlace = true;
+        isExpandingCodePlace = false;
+        animatingTime = 0;
+    }
     //SETTING
-
     float deltaTime = GetFrameTime();
     Vector2 mousePos = GetMousePosition();
     Rectangle targetPlace = Rectangle{screenWidth * 0.8f, screenHeight * 0.7f, screenWidth * 0.19f, screenHeight * 0.18f};
