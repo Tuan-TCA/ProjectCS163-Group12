@@ -90,44 +90,47 @@ bool AVL::deleteAVL(TreeNode*& root, TreeNode*& parent, int key) {
                 successor->isHighLight = 0;
             }
 
+            
 
-            successor->isHighLight = 1;
-            addStep(this->root,6);
-            successor->isHighLight = 0;
+
+            // successor->isHighLight = 1;
+            // addStep(this->root,6);
+            // successor->isHighLight = 0;
 
             
             root->val = successor->val;
+            deleteAVL(root->right, root,root->val);
 
-            TraceLog(LOG_INFO, "Replacing with successor value %d", successor->val);
-            if (successorParent->left == successor) {
-                successorParent->left = successor->right;
-                if (successor->right) 
-                    successor->right->parent = successorParent;
-            } else {
-                successorParent->right = successor->right;
-                if (successor->right) 
-                    successor->right->parent = successorParent;
+            // TraceLog(LOG_INFO, "Replacing with successor value %d", successor->val);
+            // if (successorParent->left == successor) {
+            //     successorParent->left = successor->right;
+            //     if (successor->right) 
+            //         successor->right->parent = successorParent;
+            // } else {
+            //     successorParent->right = successor->right;
+            //     if (successor->right) 
+            //         successor->right->parent = successorParent;
 
-            }
-            delete successor;
-            successor = nullptr;
+            // }
+            // delete successor;
+            // successor = nullptr;
             
-            TreeNode* tmpSSparent = successorParent;
-            //cout<<successorParent->right->val<<"@@@"<<endl;
+            // TreeNode* tmpSSparent = successorParent;
+            // //cout<<successorParent->right->val<<"@@@"<<endl;
             
-            while(tmpSSparent != nullptr) {
-                tmpSSparent->isHighLight = -1;
-                addStep(this->root, 9);
-                tmpSSparent->isHighLight = 0;
+            // while(tmpSSparent != nullptr) {
+            //     tmpSSparent->isHighLight = -1;
+            //     addStep(this->root, 9);
+            //     tmpSSparent->isHighLight = 0;
 
-                balance(tmpSSparent, tmpSSparent->parent, key);
-                tmpSSparent = tmpSSparent->parent;
+            //     balance(tmpSSparent, tmpSSparent->parent, key);
+            //     tmpSSparent = tmpSSparent->parent;
 
-            }
+            // }
 
-            root->isHighLight = -1;
-            addStep(this->root,7);
-            root->isHighLight = 0;
+            // root->isHighLight = -1;
+            // addStep(this->root,7);
+            // root->isHighLight = 0;
 
         }
         else {
