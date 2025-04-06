@@ -104,5 +104,6 @@ void Edge::reset(){ // before ...
     doneAnimation = false;
     // isDisappearing = false;
     fullRED= false;
+    kind_ani = 0;
 }
 

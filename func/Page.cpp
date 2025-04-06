@@ -234,7 +234,7 @@ void Page::event() {
     
     float sideDuration =0.2f; 
     Vector2 mousePos = GetMousePosition();
-    Rectangle targetPlace = Rectangle{0, screenHeight / 2 - screenHeight * 0.64f / 2, screenWidth * 0.24f, screenHeight * 0.32f}; 
+    Rectangle targetPlace = Rectangle{0, screenHeight / 2 - screenHeight * 0.64f / 2, screenWidth * 0.24f, screenHeight * 0.45f}; 
     Rectangle closedPlace = Rectangle{-side.width, screenHeight / 2 - screenHeight * 0.64f / 2, screenWidth * 0.24f, screenHeight * 0.32f}; 
     Rectangle sidePlace = Rectangle{0,screenHeight / 2 - screenHeight * 0.64f / 2,screenWidth*0.12f,screenHeight*0.32f};
     if (CheckCollisionPointRec(mousePos, targetPlace)) {
@@ -312,14 +312,7 @@ void Page::event() {
     if(OperationOptions[selectedOperationIndex] == "DELETE") currentOperation = Operation::Delete;
 
     //INPUT Event
-    if(currentOperation != Operation::Update){
         textbox.update();
-    }
-    else{
-        oldTextBox.update();
-        newTextBox.update();
-       
-    }
     handleInput();
 
     if (InputPrevButton.IsClicked()) {

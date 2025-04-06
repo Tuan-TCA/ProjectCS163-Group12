@@ -78,5 +78,5 @@ public:
     virtual void event();
     virtual void reset();
     virtual void updateSide();
-    void handleInput();
+    virtual void handleInput();
 };

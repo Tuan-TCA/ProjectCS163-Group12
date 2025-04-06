@@ -22,13 +22,15 @@ void Graph::init(){
     AlgorithmOptionButton = Button(screenWidth * 0.24f * 0.15f,screenHeight / 2 - screenHeight*0.63f * 0.35f + 10 , screenWidth*0.24f * 0.7f, screenHeight*0.63f * 0.15f, AlgorithmOptions[selectedAlgorithmIndex].c_str(), WHITE, LIGHTGRAY, MyColor5);
     AlgorithmPrevButton = Button(5,screenHeight / 2 - screenHeight*0.63f * 0.35f + 10 ,  screenWidth*0.24f * 0.15f - 10, screenHeight*0.63f * 0.15f, "<", WHITE, LIGHTGRAY, MyColor5);
     AlgorithmNextButton = Button(screenWidth*0.24f * 0.85f + 5, screenHeight / 2 - screenHeight*0.63f * 0.35f + 10 ,  screenWidth*0.24f * 0.15f - 10, screenHeight*0.63f * 0.15f, ">", WHITE, LIGHTGRAY, MyColor5);
-    vertex_textbox = TextBox(side. x + 5, side.y + screenHeight*0.63f * 0.61f, screenWidth*0.08, screenHeight*0.63f * 0.11f, "", WHITE, WHITE, BLACK);
-    edge_textbox = TextBox(side.x + screenWidth*0.08f + 10, side.y + screenHeight*0.63f * 0.61f, screenWidth*0.08, screenHeight*0.63f * 0.11f, "", WHITE, WHITE, BLACK);
+    vertex_textbox = TextBox(side. x + 5, side.y + screenHeight*0.63f * 0.51f, screenWidth*0.08, screenHeight*0.63f * 0.11f, "", WHITE, WHITE, BLACK);
+    edge_textbox = TextBox(side.x + screenWidth*0.08f + 10, side.y + screenHeight*0.63f * 0.51f, screenWidth*0.08, screenHeight*0.63f * 0.11f, "", WHITE, WHITE, BLACK);
     // textbox.bounds = Rectangle{side.x + 5, side.y + screenHeight*0.63f * 0.45f + 20 , screenWidth*0.25f - 100, screenHeight*0.63f * 0.15f};
     added = false;
     minDistance = 100.0f;
     got1stV = false;
     isAnimating = false;
+
+    tes = TextBox{500, 500, 100 , 100, "", WHITE, WHITE, BLACK};
 }
 
 void Graph::draw(){
@@ -49,13 +51,19 @@ void Graph::draw(){
     }
 
     if (currentOperation == Operation::Create && currentInput != InputType::File) {
-            // DrawTextEx(FONT, "V = ", {vertex_textbox.bounds.x + vertex_textbox.bounds.width /2 - 20, oldTextBox.bounds.y - 20}, 20, 2, WHITE);
-            // DrawTextEx(FONT ,"E = ", {vertex_textbox.bounds.x + vertex_textbox.bounds.width / 2 - 20, newTextBox.bounds.y - 20}, 20, 2, WHITE);
-            
-            // vertex_textbox.Draw(20); 
-            // edge_textbox.Draw(20);
+            DrawTextEx(FONT, "V = ", {vertex_textbox.bounds.x + vertex_textbox.bounds.width /2 - 20, vertex_textbox.bounds.y - 20}, 20, 2, WHITE);
+            DrawTextEx(FONT ,"E = ", {edge_textbox.bounds.x + edge_textbox.bounds.width / 2 - 20, edge_textbox.bounds.y - 20}, 20, 2, WHITE);
+              
+            vertex_textbox.Draw(22); 
+            edge_textbox.Draw(22);
+    
+        
+        
             // textbox.Draw();
     }
+    // tes.update();
+    // tes.HandleInput();
+    // tes.Draw(22);
     //code state
 
     Color highlightColor = Color{255, 222, 89, 255};
@@ -79,12 +87,14 @@ void Graph::draw(){
 
 void Graph::event(){
     Page::event();
-    HandleInput();
+  
+
    if(!added){
         addFromMatrix(); 
        added = true;
    }
 
+    
     if( currentOperation == Operation::Create && currentInput != InputType::File){
         // textbox.bounds = Rectangle{side.x + 5, side.y + screenHeight*0.63f * 0.45f + 20 , screenWidth*0.25f - 100, screenHeight*0.63f * 0.15f};
         // side.height = screenHeight*0.305f + screenHeight * 0.63f * 0.15f + 5;
@@ -383,7 +393,7 @@ void Graph::RANDOM_INPUT() {
             int numVertices = vertexDist(rng);
            std::uniform_int_distribution<int> fullWeightDist(0, 10);
             std::uniform_real_distribution<double> zeroProbDist(0.0, 1.0);
-            double probabilityOfZero = 0.6; // 60 % to get 0
+            double probabilityOfZero = 0.6; // 60 % to  get 0
 
             std::vector<std::vector<int>> adjMatrix(numVertices, std::vector<int>(numVertices, 0));
             std::vector<std::string> lines;
@@ -516,10 +526,32 @@ void Graph::handleCollision(){
 
 }
 
-void Graph::HandleInput(){
+
+void Graph::handleInput(){
+    Page::handleInput();
+    vertex_textbox.update();
+    edge_textbox.update();
     if(currentOperation == Operation::Algorithm){
         textbox.HandleInput();
     }
+    if(currentOperation == Operation::Create){
+        switch (currentInput) {
+                case InputType::Random:
+                    if (InputOptionButton.IsClicked()) {
+                        std::mt19937 rng(std::random_device{}());
+                        std::uniform_int_distribution<int> dist(0, 999); 
+                        vertex_textbox.inputText = {to_string(dist(rng))}; 
+                        edge_textbox.inputText = {to_string(dist(rng))}; 
+                    }
+                    break;
+                case InputType::Keyboard:
+                    
+                    if(vertex_textbox.active) vertex_textbox.HandleInput();
+                    if(edge_textbox.active) edge_textbox.HandleInput();
+                    break;
+            }
+    }
+    if(!edge_textbox.inputText.empty()) cout << edge_textbox.inputText[0] << endl;
 }
 
 void Graph::updateSide(){
@@ -527,6 +559,6 @@ void Graph::updateSide(){
     AlgorithmOptionButton.bounds =Rectangle{side.x + (side.x + side.width) * 0.15f, side.y + screenHeight*0.63f * 0.15f + 10 , screenWidth*0.24f * 0.7f, screenHeight*0.63f * 0.15f};
     AlgorithmPrevButton.bounds = Rectangle{side.x + 5,side.y + screenHeight*0.63f * 0.15f + 10 ,  screenWidth*0.24f * 0.15f - 10, screenHeight*0.63f * 0.15f}; 
     AlgorithmNextButton.bounds = Rectangle{side.x + (side.x + side.width) * 0.85f + 5, side.y + screenHeight*0.63f * 0.15f + 10,  screenWidth*0.24f * 0.15f - 10, screenHeight*0.63f * 0.15f};
-     vertex_textbox = TextBox(side. x + 5, side.y + screenHeight*0.63f * 0.36f, screenWidth*0.08, screenHeight*0.63f * 0.11f, "", WHITE, WHITE, BLACK);
-    edge_textbox = TextBox(side.x + screenWidth*0.08f + 10, side.y + screenHeight*0.63f * 0.36f, screenWidth*0.08, screenHeight*0.63f * 0.11f, "", WHITE, WHITE, BLACK);
+    vertex_textbox.bounds = {side.x + 5, side.y + screenHeight*0.63f * 0.51f, screenWidth*0.08f, screenHeight*0.63f * 0.11f};
+    edge_textbox.bounds = {side.x + screenWidth*0.08f + 10, side.y + screenHeight*0.63f * 0.51f, screenWidth*0.08f, screenHeight*0.63f * 0.11f};
 }

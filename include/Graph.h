@@ -59,6 +59,7 @@ class Graph : public Page{
     TextBox vertex_textbox;
     TextBox edge_textbox;
 
+    TextBox tes;
     //bfs
     bool got1stV;
     bool AlgoCalled = false;
@@ -93,6 +94,6 @@ class Graph : public Page{
     void addFromTextbox();
     void FILE_INPUT() override;
     void RANDOM_INPUT() override; 
-    void HandleInput();
+    void handleInput() override;
     void updateSide() override;
 };

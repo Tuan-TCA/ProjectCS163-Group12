@@ -241,8 +241,8 @@ public:
     void Draw(int fontSize)  {
         Button::Draw();
         for(int i = startRowIndex; i < inputText.size() && i < startRowIndex + 3; i++){
-            std::string displayText = inputText[i];
-            if (active && i == currentIndex && ((int)(GetTime() * 2) % 2 == 0)) {
+            string displayText = inputText[i];
+            if (active && i == currentIndex && ((int)(GetTime() * 2) % 2 == 0) ) {
                 displayText.insert(displayText.begin() + SubIndex[currentIndex], '|');
             }
             DrawText(displayText.c_str(), bounds.x + 5, bounds.y + bounds.height / 3 - MeasureTextEx(FONT, displayText.c_str(), fontSize, 1).y / 2, fontSize, textColor);
