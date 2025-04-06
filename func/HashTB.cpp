@@ -27,6 +27,8 @@ void HashTableChaining::init(){
     isCreating = false;
     isDuplicateInsert = false;
 }
+
+
 HashTableChaining::HashTableChaining(int size) {
     tableSize = size;
     table.resize(size, nullptr);
@@ -456,12 +458,20 @@ void HashTableChaining::event() {
 
 void HashTableChaining::reset(){
     Page::reset();
-    tableSize = 3;
-    table.clear();
-    isInserting = false;
-    lastInsertedKey = -1;
-    isCreating = false;
-    isDuplicateInsert = false;
+        origin = { 350, 100 };
+        tableSize = 3;
+        table.clear();
+    table.resize(tableSize, nullptr);
+     isInserting = false;
+     lastInsertedKey = -1;
+
+     isSearching = false;
+     searchKey = -1;
+     searchFound = false; 
+
+     isDeleting = false;
+     deleteKey = -1;
+     isDuplicateInsert = false;
     createKeys.clear();
 }
 

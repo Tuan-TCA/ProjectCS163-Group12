@@ -92,6 +92,7 @@ void Edge::SetColor(){ // after having done an animation
     this->color = targetColor;
     doneAnimation = true;
     // isDisappearing = false;
+    animationTime = 0;
     fullRED = false;
 }
 
@@ -104,6 +105,6 @@ void Edge::reset(){ // before ...
     doneAnimation = false;
     // isDisappearing = false;
     fullRED= false;
-    kind_ani = 0;
+    // kind_ani = 0;
 }
 

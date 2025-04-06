@@ -24,6 +24,8 @@ void Graph::init(){
     AlgorithmNextButton = Button(screenWidth*0.24f * 0.85f + 5, screenHeight / 2 - screenHeight*0.63f * 0.35f + 10 ,  screenWidth*0.24f * 0.15f - 10, screenHeight*0.63f * 0.15f, ">", WHITE, LIGHTGRAY, MyColor5);
     vertex_textbox = TextBox(side. x + 5, side.y + screenHeight*0.63f * 0.51f, screenWidth*0.08, screenHeight*0.63f * 0.11f, "", WHITE, WHITE, BLACK);
     edge_textbox = TextBox(side.x + screenWidth*0.08f + 10, side.y + screenHeight*0.63f * 0.51f, screenWidth*0.08, screenHeight*0.63f * 0.11f, "", WHITE, WHITE, BLACK);
+    vertex_textbox.resetTextbox();
+    edge_textbox.resetTextbox();
     // textbox.bounds = Rectangle{side.x + 5, side.y + screenHeight*0.63f * 0.45f + 20 , screenWidth*0.25f - 100, screenHeight*0.63f * 0.15f};
     added = false;
     minDistance = 100.0f;
@@ -164,15 +166,15 @@ void Graph::event(){
     if (AlgorithmPrevButton.IsClicked()) {
         resetAnimation();
         selectedAlgorithmIndex = (selectedAlgorithmIndex - 1 + AlgorithmOptions.size()) % AlgorithmOptions.size();
-        AlgorithmOptionButton.label = AlgorithmOptions[selectedAlgorithmIndex].c_str(); 
+       
     }
 
     if (AlgorithmNextButton.IsClicked()) {
         resetAnimation();
         selectedAlgorithmIndex = (selectedAlgorithmIndex + 1) % AlgorithmOptions.size();
-        AlgorithmOptionButton.label = AlgorithmOptions[selectedAlgorithmIndex].c_str(); 
+    
     }
-
+     AlgorithmOptionButton.label = AlgorithmOptions[selectedAlgorithmIndex].c_str(); 
     if(AlgorithmOptions[selectedAlgorithmIndex] == "BFS") currentALgorithm = Algorithm::BFS;
     if(AlgorithmOptions[selectedAlgorithmIndex] == "DFS") currentALgorithm = Algorithm::DFS;
     if(AlgorithmOptions[selectedAlgorithmIndex] == "MST") currentALgorithm = Algorithm::MST;
@@ -282,7 +284,7 @@ void Graph::event(){
 
 
 
-    if(currentOperation == Operation::Algorithm && currentALgorithm == Algorithm::MST){
+    if(currentOperation == Operation::Algorithm && (currentALgorithm == Algorithm::MST || currentALgorithm == Algorithm::CC)){
     Ok.label = "START";
     Ok.bounds = Rectangle{side.x * 1.2f + 5, side.y + screenHeight*0.63f * 0.3f + 15, screenWidth*0.24f - 10, screenHeight*0.63f * 0.15f};
     }

@@ -90,5 +90,5 @@ class LinkedList : public Page{
         void event() override;
         void init() override;
         void draw() override;
-
+        void reset() override;
     };

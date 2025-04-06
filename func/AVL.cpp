@@ -504,6 +504,26 @@ void AVL::init() {
     cur = -1;
        
 }
+void AVL::reset(){
+    Page::reset();
+        root = nullptr;
+    workplace = {screenWidth*0.24f,screenHeight*0.2f,(float) screenWidth *(1-0.24f),screenHeight*(1-0.095f)};
+    rootPos= {workplace.x + workplace.width / 2, workplace.y};      
+    
+    steps.clear();
+
+    isInserting = false;
+    isSearching = false;
+    isDeleting = false;
+    isUpdating = false;
+    isCreating = false;
+
+    hasInsert = false;
+    hasSearch = false;
+    hasDelete = false;
+
+    cur = -1;
+}
 
 void AVL::DestroyRecursive(TreeNode* node)
 {

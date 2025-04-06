@@ -323,6 +323,7 @@ public:
 
   
     void reset(){
+        active = false;
         inputText.clear();
         inputText = {""};
         currentIndex = 0;
@@ -335,6 +336,7 @@ public:
     }
 
     void resetTextbox(){
+        active = false;
         inputText.clear();
         inputText = {""};
         currentIndex = 0;

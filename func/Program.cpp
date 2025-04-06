@@ -43,23 +43,16 @@ void Program::event() {
         //init LinkedList
         if(x == 1) {
             mode = MODE::LL;
-            // std::cout<<"Linked list"; 
-            LL.init();
         }
         else if(x == 2) {
             mode = MODE::HASHTB;
-            hashtable.init();
-            
         }
         else if(x == 3) {
             mode = MODE::AVL;
-            avl.init();
             
         }
         else if(x == 4) {
             mode = MODE::GRAPH;
-            graph.init();
-            
         }
     }
 

@@ -77,16 +77,18 @@ void Page::init() {
     textbox = TextBox(side.x + 5, side.y + screenHeight*0.63f * 0.3f + 15, screenWidth*0.25f - 100, screenHeight*0.63f * 0.15f, "", WHITE, WHITE, BLACK);
     oldTextBox = TextBox(side. x + 5, side.y + screenHeight*0.63f * 0.36f, screenWidth*0.08, screenHeight*0.63f * 0.11f, "", WHITE, WHITE, BLACK);
     newTextBox = TextBox(side.x + screenWidth*0.08f + 10, side.y + screenHeight*0.63f * 0.36f, screenWidth*0.08, screenHeight*0.63f * 0.11f, "", WHITE, WHITE, BLACK);
+    textbox.resetTextbox();
 }
 
 void Page::reset(){
-    currentOperation = Operation::Insert;
-    currentInput = InputType::Random;
-    selectedInputIndex = 0;
-    selectedOperationIndex = 0;
+    isExpanding             = false;
+    isExpandingCodePlace    = false;
+    isClosingCodePlace      = false;
+    isExpandingSide         = false;
+    isClosingSide           = false;
+    selectedInputIndex      = 0;
+    selectedOperationIndex  = 0;
     textbox.reset();
-    oldTextBox.reset();
-    newTextBox.reset();
 }
 
 void Page::draw() {
@@ -296,15 +298,13 @@ void Page::event() {
    if (OperationPrevButton.IsClicked()) {
         textbox.reset();
         selectedOperationIndex = (selectedOperationIndex - 1 + OperationOptions.size()) % OperationOptions.size();
-        OperationOptionButton.label = OperationOptions[selectedOperationIndex].c_str(); 
     }
 
     if (OperationNextButton.IsClicked()) {
         textbox.reset();
         selectedOperationIndex = (selectedOperationIndex + 1) % OperationOptions.size();
-        OperationOptionButton.label = OperationOptions[selectedOperationIndex].c_str(); 
     }
-
+     OperationOptionButton.label = OperationOptions[selectedOperationIndex].c_str(); 
     if(OperationOptions[selectedOperationIndex] == "INSERT") currentOperation = Operation::Insert;
     if(OperationOptions[selectedOperationIndex] == "CREATE") currentOperation = Operation::Create;
     if(OperationOptions[selectedOperationIndex] == "SEARCH") currentOperation = Operation::Search;
@@ -321,7 +321,7 @@ void Page::event() {
             if(selectedInputIndex == 2) selectedInputIndex = 1;
             
         }
-        InputOptionButton.label = InputOptions[selectedInputIndex].c_str(); 
+        
     }
 
     if (InputNextButton.IsClicked()) {
@@ -329,9 +329,8 @@ void Page::event() {
         if(currentOperation != Operation::Insert && currentOperation != Operation::Create){
             if(selectedInputIndex == 2) selectedInputIndex = 0;
         }
-         InputOptionButton.label = InputOptions[selectedInputIndex].c_str(); 
     }
-
+    InputOptionButton.label = InputOptions[selectedInputIndex].c_str(); 
     if (InputOptions[selectedInputIndex] == "KEYBOARD") currentInput = InputType::Keyboard;
     if (InputOptions[selectedInputIndex] == "RANDOM") currentInput = InputType::Random;
     if (InputOptions[selectedInputIndex] == "FILE") currentInput = InputType::File;
