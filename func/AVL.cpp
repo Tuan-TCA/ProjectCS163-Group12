@@ -3,6 +3,53 @@
 #include <iostream>
 #include <vector>
 
+
+void updateRotation(float stepDuration, AVLpaint& tmp, AVLpaint& tar) {
+    if (!tmp.root || !tmp.isRotating) return;
+    cout<<"ok";
+    // Tỷ lệ tiến trình (0.0 -> 1.0)
+    float t = GetFrameTime() / stepDuration; // Giả sử GetFrameTime() trả về thời gian frame
+    if (t > 1.0f) t = 1.0f; // Giới hạn tỷ lệ tối đa là 1
+
+    // Duyệt cây bằng stack để tránh đệ quy
+    std::vector<TreeNode*> stack;
+    stack.push_back(tmp.root);
+
+    while (!stack.empty()) {
+        TreeNode* current = stack.back();
+        stack.pop_back();
+
+        if (!current) continue;
+
+        // Tìm node tương ứng trong cây đích (tar) dựa trên val
+        TreeNode* target = tar.root;
+        while (target && target->val != current->val) {
+            if (current->val < target->val) {
+                target = target->left;
+            } else {
+                target = target->right;
+            }
+        }
+
+        // Nếu tìm thấy node tương ứng, cập nhật targetPos
+        if (target) {
+            current->targetPos = target->Pos;
+        }
+
+        // Kiểm tra nếu targetPos khác {0, 0} thì nội suy Pos
+        if (current->targetPos.x != 0.0f || current->targetPos.y != 0.0f) {
+            current->Pos.x = current->Pos.x + t * (current->targetPos.x - current->Pos.x);
+            current->Pos.y = current->Pos.y + t * (current->targetPos.y - current->Pos.y);
+        }
+
+        // Thêm các con vào stack
+        if (current->right) stack.push_back(current->right);
+        if (current->left) stack.push_back(current->left);
+    }
+}
+
+
+
 void AVL::balance(TreeNode * &root, TreeNode *& parent, int key) {
     root->height = 1 + max(getHeight(root->left), getHeight(root->right));
     root->parent = parent;
@@ -70,7 +117,7 @@ bool AVL::deleteAVL(TreeNode*& root, TreeNode*& parent, int key) {
         addStep(this->root,4);
         root->isHighLight = 0;
 
-        if (root->left && root->right) {
+        if (root->left && root->right) { 
             root->isHighLight = -1;
             addStep(this->root,5);
             root->isHighLight = 0;
@@ -277,13 +324,13 @@ void AVL::insert(int key, TreeNode*& root, TreeNode* parent) {
     
             if(key < root->left->val) {
                 root->isHighLight = -1;
-                addStep(this->root,5);  
+                addStep(this->root,5,1);  
                 root->isHighLight = 0;
                 RightRotate(root);
             }
             else {
                 root->isHighLight = -1;
-                addStep(this->root,6);  
+                addStep(this->root,6,1);  
                 root->isHighLight = 0;
                 LeftRotate(root->left);
                 RightRotate(root);
@@ -293,13 +340,13 @@ void AVL::insert(int key, TreeNode*& root, TreeNode* parent) {
         else {
             if(key > root->right->val) {
                 root->isHighLight = -1;
-                addStep(this->root,7);  
+                addStep(this->root,7,1);  
                 root->isHighLight = 0;
                 LeftRotate(root);
             }
             else {
                 root->isHighLight = -1;
-                addStep(this->root,8);  
+                addStep(this->root,8,1);  
                 root->isHighLight = 0;
                 RightRotate(root->right);
                 LeftRotate(root);
@@ -402,7 +449,6 @@ void AVL::draw() {
 
     if (currentOperation == Operation::Insert) {
         if (isInserting) {
-
             this->insert(lastInsertedKey, root); // Thêm node và lưu các bước
             addStep(this->root);
             isInserting = false;
@@ -410,30 +456,48 @@ void AVL::draw() {
             elapsedTime = 0.0f;
         } else {
             if (!steps.empty()) {
-
-                if(cur >= 0 && cur< steps.size()) {
-                    drawStep(steps[cur]);
+                if (cur >= 0 && cur < steps.size()) {
+                    if (steps[cur].isRotating) {
+                        AVLpaint tmp;              // Tạo một đối tượng AVLpaint mới
+                        tmp.copy(steps[cur].root); // Sao chép sâu cây từ steps[cur]
+                        tmp.isRotating = steps[cur].isRotating; // Sao chép trạng thái xoay
+                        updateRotation(stepDuration, tmp,steps[cur+1]); // Cập nhật vị trí trong quá trình xoay
+                        drawStep(tmp);            // Vẽ cây đang xoay
+                        WaitTime(1);
+                        // Nếu vị trí khớp với cây tiếp theo (đã cân bằng), chuyển bước
+                        if (cur + 1 < steps.size()) {
+                            steps[cur].isRotating = false; // Kết thúc xoay
+                            if (isPlaying) {
+                                cur++;
+                                elapsedTime = 0.0f;
+                            }
+                        }
+                    } else {
+                        drawStep(steps[cur]); // Vẽ bước hiện tại nếu không xoay
+                    }
                 }
-
-                
+    
+                // Điều khiển phát các bước
                 if (isPlaying) {
                     elapsedTime += GetFrameTime();
                     if (elapsedTime >= stepDuration) {
-                        if (cur < steps.size() ) {
+                        if (cur < steps.size() - 1 && !steps[cur].isRotating) {
                             cur++;
                             elapsedTime = 0.0f;
+                        } else if (cur == steps.size() - 1) {
+                            isPlaying = false;
                         }
                     }
                 }
-
-                
-                if(cur == steps.size() && cur!=0) {
-                    drawStep(steps[cur-1]);
+    
+                // Kết thúc khi đến bước cuối
+                if (cur == steps.size() && cur != 0) {
+                    drawStep(steps[cur - 1]);
                     isPlaying = false;
                 }
             }
         }
-    }
+    } 
     
     
     if (currentOperation == Operation::Delete) {
