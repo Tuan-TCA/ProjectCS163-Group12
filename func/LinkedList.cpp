@@ -2,6 +2,7 @@
 #include <raylib.h>
 #include <thread>
 #include "ControlAnimation.h"
+
 using namespace std;
 
 LinkedList::LinkedList() {
@@ -14,7 +15,6 @@ LinkedList::LinkedList() {
     isUpdating = false;
     isCreating = false;
 }
-
 void LinkedList::init(){
     Page::init();
         while (head){
@@ -127,43 +127,43 @@ void LinkedList::draw() {
 
     static float elapsedTime = 0.0f; 
     const float stepDuration = 0.5f/animationSpeed;
-    if (currentOperation == Operation::Create) {
-        if (isCreating) {
-            animationController.Reset();         
-            // DrawInsert(lastInsertedKey);         
-            isCreating = false;                 
-            elapsedTime = 0.0f;                  
-            hasFinishedOnce = false;        
-        } else {
-            if (!animationController.steps.empty()) {
-                if (animationController.currentStep < animationController.steps.size()) {
-                    animationController.steps[animationController.currentStep](); 
-                }
+    // if (currentOperation == Operation::Create) {
+    //     if (isCreating) {
+    //         animationController.Reset();         
+    //         // DrawInsert(lastInsertedKey);         
+    //         isCreating = false;                 
+    //         elapsedTime = 0.0f;                  
+    //         hasFinishedOnce = false;        
+    //     } else {
+    //         if (!animationController.steps.empty()) {
+    //             if (animationController.currentStep < animationController.steps.size()) {
+    //                 animationController.steps[animationController.currentStep](); 
+    //             }
 
-                if (!animationController.IsPaused()) {
-                    elapsedTime += GetFrameTime(); 
-                    if (elapsedTime >= stepDuration && !animationController.IsFinished()) {
-                        animationController.NextStep();
-                        elapsedTime = 0.0f;            
-                        cout << animationController.currentStep << endl; 
-                    }
-                }
-            }
+    //             if (!animationController.IsPaused()) {
+    //                 elapsedTime += GetFrameTime(); 
+    //                 if (elapsedTime >= stepDuration && !animationController.IsFinished()) {
+    //                     animationController.NextStep();
+    //                     elapsedTime = 0.0f;            
+    //                     cout << animationController.currentStep << endl; 
+    //                 }
+    //             }
+    //         }
 
-            if (animationController.IsFinished()) {
-                DrawLL(Pos); 
-                if (!hasFinishedOnce) {
-                    finishedPos = Pos;    
-                    hasFinishedOnce = true; 
-                }
-                if (Pos.x > NewPos.x) {
-                    Pos = {Pos.x - 5, Pos.y}; 
-                } else {
-                    Pos = NewPos; 
-                }
-            }
-        }
-    }
+    //         if (animationController.IsFinished()) {
+    //             DrawLL(Pos); 
+    //             if (!hasFinishedOnce) {
+    //                 finishedPos = Pos;    
+    //                 hasFinishedOnce = true; 
+    //             }
+    //             if (Pos.x > NewPos.x) {
+    //                 Pos = {Pos.x - 5, Pos.y}; 
+    //             } else {
+    //                 Pos = NewPos; 
+    //             }
+    //         }
+    //     }
+    // }
 
     if (currentOperation == Operation::Insert) {
         if (isInserting) {
@@ -316,6 +316,45 @@ void LinkedList::draw() {
             }
         }
     }
+
+    if (currentOperation == Operation::Create){
+        if (isCreating) {
+            animationController.Reset();         
+            DrawCreateNode(numbers);            
+            isCreating = false;                 
+            elapsedTime = 0.0f;                  
+            hasFinishedOnce = false;        
+        }
+        else {
+            if (!animationController.steps.empty()) {
+                if (animationController.currentStep < animationController.steps.size()) {
+                    animationController.steps[animationController.currentStep](); 
+                }
+
+                if (!animationController.IsPaused()) {
+                    elapsedTime += GetFrameTime(); 
+                    if (elapsedTime >= stepDuration && !animationController.IsFinished()) {
+                        animationController.NextStep(); 
+                        elapsedTime = 0.0f;            
+                        cout << animationController.currentStep << endl; 
+                    }
+                }
+            }
+
+            if (animationController.IsFinished()) {
+                DrawLL(Pos); 
+                if (!hasFinishedOnce) {
+                    finishedPos = Pos;    
+                    hasFinishedOnce = true; 
+                }
+                if (Pos.x > NewPos.x) {
+                    Pos = {Pos.x - 5, Pos.y}; 
+                } else {
+                    Pos = NewPos; 
+                }
+            }
+        }
+    }
 }
 
 LinkedList* LinkedList::copy() const {
@@ -400,14 +439,14 @@ void LinkedList::DrawNode(Vector2 center, int key, int choose){
     // ClearBackground(GRAY);
     //Draw circle
     if (choose == 1){
-        DrawCircleV(center, radius, choose_color);
+        DrawCircleV(center, radius - 3, choose_color);
     }
     if (choose == -1){
         //cout << center.x << ' ' << key << '\n';
-        DrawCircleV(center, radius, visit_color);
+        DrawCircleV(center, radius - 3, visit_color);
     }
     if (choose == 0){
-        DrawCircleV(center, radius, WHITE);
+        DrawCircleV(center, radius - 3, WHITE);
     }
     DrawCircleV(center, radius - 9, MyColor2);
     DrawCircleV(center, radius - 10, MyColor2);
@@ -649,45 +688,63 @@ void LinkedList::DrawUpDateNode(int first, int second){
     }
 }
 
-void LinkedList::DrawCreateNode(int numbers) {
-    while (head) {
-        Node* tmp = head;
-        head = head->next;
-        delete tmp;
+void LinkedList::InsertLL(int key){
+    if (!head) {
+        head = new Node(key, nullptr);
+        Pos = GetPosition(CountNode(head));
+        NewPos = Pos;
+        return;
     }
 
-    for (int i = 0; i < numbers; ++i) {
-        int newKey = GetRandomValue(1, 100); 
-        Node* newNode = new Node(newKey, nullptr);
-
-        if (!head) {
-            head = newNode;
-        } else {
-            Node* temp = head;
-            while (temp->next) {
-                temp = temp->next;
-            }
-            temp->next = newNode;
+    Node * tmp = head;
+    Node * prev = nullptr;
+    while (tmp) {
+        if (tmp->val > key) {
+            break;
         }
+        prev = tmp;
+        tmp = tmp->next;
     }
-
-    Pos = GetPosition(CountNode(head)); 
+    Node* newNode = new Node(key, tmp);
+    if (prev) {
+        prev->next = newNode;
+    } else {
+        head = newNode; // If prev is null, the new node becomes the head
+    }
+    Pos = GetPosition(CountNode(head));
     NewPos = Pos;
-    Vector2 center = Pos;
+}
 
-    animationController.Reset(); 
-    animationController.AddStep([this, center]() {
-        DrawLL(Pos, true); 
-    });
+void LinkedList::DrawCreateNode(int numbers) {
+    init();
+    cout << "Create: " << numbers << '\n';
+    // Cập nhật vị trí vẽ ban đầu
+    if (!numbers) numbers = RandInt(5, 1000);
+    int cur = 1, prev = 0;
+    for (int i = 1; i <= numbers; i ++){
+        cur = RandInt(1, 10000);
 
-    Node* temp = head;
-    while (temp) {
-        animationController.AddStep([this, temp, center]() {
-            DrawNode(center, temp->val, 0); 
-        });
-        temp = temp->next;
-        center.x += (2 * radius + spacing); 
+        InsertLL(cur);
     }
+}
 
-    animationController.NextStep();
+// CREATE
+
+int LinkedList::RandInt(int left, int right) {
+    static std::random_device rd;                      // Random seed
+    static std::mt19937 gen(rd());                     // Mersenne Twister PRNG
+    std::uniform_int_distribution<int> dist(left, right);
+    return dist(gen);
+}
+
+void LinkedList::Create(int n){
+    //Init array
+    init();
+    if (!n) n = RandInt(5, 1000);
+    int cur = 1, prev = 0;
+    for (int i = 1; i <= n; i ++){
+        cur = RandInt(1, 10000);
+
+        DrawInsert(cur);
+    }
 }
