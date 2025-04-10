@@ -75,7 +75,7 @@ void LinkedList::event() {
     //     hasCreate = true;
     //     if(Page::Ok.IsClicked()) {
     //         DestroyRecursive(head);
-    //         root = nullptr;
+    //         head = nullptr;
     //         isCreating = true;
     //     }       
     // }
@@ -285,14 +285,135 @@ void LinkedList::draw() {
                     
                     }
 
-                    if(cur == steps.size() && cur!=0) {  
-                        drawStep(steps[cur-1]);   
-                        cout<<"ok";      
-                        isPlaying = false;
-                    }
+                    // if(cur == steps.size() && cur!=0) {  
+                    //     drawStep(steps[cur-1]);   
+                    //     cout<<"ok";      
+                    //     isPlaying = false;
+                    // }
             }
         }
     }
+
+    
+    if (currentOperation == Operation::Delete) {
+        if (isDeleting) {
+            Found = (this->DeleteNode(DeleteKey)) ? 1 : 0;
+            if(!Found) {
+                addStep(this->head, 2);
+            }
+            addStep(this->head);
+            isDeleting = false;
+            
+            isPlaying = true;
+            elapsedTime = 0.0f;
+            // rotationStartTime = GetTime();
+            // isRotating = false;
+        } else if (!steps.empty()) {
+            if (cur >= 0 && cur < steps.size()) {
+                // // Xử lý animation xoay - chỉ khi đang phát (isPlaying)
+                // if (steps[cur].isRotating && isPlaying) {
+                //     if (!isRotating) {
+                //         // Bắt đầu animation xoay
+                //         isRotating = true;
+                //         rotationStartTime = GetTime();
+                //     }
+    
+                //     float rotationProgress = (GetTime() - rotationStartTime) / stepDuration;
+                    
+                //     if (rotationProgress < 1.0f) {
+                //         // Đang trong quá trình xoay
+                //         AVLpaint tmp;
+                //         tmp.copy(steps[cur].head);
+                //         tmp.isRotating = true;
+                        
+                //         updateNodePositions(tmp.head, steps[cur+1].head, rotationProgress);
+                        
+                //         // Xử lý riêng cho trường hợp delete
+                //         if (cur == steps.size()-2) {
+                //             drawStep(tmp, Found);
+                //         } else {
+                //             drawStep(tmp);
+                //         }
+                //     } else {
+                //         // Kết thúc xoay, chuyển sang bước tiếp theo
+                //         isRotating = false;
+                //         cur++;
+                //         if (cur == steps.size()-1) {
+                //             drawStep(steps[cur], Found);
+                //         } else {
+                //             drawStep(steps[cur]);
+                //         }
+                //     }
+                // } 
+                // else {
+                    // Vẽ bước hiện tại (không xoay hoặc không phải đang phát)
+                    if (cur == steps.size()-2) {
+                        drawStep(steps[cur], Found);
+                    } else {
+                        drawStep(steps[cur]);
+                    }
+                    
+                    // Tự động chuyển bước nếu đang phát
+                    if (isPlaying) {
+                        elapsedTime += GetFrameTime();
+                        if (elapsedTime >= stepDuration) {
+                            if (cur < steps.size() - 1) {
+                                cur++;
+                                elapsedTime = 0.0f;
+                            } else {
+                                isPlaying = false;
+                            }
+                        }
+                    }
+                // }
+            }
+        }
+    }
+
+
+    if (currentOperation == Operation::Search) {
+        
+        if (isSearching) {
+            Found = (this->Search(SearchKey)) ? 1 : 0;
+            if(!Found) {
+                addStep(this->head, 6);
+            }
+            addStep(this->head);
+            isPlaying = true;
+            isSearching = false;                 
+            elapsedTime = 0.0f;      
+            
+        } else {
+        
+                if (!steps.empty()) {
+                    if(cur >= 0 && cur< steps.size()) {
+                        
+                        if(cur == steps.size()-2) {
+                            drawStep(steps[cur], Found);
+                        }
+                        else 
+                            drawStep(steps[cur]);
+                    }
+
+    
+                    if (isPlaying) {
+                        elapsedTime += GetFrameTime();
+                        if (elapsedTime >= stepDuration) {
+                            if (cur < steps.size() ) {
+                                cur++;
+                                elapsedTime = 0.0f;
+                            }
+                        }
+                    }
+                    
+                    if(cur == steps.size() && cur!=0) {  
+                        drawStep(steps[cur-1]);         
+                        isPlaying = false;
+                    }
+                }
+        }
+    }
+
 
     // if (currentOperation == Operation::Search) {
     //     if (isSearching) {
@@ -420,6 +541,31 @@ void LinkedList::updatePseudocode(){
             "cur->next = new Node(value)" // 4    
         };
             break;
+        case Operation::Create:
+        pseudocode ={};
+        break;
+        case Operation::Search:
+        pseudocode = {
+            "if empty, return NOT_FOUND",   //0
+            "Node* cur = head",             //1
+            "while (cur != nullptr)",       //2
+            "   if cur->val == value",       //3
+            "       return FOUND",          //4
+            "   cur = cur->next",            //5
+            "return NOT_FOUND",             //6
+               //6
+        };
+        break;
+        case Operation::Delete:
+        pseudocode = {
+            "if empty, return NOT_FOUND",           //0
+            "Node* cur = head, * prev = nullptr",   //1
+            "while(cur && cur->val != value)",      //2
+            "   prev = cur, cur = cur->next",       //3
+            "if cur == nullptr",                    //4
+            "   return NOT_FOUND",                  //5
+            "prev->next = cur->next, delete cur"    //6
+        };
             default:
             break;
     }
@@ -483,6 +629,18 @@ int LinkedList::CountNode(Node* head){
     }
     return cnt;
 }
+
+// void LinkedList::CalculatePos(Vector2 PosHead) {
+//     if(!head) return; 
+//     head->Pos = PosHead;
+
+//     Node* pre = nullptr;
+//     Node* a = head; 
+//     while(a) {
+//         a->Pos = {pre->Pos.}
+//     }
+
+// }
 
 void LinkedList::DrawArrow(Node* start, Node* end) {
     
@@ -611,14 +769,15 @@ void LinkedList::Insert(int key) {
         head->isHighLight = 0;
         return;
     }
-    cout << "head not null" << endl;
+
     Node * a = head;
    
     a->isHighLight = -1;
-    addStep(this->head,2);  
+    addStep(this->head,1);  
     a->isHighLight = 0;
     
     while (a && a->next) {
+        addStep(this->head, 2);
         a = a->next;
         cout<<"3";
         a->isHighLight = -1;
@@ -627,13 +786,104 @@ void LinkedList::Insert(int key) {
     }
     Vector2 curPos = a->Pos;
     Vector2 newPos = {curPos.x  + 2 * radius + spacing, curPos.y};
-    cout << "before next\n";
     a->next = new Node(key, nullptr, newPos, 0);
     a = a->next;
 
     a->isHighLight = 2;
     addStep(this->head,4);  
     a->isHighLight = 0;
+}
+
+
+
+bool LinkedList::Search(int key) {
+    if(!head) {
+        addStep(this->head,0);  
+        return false;
+    }
+
+    Node* a = head;
+    a->isHighLight = -1;
+    addStep(this->head,1);  
+    a->isHighLight = 0;
+    while(a) {
+        addStep(this->head,2); 
+        if(a->val == key) {
+            addStep(this->head, 3);
+            a->isHighLight = 1;
+            addStep(this->head,4);  
+            a->isHighLight = 0;
+            return true;
+        }
+
+        a->isHighLight = -1;
+        addStep(this->head,5);  
+        a->isHighLight = 0;
+
+        a = a->next;
+    }
+    addStep(this->head, 6);
+    return false;
+}
+
+bool LinkedList::DeleteNode(int key) {
+    if(!head) {
+        return false;
+    }
+
+    Node* pre = nullptr;
+    Node* a = head;
+    
+    a->isHighLight = -1;
+    addStep(this->head,1);  
+    a->isHighLight = 0;
+
+    while(a) {
+        if(a->val == key) {
+            if(a == head) {
+                cout<<"ok";
+
+                // CalculatePostion(Vector2 headPos) {
+                //     cập nhật mọi pos theo headPos;
+                //     this->head = headPos;
+                    
+                // }
+                
+                a->isHighLight = 1;
+                addStep(this->head,0);  
+                a->isHighLight = 0;
+                
+                Node* tmp = this->head;
+                // Vector2 tmpPos = this->head;
+                this->head = head->next;
+                delete tmp; 
+                return true;
+                
+            }
+            cout<<"@@";
+            
+            a->isHighLight = 1;
+            addStep(this->head,0);  
+            a->isHighLight = 0;
+            
+            pre->next = a->next;
+            delete a;
+            a = nullptr;
+                        
+            return true;
+
+        }
+
+        a->isHighLight = -1;
+        addStep(this->head,0);  
+        a->isHighLight = 0;
+
+        pre = a;
+        a = a->next;
+        
+    }
+
+    return false;
 }
 
 // bool LinkedList::DrawSearchNode(int key){

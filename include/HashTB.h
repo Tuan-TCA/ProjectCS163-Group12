@@ -5,30 +5,28 @@
 using namespace std;
 
 #include <raylib.h>
+#include "LinkedList.h"
 #include "Variables.h"
 #include "Page.h"
 
-struct HashNode {
-    int key;
-    HashNode* next;
+// struct HashNode {
+//     int key;
+//     HashNode* next;
 
-    HashNode(int k, HashNode* nxt = nullptr) {
-        key = k;
-        next = nxt;
-    }
-};
+//     HashNode(int k, HashNode* nxt = nullptr) {
+//         key = k;
+//         next = nxt;
+//     }
+// };
+
+//vector<LinkedList*> heads;
+
 
 class HashTableChaining : public Page {
-private:
-    // Các biến cần thiết cho việc vẽ
-    // Vector2 origin = { 350, 100 };
-    // Vector2 nodePos = { origin.x + bucket_width + spacing, origin.y + bucket_height / 2.0f };
-    // Vector2 arrowStart = { nodePos.x - spacing, nodePos.y };
-    // Vector2 arrowEnd = { nodePos.x, nodePos.y };
-    // Vector2 nodePos = { origin.x + bucket_width + spacing, origin.y + bucket_height / 2.0f };
 public:
     Vector2 origin;
     int tableSize = 3;
+    vector<Linkedlist
     vector<HashNode*> table; // Khởi tạo bảng băm với kích thước tableSize
     // HashNode* table[tableSize]; // Bảng băm
 
@@ -98,6 +96,4 @@ public:
     void event() override;
     void reset() override;
 
-    void RANDOM_INPUT() override;
-    
-};
+    void RANDOM_INPUT(

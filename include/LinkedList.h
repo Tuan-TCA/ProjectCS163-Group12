@@ -187,6 +187,7 @@ public:
         }
     }
 
+    int Found = -1;
     int cur = -1;
     int curCode = -1;
     
@@ -213,10 +214,11 @@ public:
 
 
     void Insert(int key);
-    bool DrawSearchNode(int key);
-    void DrawDeleteNode(int key);
+    bool Search(int key);
+    bool DeleteNode(int key);
     //void DrawUpDateNode(int first, int second);
     void updatePseudocode();
+    void CalculatePos(Vector2 PosHead);
 
     bool hasInsert;
     bool hasSearch;
