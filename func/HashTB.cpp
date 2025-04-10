@@ -22,6 +22,12 @@ void HashTableChaining::init(){
     Page::init();
     origin = { 350, 100 };
     heads.resize(tableSize, nullptr);
+    
+    for(auto& elem: heads){
+        
+        elem = new LinkedList();
+    }
+    updateVariables();
     isInserting = false;
     lastInsertedKey = -1;
     isCreating = false;
@@ -40,9 +46,9 @@ HashTableChaining::HashTableChaining(int size) {
 //ok
 HashTableChaining::~HashTableChaining() {
     for (int i = 0; i < tableSize; ++i) {
-        LinkedList* current = heads[i];
+        Node* current = heads[i]->head;
         while (current) {
-            Node* temp = current->head;
+            Node* temp = current;
             current = current->next;
             delete temp;
         }
@@ -53,31 +59,47 @@ int HashTableChaining::HashFunction(int key) {
     return key % tableSize;
 }
 
+void HashTableChaining::updateVariables(){
+    for(auto& elem: heads){
+        if(elem){
+        elem->radius = radius;
+        elem->spacing = 30;
+        elem->font_size = font_size;
+        elem->arrow_size = arrow_size;
+        }
+    }
+}
+
 void HashTableChaining::Insert(int key) {
     int index = HashFunction(key);
-    Node* cur = heads[index]->head;
+    
+    if (!heads[index]) {
+        heads[index] = new LinkedList();  
+    }
 
+   
+    Node* cur = heads[index]->head;
     while (cur) {
-        if (cur->key == key) {
-            // Trùng → không insert
-            
+        if (cur->val == key) {
+            isDuplicateInsert = true;
             lastInsertedKey = key;
             isInserting = false;
-            isDuplicateInsert = true;   // ➕ thêm biến này (bên dưới sẽ nói)
             return;
         }
         cur = cur->next;
     }
 
+    heads[index]->Insert(key);  // ⚠️ Thêm dữ liệu thực sự!
     isInserting = true;
     lastInsertedKey = key;
 }
 
+
 bool HashTableChaining::Search(int key) {
     int index = HashFunction(key);
-    Node* current = table[index]->head;
+    Node* current = heads[index]->head;
     while (current) {
-        if (current->key == key) return true;
+        if (current->val == key) return true;
         current = current->next;
     }
     return false;
@@ -93,6 +115,16 @@ void HashTableChaining::DrawHashTable() {
     };
     bucket_color = MyColor6;
     DrawRectangleRec(bucket, bucket_color);
+        for(int i = 0; i < heads.size(); i++){
+        // cout << "ha\n";
+        string label = to_string(i);
+        DrawText(label.c_str(), bucket.x + 8, (i) * spacing + 35 + bucket.y, font_size, text_color);
+        if(heads[i]){
+        heads[i]->headPos = {bucket.x + 8 + spacing, (i) * spacing + 25 + bucket_height / 2.0f + bucket.y};
+        // cout << "head " << i << ": " << heads[i]->head.x << " - " << heads[i]->Pos.y << endl;
+        heads[i]->DrawLL(heads[i]->head);
+        }
+    }
     //DrawRectangleLines(bucket.x, bucket.y, bucket.width, bucket.height, BLACK);
     // for (int i = 0; i < tableSize; ++i) {
      
@@ -131,22 +163,25 @@ void HashTableChaining::DrawHashTable() {
     //         current = current->next; 
     //     }        
     // }
+    
 
 
-    for(int i = 0; i < heads.size(); i++){
-        string label = to_string(i);
-        DrawText(label.c_str(), bucket.x + 8, (i) * spacing + 35 + bucket.y, font_size, text_color);
-
-        LinkedList* cur = heads[i];
-        while(cur){
-            cur->DrawLL(heads[i]->head);
-        }
-    }
 }
 
 void HashTableChaining::DrawInsertEffect() {
     if (!isInserting) return;
-
+    // int index = HashFunction(lastInsertedKey);
+    // cout << "help me pls\n";
+    // cout << "index: " << index << endl;
+    // LinkedList* cur = heads[index];
+    // cout << "pls pls pls\n";
+    // if(!cur){
+        
+    //     return;
+    // }
+    // cur->isInserting = true;
+    // cur->lastInsertedKey = lastInsertedKey;
+    cout << "momo thanh toan thanh cong\n";
     // int index = HashFunction(lastInsertedKey);
     // float y = (index) * spacing + 25 + bucket_height / 2.0f + (origin.y + 50);
 
@@ -213,54 +248,56 @@ void HashTableChaining::DrawSearchEffect() {
     if (!isSearching) return;
 
     int index = HashFunction(searchKey);
-    float y = origin.y + index * spacing + bucket_height / 2.0f;
-    Vector2 nodePos = { origin.x + bucket_width + spacing, y };
+    // float y = origin.y + index * spacing + bucket_height / 2.0f;
+    // Vector2 nodePos = { origin.x + bucket_width + spacing, y };
 
-    HashNode* cur = table[index];
-    while (cur) {
-        BeginDrawing();
-        ClearBackground(RAYWHITE);
-        // page.draw();
-        Page::draw();
-        DrawHashTable();
+    LinkedList* cur = heads[index];
+    cur->isSearching = true;
+    cur->SearchKey = searchKey;
+    // while (cur) {
+    //     BeginDrawing();
+    //     ClearBackground(RAYWHITE);
+    //     // page.draw();
+    //     Page::draw();
+    //     DrawHashTable();
 
-        // highlight node đang kiểm tra
-        DrawNode(nodePos, cur->key, -1, radius, font_size,
-                 ring, circle, choose_color, visit_color, text_color);
+    //     // highlight node đang kiểm tra
+    //     DrawNode(nodePos, cur->key, -1, radius, font_size,
+    //              ring, circle, choose_color, visit_color, text_color);
 
-        EndDrawing();
-        std::this_thread::sleep_for(std::chrono::milliseconds((int) (300 / animationSpeed)));
+    //     EndDrawing();
+    //     std::this_thread::sleep_for(std::chrono::milliseconds((int) (300 / animationSpeed)));
 
-        if (cur->key == searchKey) {
-            BeginDrawing();
-            ClearBackground(RAYWHITE);
-            // page.draw();
-            Page::draw();
-            DrawHashTable();
+    //     if (cur->key == searchKey) {
+    //         BeginDrawing();
+    //         ClearBackground(RAYWHITE);
+    //         // page.draw();
+    //         Page::draw();
+    //         DrawHashTable();
 
-            DrawNode(nodePos, cur->key, 1, radius, font_size,
-                     ring, circle, choose_color, visit_color, text_color);
+    //         DrawNode(nodePos, cur->key, 1, radius, font_size,
+    //                  ring, circle, choose_color, visit_color, text_color);
 
-            EndDrawing();
-            std::this_thread::sleep_for(std::chrono::milliseconds((int) (600 / animationSpeed)));
+    //         EndDrawing();
+    //         std::this_thread::sleep_for(std::chrono::milliseconds((int) (600 / animationSpeed)));
 
-            isSearching = false;
-            return;
-        }
+    //         isSearching = false;
+    //         return;
+    //     }
 
-        nodePos.x += spacing;
-        cur = cur->next;
-    }
+    //     nodePos.x += spacing;
+    //     cur = cur->next;
+    // }
 
-    // Nếu không tìm thấy
-    BeginDrawing();
-    ClearBackground(RAYWHITE);
-    // page.draw();
-    Page::draw();
-    DrawHashTable();
-    DrawText("Not Found", origin.x + 400, y - 10, font_size, RED);
-    EndDrawing();
-    std::this_thread::sleep_for(std::chrono::milliseconds((int) (800 / animationSpeed)));
+    // // Nếu không tìm thấy
+    // BeginDrawing();
+    // ClearBackground(RAYWHITE);
+    // // page.draw();
+    // Page::draw();
+    // DrawHashTable();
+    // DrawText("Not Found", origin.x + 400, y - 10, font_size, RED);
+    // EndDrawing();
+    // std::this_thread::sleep_for(std::chrono::milliseconds((int) (800 / animationSpeed)));
 
     isSearching = false;
 }
@@ -269,73 +306,78 @@ void HashTableChaining::DrawDeleteEffect() {
     if (!isDeleting) return;
 
     int index = HashFunction(deleteKey);
-    float y = origin.y + index * spacing + bucket_height / 2.0f;
-    Vector2 nodePos = { origin.x + bucket_width + spacing, y };
+    LinkedList* cur = heads[index];
+    cur->DeleteKey = deleteKey;
+    cur->isDeleting = true;
+    // float y = origin.y + index * spacing + bucket_height / 2.0f;
+    // Vector2 nodePos = { origin.x + bucket_width + spacing, y };
 
-    HashNode* cur = table[index];
-    HashNode* prev = nullptr;
+    // HashNode* cur = table[index];
+    // HashNode* prev = nullptr;
 
-    while (cur) {
-        BeginDrawing();
-        ClearBackground(RAYWHITE);
-        // page.draw();
-        Page::draw();
-        DrawHashTable();
+    // while (cur) {
+    //     BeginDrawing();
+    //     ClearBackground(RAYWHITE);
+    //     // page.draw();
+    //     Page::draw();
+    //     DrawHashTable();
 
-        // Highlight node đang kiểm tra
-        DrawNode(nodePos, cur->key, -1, radius, font_size,
-                 ring, circle, choose_color, visit_color, text_color);
+    //     // Highlight node đang kiểm tra
+    //     DrawNode(nodePos, cur->key, -1, radius, font_size,
+    //              ring, circle, choose_color, visit_color, text_color);
 
-        EndDrawing();
-        std::this_thread::sleep_for(std::chrono::milliseconds((int) (300 / animationSpeed)));
+    //     EndDrawing();
+    //     std::this_thread::sleep_for(std::chrono::milliseconds((int) (300 / animationSpeed)));
 
-        if (cur->key == deleteKey) {
-            // Animation xoá: chỉ không vẽ node nữa
-            for (int step = 10; step >= 0; --step) {
-                float alpha = step / 10.0f;
+    //     if (cur->key == deleteKey) {
+    //         // Animation xoá: chỉ không vẽ node nữa
+    //         for (int step = 10; step >= 0; --step) {
+    //             float alpha = step / 10.0f;
             
-                BeginDrawing();
-                ClearBackground(RAYWHITE);
-                // page.draw();
-                Page::draw();
-                DrawHashTable();
+    //             BeginDrawing();
+    //             ClearBackground(RAYWHITE);
+    //             // page.draw();
+    //             Page::draw();
+    //             DrawHashTable();
             
-                // Vẽ node đang mờ dần/
-                DrawFadingNode(nodePos, cur->key, alpha, radius, font_size, circle, text_color);
+    //             // Vẽ node đang mờ dần/
+    //             DrawFadingNode(nodePos, cur->key, alpha, radius, font_size, circle, text_color);
             
-                EndDrawing();
-                std::this_thread::sleep_for(std::chrono::milliseconds((int) (40 / animationSpeed)));
-            }
+    //             EndDrawing();
+    //             std::this_thread::sleep_for(std::chrono::milliseconds((int) (40 / animationSpeed)));
+    //         }
             
 
-            // Xóa node khỏi danh sách
-            if (prev == nullptr) {
-                table[index] = cur->next;
-            } else {
-                prev->next = cur->next;
-            }
+    //         // Xóa node khỏi danh sách
+    //         if (prev == nullptr) {
+    //             table[index] = cur->next;
+    //         } else {
+    //             prev->next = cur->next;
+    //         }
 
-            delete cur;
-            break;
-        }
+    //         delete cur;
+    //         break;
+    //     }
 
-        prev = cur;
-        cur = cur->next;
-        nodePos.x += spacing;
-    }
+    //     prev = cur;
+    //     cur = cur->next;
+    //     nodePos.x += spacing;
+    // }
 
     isDeleting = false;
 }
 
 void HashTableChaining::draw() {
     Page::draw();
-    
+  
     DrawHashTable();
     DrawSearchEffect();
     DrawInsertEffect();
     DrawDeleteEffect();
-    DrawInsertDuplicateEffect();
-
+    // DrawInsertDuplicateEffect();
+   for(auto& elem: heads){
+    if(elem) elem->draw();
+   }
     //avoid override
     head.Draw(MyColor2, getMODE());
     switchState ? home2.Draw() : home.Draw();
@@ -343,61 +385,66 @@ void HashTableChaining::draw() {
     if (isCreating && !createKeys.empty()) {
         Insert(createKeys.front());
         createKeys.erase(createKeys.begin());
-        std::this_thread::sleep_for(std::chrono::milliseconds((int) (300 / animationSpeed)));
+        // std::this_thread::sleep_for(std::chrono::milliseconds((int) (300 / animationSpeed)));
     }
     if (createKeys.empty()) isCreating = false;
 }
 
 
-void HashTableChaining::DrawInsertDuplicateEffect() {
-    if (!isDuplicateInsert) return;
+// void HashTableChaining::DrawInsertDuplicateEffect() {
+//     if (!isDuplicateInsert) return;
 
-    int index = HashFunction(lastInsertedKey);
-    float y = origin.y + index * spacing + bucket_height / 2.0f;
+//     int index = HashFunction(lastInsertedKey);
+//     float y = origin.y + index * spacing + bucket_height / 2.0f;
 
-    Vector2 nodePos = { origin.x + bucket_width + spacing, y };
-    HashNode* cur = table[index];
+//     Vector2 nodePos = { origin.x + bucket_width + spacing, y };
+//     HashNode* cur = table[index];
 
-    while (cur) {
-        if (cur->key == lastInsertedKey) {
-            // Là node trùng → fade đỏ
-            for (int step = 0; step <= 10; ++step) {
-                float alpha = step / 10.0f;
+//     while (cur) {
+//         if (cur->key == lastInsertedKey) {
+//             // Là node trùng → fade đỏ
+//             for (int step = 0; step <= 10; ++step) {
+//                 float alpha = step / 10.0f;
 
-                BeginDrawing();
-                ClearBackground(RAYWHITE);
-                // page.draw();
-                Page::draw();
-                DrawHashTable();
+//                 BeginDrawing();
+//                 ClearBackground(RAYWHITE);
+//                 // page.draw();
+//                 Page::draw();
+//                 DrawHashTable();
 
-                // Overlay đỏ với alpha
-                Color overlay = RED;
-                overlay.a = static_cast<unsigned char>(alpha * 255);
-                DrawFadingNode(nodePos, cur->key, alpha, radius, font_size, overlay, text_color);
+//                 // Overlay đỏ với alpha
+//                 Color overlay = RED;
+//                 overlay.a = static_cast<unsigned char>(alpha * 255);
+//                 DrawFadingNode(nodePos, cur->key, alpha, radius, font_size, overlay, text_color);
 
-                EndDrawing();
-                std::this_thread::sleep_for(std::chrono::milliseconds((int) (40 / animationSpeed)));
-            }
-            break;
-        }
-        nodePos.x += spacing;
-        cur = cur->next;
-    }
+//                 EndDrawing();
+//                 std::this_thread::sleep_for(std::chrono::milliseconds((int) (40 / animationSpeed)));
+//             }
+//             break;
+//         }
+//         nodePos.x += spacing;
+//         cur = cur->next;
+//     }
 
-    isDuplicateInsert = false;
-}
+//     isDuplicateInsert = false;
+// }
 
 
 
 
 void HashTableChaining::event() {
     Page::event();
+
+    updateVariables();  
+
     if (currentOperation == Operation:: Insert) {
         if (textbox.nums.size() > 0) {
+            cout << "mimi\n";
             lastInsertedKey = textbox.nums[0];
             textbox.nums.erase(textbox.nums.begin());
             textbox.inputText = {""};
             Insert(lastInsertedKey);
+            cout << "mama\n";
         }
     }
 
@@ -419,9 +466,13 @@ void HashTableChaining::event() {
     }
     if (currentOperation == Operation:: Create) {
          if(textbox.nums.size() > 0){
-            table.clear();
+            heads.clear();
              tableSize = textbox.nums[0]; 
-             table.resize(tableSize);
+             heads.resize(tableSize, nullptr);
+             for (int i = 0; i < tableSize; ++i) {
+                    heads[i] = new LinkedList(); 
+                }
+
              textbox.nums.erase(textbox.nums.begin());
              textbox.inputText = {""};
         }
@@ -434,7 +485,16 @@ void HashTableChaining::event() {
         }
         
     }    
-        
+       for (int i = 0; i < heads.size(); ++i) {
+    if (heads[i]) {
+       
+        heads[i]->handleUI();
+    } else {
+        cout << "null at index " << i << "\n";
+    }
+}
+
+
         // Xử lý CREATE với table size nhập từ bàn phím
         //     if (currentOperation == Operation::Create && !textbox.nums.empty()) {
         //     int size = textbox.nums[0];  // Lấy table size từ input
@@ -460,9 +520,9 @@ void HashTableChaining::event() {
 
 void HashTableChaining::reset(){
     Page::reset();
-        origin = { 350, 100 };
-        tableSize = 3;
-        heads.clear();
+    origin = { 350, 100 };
+    tableSize = 3;
+    heads.clear();
     heads.resize(tableSize, nullptr);
      isInserting = false;
      lastInsertedKey = -1;

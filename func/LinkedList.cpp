@@ -7,11 +7,20 @@ using namespace std;
 LinkedList::LinkedList() {
     head = nullptr;
     workplace = {400,300,600,600};
+    headPos = {400,300};
     // position = {workplace.x*1.1f, workplace.y*1.1f};
     isInserting = false;
     isSearching = false;
     isDeleting = false;
     isUpdating = false;
+    //isCreating = false;
+
+    hasInsert = false;
+    hasSearch = false;
+    hasDelete = false;
+
+    cur = -1;
+    curCode = -1;
 }
 
 void LinkedList::init(){
@@ -25,12 +34,6 @@ void LinkedList::init(){
     workplace = {400,300,600,600};
     headPos = {400,300};
     // position = {workplace.x*1.1f, workplace.y*1.1f};
-    isInserting = false;
-    isSearching = false;
-    isDeleting = false;
-    isUpdating = false;
-
-
     isInserting = false;
     isSearching = false;
     isDeleting = false;
@@ -136,60 +139,14 @@ void LinkedList::event() {
         }
     }
 
-    static Operation lastOp = Operation::Algorithm;
-    if(currentOperation != lastOp) {
-        updatePseudocode();
-        lastOp = currentOperation;
-    }
-
-    if(!isPlaying){
-        if(!switchState ? play1.IsClicked() : play2.IsClicked()){
-            isPlaying = true;
-            TraceLog(LOG_INFO, "is playing");
-        }
-    }
-    else{
-        if(!switchState ? pause1.IsClicked() : pause2.IsClicked())
-        {
-            isPlaying = false;
-            TraceLog(LOG_INFO, "is pausing");
-        }
-    }
-
-    
-    if (back1.IsClicked() || back2.IsClicked()) { 
-        if (cur > 0) {
-            cur--;
-        }
-        isPlaying = false; 
-    } 
-    else if (next1.IsClicked() || next2.IsClicked()) { 
-        if (cur < steps.size() - 1) {
-            cur++;
-        }
-        isPlaying = false; 
-    }
-
-    
-    if (IsKeyPressed(KEY_LEFT)) {
-        if (cur > 0) {
-            cur--;
-            isPlaying = false;
-        }
-    }
-    if (IsKeyPressed(KEY_RIGHT)) {
-        if (cur < steps.size() - 1) {
-            cur++;
-            isPlaying = false;
-        }
-    }
+    handleUI();
     //...Lưu ý: Cần chỉnh sửa hiển thị nút play, pause cho phù hợp
 }
 
 
 void LinkedList::draw() {
     Page::draw();
-
+   
     static float elapsedTime = 0.0f;
     const float stepDuration = 0.5f / animationSpeed;
 
@@ -691,8 +648,9 @@ void LinkedList::DrawNode(Node* node) {
     }
 
     // Vẽ vòng trong
-    DrawCircleV(center, radius - 9, MyColor2);
-    DrawCircleV(center, radius - 10, MyColor2);
+
+    DrawCircleV(center, radius * 0.82f, MyColor2);
+    DrawCircleV(center, radius * 0.8f, MyColor2);
 
     // Cỡ chữ tùy theo độ dài key
     int Fs = max(10, static_cast<int>(font_size - s.size() * 3));
@@ -900,6 +858,55 @@ bool LinkedList::DeleteNode(int key) {
     return false;
 }
 
+void LinkedList::handleUI(){
+        static Operation lastOp = Operation::Algorithm;
+    if(currentOperation != lastOp) {
+        updatePseudocode();
+        lastOp = currentOperation;
+    }
+
+    if(!isPlaying){
+        if(!switchState ? play1.IsClicked() : play2.IsClicked()){
+            isPlaying = true;
+            TraceLog(LOG_INFO, "is playing");
+        }
+    }
+    else{
+        if(!switchState ? pause1.IsClicked() : pause2.IsClicked())
+        {
+            isPlaying = false;
+            TraceLog(LOG_INFO, "is pausing");
+        }
+    }
+
+    
+    if (back1.IsClicked() || back2.IsClicked()) { 
+        if (cur > 0) {
+            cur--;
+        }
+        isPlaying = false; 
+    } 
+    else if (next1.IsClicked() || next2.IsClicked()) { 
+        if (cur < steps.size() - 1) {
+            cur++;
+        }
+        isPlaying = false; 
+    }
+
+    
+    if (IsKeyPressed(KEY_LEFT)) {
+        if (cur > 0) {
+            cur--;
+            isPlaying = false;
+        }
+    }
+    if (IsKeyPressed(KEY_RIGHT)) {
+        if (cur < steps.size() - 1) {
+            cur++;
+            isPlaying = false;
+        }
+    }
+}
 // bool LinkedList::DrawSearchNode(int key){
 //     if (!head){
 //         cout << "Head is NULL\n";

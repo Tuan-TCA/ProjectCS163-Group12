@@ -147,6 +147,7 @@ public:
 
     //public variable for linked-list
      int radius = 50;
+
      int font_size = 40;
      int spacing = 50;
      Color choose_color = { 0, 128, 0, 128 };//green
@@ -220,7 +221,7 @@ public:
     //void DrawUpDateNode(int first, int second);
     void updatePseudocode();
     void CalculatePos(Vector2 PosHead);
-
+    void handleUI();
     bool hasInsert;
     bool hasSearch;
     bool hasDelete;

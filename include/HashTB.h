@@ -87,7 +87,7 @@ public:
     void DrawInsertEffect();
     void DrawSearchEffect();
     void DrawDeleteEffect();
-    void DrawInsertDuplicateEffect();
+    // void DrawInsertDuplicateEffect();
 
 
     // Integration with Page
