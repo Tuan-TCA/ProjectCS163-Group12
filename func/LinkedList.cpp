@@ -68,7 +68,7 @@ void LinkedList::reset(){
 }
 
 void LinkedList::event() {
-    Page::event();
+    if(mode == MODE::LL) Page::event();
     //Choose Operation
    
     if(currentOperation == Operation::Create) {
@@ -729,6 +729,19 @@ void LinkedList::drawStep(LLpaint a, int Found) {
 
 }
 
+void LinkedList::updatePos(){
+    if(!head) return;
+
+    Vector2 curPos = head->Pos;
+    Vector2 newPos = {curPos.x  + 2 * radius + spacing, curPos.y};
+    Node* cur = head->next;
+    while(cur){
+        cur->Pos = newPos;
+        curPos = cur->Pos;
+        newPos = {curPos.x  + 2 * radius + spacing, curPos.y};
+        cur = cur->next;
+    }
+}
 
 void LinkedList::Insert(int key) {
     if (!head) {
@@ -859,6 +872,7 @@ bool LinkedList::DeleteNode(int key) {
 }
 
 void LinkedList::handleUI(){
+    updatePos();
         static Operation lastOp = Operation::Algorithm;
     if(currentOperation != lastOp) {
         updatePseudocode();

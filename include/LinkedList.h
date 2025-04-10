@@ -222,6 +222,8 @@ public:
     void updatePseudocode();
     void CalculatePos(Vector2 PosHead);
     void handleUI();
+    void updatePos();
+    void drawAnimation();
     bool hasInsert;
     bool hasSearch;
     bool hasDelete;

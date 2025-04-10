@@ -119,9 +119,8 @@ void HashTableChaining::DrawHashTable() {
         // cout << "ha\n";
         string label = to_string(i);
         DrawText(label.c_str(), bucket.x + 8, (i) * spacing + 35 + bucket.y, font_size, text_color);
-        if(heads[i]){
-        heads[i]->headPos = {bucket.x + 8 + spacing, (i) * spacing + 25 + bucket_height / 2.0f + bucket.y};
-        // cout << "head " << i << ": " << heads[i]->head.x << " - " << heads[i]->Pos.y << endl;
+        if(heads[i] && heads[i]->head){
+        heads[i]->head->Pos = {bucket.x + 8 + spacing, (i) * spacing + 25 + bucket_height / 2.0f + bucket.y};
         heads[i]->DrawLL(heads[i]->head);
         }
     }
@@ -375,9 +374,9 @@ void HashTableChaining::draw() {
     DrawInsertEffect();
     DrawDeleteEffect();
     // DrawInsertDuplicateEffect();
-   for(auto& elem: heads){
-    if(elem) elem->draw();
-   }
+//    for(auto& elem: heads){
+//     if(elem) elem->drawAnimation();
+//    }
     //avoid override
     head.Draw(MyColor2, getMODE());
     switchState ? home2.Draw() : home.Draw();
