@@ -1,7 +1,55 @@
 #include "AVL.h"
 #include "ControlAnimation.h"
 #include <iostream>
+#include<stack>
 #include <vector>
+
+
+void updateRotation(float stepDuration, AVLpaint& tmp, AVLpaint& tar) {
+    if (!tmp.root || !tmp.isRotating) return;
+    cout<<"ok";
+    // Tỷ lệ tiến trình (0.0 -> 1.0)
+    float t = GetFrameTime() / stepDuration; // Giả sử GetFrameTime() trả về thời gian frame
+    if (t > 1.0f) t = 1.0f; // Giới hạn tỷ lệ tối đa là 1
+
+    // Duyệt cây bằng stack để tránh đệ quy
+    std::vector<TreeNode*> stack;
+    stack.push_back(tmp.root);
+
+    while (!stack.empty()) {
+        TreeNode* current = stack.back();
+        stack.pop_back();
+
+        if (!current) continue;
+
+        // Tìm node tương ứng trong cây đích (tar) dựa trên val
+        TreeNode* target = tar.root;
+        while (target && target->val != current->val) {
+            if (current->val < target->val) {
+                target = target->left;
+            } else {
+                target = target->right;
+            }
+        }
+
+        // Nếu tìm thấy node tương ứng, cập nhật targetPos
+        if (target) {
+            current->targetPos = target->Pos;
+        }
+
+        // Kiểm tra nếu targetPos khác {0, 0} thì nội suy Pos
+        if (current->targetPos.x != 0.0f || current->targetPos.y != 0.0f) {
+            current->Pos.x = current->Pos.x + t * (current->targetPos.x - current->Pos.x);
+            current->Pos.y = current->Pos.y + t * (current->targetPos.y - current->Pos.y);
+        }
+
+        // Thêm các con vào stack
+        if (current->right) stack.push_back(current->right);
+        if (current->left) stack.push_back(current->left);
+    }
+}
+
+
 
 void AVL::balance(TreeNode * &root, TreeNode *& parent, int key) {
     root->height = 1 + max(getHeight(root->left), getHeight(root->right));
@@ -58,137 +106,155 @@ void AVL::balance(TreeNode * &root, TreeNode *& parent, int key) {
 
 bool AVL::deleteAVL(TreeNode*& root, TreeNode*& parent, int key) {
     if (!root) return false;
-    // Highlight for visualization
-    
-    if (root->val == key) {
-        root->isHighLight = 1;
-        addStep(this->root,3);
+
+    // Bước 1: Tìm node cần xóa
+    if (key < root->val) {
+        root->isHighLight = -1;
+        addStep(this->root, 1);
         root->isHighLight = 0;
-        
-        
+        if (!deleteAVL(root->left, root, key))
+            return false;
+    } 
+    else if (key > root->val) {
+        root->isHighLight = -1;
+        addStep(this->root, 1);
+        root->isHighLight = 0;
+        if (!deleteAVL(root->right, root, key))
+            return false;
+    } 
+    else {
+        // Tìm thấy node cần xóa
         root->isHighLight = 1;
-        addStep(this->root,4);
+        addStep(this->root, 3);
         root->isHighLight = 0;
 
-        if (root->left && root->right) {
+        // Node có 0 hoặc 1 con
+        if (!root->left || !root->right) {
+            TreeNode* child = (root->left) ? root->left : root->right;
             root->isHighLight = -1;
-            addStep(this->root,5);
+            addStep(this->root, 8);
             root->isHighLight = 0;
 
-            TreeNode* successor = root->right;
-            successor->isHighLight = 2;
-            addStep(this->root,6);
-            successor->isHighLight = 0;
-
-            TreeNode* successorParent = root;
-            
-            while (successor && successor->left) {
-                successorParent = successor;
-                successor = successor->left;
-                successor->isHighLight = 2;
-                addStep(this->root,6);
-                successor->isHighLight = 0;
+            // Cập nhật lại con trỏ ở node cha (nếu có)
+            if (child) {
+                child->parent = parent;
             }
-
-            
-
-
-            // successor->isHighLight = 1;
-            // addStep(this->root,6);
-            // successor->isHighLight = 0;
-
-            
-            root->val = successor->val;
-            deleteAVL(root->right, root,root->val);
-
-            // TraceLog(LOG_INFO, "Replacing with successor value %d", successor->val);
-            // if (successorParent->left == successor) {
-            //     successorParent->left = successor->right;
-            //     if (successor->right) 
-            //         successor->right->parent = successorParent;
-            // } else {
-            //     successorParent->right = successor->right;
-            //     if (successor->right) 
-            //         successor->right->parent = successorParent;
-
-            // }
-            // delete successor;
-            // successor = nullptr;
-            
-            // TreeNode* tmpSSparent = successorParent;
-            // //cout<<successorParent->right->val<<"@@@"<<endl;
-            
-            // while(tmpSSparent != nullptr) {
-            //     tmpSSparent->isHighLight = -1;
-            //     addStep(this->root, 9);
-            //     tmpSSparent->isHighLight = 0;
-
-            //     balance(tmpSSparent, tmpSSparent->parent, key);
-            //     tmpSSparent = tmpSSparent->parent;
-
-            // }
-
-            // root->isHighLight = -1;
-            // addStep(this->root,7);
-            // root->isHighLight = 0;
-
-        }
-        else {
-
-            root->isHighLight = -1;
-            addStep(this->root,8);
-            root->isHighLight = 0;
-
-            TreeNode* temp = root;
-            if (root->left) {
-                root = root->left;
-
+            // Nếu node đang xóa là gốc của cây con,
+            // thì cập nhật lại cây con thành node thay thế.
+            TreeNode* nodeToDelete = root;
+            root = child;
+            // Nếu có cha, cập nhật lại con của nó
+            if (parent) {
+                if (parent->left == nodeToDelete)
+                    parent->left = root;
+                else if (parent->right == nodeToDelete)
+                    parent->right = root;
             } else {
-                root = root->right;
+                // Nếu không có parent -> nodeToDelete là gốc của toàn cây
+                this->root = root;
             }
-            delete temp;
-        }
-
-        if (root) {
-            CalculateAllPos(root, parent, parent && root == parent->left);
-            balance(root, parent, key);
+            delete nodeToDelete;
+        } 
+        else {
+            // Node có 2 con: Tìm successor (node nhỏ nhất bên phải)
             root->isHighLight = -1;
-            addStep(this->root,9);
+            addStep(this->root, 5);
             root->isHighLight = 0;
-            TraceLog(LOG_INFO, "Root value after deletion %d", root->val);
+            TreeNode* successor = root->right;
+            while (successor->left)
+                successor = successor->left;
+            root->val = successor->val;
+            // Xóa successor trong cây con phải
+            deleteAVL(root->right, root, successor->val);
         }
+    }
+
+    // Nếu cây con rỗng, tính lại vị trí từ gốc toàn cục rồi thoát.
+    if (!root) {
+        // Cập nhật lại vị trí của toàn cây từ gốc
+        if(this->root)
+            CalculateAllPos(this->root, nullptr, true);
         return true;
     }
 
-    bool deleted;
-    if (key < root->val) {
-        
-        root->isHighLight = -1;
-        addStep(this->root,1);
-        root->isHighLight = 0;
-        deleted = deleteAVL(root->left, root, key);
-            
-    } else {
-        
-        root->isHighLight = -1;
-        addStep(this->root,1);
-        root->isHighLight = 0;
-        deleted = deleteAVL(root->right, root, key);
-            
+    // Cập nhật chiều cao cho node hiện tại
+    root->height = 1 + std::max(getHeight(root->left), getHeight(root->right));
+
+    // Tính hệ số cân bằng
+    int balance = getHeight(root->left) - getHeight(root->right);
+
+    // Xử lý mất cân bằng:
+    if (balance > 1) {
+        if (getHeight(root->left->left) >= getHeight(root->left->right)) {
+            root->isHighLight = -1;
+            addStep(this->root, 5, 1);
+            root->isHighLight = 0;
+            TreeNode* old = root;
+            RightRotate(root); // Sau xoay, root được cập nhật sang node mới
+            // Cập nhật lại parent của root nếu cần
+            if (root->parent == nullptr) {
+                this->root = root;
+                root->Pos = rootPos;
+                root->level = 1;
+            }
+        } else {
+            root->isHighLight = -1;
+            addStep(this->root, 6, 1);
+            root->isHighLight = 0;
+            LeftRotate(root->left);
+            TreeNode* old = root;
+            RightRotate(root);
+            if (root->parent == nullptr) {
+                this->root = root;
+                root->Pos = rootPos;
+                root->level = 1;
+            }
+        }
+    }
+    else if (balance < -1) {
+        if (getHeight(root->right->right) >= getHeight(root->right->left)) {
+            root->isHighLight = -1;
+            addStep(this->root, 7, 1);
+            root->isHighLight = 0;
+            TreeNode* old = root;
+            LeftRotate(root);
+            if (root->parent == nullptr) {
+                this->root = root;
+                root->Pos = rootPos;
+                root->level = 1;
+            }
+        } else {
+            root->isHighLight = -1;
+            addStep(this->root, 8, 1);
+            root->isHighLight = 0;
+            RightRotate(root->right);
+            TreeNode* old = root;
+            LeftRotate(root);
+            if (root->parent == nullptr) {
+                this->root = root;
+                root->Pos = rootPos;
+                root->level = 1;
+            }
+        }
     }
 
-    if (deleted) {
-        CalculateAllPos(root, parent, parent && root == parent->left);
-        balance(root, parent, key);
-
-        
-        root->isHighLight = -1;
-        addStep(this->root,9);
-        root->isHighLight = 0;
+    // Sau khi cân bằng, nếu node hiện tại là gốc của toàn cây,
+    // cập nhật lại this->root, vị trí, và level
+    if (root->parent == nullptr) {
+        this->root = root;
+        root->Pos = rootPos;
+        root->level = 1;
     }
 
-    return deleted;
+    // Cuối cùng, tính lại tất cả vị trí bắt đầu từ gốc toàn cục
+    CalculateAllPos(this->root, nullptr, true);
+
+    root->isHighLight = -1;
+    addStep(this->root, 9);
+    root->isHighLight = 0;
+    return true;
 }
+
 
 bool AVL::search(int key, TreeNode*& root, TreeNode* parent) {   
     if (!root) {
@@ -277,13 +343,13 @@ void AVL::insert(int key, TreeNode*& root, TreeNode* parent) {
     
             if(key < root->left->val) {
                 root->isHighLight = -1;
-                addStep(this->root,5);  
+                addStep(this->root,5,1);  
                 root->isHighLight = 0;
                 RightRotate(root);
             }
             else {
                 root->isHighLight = -1;
-                addStep(this->root,6);  
+                addStep(this->root,6,1);  
                 root->isHighLight = 0;
                 LeftRotate(root->left);
                 RightRotate(root);
@@ -293,13 +359,13 @@ void AVL::insert(int key, TreeNode*& root, TreeNode* parent) {
         else {
             if(key > root->right->val) {
                 root->isHighLight = -1;
-                addStep(this->root,7);  
+                addStep(this->root,7,1);  
                 root->isHighLight = 0;
                 LeftRotate(root);
             }
             else {
                 root->isHighLight = -1;
-                addStep(this->root,8);  
+                addStep(this->root,8,1);  
                 root->isHighLight = 0;
                 RightRotate(root->right);
                 LeftRotate(root);
@@ -321,15 +387,15 @@ void AVL::insert(int key, TreeNode*& root, TreeNode* parent) {
 
 void AVL::drawStep(AVLpaint a, int Found) {
 
-     pseudocodeX = codeDisplayPLace.x  + 5;
-    pseudocodeY = codeDisplayPLace.y  + 10;
-    
+    pseudocodeX = 20;
+    pseudocodeY = 500;
+    lineHeight = 30;
     FONT = GetFontDefault();
     
     Color highlightColor = Color{255, 222, 89, 255};
     Color textColor = MyColor4;
-
-    Vector2 maxWidth = {0 ,0};
+    
+    Vector2 maxWidth = {0,0};
     if(currentOperation != Operation::Algorithm) {
         // Tìm dòng dài nhất để làm kích thước chuẩn
         
@@ -337,7 +403,6 @@ void AVL::drawStep(AVLpaint a, int Found) {
             Vector2 lineWidth = MeasureTextEx(FONT, line.c_str(), 20, 3);
             if(lineWidth.x > maxWidth.x) maxWidth = lineWidth;
         }
-        textWidth = maxWidth.x ;
 
         for(size_t i = 0; i < pseudocode.size(); ++i) {
             // Vẽ highlight cho toàn bộ chiều rộng
@@ -400,42 +465,63 @@ void AVL::draw() {
             isPlaying = false;
         }
     }
-
     if (currentOperation == Operation::Insert) {
         if (isInserting) {
-
-            this->insert(lastInsertedKey, root); // Thêm node và lưu các bước
+            this->insert(lastInsertedKey, root);
             addStep(this->root);
             isInserting = false;
             isPlaying = true;
             elapsedTime = 0.0f;
-        } else {
-            if (!steps.empty()) {
-
-                if(cur >= 0 && cur< steps.size()) {
+            rotationStartTime = GetTime();
+            isRotating = false;
+        } else if (!steps.empty()) {
+            if (cur >= 0 && cur < steps.size()) {
+                // Xử lý animation xoay - chỉ khi đang phát (isPlaying)
+                if (steps[cur].isRotating && isPlaying) {
+                    if (!isRotating) {
+                        // Bắt đầu animation xoay
+                        isRotating = true;
+                        rotationStartTime = GetTime();
+                    }
+    
+                    float rotationProgress = (GetTime() - rotationStartTime) / stepDuration;
+                    
+                    if (rotationProgress < 1.0f) {
+                        // Đang trong quá trình xoay
+                        AVLpaint tmp;
+                        tmp.copy(steps[cur].root);
+                        tmp.isRotating = true;
+                        
+                        updateNodePositions(tmp.root, steps[cur+1].root, rotationProgress);
+                        
+                        drawStep(tmp);
+                    } else {
+                        // Kết thúc xoay, chuyển sang bước tiếp theo
+                        isRotating = false;
+                        cur++;
+                        drawStep(steps[cur]);
+                    }
+                } 
+                else {
+                    // Vẽ bước hiện tại (không xoay hoặc không phải đang phát)
                     drawStep(steps[cur]);
-                }
-
-                
-                if (isPlaying) {
-                    elapsedTime += GetFrameTime();
-                    if (elapsedTime >= stepDuration) {
-                        if (cur < steps.size() ) {
-                            cur++;
-                            elapsedTime = 0.0f;
+                    
+                    // Tự động chuyển bước nếu đang phát
+                    if (isPlaying) {
+                        elapsedTime += GetFrameTime();
+                        if (elapsedTime >= stepDuration) {
+                            if (cur < steps.size() - 1) {
+                                cur++;
+                                elapsedTime = 0.0f;
+                            } else {
+                                isPlaying = false;
+                            }
                         }
                     }
-                }
-
-                
-                if(cur == steps.size() && cur!=0) {
-                    drawStep(steps[cur-1]);
-                    isPlaying = false;
                 }
             }
         }
     }
-    
     
     if (currentOperation == Operation::Delete) {
         if (isDeleting) {
@@ -447,32 +533,64 @@ void AVL::draw() {
             isDeleting = false;
             isPlaying = true;
             elapsedTime = 0.0f;
-        } else {
-            if (!steps.empty()) {
-                
-                if (!steps.empty()) {
-                    if(cur >= 0 && cur< steps.size()) {
-                        
-                        if(cur == steps.size()-2) 
-                            drawStep(steps[cur], Found);
-                        else 
-                            drawStep(steps[cur]);
+            rotationStartTime = GetTime();
+            isRotating = false;
+        } else if (!steps.empty()) {
+            if (cur >= 0 && cur < steps.size()) {
+                // Xử lý animation xoay - chỉ khi đang phát (isPlaying)
+                if (steps[cur].isRotating && isPlaying) {
+                    if (!isRotating) {
+                        // Bắt đầu animation xoay
+                        isRotating = true;
+                        rotationStartTime = GetTime();
                     }
-
     
+                    float rotationProgress = (GetTime() - rotationStartTime) / stepDuration;
+                    
+                    if (rotationProgress < 1.0f) {
+                        // Đang trong quá trình xoay
+                        AVLpaint tmp;
+                        tmp.copy(steps[cur].root);
+                        tmp.isRotating = true;
+                        
+                        updateNodePositions(tmp.root, steps[cur+1].root, rotationProgress);
+                        
+                        // Xử lý riêng cho trường hợp delete
+                        if (cur == steps.size()-2) {
+                            drawStep(tmp, Found);
+                        } else {
+                            drawStep(tmp);
+                        }
+                    } else {
+                        // Kết thúc xoay, chuyển sang bước tiếp theo
+                        isRotating = false;
+                        cur++;
+                        if (cur == steps.size()-1) {
+                            drawStep(steps[cur], Found);
+                        } else {
+                            drawStep(steps[cur]);
+                        }
+                    }
+                } 
+                else {
+                    // Vẽ bước hiện tại (không xoay hoặc không phải đang phát)
+                    if (cur == steps.size()-2) {
+                        drawStep(steps[cur], Found);
+                    } else {
+                        drawStep(steps[cur]);
+                    }
+                    
+                    // Tự động chuyển bước nếu đang phát
                     if (isPlaying) {
                         elapsedTime += GetFrameTime();
                         if (elapsedTime >= stepDuration) {
-                            if (cur < steps.size() ) {
+                            if (cur < steps.size() - 1) {
                                 cur++;
                                 elapsedTime = 0.0f;
+                            } else {
+                                isPlaying = false;
                             }
                         }
-                    }
-                    
-                    if(cur == steps.size() && cur!=0) {  
-                        drawStep(steps[cur-1]);         
-                        isPlaying = false;
                     }
                 }
             }
@@ -524,6 +642,37 @@ void AVL::draw() {
 }
 
 
+void AVL::updateNodePositions(TreeNode* src, TreeNode* target, float progress) {
+    if (!src || !target) return;
+    
+    // Duyệt cây và cập nhật vị trí
+    stack<TreeNode*> nodeStack;
+    nodeStack.push(src);
+    
+    while (!nodeStack.empty()) {
+        TreeNode* current = nodeStack.top();
+        nodeStack.pop();
+        
+        // Tìm node tương ứng trong cây đích
+        TreeNode* targetNode = findNode(target, current->val);
+        if (targetNode) {
+            // Nội suy vị trí
+            current->Pos.x = current->Pos.x + progress * (targetNode->Pos.x - current->Pos.x);
+            current->Pos.y = current->Pos.y + progress * (targetNode->Pos.y - current->Pos.y);
+        }
+        
+        if (current->right) nodeStack.push(current->right);
+        if (current->left) nodeStack.push(current->left);
+    }
+}
+
+
+TreeNode* AVL::findNode(TreeNode* root, int val) {
+    if (!root) return nullptr;
+    if (root->val == val) return root;
+    if (val < root->val) return findNode(root->left, val);
+    return findNode(root->right, val);
+}
 
 void AVL::event() {
 
@@ -593,17 +742,6 @@ void AVL::event() {
             isDeleting = true;
             textbox.inputText = {""};
         }
-    }
-    
-     if(currentOperation != Operation::Create){
-        isClosingCodePlace = false;
-        isExpandingCodePlace = true;
-        animatingTime = 0;
-    }
-    else{
-        isClosingCodePlace = true;
-        isExpandingCodePlace = false;
-        animatingTime = 0;
     }
 
     static Operation lastOp = Operation::Algorithm;
@@ -742,27 +880,7 @@ void AVL::init() {
     cur = -1;
     curCode = -1;
     pseudocode = {};
-    lineHeight = 30;
-}
-void AVL::reset(){
-    Page::reset();
-        root = nullptr;
-    workplace = {screenWidth*0.24f,screenHeight*0.2f,(float) screenWidth *(1-0.24f),screenHeight*(1-0.095f)};
-    rootPos= {workplace.x + workplace.width / 2, workplace.y};      
-    
-    steps.clear();
-
-    isInserting = false;
-    isSearching = false;
-    isDeleting = false;
-    isUpdating = false;
-    isCreating = false;
-
-    hasInsert = false;
-    hasSearch = false;
-    hasDelete = false;
-
-    cur = -1;
+       
 }
 
 void AVL::DestroyRecursive(TreeNode* node)
@@ -810,7 +928,7 @@ void AVL::CalculateAllPos(TreeNode* &root, TreeNode* parent, bool isLeft) {
         root->level = parent->level + 1;
     }
     else {
-        root->Pos = rootPos;
+        root->Pos = this->rootPos;
         root->level = 1;
     }
 
@@ -825,6 +943,7 @@ void AVL::RightRotate(TreeNode* &root) {
     if (!root || !root->left) return;
     Vector2 oldPos = root->Pos;
     int oldLevel = root->level;
+    
     TreeNode* oldParent = root->parent;
     TreeNode *tmp = root->left;
     TreeNode *tmpRight = tmp->right;
@@ -838,12 +957,19 @@ void AVL::RightRotate(TreeNode* &root) {
     tmp->parent = oldParent;           
     root->parent = tmp;                   
     
+    if (oldParent) {
+        if (oldParent->left == root)
+            oldParent->left = tmp;
+        else if (oldParent->right == root)
+            oldParent->right = tmp;
+    }
+    
     
     root = tmp;
     root->Pos = oldPos;
     root->level = oldLevel;
 
-
+    
     
     if(root->left)
     root->left->height = 1 + max(getHeight(root->left->left), getHeight(root->left->right));
@@ -878,7 +1004,14 @@ void AVL::LeftRotate(TreeNode* &root) {
     tmp->parent = oldParent;           
     root->parent = tmp;                   
 
+    if (oldParent) {
+        if (oldParent->left == root)
+            oldParent->left = tmp;
+        else if (oldParent->right == root)
+            oldParent->right = tmp;
+    }
     
+
     root = tmp;
     root->Pos = oldPos;
     root->level = oldLevel;

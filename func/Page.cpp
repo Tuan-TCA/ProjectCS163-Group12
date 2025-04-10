@@ -178,7 +178,7 @@ void Page::event() {
     pseudocodeY = codeDisplayPLace.y  + 10;
     
     
-    cout << lineHeight << endl;
+    //cout << lineHeight << endl;
     //animation thui
             Rectangle targetPlace1 = codeDisplayPLace;
             targetPlace1.height = pseudocode.size() * lineHeight + 10;

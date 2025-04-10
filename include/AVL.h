@@ -18,6 +18,7 @@ public:
     // 1=green, -1=red, 0=White, 2=Yellow
     int isHighLight = 0;
     Vector2 Pos;
+    Vector2 targetPos; 
 
     TreeNode(int key, TreeNode *leftNode, TreeNode *rightNode, TreeNode* par, 
         Vector2 pos, int heig, int lev, int isHigh ) {
@@ -29,6 +30,7 @@ public:
         Pos = pos;
         isHighLight = isHigh;
         parent = par;
+        targetPos = {0,0};
     }
 
     TreeNode(int key) {
@@ -38,6 +40,7 @@ public:
         level = 1;
         Pos = {600,600};
         parent = nullptr;
+        targetPos = {0,0};
     }
 
     void absorb(TreeNode* tmp) {
@@ -66,7 +69,8 @@ class AVLpaint {
     const Color text_color = WHITE;
     const float arrow_size = 15.0;
     const Color arrow_color = MyColor1;
-    
+    bool isRotating = false;
+
     int curCode = -1; //Current Pseudocode
     AVLpaint() {
         root = nullptr;
@@ -80,8 +84,6 @@ class AVLpaint {
         DrawText("NOT FOUND", posX, posY, font_size*2, RED);
     }
 
-    
-    
     TreeNode* copyTree(TreeNode* root) {
         if (!root) return nullptr;
         TreeNode* newNode = new TreeNode(root->val, root->left, root->right, root->parent,root->Pos, root->height, root->level, root->isHighLight);
@@ -99,8 +101,38 @@ class AVLpaint {
         this->root = copyTree(a);
     }
 
+    void updateTargetPos(const AVLpaint& b) {
+        if (!this->root) return;
+    
+        // Cập nhật targetPos cho tất cả các node dựa trên cây đích b
+        updateTargetPositions(this->root, b.root);
+    }
+    
+    TreeNode* findNodeByValue(TreeNode* node, int value);
+
+    // Hàm phụ để cập nhật targetPos dựa trên cây đích
+    void updateTargetPositions(TreeNode* current, TreeNode* targetRoot) {
+        if (!current) return;
+
+        // Tìm node tương ứng trong cây đích dựa trên val
+        TreeNode* target = findNodeByValue(targetRoot, current->val);
+        if (target) {
+            current->targetPos = target->Pos; // Gán targetPos từ vị trí của node đích
+        }
+
+        // Đệ quy cập nhật cho cây con trái và phải
+        updateTargetPositions(current->left, targetRoot);
+        updateTargetPositions(current->right, targetRoot);
+    }
+
+    // Hàm phụ để tìm node trong cây đích theo giá trị
+    //TreeNode* findNode(TreeNode* root, int val);
+    //void updateNodePositions(TreeNode* src, TreeNode* target, float progress);
+    void updateRotation(float stepDuration, AVLpaint& tmp, AVLpaint& tar);
 };
 
+
+//void updateRotation(float stepDuration, AVLpaint& tmp, AVLpaint& tar);
 
 class AVL : public Page{
 public:
@@ -120,6 +152,7 @@ public:
     const Color text_color = WHITE;
     const float arrow_size = 15.0;
     const Color arrow_color = MyColor1;
+    float rotationStartTime = 0;
 
     ~AVL();
    
@@ -135,10 +168,11 @@ public:
     
     //Animation
     vector<AVLpaint> steps;
-    void addStep(TreeNode*  root, int curCode = -1) {
+    void addStep(TreeNode*  root, int curCode = -1, bool isRotate = 0) {
         AVLpaint tmp; 
         tmp.copy(root);
         tmp.curCode = curCode;
+        tmp.isRotating = isRotate;
         steps.push_back(tmp);
     }
     int cur = -1; //Current Step
@@ -181,6 +215,8 @@ public:
     int UpdateKey;
     int newVal;
 
+    bool isRotating = false;
+
 
     //Else
     void DestroyRecursive(TreeNode* node);
@@ -188,15 +224,18 @@ public:
     int getLevel(TreeNode *root);
     Vector2 calculateChildPos(Vector2 parentPos, bool isLeft, int level);
     void swapPos(TreeNode *&a, TreeNode* &other);
+    void updateNodePositions(TreeNode* src, TreeNode* target, float progress);
+    TreeNode* findNode(TreeNode* root, int val);
 
     void event() override;
     void init() override;
     void draw() override;
-    void reset() override;
-    
 
+    vector<string> pseudocode;
     float pseudocodeX = side.x + 10;
     float pseudocodeY = side.y + 200;
-
+    float lineHeight = 30;
 
 };
+
+
