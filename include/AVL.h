@@ -126,7 +126,8 @@ class AVLpaint {
     }
 
     // Hàm phụ để tìm node trong cây đích theo giá trị
-    
+    //TreeNode* findNode(TreeNode* root, int val);
+    //void updateNodePositions(TreeNode* src, TreeNode* target, float progress);
     void updateRotation(float stepDuration, AVLpaint& tmp, AVLpaint& tar);
 };
 
@@ -151,6 +152,7 @@ public:
     const Color text_color = WHITE;
     const float arrow_size = 15.0;
     const Color arrow_color = MyColor1;
+    float rotationStartTime = 0;
 
     ~AVL();
    
@@ -213,6 +215,8 @@ public:
     int UpdateKey;
     int newVal;
 
+    bool isRotating = false;
+
 
     //Else
     void DestroyRecursive(TreeNode* node);
@@ -220,6 +224,8 @@ public:
     int getLevel(TreeNode *root);
     Vector2 calculateChildPos(Vector2 parentPos, bool isLeft, int level);
     void swapPos(TreeNode *&a, TreeNode* &other);
+    void updateNodePositions(TreeNode* src, TreeNode* target, float progress);
+    TreeNode* findNode(TreeNode* root, int val);
 
     void event() override;
     void init() override;
