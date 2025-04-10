@@ -689,6 +689,7 @@ void AVL::event() {
             isCreating = true;
         }       
     }
+    
     if(currentOperation == Operation::Insert) {
         if(!hasInsert) {
             hasInsert = true;

@@ -18,4 +18,3 @@ git push origin demo
 
 echo ================================
 echo Done. Press any key to exit...
-pause > nul
