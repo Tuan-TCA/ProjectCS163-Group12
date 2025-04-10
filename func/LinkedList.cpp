@@ -326,7 +326,7 @@ void LinkedList::draw() {
                         tmp.copy(steps[cur].head);
                         tmp.isMove = true;
                         
-                        updateNodePositions(tmp.head, steps[cur+1].head, rotationProgress);
+                        //updateNodePositions(tmp.head, steps[cur+1].head, rotationProgress);
                         
                         // Xử lý riêng cho trường hợp delete
                         if (cur == steps.size()-2) {
@@ -646,7 +646,11 @@ void LinkedList::CalculatePos(Vector2 PosHead) {
 }
 
 // void LinkedList::updateNodePositions(float tmp, LLpaint* a, LLpaint* b) {
-//     while()
+//     if(!a || !b) return;
+//     Node* acur = a->head, bcur = b->head;
+//     while(acur && bcur && (acur->Pos == bcur->Pos)) { 
+
+//     }
 // }
 
 void LinkedList::DrawArrow(Node* start, Node* end) {

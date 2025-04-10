@@ -60,6 +60,7 @@ void HashTableChaining::Insert(int key) {
     while (cur) {
         if (cur->key == key) {
             // Trùng → không insert
+            
             lastInsertedKey = key;
             isInserting = false;
             isDuplicateInsert = true;   // ➕ thêm biến này (bên dưới sẽ nói)
@@ -145,7 +146,7 @@ void HashTableChaining::DrawHashTable() {
 
 void HashTableChaining::DrawInsertEffect() {
     if (!isInserting) return;
-    
+
     // int index = HashFunction(lastInsertedKey);
     // float y = (index) * spacing + 25 + bucket_height / 2.0f + (origin.y + 50);
 
