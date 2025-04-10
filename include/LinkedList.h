@@ -146,16 +146,16 @@ public:
     Vector2 headPos;
 
     //public variable for linked-list
-    const int radius = 50;
-    const int font_size = 40;
-    const int spacing = 50;
-    const Color choose_color = { 0, 128, 0, 128 };//green
-    const Color visit_color = RED;//red
-    const Color ring = MyColor2;
-    const Color circle = MyColor2;
-    const Color text_color = WHITE;
-    const float arrow_size = 15.0;
-    const Color arrow_color = MyColor1;
+     int radius = 50;
+     int font_size = 40;
+     int spacing = 50;
+     Color choose_color = { 0, 128, 0, 128 };//green
+     Color visit_color = RED;//red
+     Color ring = MyColor2;
+     Color circle = MyColor2;
+     Color text_color = WHITE;
+     float arrow_size = 15.0;
+     Color arrow_color = MyColor1;
 
     int W = 600;
     int H = 600;
@@ -204,7 +204,7 @@ public:
         tmp.isMove = isMove;
         steps.push_back(tmp);
     }
-    
+    float rotationStartTime = 0;
     void drawStep(LLpaint a, int Found = -1);
     
     int CountNode(Node* head); //ok
@@ -212,6 +212,7 @@ public:
     void DrawNode(Node * node); // ok
     void DrawLL(Node* head); // ok
 
+    bool isMove;
 
     void Insert(int key);
     bool Search(int key);

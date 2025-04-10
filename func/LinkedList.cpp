@@ -235,14 +235,14 @@ void LinkedList::draw() {
             elapsedTime = 0.0f;
             
             //rotationStartTime = GetTime();
-            //isRotating = false;
+            //isMove = false;
         } else if (!steps.empty()) {
             if (cur >= 0 && cur < steps.size()) {
                 // Xử lý animation xoay - chỉ khi đang phát (isPlaying)
-                // if (steps[cur].isRotating && isPlaying) {
-                //     if (!isRotating) {
+                // if (steps[cur].isMove && isPlaying) {
+                //     if (!isMove) {
                 //         // Bắt đầu animation xoay
-                //         isRotating = true;
+                //         isMove = true;
                 //         rotationStartTime = GetTime();
                 //     }
     
@@ -252,14 +252,14 @@ void LinkedList::draw() {
                 //         // Đang trong quá trình xoay
                 //         AVLpaint tmp;
                 //         tmp.copy(steps[cur].head);
-                //         tmp.isRotating = true;
+                //         tmp.isMove = true;
                         
                 //         updateNodePositions(tmp.head, steps[cur+1].head, rotationProgress);
                         
                 //         drawStep(tmp);
                 //     } else {
                 //         // Kết thúc xoay, chuyển sang bước tiếp theo
-                //         isRotating = false;
+                //         isMove = false;
                 //         cur++;
                 //         drawStep(steps[cur]);
                 //     }
@@ -306,47 +306,47 @@ void LinkedList::draw() {
             
             isPlaying = true;
             elapsedTime = 0.0f;
-            // rotationStartTime = GetTime();
-            // isRotating = false;
+            rotationStartTime = GetTime();
+            isMove = false;
         } else if (!steps.empty()) {
             if (cur >= 0 && cur < steps.size()) {
-                // // Xử lý animation xoay - chỉ khi đang phát (isPlaying)
-                // if (steps[cur].isRotating && isPlaying) {
-                //     if (!isRotating) {
-                //         // Bắt đầu animation xoay
-                //         isRotating = true;
-                //         rotationStartTime = GetTime();
-                //     }
+                // Xử lý animation xoay - chỉ khi đang phát (isPlaying)
+                if (steps[cur].isMove && isPlaying) {
+                    if (!isMove) {
+                        // Bắt đầu animation xoay
+                        isMove = true;
+                        rotationStartTime = GetTime();
+                    }
     
-                //     float rotationProgress = (GetTime() - rotationStartTime) / stepDuration;
+                    float rotationProgress = (GetTime() - rotationStartTime) / stepDuration;
                     
-                //     if (rotationProgress < 1.0f) {
-                //         // Đang trong quá trình xoay
-                //         AVLpaint tmp;
-                //         tmp.copy(steps[cur].head);
-                //         tmp.isRotating = true;
+                    if (rotationProgress < 1.0f) {
+                        // Đang trong quá trình xoay
+                        LLpaint tmp;
+                        tmp.copy(steps[cur].head);
+                        tmp.isMove = true;
                         
-                //         updateNodePositions(tmp.head, steps[cur+1].head, rotationProgress);
+                        updateNodePositions(tmp.head, steps[cur+1].head, rotationProgress);
                         
-                //         // Xử lý riêng cho trường hợp delete
-                //         if (cur == steps.size()-2) {
-                //             drawStep(tmp, Found);
-                //         } else {
-                //             drawStep(tmp);
-                //         }
-                //     } else {
-                //         // Kết thúc xoay, chuyển sang bước tiếp theo
-                //         isRotating = false;
-                //         cur++;
-                //         if (cur == steps.size()-1) {
-                //             drawStep(steps[cur], Found);
-                //         } else {
-                //             drawStep(steps[cur]);
-                //         }
-                //     }
-                // } 
-                // else {
-                    // Vẽ bước hiện tại (không xoay hoặc không phải đang phát)
+                        // Xử lý riêng cho trường hợp delete
+                        if (cur == steps.size()-2) {
+                            drawStep(tmp, Found);
+                        } else {
+                            drawStep(tmp);
+                        }
+                    } else {
+                        // Kết thúc xoay, chuyển sang bước tiếp theo
+                        isMove = false;
+                        cur++;
+                        if (cur == steps.size()-1) {
+                            drawStep(steps[cur], Found);
+                        } else {
+                            drawStep(steps[cur]);
+                        }
+                    }
+                } 
+                else {
+                    //Vẽ bước hiện tại (không xoay hoặc không phải đang phát)
                     if (cur == steps.size()-2) {
                         drawStep(steps[cur], Found);
                     } else {
@@ -365,7 +365,7 @@ void LinkedList::draw() {
                             }
                         }
                     }
-                // }
+                }
             }
         }
     }
@@ -630,16 +630,23 @@ int LinkedList::CountNode(Node* head){
     return cnt;
 }
 
-// void LinkedList::CalculatePos(Vector2 PosHead) {
-//     if(!head) return; 
-//     head->Pos = PosHead;
+void LinkedList::CalculatePos(Vector2 PosHead) {
+    if(!head) return; 
+    head->Pos = PosHead;
 
-//     Node* pre = nullptr;
-//     Node* a = head; 
-//     while(a) {
-//         a->Pos = {pre->Pos.}
-//     }
+    Node* pre = nullptr;
+    Node* a = head; 
+    while(a) {
+        Vector2 curPos = pre->Pos;
+        a->Pos = {curPos.x  + 2 * radius + spacing, curPos.y};
+        pre = a;
+        a = a->next;
+    }
 
+}
+
+// void LinkedList::updateNodePositions(float tmp, LLpaint* a, LLpaint* b) {
+//     while()
 // }
 
 void LinkedList::DrawArrow(Node* start, Node* end) {
@@ -850,12 +857,13 @@ bool LinkedList::DeleteNode(int key) {
                 // }
                 
                 a->isHighLight = 1;
-                addStep(this->head,0);  
+                addStep(this->head,0,1);  
                 a->isHighLight = 0;
                 
                 Node* tmp = this->head;
-                // Vector2 tmpPos = this->head;
+                Vector2 tmpPos = this->head->Pos;
                 this->head = head->next;
+                CalculatePos(headPos);
                 delete tmp; 
                 return true;
                 
@@ -866,7 +874,9 @@ bool LinkedList::DeleteNode(int key) {
             addStep(this->head,0);  
             a->isHighLight = 0;
             
+            Vector2 curPos = a->Pos;
             pre->next = a->next;
+            CalculatePos(headPos);
             delete a;
             a = nullptr;
                         

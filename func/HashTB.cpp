@@ -21,28 +21,28 @@ using namespace std;
 void HashTableChaining::init(){
     Page::init();
     origin = { 350, 100 };
-    table.resize(tableSize, nullptr);
+    heads.resize(tableSize, nullptr);
     isInserting = false;
     lastInsertedKey = -1;
     isCreating = false;
     isDuplicateInsert = false;
 }
 
-
+//ok
 HashTableChaining::HashTableChaining(int size) {
     tableSize = size;
-    table.resize(size, nullptr);
+    heads.resize(size, nullptr);
     isInserting = false;
     lastInsertedKey = -1;
     isCreating = false;
     isDuplicateInsert = false;
 }
-
+//ok
 HashTableChaining::~HashTableChaining() {
     for (int i = 0; i < tableSize; ++i) {
-        HashNode* current = table[i];
+        LinkedList* current = heads[i];
         while (current) {
-            HashNode* temp = current;
+            Node* temp = current->head;
             current = current->next;
             delete temp;
         }
@@ -55,7 +55,7 @@ int HashTableChaining::HashFunction(int key) {
 
 void HashTableChaining::Insert(int key) {
     int index = HashFunction(key);
-    HashNode* cur = table[index];
+    Node* cur = heads[index]->head;
 
     while (cur) {
         if (cur->key == key) {
@@ -74,7 +74,7 @@ void HashTableChaining::Insert(int key) {
 
 bool HashTableChaining::Search(int key) {
     int index = HashFunction(key);
-    HashNode* current = table[index];
+    Node* current = table[index]->head;
     while (current) {
         if (current->key == key) return true;
         current = current->next;
@@ -93,115 +93,117 @@ void HashTableChaining::DrawHashTable() {
     bucket_color = MyColor6;
     DrawRectangleRec(bucket, bucket_color);
     //DrawRectangleLines(bucket.x, bucket.y, bucket.width, bucket.height, BLACK);
-    for (int i = 0; i < tableSize; ++i) {
-        // Vẽ ô bucket
-        // Rectangle bucket = {
-        //     origin.x,
-        //     origin.y + i * spacing,
-        //     (float)bucket_width,
-        //     (float)bucket_height
-        // };
+    // for (int i = 0; i < tableSize; ++i) {
+     
+            
+    //     string label = to_string(i);
+    //     DrawText(label.c_str(), bucket.x + 8, (i) * spacing + 35 + bucket.y, font_size, text_color);
 
-        // DrawRectangleRec(bucket, bucket_color);
-        // DrawRectangleLines(bucket.x, bucket.y, bucket.width, bucket.height, BLACK);
+    //     // Vẽ dãy node trong bucket[i]
+    //     HashNode* current = table[i];
+    //     Vector2 nodePos = {
+    //         bucket.x + spacing,
+    //         (i) * spacing + 25 + bucket_height / 2.0f + bucket.y
+    //     };
 
+    //     while (current) {
+    //         // Vẽ node
+    //         DrawNode(
+    //             nodePos,
+    //             current->key,
+    //             0,  
+    //             radius,
+    //             font_size,
+    //             ring,
+    //             circle,
+    //             choose_color,
+    //             visit_color,
+    //             text_color
+    //         );
+        
+    //         if (current->next) {
+    //             Vector2 nextPos = { nodePos.x + spacing, nodePos.y };
+    //             DrawArrowHTB(nodePos, nextPos, radius, arrow_size, arrow_color);
+    //             nodePos = nextPos; // Cập nhật nodePos cho node tiếp theo
+    //         }
+        
+    //         current = current->next; 
+    //     }        
+    // }
+
+
+    for(int i = 0; i < heads.size(); i++){
         string label = to_string(i);
         DrawText(label.c_str(), bucket.x + 8, (i) * spacing + 35 + bucket.y, font_size, text_color);
 
-        // Vẽ dãy node trong bucket[i]
-        HashNode* current = table[i];
-        Vector2 nodePos = {
-            bucket.x + spacing,
-            (i) * spacing + 25 + bucket_height / 2.0f + bucket.y
-        };
-
-        while (current) {
-            // Vẽ node
-            DrawNode(
-                nodePos,
-                current->key,
-                0,  
-                radius,
-                font_size,
-                ring,
-                circle,
-                choose_color,
-                visit_color,
-                text_color
-            );
-        
-            if (current->next) {
-                Vector2 nextPos = { nodePos.x + spacing, nodePos.y };
-                DrawArrowHTB(nodePos, nextPos, radius, arrow_size, arrow_color);
-                nodePos = nextPos; // Cập nhật nodePos cho node tiếp theo
-            }
-        
-            current = current->next; 
-        }        
-}
+        LinkedList* cur = heads[i];
+        while(cur){
+            cur->DrawLL(heads[i]->head);
+        }
+    }
 }
 
 void HashTableChaining::DrawInsertEffect() {
     if (!isInserting) return;
-
-    int index = HashFunction(lastInsertedKey);
-    float y = (index) * spacing + 25 + bucket_height / 2.0f + (origin.y + 50);
-
-    // Tính vị trí node đầu tiên trong bucket
-    Vector2 nodePos = { origin.x + spacing, y };
-
-    // Duyệt từng node hiện có và highlight
-    HashNode* cur = table[index];
-    while (cur) {
-        BeginDrawing();
-        ClearBackground(RAYWHITE);
-        // page.draw();
-        Page::draw();
-        DrawHashTable();
     
-        // Highlight node đang duyệt
-        DrawNode(nodePos, cur->key, -1, radius, font_size,
-                 ring, circle, choose_color, visit_color, text_color);
-    
-        EndDrawing();
-        std::this_thread::sleep_for(std::chrono::milliseconds((int) (300 / animationSpeed)));
+    // int index = HashFunction(lastInsertedKey);
+    // float y = (index) * spacing + 25 + bucket_height / 2.0f + (origin.y + 50);
 
-        cur = cur->next;
+    // // Tính vị trí node đầu tiên trong bucket
+    // Vector2 nodePos = { origin.x + spacing, y };
+
+    // // Duyệt từng node hiện có và highlight
+    // HashNode* cur = table[index];
+    // while (cur) {
+    //     BeginDrawing();
+    //     ClearBackground(RAYWHITE);
+    //     // page.draw();
+    //     Page::draw();
+    //     DrawHashTable();
     
-        // ✅ Luôn cập nhật nodePos sau mỗi node (kể cả node cuối)
-        nodePos.x += spacing;
-    }
+    //     // Highlight node đang duyệt
+    //     DrawNode(nodePos, cur->key, -1, radius, font_size,
+    //              ring, circle, choose_color, visit_color, text_color);
+    
+    //     EndDrawing();
+    //     std::this_thread::sleep_for(std::chrono::milliseconds((int) (300 / animationSpeed)));
+
+    //     cur = cur->next;
+    
+    //     // ✅ Luôn cập nhật nodePos sau mỗi node (kể cả node cuối)
+    //     nodePos.x += spacing;
+    // }
     
 
-    // Sau khi duyệt hết, thêm node mới vào vị trí nodePos
-    BeginDrawing();
-    ClearBackground(RAYWHITE);
-    // page.draw();
-    Page::draw();
-    DrawHashTable();
-    // 👉 Nếu có node trước đó → vẽ mũi tên từ node cũ đến node mới
-    if (table[index]) {
-        Vector2 arrowStart = { nodePos.x - spacing, nodePos.y };
-        Vector2 arrowEnd = nodePos;
-        DrawArrowHTB(arrowStart, arrowEnd, radius, arrow_size, arrow_color);
-    }
+    // // Sau khi duyệt hết, thêm node mới vào vị trí nodePos
+    // BeginDrawing();
+    // ClearBackground(RAYWHITE);
+    // // page.draw();
+    // Page::draw();
+    // DrawHashTable();
+    // // 👉 Nếu có node trước đó → vẽ mũi tên từ node cũ đến node mới
+    // if (table[index]) {
+    //     Vector2 arrowStart = { nodePos.x - spacing, nodePos.y };
+    //     Vector2 arrowEnd = nodePos;
+    //     DrawArrowHTB(arrowStart, arrowEnd, radius, arrow_size, arrow_color);
+    // }
 
-    // vẽ node mới tại cuối
-    DrawNode(nodePos, lastInsertedKey, 1, radius, font_size,
-             ring, circle, choose_color, visit_color, text_color);
-                // Chèn node mới sau khi animation kết thúc
-    HashNode* newNode = new HashNode(lastInsertedKey);
-    if (!table[index]) {
-        table[index] = newNode;
-    } else {
-        HashNode* cur = table[index];
-        while (cur->next) {
-            cur = cur->next;
-        }
-        cur->next = newNode;
-    }
-    EndDrawing();
-    std::this_thread::sleep_for(std::chrono::milliseconds((int) (500 / animationSpeed)));
+    // // vẽ node mới tại cuối
+    // DrawNode(nodePos, lastInsertedKey, 1, radius, font_size,
+    //          ring, circle, choose_color, visit_color, text_color);
+    //             // Chèn node mới sau khi animation kết thúc
+    // HashNode* newNode = new HashNode(lastInsertedKey);
+    // if (!table[index]) {
+    //     table[index] = newNode;
+    // } else {
+    //     HashNode* cur = table[index];
+    //     while (cur->next) {
+    //         cur = cur->next;
+    //     }
+    //     cur->next = newNode;
+    // }
+    // EndDrawing();
+    // std::this_thread::sleep_for(std::chrono::milliseconds((int) (500 / animationSpeed)));
 
     isInserting = false;
 }
@@ -459,8 +461,8 @@ void HashTableChaining::reset(){
     Page::reset();
         origin = { 350, 100 };
         tableSize = 3;
-        table.clear();
-    table.resize(tableSize, nullptr);
+        heads.clear();
+    heads.resize(tableSize, nullptr);
      isInserting = false;
      lastInsertedKey = -1;
 
