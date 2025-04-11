@@ -12,7 +12,7 @@ using namespace std;
 
 void HashTB::init(){
     Page::init();
-    origin = { 350, 100 };
+    origin = { 450, 200 };
     heads.resize(tableSize, nullptr);
     
 
@@ -20,7 +20,7 @@ void HashTB::init(){
     // nullptr
     for(int i=0; i< tableSize; i++){
         if(!heads[i]) heads[i] = new LinkedList();
-        heads[i]->headPos = {origin.x , origin.y+ (spacing+radius)*i};
+        heads[i]->headPos = {origin.x , origin.y+ (spacing+ radius)*i};
         heads[i]->head = new Node(i, nullptr, heads[i]->headPos, 0);
     }
 
@@ -74,8 +74,8 @@ void HashTB::updateVariables(vector<LinkedList*>& a){
     for(auto& elem: a){
         if(elem){
         elem->radius = radius;
-        elem->spacing = 30;
-        elem->font_size = font_size;
+        elem->spacing = spacing;
+        elem->font_size = font_size + 1;
         elem->arrow_size = arrow_size;
         }
     }
@@ -83,19 +83,15 @@ void HashTB::updateVariables(vector<LinkedList*>& a){
 
 bool HashTB::Search(int key) {
     int index = HashFunction(key);
-    
+    addStepH(this->heads, 0);
     Node* &head = heads[index]->head->next;
-
+    addStepH(this->heads, 1);
     if(!head) {
-        addStepH(this->heads,0);  
+        addStepH(this->heads,5);  
         return false;
     }
 
     Node* a = head;
-
-    a->isHighLight = -1;
-    addStepH(this->heads,1);  
-    a->isHighLight = 0;
     
     while(a) {
         addStepH(this->heads,2); 
@@ -121,7 +117,7 @@ bool HashTB::Search(int key) {
 
 void HashTB::Insert(int key) {
     int index = HashFunction(key);
-    
+    addStepH(this->heads, 0);
     Node* cur = heads[index]->head->next;
 
     while (cur) {
@@ -136,27 +132,27 @@ void HashTB::Insert(int key) {
 
     Node* &head = heads[index]->head;
     
-
+    head->isHighLight = -1;
+    addStepH(this->heads,1);  
+    head->isHighLight = 0;
     if (!head) {
         head = new Node(key, nullptr, heads[index]->headPos , 0);
         head->isHighLight = -1;
-        addStepH(this->heads,0); //hastB head, heads[i] ->head->ishigh ??
+        addStepH(this->heads,2); //hastB head, heads[i] ->head->ishigh ??
         head->isHighLight = 0;
         return;
     }
 
     Node * a = head;
    
-    a->isHighLight = -1;
-    addStepH(this->heads,1);  
-    a->isHighLight = 0;
+    
     
     while (a && a->next) {
-        addStepH(this->heads, 2);
+        addStepH(this->heads, 3);
         a = a->next;
         cout<<"3";
         a->isHighLight = -1;
-        addStepH(this->heads,3);  
+        addStepH(this->heads,4);  
         a->isHighLight = 0;
     }
     Vector2 curPos = a->Pos;
@@ -165,7 +161,7 @@ void HashTB::Insert(int key) {
     a = a->next;
 
     a->isHighLight = 2;
-    addStepH(this->heads,4);  
+    addStepH(this->heads,5);  
     a->isHighLight = 0;
 
 
@@ -173,9 +169,49 @@ void HashTB::Insert(int key) {
     lastInsertedKey = key;
 }
 
+bool HashTB::DeleteNode(int key) {
+    int index = HashFunction(key);
+
+    Node* &head = heads[index]->head->next;
+
+    if(!head) {
+        addStepH(this->heads,0);  
+        return false;
+    }
+
+    Node* a = head, *pre = heads[index]->head;
+    
+    while(a) {
+        addStepH(this->heads,2); 
+        if(a->val == key) {       
+            a->isHighLight = 1;
+            addStepH(this->heads,1);  
+            a->isHighLight = 0;
+            cout<<"@@";
+            pre->next = a->next;
+            delete a;
+            a = nullptr;
+            cout<<"oke";
+
+            addStepH(this->heads,1,1);  
+            return true;
+        }
+
+        a->isHighLight = -1;
+        addStepH(this->heads,5);  
+        a->isHighLight = 0;
+
+        pre = a;
+        a = a->next;
+    }
+    
+    addStepH(this->heads, 6);
+    return false;   
+}
 
 
 void HashTB::DrawHashTB(vector<LinkedList*>& heads) {
+    updateVariables(heads);
     for(auto& x : heads){
         x->DrawLL(x->head);
     }
@@ -216,12 +252,57 @@ void HashTB::drawStep(HashTBpaint& a, int Found) {
                       20, 3, textColor);
         }
     }
-    DrawRectangle(600,600,400,400, RED);
+
     if(Found == 0) {
         a.noti();
     }
     DrawHashTB(a.heads);
 
+}
+
+Node* HashTB::findNode(Node* &head, int key) {
+    if(!head) return nullptr;
+    Node * a = head;
+    while(a) {
+        if(a->val ==key) {
+            return a;
+        }
+        a = a->next;
+    }
+    return nullptr;
+}
+
+
+void HashTB::CalculatePos(int index, Vector2 PosHead) {
+    Node * &head = this->heads[index]->head;
+    
+    if(!head) return; 
+    head->Pos = PosHead;
+
+    Node* pre = head;
+    Node* a = head->next; 
+    while(a) {
+        Vector2 curPos = pre->Pos;
+        a->Pos = {curPos.x  + 2 * radius + spacing, curPos.y};
+        pre = a;
+        a = a->next;
+    }
+
+}
+void HashTB::updateHTBNodePositions(Node* &a, Node* &b, float &tmp) {
+    if (!a || !b) return;
+
+    Node* acur = a;
+    while (acur) {
+        Node* targetNode = findNode(b, acur->val);
+
+        if (targetNode) {
+            acur->Pos.x = acur->Pos.x + tmp * (targetNode->Pos.x - acur->Pos.x);
+        }
+        //cout<<targetNode->val<<" "<<targetNode->Pos.x<<"---";
+        acur = acur->next;
+    }
+    //cout<<endl;
 }
 
 
@@ -239,19 +320,25 @@ void HashTB::draw() {
     //     DrawLL(head);
     //     head->Pos = t;
     // }
-
+    
     if(currentOperation == Operation::Create) {
         if (isCreating) {
             hasCreate = true;
             this->Create();
-            isCreating = false;
-            isPlaying = true;
+            
         }
         else {
             DrawHashTB(this->heads);
-            isPlaying = false;
+            // isPlaying = false;
         }
     }
+    else{
+        if(hasCreate && isCreating == false){
+            DrawHashTB(this->heads);
+            // isPlaying = false;
+        }
+    }
+    
 
     if (currentOperation == Operation::Insert) {
         if (isInserting) {
@@ -323,88 +410,95 @@ void HashTB::draw() {
         }
     }
 
-    
-    // if (currentOperation == Operation::Delete) {
-    //     if (isDeleting) {
-    //         Found = (this->DeleteNode(DeleteKey)) ? 1 : 0;
-    //         if(!Found) {
-    //             addStepH(this->heads, 2);
-    //         }
-    //         CalculatePos(headsPos);
-    //         addStepH(this->heads);
-    //         isDeleting = false;
+
+    if (currentOperation == Operation::Delete) {
+        if (isDeleting) {
+            Found = (this->DeleteNode(DeleteKey)) ? 1 : 0;
+            if(!Found) {
+                addStepH(this->heads, 2);
+            }
+            index = HashFunction(DeleteKey);
+
+            CalculatePos(index, heads[index]->headPos);
+            addStepH(this->heads);
+            isDeleting = false;
             
-    //         isPlaying = true;
-    //         elapsedTime = 0.0f;
-    //         rotationStartTime = GetTime();
-    //         isMove = false;
-    //     } else if (!steps.empty()) {
-    //         if (cur >= 0 && cur < steps.size()) {
-    //             // Xử lý animation xoay - chỉ khi đang phát (isPlaying)
-    //             if (steps[cur].isMove && isPlaying) {
-    //                 //cout<<steps[cur].heads->val<<" ";
-    //                 if (!isMove) {
-    //                     // Bắt đầu animation xoay
-    //                     isMove = true;
-    //                     rotationStartTime = GetTime();
-    //                 }
+            isPlaying = true;
+            elapsedTime = 0.0f;
+            rotationStartTime = GetTime();
+            isMove = false;
+        } else if (!steps.empty()) {
+            if (cur >= 0 && cur < steps.size()) {
+                // Xử lý animation xoay - chỉ khi đang phát (isPlaying)
+                // if(isPlaying) cout << "is Playing"<<endl;
+                // else cout << "NOt playing\n";
+                // cout<<"K";
+                if (steps[cur].isMove && isPlaying) {
+                    //cout<<steps[cur].head->val<<" ";
+                    if (!isMove) {
+                        // Bắt đầu animation xoay
+                        isMove = true;
+                        cout<<"H";
+                        rotationStartTime = GetTime();
+                    }
     
-    //                 float rotationProgress = (GetTime() - rotationStartTime) / stepDuration;
-                    
-    //                 if (rotationProgress < 1.0f) {
-    //                     // Đang trong quá trình xoay
-    //                     LLpaint tmp;
-    //                     tmp.copy(steps[cur].heads);
-    //                     tmp.isMove = true;
+                    float rotationProgress = (GetTime() - rotationStartTime) / stepDuration;
+                    cout<<"G";
+                    if (rotationProgress < 1.0f) {
+                        // Đang trong quá trình xoay
+                        HashTBpaint tmp;
+                        tmp.copy(steps[cur].heads);
+                        tmp.isMove = true;
+                        cout<<"XX";
+                        updateHTBNodePositions(tmp.head, steps[cur+1].head, rotationProgress);
                         
-    //                     updateLLNodePositions(tmp.heads, steps[cur+1].head, rotationProgress);
-    //                     //cout<<endl<<"why";
-    //                     // Xử lý riêng cho trường hợp delete
-    //                     if (cur == steps.size()-2) {
-    //                         drawStep(tmp, Found);
-    //                     } else {
-    //                         drawStep(tmp);
-    //                         //WaitTime(1);
-    //                     }
-    //                 } else {
-    //                     // Kết thúc xoay, chuyển sang bước tiếp theo
-    //                     isMove = false;
-    //                     cur++;
-    //                     if (cur == steps.size()-1) {
-    //                         drawStep(steps[cur], Found);
-    //                     } else {
-    //                         drawStep(steps[cur]);
-    //                     }
-    //                 }
-    //             } 
-    //             else {
-    //                 //Vẽ bước hiện tại (không xoay hoặc không phải đang phát)
-    //                 if (cur == steps.size()-2) {
-    //                     drawStep(steps[cur], Found);
-    //                 } else {
-    //                     drawStep(steps[cur]);
-    //                 }
+                        // Xử lý riêng cho trường hợp delete
+                        cout << cur << endl;
+                        if (cur == steps.size()-2) {
+                            drawStep(tmp, Found);
+                            
+                        } else {
+                            drawStep(tmp);
+                            cout<<"hee";
+                        }
+                    } else {
+                        // Kết thúc xoay, chuyển sang bước tiếp theo
+                        isMove = false;
+                        cur++;
+                        if (cur == steps.size()-1) {
+                            drawStep(steps[cur], Found);
+                        } else {
+                            drawStep(steps[cur]);
+                        }
+                    }
+                } 
+                else {
+                    //Vẽ bước hiện tại (không xoay hoặc không phải đang phát)
+                    if (cur == steps.size()-2) {
+                        drawStep(steps[cur], Found);
+                    } else {
+                        drawStep(steps[cur]);
+                    }
                     
-    //                 // Tự động chuyển bước nếu đang phát
-    //                 if (isPlaying) {
-    //                     elapsedTime += GetFrameTime();
-    //                     if (elapsedTime >= stepDuration) {
-    //                         if (cur < steps.size() - 1) {
-    //                             cur++;
-    //                             elapsedTime = 0.0f;
-    //                         } else {
-    //                             isPlaying = false;
-    //                         }
-    //                     }
-    //                 }
-    //             }
-    //         }
-    //     }
-    // }
+                    // Tự động chuyển bước nếu đang phát
+                    if (isPlaying) {
+                        elapsedTime += GetFrameTime();
+                        if (elapsedTime >= stepDuration) {
+                            if (cur < steps.size() - 1) {
+                                cur++;
+                                elapsedTime = 0.0f;
+                            } else {
+                                isPlaying = false;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
 
 
     if (currentOperation == Operation::Search) {
-        
         if (isSearching) {
             Found = (this->Search(SearchKey)) ? 1 : 0;
             if(!Found) {
@@ -483,7 +577,35 @@ void HashTB::event() {
 
     
     if(currentOperation == Operation::Create) {
+        hasInsert = false;
+        hasSearch = false;
+        hasDelete = false;
+        hasCreate = true;
+        cur = 0;
+        DrawHashTB(heads);
+        steps.clear();
+
+        addStepH(this->heads);
+            if(textbox.nums.size() > 0){
+                heads.clear();
+                tableSize = textbox.nums[0]; 
+                heads.resize(tableSize, nullptr);
+                for(int i=0; i< tableSize; i++){
+                    if(!heads[i]) heads[i] = new LinkedList();
+                    heads[i]->headPos = {origin.x , origin.y+ (spacing+radius)*i};
+                    heads[i]->head = new Node(i, nullptr, heads[i]->headPos, 0);
+                }
+
+                textbox.nums.erase(textbox.nums.begin());
+                textbox.inputText = {""};
+            }
+        if (textbox.nums.size() > 0) {
         
+            createKeys = textbox.nums;
+            textbox.nums.clear();
+            textbox.inputText = {""};
+            isCreating = true;
+        }
     }
     
     if(currentOperation == Operation::Insert) {
@@ -543,12 +665,7 @@ void HashTB::event() {
 
     handleUI();
     //auto create taking numbers from textbox
-     if (isCreating && !createKeys.empty()) {
-        Insert(createKeys.front());
-        createKeys.erase(createKeys.begin());
-        // std::this_thread::sleep_for(std::chrono::milliseconds((int) (300 / animationSpeed)));
-    }
-    if (createKeys.empty()) isCreating = false;
+    
     //...Lưu ý: Cần chỉnh sửa hiển thị nút play, pause cho phù hợp
 }
 
@@ -655,34 +772,34 @@ void HashTB::updatePseudocode() {
     switch(currentOperation) {
         case Operation::Insert:
             pseudocode = {
-                "index = key%HT.length;",
-                "cur = table[index]",
-                "if empty, cur = new Node(key)"
-                "while cur && cur->next is not null",
-                "   cur = cur->next",
-                "cur->next = new Node(key)"
+                "index = key%HT.length;",                   //0
+                "cur = table[index]",                       //1
+                "if empty, cur = new Node(key)"             //2
+                "while cur && cur->next is not null",       //3
+                "   cur = cur->next",                       //4
+                "cur->next = new Node(key)"                 //5
             };
             break;
         case Operation::Delete:
             pseudocode = {
-                "index = key%HT.length;",
-                "cur = table[index], prev = null",
-                "while cur not null & cur->value != key",
-                "  prev = cur, cur = cur->next"
-                "if cur is null",
-                "  return NOT_FOUND",
-                "prev->next = cur->next, delete cur",
+                "index = key%HT.length;",                   //0
+                "cur = table[index], prev = null",          //1
+                "while cur not null & cur->value != key",   //2
+                "  prev = cur, cur = cur->next"             //3
+                "if cur is null",                           //4
+                "  return NOT_FOUND",                       //5
+                "prev->next = cur->next, delete cur",       //6
             };
             break;
         case Operation::Search:
             pseudocode = {
-                "index = key%HT.length",
-                "cur = table[index]",
-                "while cur && cur->val != key",
-                "   cur = cur->next",
-                "if cur is null",
-                "   return NOT_FOUND",
-                "return FOUND"
+                "index = key%HT.length",                    //0
+                "cur = table[index]",                       //1
+                "while cur is not null",                    //2
+                "   if cur->val == key",                    //3
+                "       return FOUND",             //4
+                "   cur = cur->next",                       //5                          
+                "return FOUND"                              //6 
             };
             break;
         default:
@@ -698,6 +815,11 @@ void HashTB::reset(){
     tableSize = 3;
     heads.clear();
     heads.resize(tableSize, nullptr);
+    for(int i=0; i< tableSize; i++){
+        if(!heads[i]) heads[i] = new LinkedList();
+        heads[i]->headPos = {origin.x , origin.y+ (spacing+radius)*i};
+        heads[i]->head = new Node(i, nullptr, heads[i]->headPos, 0);
+    }
      isInserting = false;
      lastInsertedKey = -1;
 
@@ -755,24 +877,13 @@ void HashTB::RANDOM_INPUT(){
 }
 
 void HashTB::Create(){
-    if(textbox.nums.size() > 0){
-                heads.clear();
-                tableSize = textbox.nums[0]; 
-                heads.resize(tableSize, nullptr);
-                for(int i=0; i< tableSize; i++){
-                    if(!heads[i]) heads[i] = new LinkedList();
-                    heads[i]->headPos = {origin.x , origin.y+ (spacing+radius)*i};
-                    heads[i]->head = new Node(i, nullptr, heads[i]->headPos, 0);
-                }
-
-                textbox.nums.erase(textbox.nums.begin());
-                textbox.inputText = {""};
-            }
-        if (textbox.nums.size() > 0) {
-        
-            createKeys = textbox.nums;
-            textbox.nums.clear();
-            textbox.inputText = {""};
-            isCreating = true;
-        }
+    if (!createKeys.empty()) {
+        Insert(createKeys.front());
+        createKeys.erase(createKeys.begin());
+        // std::this_thread::sleep_for(std::chrono::milliseconds((int) (300 / animationSpeed)));
+    }
+    if (createKeys.empty()) {
+        isCreating = false;
+            isPlaying = true;
+    }
 }

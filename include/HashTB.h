@@ -90,17 +90,18 @@ public:
     // UI settings
      int bucket_width = 25;
      int bucket_height = 40;
-     int spacing = 70;
-     int radius = 25;
-     int font_size = 20;
+     int spacing = 40;
+     int radius = 30;
+     int font_size = 32;
 
     Color bucket_color = MyColor6;
      Color node_color = SKYBLUE;
      Color text_color = BLACK;
      Color arrow_color = BLACK;
-     float arrow_size = 10.0f;
+     float arrow_size = 9.0f;
 
     // Logic variables
+    
     bool isInserting = false;
     int lastInsertedKey = -1;
 
@@ -134,6 +135,8 @@ public:
     ~HashTB();
     HashTB(int size);
     int HashFunction(int key);
+    
+    void CalculatePos(int index, Vector2 PosHead);
 
        void updatePseudocode();
     void updateVariables(vector<LinkedList*>& a);
@@ -142,12 +145,18 @@ public:
     // Core functions
     void Insert(int key);
     bool Search(int key);
-    bool Delete(int key);
+    bool DeleteNode(int key);
     void Create();
+
     void Clear(); // optional reset function
+    int index = -1;
+    void updateHTBNodePositions(Node* &a, Node*& b, float &tmp);
+    Node* findNode(Node*& head, int key);
 
     bool isCreating = false;
     vector<int> createKeys;
+    float rotationStartTime;
+    bool isMove = false;
 
     // Integration with Page
     void init() override;
