@@ -109,33 +109,6 @@ public:
         return nullptr;
     }
 
-    // Cập nhật targetPos theo danh sách khác
-    void updateTargetPositions(Node* current, Node* targetList) {
-        while (current) {
-            Node* target = findNodeByValue(targetList, current->val);
-            if (target) current->targetPos = target->Pos;
-            current = current->next;
-        }
-    }
-
-    void updateTargetPos(const LLpaint& b) {
-        if (!this->head) return;
-        updateTargetPositions(this->head, b.head);
-    }
-
-    // Cập nhật vị trí thực tế dựa trên targetPos và progress (0.0 -> 1.0)
-    void updateNodePositions(Node* src, float progress) {
-        while (src) {
-            src->Pos.x = src->Pos.x + (src->targetPos.x - src->Pos.x) * progress;
-            src->Pos.y = src->Pos.y + (src->targetPos.y - src->Pos.y) * progress;
-            src = src->next;
-        }
-    }
-
-    // void updateRotation(float stepDuration, LLpaint& tmp, LLpaint& tar) {
-    //     float t = GetFrameTime() / stepDuration;
-    //     updateNodePositions(tmp.head, t);
-    // }
 };
     
 

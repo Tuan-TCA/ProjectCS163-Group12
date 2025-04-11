@@ -35,6 +35,7 @@ void LinkedList::init(){
     hasInsert = false;
     hasSearch = false;
     hasDelete = false;
+    hasCreate = false;
 
     cur = -1;
     curCode = -1;
@@ -366,120 +367,6 @@ void LinkedList::draw() {
         }
     }
 
-
-    // if (currentOperation == Operation::Search) {
-    //     if (isSearching) {
-    //         animationController.Reset();         
-    //         DrawSearchNode(SearchKey);           
-    //         isSearching = false;                 
-    //         elapsedTime = 0.0f;                  
-    //         hasFinishedOnce = false;             
-    //     } else {
-    //         if (!animationController.steps.empty()) {
-    //             if (animationController.currentStep < animationController.steps.size()) {
-    //                 animationController.steps[animationController.currentStep](); 
-    //             }
-
-    //             if (!animationController.IsPaused()) {
-    //                 elapsedTime += GetFrameTime(); 
-    //                 if (elapsedTime >= stepDuration && !animationController.IsFinished()) {
-    //                     animationController.NextStep(); 
-    //                     elapsedTime = 0.0f;             
-    //                     // cout << animationController.currentStep << endl; 
-    //                 }
-    //             }
-    //         }
-
-    //         if (animationController.IsFinished()) {
-    //             DrawLL(Pos); 
-    //             if (!hasFinishedOnce) {
-    //                 finishedPos = Pos;    
-    //                 hasFinishedOnce = true; 
-    //             }
-    //             if (Pos.x > NewPos.x) {
-    //                 Pos = {Pos.x - 5, Pos.y}; 
-    //             } else {
-    //                 Pos = NewPos; 
-    //             }
-    //         }
-    //     }
-    // }
-
-    // if (currentOperation == Operation::Delete) {
-    //     if (isDeleting) {
-    //         animationController.Reset(); 
-    //         DrawDeleteNode(DeleteKey);           
-    //         isDeleting = false;                  
-    //         elapsedTime = 0.0f;              
-    //         hasFinishedOnce = false;             
-    //     } else {
-    //         if (!animationController.steps.empty()) {
-    //             if (animationController.currentStep < animationController.steps.size()) {
-    //                 animationController.steps[animationController.currentStep](); 
-    //             }
-
-    //             if (!animationController.IsPaused()) {
-    //                 elapsedTime += GetFrameTime(); 
-    //                 if (elapsedTime >= stepDuration && !animationController.IsFinished()) {
-    //                     animationController.NextStep(); 
-    //                     elapsedTime = 0.0f;             
-    //                     // cout << animationController.currentStep << endl; 
-    //                 }
-    //             }
-    //         }
-
-    //         if (animationController.IsFinished()) {
-    //             DrawLL(Pos); 
-    //             if (!hasFinishedOnce) {
-    //                 finishedPos = Pos;    
-    //                 hasFinishedOnce = true; 
-    //             }
-    //             if (Pos.x < NewPos.x) {
-    //                 Pos = {Pos.x + 5, Pos.y}; 
-    //             } else {
-    //                 Pos = NewPos; 
-    //             }
-    //         }
-    //     }
-    // }
-
-    // if (currentOperation == Operation::Update) {
-    //     if (isUpdating) {
-    //         animationController.Reset();         
-    //         DrawUpDateNode(UpdateKey, newVal);   
-    //         isUpdating = false;                  
-    //         elapsedTime = 0.0f;                  
-    //         hasFinishedOnce = false;             
-    //     } else {
-    //         if (!animationController.steps.empty()) {
-    //             if (animationController.currentStep < animationController.steps.size()) {
-    //                 animationController.steps[animationController.currentStep](); 
-    //             }
-
-    //             if (!animationController.IsPaused()) {
-    //                 elapsedTime += GetFrameTime(); 
-    //                 if (elapsedTime >= stepDuration && !animationController.IsFinished()) {
-    //                     animationController.NextStep(); 
-    //                     elapsedTime = 0.0f;             
-    //                     // cout << animationController.currentStep << endl; 
-    //                 }
-    //             }
-    //         }
-
-    //         if (animationController.IsFinished()) {
-    //             DrawLL(Pos); 
-    //             if (!hasFinishedOnce) {
-    //                 finishedPos = Pos;    
-    //                 hasFinishedOnce = true; 
-    //             }
-    //             if (Pos.x > NewPos.x) {
-    //                 Pos = {Pos.x - 5, Pos.y}; 
-    //             } else {
-    //                 Pos = NewPos; 
-    //             }
-    //         }
-    //     }
-    // }
 }
 
 void LinkedList::updatePseudocode(){
