@@ -71,12 +71,16 @@ int HashTB::HashFunction(int key) {
 }
 
 void HashTB::updateVariables(vector<LinkedList*>& a){
+    int i = 0;
     for(auto& elem: a){
         if(elem){
+        elem->head->Pos = {origin.x , origin.y+ (spacing+radius)*i};
+        elem->updatePos();
         elem->radius = radius;
         elem->spacing = spacing;
         elem->font_size = font_size + 1;
         elem->arrow_size = arrow_size;
+        i++;
         }
     }
 }
@@ -571,13 +575,6 @@ void HashTB::event() {
     Page::event();
     
     //Choose Operation
-   bucket = {
-        origin.x ,
-        origin.y + 50,
-        (float)bucket_width,
-        (float)spacing * (tableSize)
-    };
-
     
     if(currentOperation == Operation::Create) {
         hasInsert = false;
@@ -676,6 +673,13 @@ void HashTB::event() {
         animatingTime = 0;
     }
     handleUI();
+
+
+    //Mouse handling
+
+     float wheelMove = GetMouseWheelMove();
+        origin.y += (int)wheelMove * 23;
+    
     //auto create taking numbers from textbox
     
     //...Lưu ý: Cần chỉnh sửa hiển thị nút play, pause cho phù hợp
@@ -787,7 +791,7 @@ void HashTB::updatePseudocode() {
                 "index = key%HT.length;",                   //0
                 "cur = table[index]",                       //1
                 "if empty, cur = new Node(key)",             //2
-                "while cur && cur->next is not null",       //3
+                "while (cur && cur->next)",       //3
                 "   cur = cur->next",                       //4
                 "cur->next = new Node(key)"                 //5
             };
@@ -796,20 +800,20 @@ void HashTB::updatePseudocode() {
             pseudocode = {
                 "index = key%HT.length;",                   //0
                 "cur = table[index], prev = null",          //1
-                "while cur not null & cur->value != key",   //2
-                "  prev = cur, cur = cur->next"             //3
+                "while (cur && cur->value != key)",   //2
+                "  prev = cur, cur = cur->next" ,          //3
                 "if cur is null",                           //4
                 "  return NOT_FOUND",                       //5
-                "prev->next = cur->next, delete cur",       //6
+                "prev->next = cur->next, delete cur"      //6
             };
             break;
         case Operation::Search:
             pseudocode = {
                 "index = key%HT.length",                    //0
                 "cur = table[index]",                       //1
-                "while cur is not null",                    //2
+                "while (cur is not null)",                    //2
                 "   if cur->val == key",                    //3
-                "       return FOUND",             //4
+                "       return FOUND",                      //4
                 "   cur = cur->next",                       //5                          
                 "return FOUND"                              //6 
             };
@@ -856,7 +860,7 @@ void HashTB::RANDOM_INPUT(){
             textbox.reset();
             std::uniform_int_distribution<int> bucket(2, 25); 
             int numBucket = bucket(rng);
-            std::uniform_int_distribution<int> value(0, 1999);
+            std::uniform_int_distribution<int> value(0, 999);
             std::uniform_int_distribution<int> valueSize(0, 30);
             int size = valueSize(rng);
             std::vector<int> Values;
