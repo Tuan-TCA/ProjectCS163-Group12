@@ -147,7 +147,6 @@ public:
 
     //public variable for linked-list
      int radius = 50;
-
      int font_size = 40;
      int spacing = 50;
      Color choose_color = { 0, 128, 0, 128 };//green
@@ -191,7 +190,8 @@ public:
     int Found = -1;
     int cur = -1;
     int curCode = -1;
-    
+    Node* findNode(Node* ahead, int key);
+    void updateLLNodePositions(Node* &a, Node* b, float &tmp);
     LinkedList* copy() const;
     //animation
     vector<LLpaint> steps;

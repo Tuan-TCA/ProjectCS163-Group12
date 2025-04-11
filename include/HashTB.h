@@ -96,6 +96,7 @@ public:
     void event() override;
     void reset() override;
     void updateVariables();
+
     void RANDOM_INPUT() override;
     
 };
