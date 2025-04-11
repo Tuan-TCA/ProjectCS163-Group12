@@ -220,8 +220,7 @@ void HashTB::DrawHashTB(vector<LinkedList*>& heads) {
 
 void HashTB::drawStep(HashTBpaint& a, int Found) {
 
-    pseudocodeX = 20;
-    pseudocodeY = 500;
+
     lineHeight = 30;
     FONT = GetFontDefault();
     
@@ -236,7 +235,7 @@ void HashTB::drawStep(HashTBpaint& a, int Found) {
             Vector2 lineWidth = MeasureTextEx(FONT, line.c_str(), 20, 3);
             if(lineWidth.x > maxWidth.x) maxWidth = lineWidth;
         }
-
+        textWidth = maxWidth.x;
         for(size_t i = 0; i < pseudocode.size(); ++i) {
             // Vẽ highlight cho toàn bộ chiều rộng
             if(a.curCode == i) {
@@ -666,7 +665,16 @@ void HashTB::event() {
             textbox.inputText = {""};
         }
     }
-
+    if(currentOperation != Operation::Create){
+        isClosingCodePlace = false;
+        isExpandingCodePlace = true;
+        animatingTime = 0;
+    }
+    else{
+        isClosingCodePlace = true;
+        isExpandingCodePlace = false;
+        animatingTime = 0;
+    }
     handleUI();
     //auto create taking numbers from textbox
     
@@ -778,7 +786,7 @@ void HashTB::updatePseudocode() {
             pseudocode = {
                 "index = key%HT.length;",                   //0
                 "cur = table[index]",                       //1
-                "if empty, cur = new Node(key)"             //2
+                "if empty, cur = new Node(key)",             //2
                 "while cur && cur->next is not null",       //3
                 "   cur = cur->next",                       //4
                 "cur->next = new Node(key)"                 //5
@@ -815,9 +823,13 @@ void HashTB::updatePseudocode() {
 
 void HashTB::reset(){
     Page::reset();
-    origin = { 350, 100 };
     tableSize = 3;
+    for(auto& head: heads){
+        head->reset();
+        
+    }
     heads.clear();
+    
     heads.resize(tableSize, nullptr);
     for(int i=0; i< tableSize; i++){
         if(!heads[i]) heads[i] = new LinkedList();

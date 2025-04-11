@@ -7,7 +7,7 @@
 
 void updateRotation(float stepDuration, AVLpaint& tmp, AVLpaint& tar) {
     if (!tmp.root || !tmp.isRotating) return;
-    cout<<"ok";
+    
     // Tỷ lệ tiến trình (0.0 -> 1.0)
     float t = GetFrameTime() / stepDuration; // Giả sử GetFrameTime() trả về thời gian frame
     if (t > 1.0f) t = 1.0f; // Giới hạn tỷ lệ tối đa là 1
@@ -766,6 +766,17 @@ void AVL::event() {
             isDeleting = true;
             textbox.inputText = {""};
         }
+    }
+
+     if(currentOperation != Operation::Create){
+        isClosingCodePlace = false;
+        isExpandingCodePlace = true;
+        animatingTime = 0;
+    }
+    else{
+        isClosingCodePlace = true;
+        isExpandingCodePlace = false;
+        animatingTime = 0;
     }
 
     static Operation lastOp = Operation::Algorithm;

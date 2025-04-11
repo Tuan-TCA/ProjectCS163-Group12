@@ -54,28 +54,41 @@ void LinkedList::reset(){
     }
     head = nullptr;
     workplace = {400,300,600,600};
+     headPos = {400,300};
+    // position = {workplace.x*1.1f, workplace.y*1.1f};
     isInserting = false;
     isSearching = false;
     isDeleting = false;
     isUpdating = false;
+    //isCreating = false;
+
+    hasInsert = false;
+    hasSearch = false;
+    hasDelete = false;
+    hasCreate = false;
+
+    cur = -1;
+    curCode = -1;
+    pseudocode = {};
+    lineHeight = 30;
 }
 
 void LinkedList::event() {
     Page::event();
     //Choose Operation
    
-    if(currentOperation == Operation::Create) {
-    //     hasInsert = false;
-    //     hasSearch = false;
-    //     hasDelete = false;
-    //     hasCreate = true;
-    //     if(Page::Ok.IsClicked()) {
-    //         DestroyRecursive(head);
-    //         head = nullptr;
-    //         isCreating = true;
-    //     }       
+    // if(currentOperation == Operation::Create) {
+    // //     hasInsert = false;
+    // //     hasSearch = false;
+    // //     hasDelete = false;
+    // //     hasCreate = true;
+    // //     if(Page::Ok.IsClicked()) {
+    // //         DestroyRecursive(head);
+    // //         head = nullptr;
+    // //         isCreating = true;
+    // //     }       
+    // // }
     // }
-    }
     
     if(currentOperation == Operation::Insert) {
         if(!hasInsert) {
@@ -131,7 +144,16 @@ void LinkedList::event() {
             textbox.inputText = {""};
         }
     }
-
+    if(currentOperation != Operation::Create){
+        isClosingCodePlace = false;
+        isExpandingCodePlace = true;
+        animatingTime = 0;
+    }
+    else{
+        isClosingCodePlace = true;
+        isExpandingCodePlace = false;
+        animatingTime = 0;
+    }
     handleUI();
     //...Lưu ý: Cần chỉnh sửa hiển thị nút play, pause cho phù hợp
 }
@@ -151,7 +173,7 @@ void LinkedList::draw() {
         DrawLL(head);
         head->Pos = t;
     }
-
+    
     // if(currentOperation == Operation::Create) {
     //     if (isCreating) {
     //         hasCreate = true;
@@ -554,8 +576,7 @@ void LinkedList::DrawLL(Node* head) {
 
 void LinkedList::drawStep(LLpaint a, int Found) {
 
-    pseudocodeX = 20;
-    pseudocodeY = 500;
+ 
     lineHeight = 30;
     FONT = GetFontDefault();
     
@@ -570,7 +591,7 @@ void LinkedList::drawStep(LLpaint a, int Found) {
             Vector2 lineWidth = MeasureTextEx(FONT, line.c_str(), 20, 3);
             if(lineWidth.x > maxWidth.x) maxWidth = lineWidth;
         }
-
+        textWidth = maxWidth.x;
         for(size_t i = 0; i < pseudocode.size(); ++i) {
             // Vẽ highlight cho toàn bộ chiều rộng
             if(a.curCode == i) {
