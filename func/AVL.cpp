@@ -54,7 +54,8 @@ void AVL::reset(){
      root = nullptr;
     workplace = {screenWidth*0.24f,screenHeight*0.2f,(float) screenWidth *(1-0.24f),screenHeight*(1-0.095f)};
     rootPos= {workplace.x + workplace.width / 2 + 50, workplace.y};      
-    
+    camera.target = rootPos;
+    camera.offset = rootPos;
     steps.clear();
 
     isInserting = false;
@@ -446,7 +447,9 @@ void AVL::drawStep(AVLpaint a, int Found) {
         a.noti();
     }
 
-    DrawTree(a.root);
+    BeginMode2D(camera);  
+        DrawTree(a.root);
+        EndMode2D();
 
 }
 
@@ -461,7 +464,10 @@ void AVL::draw() {
         Vector2 k = GetMousePosition();
         auto t = root->Pos;
         root->Pos = k;
+        BeginMode2D(camera);  
         DrawTree(root);
+        EndMode2D();
+        
         root->Pos = t;
     }
 
@@ -483,7 +489,9 @@ void AVL::draw() {
             isPlaying = true;
         }
         else {
+            BeginMode2D(camera);  
             DrawTree(root);
+            EndMode2D();
             isPlaying = false;
         }
     }
@@ -720,7 +728,9 @@ void AVL::event() {
             hasDelete = false;
             hasCreate = false;
             cur = 0;
+            BeginMode2D(camera);  
             DrawTree(root);
+            EndMode2D();
             steps.clear();
             addStep(this->root);
     
@@ -899,7 +909,8 @@ void AVL::init() {
     root = nullptr;
     workplace = {screenWidth*0.24f,screenHeight*0.2f,(float) screenWidth *(1-0.24f),screenHeight*(1-0.095f)};
     rootPos= {workplace.x + workplace.width / 2 + 50, workplace.y};      
-    
+     camera.target = rootPos;
+    camera.offset = rootPos;
     steps.clear();
 
     isInserting = false;

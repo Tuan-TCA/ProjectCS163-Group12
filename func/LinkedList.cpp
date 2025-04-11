@@ -1,5 +1,6 @@
 #include "LinkedList.h"
 #include <raylib.h>
+#include <raymath.h>
 #include <thread>
 #include<iostream>
 #include "ControlAnimation.h"
@@ -25,6 +26,8 @@ void LinkedList::init(){
     head = nullptr;
     workplace = {400,300,600,600};
     headPos = {400,300};
+    camera.target = headPos;
+    camera.offset = headPos;
     // position = {workplace.x*1.1f, workplace.y*1.1f};
     isInserting = false;
     isSearching = false;
@@ -55,6 +58,8 @@ void LinkedList::reset(){
     head = nullptr;
     workplace = {400,300,600,600};
      headPos = {400,300};
+      camera.target = headPos;
+    camera.offset = headPos;
     // position = {workplace.x*1.1f, workplace.y*1.1f};
     isInserting = false;
     isSearching = false;
@@ -77,18 +82,26 @@ void LinkedList::event() {
     Page::event();
     //Choose Operation
    
-    // if(currentOperation == Operation::Create) {
-    // //     hasInsert = false;
-    // //     hasSearch = false;
-    // //     hasDelete = false;
-    // //     hasCreate = true;
-    // //     if(Page::Ok.IsClicked()) {
-    // //         DestroyRecursive(head);
-    // //         head = nullptr;
-    // //         isCreating = true;
-    // //     }       
-    // // }
-    // }
+    if(currentOperation == Operation::Create) {
+         hasInsert = false;
+        hasSearch = false;
+        hasDelete = false;
+        hasCreate = true;
+        cur = 0;
+        BeginMode2D(camera);  
+        DrawLL(this->head);   
+        EndMode2D();
+        steps.clear();
+
+        addStep(this->head);
+        if (textbox.nums.size() > 0) {
+        
+            createKeys = textbox.nums;
+            textbox.nums.clear();
+            textbox.inputText = {""};
+            isCreating = true;
+        }
+    }
     
     if(currentOperation == Operation::Insert) {
         if(!hasInsert) {
@@ -97,7 +110,9 @@ void LinkedList::event() {
             hasDelete = false;
             hasCreate = false;
             cur = 0;
-            DrawLL(head);
+            BeginMode2D(camera);  
+        DrawLL(this->head);   
+        EndMode2D();
             steps.clear();
             addStep(this->head);
     
@@ -155,6 +170,8 @@ void LinkedList::event() {
         animatingTime = 0;
     }
     handleUI();
+
+    
     //...Lưu ý: Cần chỉnh sửa hiển thị nút play, pause cho phù hợp
 }
 
@@ -165,12 +182,34 @@ void LinkedList::draw() {
     static float elapsedTime = 0.0f;
     const float stepDuration = 0.5f / animationSpeed;
 
-    
+    if(currentOperation == Operation::Create) {
+        if (isCreating) {
+            hasCreate = true;
+            this->Create();
+            
+        }
+        else {
+            BeginMode2D(camera);  
+        DrawLL(this->head);   
+        EndMode2D();
+            // isPlaying = false;
+        }
+    }
+    else{
+        if(hasCreate && isCreating == false){
+            BeginMode2D(camera);  
+        DrawLL(this->head);   
+        EndMode2D();
+            // isPlaying = false;
+        }
+    }
     if(IsKeyPressed(KEY_A)) {
         Vector2 k = GetMousePosition();
         auto t = head->Pos;
         head->Pos = k;
-        DrawLL(head);
+        BeginMode2D(camera);  
+        DrawLL(this->head);   
+        EndMode2D();
         head->Pos = t;
     }
     
@@ -192,7 +231,9 @@ void LinkedList::draw() {
     //         isPlaying = true;
     //     }
     //     else {
-    //         DrawLL(head);
+            BeginMode2D(camera);  
+        DrawLL(this->head);   
+        EndMode2D();
     //         isPlaying = false;
     //     }
     // }
@@ -612,7 +653,9 @@ void LinkedList::drawStep(LLpaint a, int Found) {
         a.noti();
     }
 
-    DrawLL(a.head);
+    BeginMode2D(camera);  
+        DrawLL(a.head);   
+        EndMode2D();
 
 }
 
@@ -799,6 +842,18 @@ void LinkedList::handleUI(){
             cur++;
             isPlaying = false;
         }
+    }
+}
+
+void LinkedList::Create(){
+    if (!createKeys.empty()) {
+        Insert(createKeys.front());
+        createKeys.erase(createKeys.begin());
+        // std::this_thread::sleep_for(std::chrono::milliseconds((int) (300 / animationSpeed)));
+    }
+    if (createKeys.empty()) {
+        isCreating = false;
+            isPlaying = true;
     }
 }
 // bool LinkedList::DrawSearchNode(int key){

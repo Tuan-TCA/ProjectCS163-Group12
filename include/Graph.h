@@ -65,7 +65,7 @@ class Graph : public Page{
     int currentQueueIndex;
     TextBox vertex_textbox;
     TextBox edge_textbox;
-
+    bool isVertexPressing = false;
     TextBox tes;
     //bfs
     bool got1stV;

@@ -74,6 +74,7 @@ public:
     float lineHeight;
     Rectangle codeDisplayPLace;
 
+    Camera2D camera{};
     virtual void init();
     virtual void draw();
     virtual void event();

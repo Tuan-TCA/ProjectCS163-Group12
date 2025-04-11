@@ -5,7 +5,7 @@
 #include <iomanip>
 #include <sstream>
 #include <random>
-
+#include <raymath.h>
 #include "ControlAnimation.h"
 #include "Page.h"
 #include "Variables.h"
@@ -79,6 +79,11 @@ void Page::init() {
     newTextBox = TextBox(side.x + screenWidth*0.08f + 10, side.y + screenHeight*0.63f * 0.36f, screenWidth*0.08, screenHeight*0.63f * 0.11f, "", WHITE, WHITE, BLACK);
     textbox.resetTextbox();
     lineHeight = 20.0f;
+
+    camera.target = { (float)GetScreenWidth()/2, (float)GetScreenHeight()/2 };
+        camera.offset = { (float)GetScreenWidth()/2, (float)GetScreenHeight()/2 };
+        camera.rotation = 0.0f;
+        camera.zoom = 1.0f;
 }
 
 void Page::reset(){
@@ -325,6 +330,22 @@ void Page::event() {
     if (InputOptions[selectedInputIndex] == "KEYBOARD") currentInput = InputType::Keyboard;
     if (InputOptions[selectedInputIndex] == "RANDOM") currentInput = InputType::Random;
     if (InputOptions[selectedInputIndex] == "FILE") currentInput = InputType::File;
+
+
+    float wheel = GetMouseWheelMove();
+    if (wheel != 0) {
+        // camera.target = GetMousePosition();
+        camera.zoom += wheel * 0.1f;
+        if (camera.zoom < 0.2f) camera.zoom = 0.2f;
+        if (camera.zoom > 5.0f) camera.zoom = 5.0f;
+    }
+    
+    // Kéo chuột phải để pan
+    if (IsMouseButtonDown(MOUSE_BUTTON_LEFT)) {
+        Vector2 delta = GetMouseDelta();
+        delta = Vector2Scale(delta, -1.0f / camera.zoom);
+        camera.target = Vector2Add(camera.target, delta);
+    }
 }
 
 std::mt19937 rng(std::random_device{}());

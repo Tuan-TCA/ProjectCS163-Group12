@@ -23,7 +23,7 @@ class HashTBpaint : public LLpaint{
 public:
     // Origin point for drawing the hash table
     Vector2 origin = {200, 200};
-
+    
     // Hash table size and heads of chains
     int tableSize = 3;
     vector<LinkedList*> heads;

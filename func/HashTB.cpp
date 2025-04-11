@@ -13,10 +13,9 @@ using namespace std;
 void HashTB::init(){
     Page::init();
     origin = { 450, 200 };
+    camera.target = origin;
+    camera.offset = origin;
     heads.resize(tableSize, nullptr);
-    
-
-  
     // nullptr
     for(int i=0; i< tableSize; i++){
         if(!heads[i]) heads[i] = new LinkedList();
@@ -45,7 +44,36 @@ void HashTB::init(){
     pseudocode = {};
 }
 
+void HashTB::reset(){
+    Page::reset();
+    tableSize = 3;
+    origin = { 450, 200 };
+    camera.target = origin;
+    camera.offset = origin;
+    for(auto& head: heads){
+        head->reset();
+        
+    }
+    heads.clear();
+    
+    heads.resize(tableSize, nullptr);
+    for(int i=0; i< tableSize; i++){
+        if(!heads[i]) heads[i] = new LinkedList();
+        heads[i]->headPos = {origin.x , origin.y+ (spacing+radius)*i};
+        heads[i]->head = new Node(i, nullptr, heads[i]->headPos, 0);
+    }
+     isInserting = false;
+     lastInsertedKey = -1;
 
+     isSearching = false;
+     SearchKey = -1;
+     searchFound = false; 
+
+     isDeleting = false;
+     DeleteKey = -1;
+     isDuplicateInsert = false;
+     createKeys.clear();
+}
 HashTB::HashTB(int size) {
     tableSize = size;
     heads.resize(size, nullptr);
@@ -259,7 +287,10 @@ void HashTB::drawStep(HashTBpaint& a, int Found) {
     if(Found == 0) {
         a.noti();
     }
-    DrawHashTB(a.heads);
+    BeginMode2D(camera);  
+        DrawHashTB(a.heads);  
+    EndMode2D();
+    
 
 }
 
@@ -331,13 +362,17 @@ void HashTB::draw() {
             
         }
         else {
-            DrawHashTB(this->heads);
+            BeginMode2D(camera);  
+            DrawHashTB(this->heads);  
+            EndMode2D();
             // isPlaying = false;
         }
     }
     else{
         if(hasCreate && isCreating == false){
-            DrawHashTB(this->heads);
+            BeginMode2D(camera);  
+            DrawHashTB(this->heads);  
+            EndMode2D();
             // isPlaying = false;
         }
     }
@@ -582,7 +617,9 @@ void HashTB::event() {
         hasDelete = false;
         hasCreate = true;
         cur = 0;
-        DrawHashTB(heads);
+        BeginMode2D(camera);  
+            DrawHashTB(this->heads);  
+            EndMode2D();
         steps.clear();
 
         addStepH(this->heads);
@@ -615,7 +652,9 @@ void HashTB::event() {
             hasDelete = false;
             hasCreate = false;
             cur = 0;
-            DrawHashTB(heads);
+            BeginMode2D(camera);  
+            DrawHashTB(this->heads);  
+            EndMode2D();
             steps.clear();
             addStepH(this->heads);
     
@@ -677,9 +716,10 @@ void HashTB::event() {
 
     //Mouse handling
 
-     float wheelMove = GetMouseWheelMove();
-        origin.y += (int)wheelMove * 23;
-    
+     if (IsKeyDown(KEY_UP))  origin.y -= 2;
+     if(IsKeyDown(KEY_DOWN)) origin.y += 2;
+    if(IsKeyDown(KEY_LEFT)) origin.x -= 2;
+    if(IsKeyDown(KEY_RIGHT)) origin.x += 2;
     //auto create taking numbers from textbox
     
     //...Lưu ý: Cần chỉnh sửa hiển thị nút play, pause cho phù hợp
@@ -824,34 +864,6 @@ void HashTB::updatePseudocode() {
     }
 }
 
-
-void HashTB::reset(){
-    Page::reset();
-    tableSize = 3;
-    for(auto& head: heads){
-        head->reset();
-        
-    }
-    heads.clear();
-    
-    heads.resize(tableSize, nullptr);
-    for(int i=0; i< tableSize; i++){
-        if(!heads[i]) heads[i] = new LinkedList();
-        heads[i]->headPos = {origin.x , origin.y+ (spacing+radius)*i};
-        heads[i]->head = new Node(i, nullptr, heads[i]->headPos, 0);
-    }
-     isInserting = false;
-     lastInsertedKey = -1;
-
-     isSearching = false;
-     SearchKey = -1;
-     searchFound = false; 
-
-     isDeleting = false;
-     DeleteKey = -1;
-     isDuplicateInsert = false;
-     createKeys.clear();
-}
 
 void HashTB::RANDOM_INPUT(){
     std::mt19937 rng(std::random_device{}());

@@ -138,6 +138,9 @@ public:
     bool isInserting;
     int lastInsertedKey;
 
+    bool isCreating;
+    vector<int> createKeys;
+    
     bool isSearching;
     int SearchKey;
 
@@ -191,6 +194,8 @@ public:
     void Insert(int key);
     bool Search(int key);
     bool DeleteNode(int key);
+    void Create();
+    
     //void DrawUpDateNode(int first, int second);
     void updatePseudocode();
     void CalculatePos(Vector2 PosHead);
