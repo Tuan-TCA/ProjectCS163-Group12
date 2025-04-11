@@ -230,12 +230,7 @@ public:
     void event() override;
     void init() override;
     void draw() override;
-
-    vector<string> pseudocode;
-    float pseudocodeX = side.x + 10;
-    float pseudocodeY = side.y + 200;
-    float lineHeight = 30;
-
+    void reset() override;
 };
 
 

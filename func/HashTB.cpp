@@ -260,7 +260,7 @@ void HashTB::drawStep(HashTBpaint& a, int Found) {
 
 }
 
-Node* HashTB::findNode(Node* &head, int key) {
+Node* HashTB::findNode(Node* head, int key) {
     if(!head) return nullptr;
     Node * a = head;
     while(a) {
@@ -289,7 +289,7 @@ void HashTB::CalculatePos(int index, Vector2 PosHead) {
     }
 
 }
-void HashTB::updateHTBNodePositions(Node* &a, Node* &b, float &tmp) {
+void HashTB::updateHTBNodePositions(Node* &a, Node*b, float &tmp) {
     if (!a || !b) return;
 
     Node* acur = a;
@@ -438,22 +438,26 @@ void HashTB::draw() {
                     if (!isMove) {
                         // Bắt đầu animation xoay
                         isMove = true;
-                        cout<<"H";
+                        
                         rotationStartTime = GetTime();
                     }
-    
                     float rotationProgress = (GetTime() - rotationStartTime) / stepDuration;
-                    cout<<"G";
+                    
                     if (rotationProgress < 1.0f) {
                         // Đang trong quá trình xoay
                         HashTBpaint tmp;
                         tmp.copy(steps[cur].heads);
+
+                        if(index >= tmp.heads.size()) cout<<"NOLL";
+
+                        Node* aa = tmp.heads[index]->head;
+                        
                         tmp.isMove = true;
-                        cout<<"XX";
-                        updateHTBNodePositions(tmp.head, steps[cur+1].head, rotationProgress);
+                        cout<<"X";
+                        updateHTBNodePositions(tmp.heads[index]->head, steps[cur+1].heads[index]->head, rotationProgress);
                         
                         // Xử lý riêng cho trường hợp delete
-                        cout << cur << endl;
+                        //cout << cur << endl;
                         if (cur == steps.size()-2) {
                             drawStep(tmp, Found);
                             

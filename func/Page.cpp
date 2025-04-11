@@ -227,14 +227,14 @@ void Page::event() {
     
     float sideDuration =0.2f; 
     Vector2 mousePos = GetMousePosition();
-    Rectangle targetPlace = Rectangle{0, screenHeight / 2 - screenHeight * 0.64f / 2, screenWidth * 0.24f, screenHeight * 0.45f}; 
+    Rectangle targetPlace = Rectangle{0, screenHeight / 2 - screenHeight * 0.64f / 2, screenWidth * 0.28f, screenHeight * 0.52f}; 
     Rectangle closedPlace = Rectangle{-side.width, screenHeight / 2 - screenHeight * 0.64f / 2, screenWidth * 0.24f, screenHeight * 0.32f}; 
     Rectangle sidePlace = Rectangle{0,screenHeight / 2 - screenHeight * 0.64f / 2,screenWidth*0.12f,screenHeight*0.32f};
     if (CheckCollisionPointRec(mousePos, targetPlace)) {
         if(CheckCollisionPointRec(mousePos, sidePlace)){
-        isExpandingSide = true;
-        isClosingSide = false;
-        animatingTime = 0;
+            isExpandingSide = true;
+            isClosingSide = false;
+            animatingTime = 0;
         }
     } else {
         isClosingSide = true;
@@ -329,6 +329,7 @@ void Page::event() {
 
 std::mt19937 rng(std::random_device{}());
 void Page::RANDOM_INPUT(){
+    
     std::uniform_int_distribution<int> dist(0, 999); // Giới hạn số từ 0-999
     textbox.inputText = {to_string(dist(rng))}; // Lấy số ngẫu nhiên
 }
@@ -361,8 +362,10 @@ void Page::handleInput(){
             switch (currentInput) {
             case InputType::Random:
                     if (InputOptionButton.IsClicked()) {
+                        textbox.reset();
                         RANDOM_INPUT();
                     }
+                    textbox.HandleInput();
             break;
             case InputType::Keyboard:
                 KEYBOARD_INPUT();
@@ -380,6 +383,7 @@ void Page::handleInput(){
             switch (currentInput) {
             case InputType::Random:
                 if (InputOptionButton.IsClicked()) RANDOM_INPUT();
+                textbox.HandleInput();
             break;
             case InputType::Keyboard:
                 KEYBOARD_INPUT();

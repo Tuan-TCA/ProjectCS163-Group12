@@ -51,7 +51,7 @@ public:
 
     HashTBpaint() {}
 
-    vector<LinkedList*> copy(const vector<LinkedList*>& tmp) {
+    void copy(const vector<LinkedList*>& tmp) {
         vector<LinkedList*> newLists;
         for (auto& oldList : tmp) {
             LinkedList* newList = new LinkedList();          
@@ -60,10 +60,13 @@ public:
             newLists.push_back(newList);
             
         }
-        
-        return newLists;
+        this->heads = newLists;
     }
 
+
+    void copy(Node* a) {
+        this->head = copyLL(a);
+    }
 };
 
 class HashTB : public Page  {
@@ -92,7 +95,7 @@ public:
      int bucket_height = 40;
      int spacing = 40;
      int radius = 30;
-     int font_size = 32;
+     int font_size = 25;
 
     Color bucket_color = MyColor6;
      Color node_color = SKYBLUE;
@@ -115,7 +118,7 @@ public:
 
     void addStepH(const vector<LinkedList*>& heads, int curCode = -1, bool isMove = false) {
         HashTBpaint tmp;
-        tmp.heads = tmp.copy(heads);
+        tmp.copy(heads);
         updateVariables(tmp.heads);
         tmp.curCode = curCode;
         tmp.isMove = isMove;
@@ -150,8 +153,8 @@ public:
 
     void Clear(); // optional reset function
     int index = -1;
-    void updateHTBNodePositions(Node* &a, Node*& b, float &tmp);
-    Node* findNode(Node*& head, int key);
+    void updateHTBNodePositions(Node* &a, Node* b, float &tmp);
+    Node* findNode(Node* head, int key);
 
     bool isCreating = false;
     vector<int> createKeys;

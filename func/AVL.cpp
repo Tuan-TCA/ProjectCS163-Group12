@@ -49,7 +49,29 @@ void updateRotation(float stepDuration, AVLpaint& tmp, AVLpaint& tar) {
     }
 }
 
+void AVL::reset(){
+    Page::reset();
+     root = nullptr;
+    workplace = {screenWidth*0.24f,screenHeight*0.2f,(float) screenWidth *(1-0.24f),screenHeight*(1-0.095f)};
+    rootPos= {workplace.x + workplace.width / 2 + 50, workplace.y};      
+    
+    steps.clear();
 
+    isInserting = false;
+    isSearching = false;
+    isDeleting = false;
+    isUpdating = false;
+    isCreating = false;
+
+    hasInsert = false;
+    hasSearch = false;
+    hasDelete = false;
+
+    cur = -1;
+    curCode = -1;
+    pseudocode = {};
+     lineHeight = 30;
+}
 
 void AVL::balance(TreeNode * &root, TreeNode *& parent, int key) {
     root->height = 1 + max(getHeight(root->left), getHeight(root->right));
@@ -387,8 +409,8 @@ void AVL::insert(int key, TreeNode*& root, TreeNode* parent) {
 
 void AVL::drawStep(AVLpaint a, int Found) {
 
-    pseudocodeX = 20;
-    pseudocodeY = 500;
+    // pseudocodeX = codeDisplayPLace.x  + 5;
+    //  pseudocodeY = codeDisplayPLace.y  + 10;
     lineHeight = 30;
     FONT = GetFontDefault();
     
@@ -403,7 +425,7 @@ void AVL::drawStep(AVLpaint a, int Found) {
             Vector2 lineWidth = MeasureTextEx(FONT, line.c_str(), 20, 3);
             if(lineWidth.x > maxWidth.x) maxWidth = lineWidth;
         }
-
+        textWidth = maxWidth.x;
         for(size_t i = 0; i < pseudocode.size(); ++i) {
             // Vẽ highlight cho toàn bộ chiều rộng
             if(a.curCode == i) {
@@ -882,6 +904,7 @@ void AVL::init() {
     cur = -1;
     curCode = -1;
     pseudocode = {};
+     lineHeight = 30;
        
 }
 
