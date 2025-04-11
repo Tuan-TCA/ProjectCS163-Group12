@@ -302,6 +302,7 @@ void LinkedList::draw() {
             if(!Found) {
                 addStep(this->head, 2);
             }
+            CalculatePos(headPos);
             addStep(this->head);
             isDeleting = false;
             
@@ -313,6 +314,7 @@ void LinkedList::draw() {
             if (cur >= 0 && cur < steps.size()) {
                 // Xử lý animation xoay - chỉ khi đang phát (isPlaying)
                 if (steps[cur].isMove && isPlaying) {
+                    //cout<<steps[cur].head->val<<" ";
                     if (!isMove) {
                         // Bắt đầu animation xoay
                         isMove = true;
@@ -327,13 +329,14 @@ void LinkedList::draw() {
                         tmp.copy(steps[cur].head);
                         tmp.isMove = true;
                         
-                        (tmp.head, steps[cur+1].head, rotationProgress);
-                        
+                        updateLLNodePositions(tmp.head, steps[cur+1].head, rotationProgress);
+                        //cout<<endl<<"why";
                         // Xử lý riêng cho trường hợp delete
                         if (cur == steps.size()-2) {
                             drawStep(tmp, Found);
                         } else {
                             drawStep(tmp);
+                            //WaitTime(1);
                         }
                     } else {
                         // Kết thúc xoay, chuyển sang bước tiếp theo
@@ -619,7 +622,7 @@ Node* LinkedList::findNode(Node* ahead, int key) {
     return nullptr;
 }
 
-void LinkedList::updateLLNodePositions(Node* a, Node* b, float tmp) {
+void LinkedList::updateLLNodePositions(Node* &a, Node* b, float &tmp) {
     if (!a || !b) return;
 
     Node* acur = a;
@@ -629,9 +632,10 @@ void LinkedList::updateLLNodePositions(Node* a, Node* b, float tmp) {
         if (targetNode) {
             acur->Pos.x = acur->Pos.x + tmp * (targetNode->Pos.x - acur->Pos.x);
         }
-
+        //cout<<targetNode->val<<" "<<targetNode->Pos.x<<"---";
         acur = acur->next;
     }
+    //cout<<endl;
 }
 
 
@@ -835,46 +839,31 @@ bool LinkedList::DeleteNode(int key) {
     while(a) {
         if(a->val == key) {
             if(a == head) {
-                cout<<"ok";
-
-                // CalculatePostion(Vector2 headPos) {
-                //     cập nhật mọi pos theo headPos;
-                //     this->head = headPos;
-                    
-                // }
                 
                 a->isHighLight = 1;
-                addStep(this->head,0,1);  
+                addStep(this->head,0);  
                 a->isHighLight = 0;
                 
                 Node* tmp = this->head;
-                Vector2 tmpPos = this->head->Pos;
-
                 this->head = head->next;
-                CalculatePos(headPos);
 
                 delete tmp; 
+
+                addStep(this->head,1,1);  
                 return true;
                 
             }
-
-            cout<<a->val<<" ";
-            cout<<"@@";
             
             a->isHighLight = 1;
-            addStep(this->head,0);  
+            addStep(this->head,1);  
             a->isHighLight = 0;
-            
-            cout<<"?";
-            if(pre && a)
-                pre->next = a->next;
-            else cout<<"pre";
-            CalculatePos(headPos);
-        
+
+            pre->next = a->next;
             delete a;
-            a = nullptr;
-            cout<<"uh";
-                        
+            a = nullptr;                  
+            
+            addStep(this->head,1,1);  
+
             return true;
 
         }

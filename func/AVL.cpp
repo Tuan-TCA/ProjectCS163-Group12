@@ -545,6 +545,7 @@ void AVL::draw() {
                         rotationStartTime = GetTime();
                     }
     
+                    //Chia để tính tỷ lệ đến khi GetTime - rotationStart = stepDuration thì là 1 bước
                     float rotationProgress = (GetTime() - rotationStartTime) / stepDuration;
                     
                     if (rotationProgress < 1.0f) {

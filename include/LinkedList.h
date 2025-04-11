@@ -191,7 +191,7 @@ public:
     int cur = -1;
     int curCode = -1;
     Node* findNode(Node* ahead, int key);
-    void updateLLNodePositions(Node* a, Node* b, float tmp);
+    void updateLLNodePositions(Node* &a, Node* b, float &tmp);
     LinkedList* copy() const;
     //animation
     vector<LLpaint> steps;
