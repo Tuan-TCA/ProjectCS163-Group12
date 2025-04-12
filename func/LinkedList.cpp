@@ -2,6 +2,7 @@
 #include <raylib.h>
 #include <raymath.h>
 #include <thread>
+#include <random>
 #include<iostream>
 #include "ControlAnimation.h"
 using namespace std;
@@ -33,7 +34,7 @@ void LinkedList::init(){
     isSearching = false;
     isDeleting = false;
     isUpdating = false;
-    //isCreating = false;
+    isCreating = false;
 
     hasInsert = false;
     hasSearch = false;
@@ -95,8 +96,20 @@ void LinkedList::event() {
 
         addStep(this->head);
         if (textbox.nums.size() > 0) {
-        
-            createKeys = textbox.nums;
+            //reset head
+            while (head){
+                Node * tmp = head;
+                head = head->next;
+                delete tmp;
+            }
+            head = nullptr;
+            std::mt19937 rng(std::random_device{}());
+            int num = textbox.nums[0];
+             std::uniform_int_distribution<int> dist(0, 999);
+             while(num--){
+                createKeys.push_back(dist(rng));
+             }
+            
             textbox.nums.clear();
             textbox.inputText = {""};
             isCreating = true;
