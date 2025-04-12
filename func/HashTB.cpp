@@ -13,9 +13,11 @@ using namespace std;
 void HashTB::init(){
     Page::init();
     origin = { 450, 200 };
+    heads.resize(tableSize, nullptr);
+    
     camera.target = origin;
     camera.offset = origin;
-    heads.resize(tableSize, nullptr);
+  
     // nullptr
     for(int i=0; i< tableSize; i++){
         if(!heads[i]) heads[i] = new LinkedList();
@@ -44,36 +46,7 @@ void HashTB::init(){
     pseudocode = {};
 }
 
-void HashTB::reset(){
-    Page::reset();
-    tableSize = 3;
-    origin = { 450, 200 };
-    camera.target = origin;
-    camera.offset = origin;
-    for(auto& head: heads){
-        head->reset();
-        
-    }
-    heads.clear();
-    
-    heads.resize(tableSize, nullptr);
-    for(int i=0; i< tableSize; i++){
-        if(!heads[i]) heads[i] = new LinkedList();
-        heads[i]->headPos = {origin.x , origin.y+ (spacing+radius)*i};
-        heads[i]->head = new Node(i, nullptr, heads[i]->headPos, 0);
-    }
-     isInserting = false;
-     lastInsertedKey = -1;
 
-     isSearching = false;
-     SearchKey = -1;
-     searchFound = false; 
-
-     isDeleting = false;
-     DeleteKey = -1;
-     isDuplicateInsert = false;
-     createKeys.clear();
-}
 HashTB::HashTB(int size) {
     tableSize = size;
     heads.resize(size, nullptr);
@@ -102,8 +75,6 @@ void HashTB::updateVariables(vector<LinkedList*>& a){
     int i = 0;
     for(auto& elem: a){
         if(elem){
-        elem->head->Pos = {origin.x , origin.y+ (spacing+radius)*i};
-        elem->updatePos();
         elem->radius = radius;
         elem->spacing = spacing;
         elem->font_size = font_size + 1;
@@ -182,7 +153,7 @@ void HashTB::Insert(int key) {
     while (a && a->next) {
         addStepH(this->heads, 3);
         a = a->next;
-        cout<<"3";
+        // cout<<"3";
         a->isHighLight = -1;
         addStepH(this->heads,4);  
         a->isHighLight = 0;
@@ -219,11 +190,11 @@ bool HashTB::DeleteNode(int key) {
             a->isHighLight = 1;
             addStepH(this->heads,1);  
             a->isHighLight = 0;
-            cout<<"@@";
+            // cout<<"@@";
             pre->next = a->next;
             delete a;
             a = nullptr;
-            cout<<"oke";
+            // cout<<"oke";
 
             addStepH(this->heads,1,1);  
             return true;
@@ -252,8 +223,7 @@ void HashTB::DrawHashTB(vector<LinkedList*>& heads) {
 
 void HashTB::drawStep(HashTBpaint& a, int Found) {
 
-
-    lineHeight = 30;
+   lineHeight = 30;
     FONT = GetFontDefault();
     
     Color highlightColor = Color{255, 222, 89, 255};
@@ -268,6 +238,7 @@ void HashTB::drawStep(HashTBpaint& a, int Found) {
             if(lineWidth.x > maxWidth.x) maxWidth = lineWidth;
         }
         textWidth = maxWidth.x;
+
         for(size_t i = 0; i < pseudocode.size(); ++i) {
             // Vẽ highlight cho toàn bộ chiều rộng
             if(a.curCode == i) {
@@ -290,7 +261,6 @@ void HashTB::drawStep(HashTBpaint& a, int Found) {
     BeginMode2D(camera);  
         DrawHashTB(a.heads);  
     EndMode2D();
-    
 
 }
 
@@ -380,7 +350,7 @@ void HashTB::draw() {
 
     if (currentOperation == Operation::Insert) {
         if (isInserting) {
-            cout<<"Insert";
+            // cout<<"Insert";
             this->Insert(lastInsertedKey);
       
             addStepH(this->heads);
@@ -441,7 +411,7 @@ void HashTB::draw() {
 
                     if(cur == steps.size() && cur!=0) {  
                         drawStep(steps[cur-1]);   
-                        cout<<"ok";      
+                        // cout<<"ok";      
                         isPlaying = false;
                     }
             }
@@ -486,12 +456,12 @@ void HashTB::draw() {
                         HashTBpaint tmp;
                         tmp.copy(steps[cur].heads);
 
-                        if(index >= tmp.heads.size()) cout<<"NOLL";
+                        if(index >= tmp.heads.size()) ;
 
                         Node* aa = tmp.heads[index]->head;
                         
                         tmp.isMove = true;
-                        cout<<"X";
+                        // cout<<"X";
                         updateHTBNodePositions(tmp.heads[index]->head, steps[cur+1].heads[index]->head, rotationProgress);
                         
                         // Xử lý riêng cho trường hợp delete
@@ -501,7 +471,7 @@ void HashTB::draw() {
                             
                         } else {
                             drawStep(tmp);
-                            cout<<"hee";
+                            // cout<<"hee";
                         }
                     } else {
                         // Kết thúc xoay, chuyển sang bước tiếp theo
@@ -610,6 +580,13 @@ void HashTB::event() {
     Page::event();
     
     //Choose Operation
+   bucket = {
+        origin.x ,
+        origin.y + 50,
+        (float)bucket_width,
+        (float)spacing * (tableSize)
+    };
+
     
     if(currentOperation == Operation::Create) {
         hasInsert = false;
@@ -701,6 +678,7 @@ void HashTB::event() {
             textbox.inputText = {""};
         }
     }
+
     if(currentOperation != Operation::Create){
         isClosingCodePlace = false;
         isExpandingCodePlace = true;
@@ -711,15 +689,12 @@ void HashTB::event() {
         isExpandingCodePlace = false;
         animatingTime = 0;
     }
-    handleUI();
-
 
     //Mouse handling
+     float wheelMove = GetMouseWheelMove();
+        origin.y += (int)wheelMove * 23;
 
-     if (IsKeyDown(KEY_UP))  origin.y -= 2;
-     if(IsKeyDown(KEY_DOWN)) origin.y += 2;
-    if(IsKeyDown(KEY_LEFT)) origin.x -= 2;
-    if(IsKeyDown(KEY_RIGHT)) origin.x += 2;
+    handleUI();
     //auto create taking numbers from textbox
     
     //...Lưu ý: Cần chỉnh sửa hiển thị nút play, pause cho phù hợp
@@ -830,7 +805,7 @@ void HashTB::updatePseudocode() {
             pseudocode = {
                 "index = key%HT.length;",                   //0
                 "cur = table[index]",                       //1
-                "if empty, cur = new Node(key)",             //2
+                "if empty, cur = new Node(key)",           //2
                 "while (cur && cur->next)",       //3
                 "   cur = cur->next",                       //4
                 "cur->next = new Node(key)"                 //5
@@ -840,20 +815,20 @@ void HashTB::updatePseudocode() {
             pseudocode = {
                 "index = key%HT.length;",                   //0
                 "cur = table[index], prev = null",          //1
-                "while (cur && cur->value != key)",   //2
-                "  prev = cur, cur = cur->next" ,          //3
+                "while (cur & cur->value != key)",   //2
+                "  prev = cur, cur = cur->next",             //3
                 "if cur is null",                           //4
                 "  return NOT_FOUND",                       //5
-                "prev->next = cur->next, delete cur"      //6
+                "prev->next = cur->next, delete cur",       //6
             };
             break;
         case Operation::Search:
             pseudocode = {
                 "index = key%HT.length",                    //0
                 "cur = table[index]",                       //1
-                "while (cur is not null)",                    //2
+                "while cur is not null",                    //2
                 "   if cur->val == key",                    //3
-                "       return FOUND",                      //4
+                "       return FOUND",             //4
                 "   cur = cur->next",                       //5                          
                 "return FOUND"                              //6 
             };
@@ -864,6 +839,36 @@ void HashTB::updatePseudocode() {
     }
 }
 
+void HashTB::reset(){
+    Page::reset();
+    tableSize = 3;
+    origin = { 450, 200 };
+    camera.target = origin;
+    camera.offset = origin;
+    for(auto& head: heads){
+        head->reset();
+        
+    }
+    heads.clear();
+    
+    heads.resize(tableSize, nullptr);
+    for(int i=0; i< tableSize; i++){
+        if(!heads[i]) heads[i] = new LinkedList();
+        heads[i]->headPos = {origin.x , origin.y+ (spacing+radius)*i};
+        heads[i]->head = new Node(i, nullptr, heads[i]->headPos, 0);
+    }
+     isInserting = false;
+     lastInsertedKey = -1;
+
+     isSearching = false;
+     SearchKey = -1;
+     searchFound = false; 
+
+     isDeleting = false;
+     DeleteKey = -1;
+     isDuplicateInsert = false;
+     createKeys.clear();
+}
 
 void HashTB::RANDOM_INPUT(){
     std::mt19937 rng(std::random_device{}());
@@ -872,7 +877,7 @@ void HashTB::RANDOM_INPUT(){
             textbox.reset();
             std::uniform_int_distribution<int> bucket(2, 25); 
             int numBucket = bucket(rng);
-            std::uniform_int_distribution<int> value(0, 999);
+            std::uniform_int_distribution<int> value(0, 1999);
             std::uniform_int_distribution<int> valueSize(0, 30);
             int size = valueSize(rng);
             std::vector<int> Values;

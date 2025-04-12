@@ -339,12 +339,13 @@ void Page::event() {
         if (camera.zoom < 0.2f) camera.zoom = 0.2f;
         if (camera.zoom > 5.0f) camera.zoom = 5.0f;
     }
-    
-    // Kéo chuột phải để pan
+ 
     if (IsMouseButtonDown(MOUSE_BUTTON_LEFT)) {
+        if(!CheckCollisionPointRec(GetMousePosition(), side)){
         Vector2 delta = GetMouseDelta();
         delta = Vector2Scale(delta, -1.0f / camera.zoom);
         camera.target = Vector2Add(camera.target, delta);
+        }
     }
 }
 
