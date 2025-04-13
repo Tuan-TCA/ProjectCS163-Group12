@@ -641,7 +641,7 @@ void LinkedList::drawStep(LLpaint a, int Found) {
 
  
     lineHeight = 30;
-    FONT = GetFontDefault();
+
     
     Color highlightColor = Color{255, 222, 89, 255};
     Color textColor = MyColor4;
@@ -651,7 +651,7 @@ void LinkedList::drawStep(LLpaint a, int Found) {
         // Tìm dòng dài nhất để làm kích thước chuẩn
         
         for(const auto& line : pseudocode) {
-            Vector2 lineWidth = MeasureTextEx(FONT, line.c_str(), 20, 3);
+            Vector2 lineWidth = MeasureTextEx(FONT2, line.c_str(), 20, 3);
             if(lineWidth.x > maxWidth.x) maxWidth = lineWidth;
         }
         textWidth = maxWidth.x;
@@ -665,7 +665,7 @@ void LinkedList::drawStep(LLpaint a, int Found) {
             }
             
             // Vẽ chữ
-            DrawTextEx(FONT, pseudocode[i].c_str(), 
+            DrawTextEx(FONT2, pseudocode[i].c_str(), 
                       {pseudocodeX, pseudocodeY + i*lineHeight}, 
                       20, 3, textColor);
         }

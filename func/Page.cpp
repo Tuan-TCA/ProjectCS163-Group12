@@ -31,7 +31,7 @@ void Page::updateSide(){
 }
 
 void Page::init() {
-
+    FONT2 = LoadFont("res/font/MouldyCheeseRegular-WyMWG.ttf"); 
     selectedInputIndex = 0;
     InputOptionButton = Button((side.x + side.width) * 0.15f, side.y + screenHeight*0.63f * 0.15f + 10 , screenWidth*0.24f * 0.7f, screenHeight*0.63f * 0.15f, InputOptions[selectedInputIndex].c_str(), WHITE, LIGHTGRAY, MyColor5);
     InputPrevButton = Button(side.x + 5,side.y + screenHeight*0.63f * 0.15f + 10 ,  screenWidth*0.24f * 0.15f - 10, screenHeight*0.63f * 0.15f, "<", WHITE, LIGHTGRAY, MyColor5);
@@ -164,6 +164,7 @@ void Page::draw() {
     }
     //Input
     if(currentOperation != Operation::Algorithm){
+        InputOptionButton.textColor = MyColor5;
         InputOptionButton.Draw(LIGHTGRAY, WHITE);
         InputPrevButton.Draw(LIGHTGRAY, WHITE);
         InputNextButton.Draw(LIGHTGRAY, WHITE);

@@ -57,6 +57,7 @@ public:
     TextBox oldTextBox;
     TextBox newTextBox;
     
+    Font FONT2;
     Rectangle setting_menu;
     SwitchThemeButton theme;
         bool setting_IsOpening = false,

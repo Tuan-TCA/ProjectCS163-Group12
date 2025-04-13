@@ -37,6 +37,8 @@ struct Dsu {
 
 class Graph : public Page{
     public:
+    
+    
     Algorithm currentALgorithm;
     vector<string> AlgorithmOptions = {"BFS", "DFS", "MST", "Connected\nComponents"};
     int selectedAlgorithmIndex; 

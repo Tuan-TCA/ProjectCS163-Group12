@@ -31,7 +31,7 @@ void Graph::init(){
     minDistance = 100.0f;
     got1stV = false;
     isAnimating = false;
-    
+    textWidth = 20;
     show_weight = SwitchButton(setting_menu.x + setting_menu.width * 0.5f, setting_menu.y + 10 + setting_menu.width*0.3f * 0.61f, setting_menu.width*0.3f, setting_menu.width*0.3f * 0.61f, "", MyColor1,MyColor1, WHITE);
     tes = TextBox{500, 500, 100 , 100, "", WHITE, WHITE, BLACK};
 }
@@ -65,9 +65,14 @@ void Graph::draw(){
             edge_textbox.Draw(22);
     }
     //code state
-        for(auto& e: pseudocode){
-        textWidth = max(textWidth,(float) MeasureTextEx(FONT, e.c_str(),  10, 2).x);
+    
+    Vector2 maxWidth = {0,0};
+        // Tìm dòng dài nhất để làm kích thước chuẩn
+        for(const auto& line : pseudocode) {
+            Vector2 lineWidth = MeasureTextEx(FONT2, line.c_str(), 15, 3);
+            if(lineWidth.x > maxWidth.x) maxWidth = lineWidth;
         }
+        textWidth = maxWidth.x; 
     Color highlightColor = Color{255, 222, 89, 255};
      if(isAnimating || currentOperation == Operation::Algorithm){
     for (int i = 0; i < pseudocode.size(); ++i) {
@@ -78,8 +83,8 @@ void Graph::draw(){
         else{
             currentColor.a = 0;
         }
-        DrawRectangleRounded(Rectangle{codeDisplayPLace.x, codeDisplayPLace.y + 10 + i * lineHeight - 5, codeDisplayPLace.width,  lineHeight}, 0, 5, currentColor);
-        DrawTextEx(FONT, pseudocode[i].c_str(), {codeDisplayPLace.x + 5, codeDisplayPLace.y + 10 + i * lineHeight} , 10, 2, MyColor4);
+        DrawRectangleRounded(Rectangle{codeDisplayPLace.x, codeDisplayPLace.y + 10 + i * lineHeight, codeDisplayPLace.width,  lineHeight}, 0, 5, currentColor);
+        DrawTextEx(FONT2, pseudocode[i].c_str(), {codeDisplayPLace.x + 5, codeDisplayPLace.y + 10 + i * lineHeight} , 15, 3, MyColor4);
         
     }
     }
@@ -302,6 +307,7 @@ void Graph::handleChoice(){
             handleCC();
             break;
         default:
+        pseudocode = {};
            break;
         }
     }
