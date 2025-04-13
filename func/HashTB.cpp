@@ -12,7 +12,7 @@ using namespace std;
 
 void HashTB::init(){
     Page::init();
-    origin = { 450, 200 };
+    origin = { screenWidth * 0.416f, screenHeight * 0.22f };
     heads.resize(tableSize, nullptr);
     
     camera.target = origin;
@@ -72,14 +72,13 @@ int HashTB::HashFunction(int key) {
 }
 
 void HashTB::updateVariables(vector<LinkedList*>& a){
-    int i = 0;
+
     for(auto& elem: a){
         if(elem){
         elem->radius = radius;
         elem->spacing = spacing;
-        elem->font_size = font_size + 1;
+        elem->font_size = font_size;
         elem->arrow_size = arrow_size;
-        i++;
         }
     }
 }
@@ -224,7 +223,6 @@ void HashTB::DrawHashTB(vector<LinkedList*>& heads) {
 void HashTB::drawStep(HashTBpaint& a, int Found) {
 
    lineHeight = 30;
-    FONT = GetFontDefault();
     
     Color highlightColor = Color{255, 222, 89, 255};
     Color textColor = MyColor4;
@@ -234,7 +232,7 @@ void HashTB::drawStep(HashTBpaint& a, int Found) {
         // Tìm dòng dài nhất để làm kích thước chuẩn
         
         for(const auto& line : pseudocode) {
-            Vector2 lineWidth = MeasureTextEx(FONT, line.c_str(), 20, 3);
+            Vector2 lineWidth = MeasureTextEx(FONT2, line.c_str(), 20, 3);
             if(lineWidth.x > maxWidth.x) maxWidth = lineWidth;
         }
         textWidth = maxWidth.x;
@@ -249,7 +247,7 @@ void HashTB::drawStep(HashTBpaint& a, int Found) {
             }
             
             // Vẽ chữ
-            DrawTextEx(FONT, pseudocode[i].c_str(), 
+            DrawTextEx(FONT2, pseudocode[i].c_str(), 
                       {pseudocodeX, pseudocodeY + i*lineHeight}, 
                       20, 3, textColor);
         }
@@ -842,7 +840,7 @@ void HashTB::updatePseudocode() {
 void HashTB::reset(){
     Page::reset();
     tableSize = 3;
-    origin = { 450, 200 };
+    origin = { screenWidth * 0.416f, screenHeight * 0.22f };
     camera.target = origin;
     camera.offset = origin;
     for(auto& head: heads){
@@ -875,10 +873,10 @@ void HashTB::RANDOM_INPUT(){
     
     if(currentOperation == Operation::Create){
             textbox.reset();
-            std::uniform_int_distribution<int> bucket(2, 25); 
+            std::uniform_int_distribution<int> bucket(3, 9); 
             int numBucket = bucket(rng);
-            std::uniform_int_distribution<int> value(0, 1999);
-            std::uniform_int_distribution<int> valueSize(0, 30);
+            std::uniform_int_distribution<int> value(0, 999);
+            std::uniform_int_distribution<int> valueSize(5, 30);
             int size = valueSize(rng);
             std::vector<int> Values;
             std::vector<std::string> lines;
