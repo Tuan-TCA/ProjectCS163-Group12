@@ -14,7 +14,7 @@ public:
     Page page;
     LinkedList LL;
     Graph graph;
-    HashTableChaining hashtable;
+    HashTB hashtable;
     AVL avl;
     Program();
     void run();

@@ -17,6 +17,7 @@ public:
     float animationTime;
     bool doneAnimation;
     bool fullColor;
+    // bool isBacktracked = false;
     Vertex(){
         radius = 20; 
         color = WHITE;

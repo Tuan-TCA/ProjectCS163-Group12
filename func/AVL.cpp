@@ -3,11 +3,12 @@
 #include <iostream>
 #include<stack>
 #include <vector>
+#include <sstream>
 
 
 void updateRotation(float stepDuration, AVLpaint& tmp, AVLpaint& tar) {
     if (!tmp.root || !tmp.isRotating) return;
-    cout<<"ok";
+    
     // Tỷ lệ tiến trình (0.0 -> 1.0)
     float t = GetFrameTime() / stepDuration; // Giả sử GetFrameTime() trả về thời gian frame
     if (t > 1.0f) t = 1.0f; // Giới hạn tỷ lệ tối đa là 1
@@ -49,7 +50,31 @@ void updateRotation(float stepDuration, AVLpaint& tmp, AVLpaint& tar) {
     }
 }
 
+void AVL::reset(){
+    Page::reset();
+     root = nullptr;
+    workplace = {screenWidth*0.24f,screenHeight*0.2f,(float) screenWidth *(1-0.24f),screenHeight*(1-0.095f)};
+    rootPos= {workplace.x + workplace.width / 2 + 50, workplace.y};      
+    camera.target = rootPos;
+    camera.offset = rootPos;
+    steps.clear();
 
+    isInserting = false;
+    isSearching = false;
+    isDeleting = false;
+    isUpdating = false;
+    isCreating = false;
+
+    hasInsert = false;
+    hasSearch = false;
+    hasDelete = false;
+
+    cur = -1;
+    curCode = -1;
+    pseudocode = {};
+     lineHeight = 30;
+     createKeys.clear();
+}
 
 void AVL::balance(TreeNode * &root, TreeNode *& parent, int key) {
     root->height = 1 + max(getHeight(root->left), getHeight(root->right));
@@ -387,10 +412,7 @@ void AVL::insert(int key, TreeNode*& root, TreeNode* parent) {
 
 void AVL::drawStep(AVLpaint a, int Found) {
 
-    pseudocodeX = 20;
-    pseudocodeY = 500;
     lineHeight = 30;
-    FONT = GetFontDefault();
     
     Color highlightColor = Color{255, 222, 89, 255};
     Color textColor = MyColor4;
@@ -400,10 +422,10 @@ void AVL::drawStep(AVLpaint a, int Found) {
         // Tìm dòng dài nhất để làm kích thước chuẩn
         
         for(const auto& line : pseudocode) {
-            Vector2 lineWidth = MeasureTextEx(FONT, line.c_str(), 20, 3);
+            Vector2 lineWidth = MeasureTextEx(FONT2, line.c_str(), 20, 3);
             if(lineWidth.x > maxWidth.x) maxWidth = lineWidth;
         }
-
+        textWidth = maxWidth.x;
         for(size_t i = 0; i < pseudocode.size(); ++i) {
             // Vẽ highlight cho toàn bộ chiều rộng
             if(a.curCode == i) {
@@ -414,7 +436,7 @@ void AVL::drawStep(AVLpaint a, int Found) {
             }
             
             // Vẽ chữ
-            DrawTextEx(FONT, pseudocode[i].c_str(), 
+            DrawTextEx(FONT2, pseudocode[i].c_str(), 
                       {pseudocodeX, pseudocodeY + i*lineHeight}, 
                       20, 3, textColor);
         }
@@ -424,7 +446,9 @@ void AVL::drawStep(AVLpaint a, int Found) {
         a.noti();
     }
 
-    DrawTree(a.root);
+    BeginMode2D(camera);  
+        DrawTree(a.root);
+        EndMode2D();
 
 }
 
@@ -435,34 +459,36 @@ void AVL::draw() {
     const float stepDuration = 0.5f / animationSpeed;
 
     
-    if(IsKeyPressed(KEY_A)) {
-        Vector2 k = GetMousePosition();
-        auto t = root->Pos;
-        root->Pos = k;
-        DrawTree(root);
-        root->Pos = t;
-    }
+    // if(IsKeyPressed(KEY_A)) {
+    //     Vector2 k = GetMousePosition();
+    //     auto t = root->Pos;
+    //     root->Pos = k;
+    //     BeginMode2D(camera);  
+    //     DrawTree(root);
+    //     EndMode2D();
+        
+    //     root->Pos = t;
+    // }
 
     if(currentOperation == Operation::Create) {
         if (isCreating) {
             hasCreate = true;
-            random_device rd;
-            mt19937 gen(rd());
-            uniform_int_distribution<int> dist(2,11);
-            uniform_int_distribution<int> dist2(100,999);
-
-            int t = dist(gen);
-            while(t--) {
-                int k = dist2(gen);
-                this->insert(k, root);
-            }
-            steps.clear();
-            isCreating = false;
-            isPlaying = true;
+            Create();
+            
         }
         else {
+            BeginMode2D(camera);  
             DrawTree(root);
+            EndMode2D();
             isPlaying = false;
+        }
+    }
+    else{
+        if(hasCreate && isCreating == false){
+            BeginMode2D(camera);  
+            DrawTree(root);  
+            EndMode2D();
+            // isPlaying = false;
         }
     }
     if (currentOperation == Operation::Insert) {
@@ -545,6 +571,7 @@ void AVL::draw() {
                         rotationStartTime = GetTime();
                     }
     
+                    //Chia để tính tỷ lệ đến khi GetTime - rotationStart = stepDuration thì là 1 bước
                     float rotationProgress = (GetTime() - rotationStartTime) / stepDuration;
                     
                     if (rotationProgress < 1.0f) {
@@ -683,12 +710,24 @@ void AVL::event() {
         hasSearch = false;
         hasDelete = false;
         hasCreate = true;
-        if(Page::Ok.IsClicked()) {
+        cur = 0;
+        BeginMode2D(camera);  
+            DrawTree(root);  
+            EndMode2D();
+        steps.clear();
+        
+        addStep(root);
+        if (textbox.nums.size() > 0) {
+            textbox.nums.erase(textbox.nums.begin());
             DestroyRecursive(root);
             root = nullptr;
+            createKeys = textbox.nums;
+            textbox.nums.clear();
+            textbox.inputText = {""};
             isCreating = true;
-        }       
+        }    
     }
+    
     if(currentOperation == Operation::Insert) {
         if(!hasInsert) {
             hasInsert = true;
@@ -696,7 +735,9 @@ void AVL::event() {
             hasDelete = false;
             hasCreate = false;
             cur = 0;
+            BeginMode2D(camera);  
             DrawTree(root);
+            EndMode2D();
             steps.clear();
             addStep(this->root);
     
@@ -742,6 +783,17 @@ void AVL::event() {
             isDeleting = true;
             textbox.inputText = {""};
         }
+    }
+
+     if(currentOperation != Operation::Create){
+        isClosingCodePlace = false;
+        isExpandingCodePlace = true;
+        animatingTime = 0;
+    }
+    else{
+        isClosingCodePlace = true;
+        isExpandingCodePlace = false;
+        animatingTime = 0;
     }
 
     static Operation lastOp = Operation::Algorithm;
@@ -864,7 +916,8 @@ void AVL::init() {
     root = nullptr;
     workplace = {screenWidth*0.24f,screenHeight*0.2f,(float) screenWidth *(1-0.24f),screenHeight*(1-0.095f)};
     rootPos= {workplace.x + workplace.width / 2 + 50, workplace.y};      
-    
+     camera.target = rootPos;
+    camera.offset = rootPos;
     steps.clear();
 
     isInserting = false;
@@ -880,6 +933,7 @@ void AVL::init() {
     cur = -1;
     curCode = -1;
     pseudocode = {};
+     lineHeight = 30;
        
 }
 
@@ -1116,6 +1170,56 @@ void AVL::DrawTree(TreeNode* root) {
         DrawTree(root->right);
     }
 }
+void AVL::RANDOM_INPUT(){
+   std::mt19937 rng(std::random_device{}());
+    
+    if(currentOperation == Operation::Create){
+            textbox.reset();
+        
+            std::uniform_int_distribution<int> value(0, 999);
+            std::uniform_int_distribution<int> valueSize(2, 11);
+            int size = valueSize(rng);
+            std::vector<int> Values;
+            std::vector<std::string> lines;
+            std::ostringstream ss;
 
+            for (int i = 0; i < size; ++i) {
+                int num = value(rng);
+        
+                while (find(Values.begin(), Values.end(), num) != Values.end()) {
+                    num = value(rng);
+                }
+                Values.push_back(num);  
+            }
 
+         
+            ss << size;
+            lines.push_back(ss.str());
+            ss.str("");  
+
+          
+            for (int i = 0; i < Values.size(); ++i) {
+                ss << Values[i] << " ";
+            }
+            lines.push_back(ss.str());
+            ss.str("");  
+            
+            textbox.inputText = lines;
+            
+    }
+    else{
+        Page::RANDOM_INPUT();
+    }
+}
+void AVL::Create(){
+     if (!createKeys.empty()) {
+         this->insert(createKeys.front(), root);
+        createKeys.erase(createKeys.begin());
+        // std::this_thread::sleep_for(std::chrono::milliseconds((int) (300 / animationSpeed)));
+    }
+    if (createKeys.empty()) {
+        isCreating = false;
+            isPlaying = true;
+    }
+}
 

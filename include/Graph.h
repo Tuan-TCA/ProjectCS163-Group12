@@ -37,19 +37,18 @@ struct Dsu {
 
 class Graph : public Page{
     public:
+    
+    
     Algorithm currentALgorithm;
-    vector<string> AlgorithmOptions = {"BFS", "MST", "DFS", "Connected\nComponents"};
+    vector<string> AlgorithmOptions = {"BFS", "DFS", "MST", "Connected\nComponents"};
     int selectedAlgorithmIndex; 
     Button AlgorithmOptionButton; 
     Button AlgorithmPrevButton; 
     Button AlgorithmNextButton;
 
     //Setting
-    Rectangle setting_menu;
-    SwitchThemeButton theme;
+   
     SwitchButton show_weight;
-    bool setting_IsOpening = false,
-         setting_IsClosing = false;
 
     bool added;
     vector<Vertex> vertex;
@@ -65,15 +64,27 @@ class Graph : public Page{
     int currentQueueIndex;
     TextBox vertex_textbox;
     TextBox edge_textbox;
-
+    bool isVertexPressing = false;
     TextBox tes;
-    //bfs
+    //Other variables in Algo
     bool got1stV;
     bool AlgoCalled = false;
     Vertex* clickedV = nullptr;
     Vertex* getFirstVertexClicked();
+    //bfs
     void bfs(Vertex* source);
     void handleBFS();
+
+    //dfs
+    void dfs_recursive(
+            Vertex* v,
+            unordered_set<Vertex*>& visitedVertices,
+            unordered_set<Edge*>& visitedEdges, 
+            vector<vector<int>>& adjList
+        );
+    void dfs(Vertex*& source);
+    void handleDFS();
+
     //Kruskal
     Dsu dsu;
     void mst();

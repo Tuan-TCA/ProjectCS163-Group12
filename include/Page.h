@@ -57,6 +57,11 @@ public:
     TextBox oldTextBox;
     TextBox newTextBox;
     
+    Font FONT2;
+    Rectangle setting_menu;
+    SwitchThemeButton theme;
+        bool setting_IsOpening = false,
+         setting_IsClosing = false;
     float textWidth = 0;
     Rectangle workplace = {screenWidth * 0.28f, screenHeight * 0.14f, screenWidth * 0.68f, screenHeight * 0.72f};
     bool isExpanding = false;
@@ -74,6 +79,7 @@ public:
     float lineHeight;
     Rectangle codeDisplayPLace;
 
+    Camera2D camera{};
     virtual void init();
     virtual void draw();
     virtual void event();

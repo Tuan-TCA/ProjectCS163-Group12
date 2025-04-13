@@ -5,7 +5,7 @@
 #include <iomanip>
 #include <sstream>
 #include <random>
-
+#include <raymath.h>
 #include "ControlAnimation.h"
 #include "Page.h"
 #include "Variables.h"
@@ -26,12 +26,12 @@ void Page::updateSide(){
     textbox.bounds = Rectangle{side.x + 5, side.y + screenHeight*0.63f * 0.3f + 15, screenWidth*0.25f - 100, screenHeight*0.63f * 0.15f};
     oldTextBox.bounds = Rectangle{side. x + 5, side.y + screenHeight*0.63f * 0.36f, screenWidth*0.08f, screenHeight*0.63f * 0.11f};
     newTextBox.bounds = Rectangle{side.x + screenWidth*0.08f + 10, side.y + screenHeight*0.63f * 0.36f, screenWidth*0.08f, screenHeight*0.63f * 0.11f};
-
+    theme.bounds = {setting_menu.x + setting_menu.width * 0.6f, setting_menu.y + 5, setting_menu.width*0.3f, setting_menu.width*0.3f * 0.61f};
 
 }
 
 void Page::init() {
-
+    FONT2 = LoadFont("res/font/MouldyCheeseRegular-WyMWG.ttf"); 
     selectedInputIndex = 0;
     InputOptionButton = Button((side.x + side.width) * 0.15f, side.y + screenHeight*0.63f * 0.15f + 10 , screenWidth*0.24f * 0.7f, screenHeight*0.63f * 0.15f, InputOptions[selectedInputIndex].c_str(), WHITE, LIGHTGRAY, MyColor5);
     InputPrevButton = Button(side.x + 5,side.y + screenHeight*0.63f * 0.15f + 10 ,  screenWidth*0.24f * 0.15f - 10, screenHeight*0.63f * 0.15f, "<", WHITE, LIGHTGRAY, MyColor5);
@@ -79,6 +79,14 @@ void Page::init() {
     newTextBox = TextBox(side.x + screenWidth*0.08f + 10, side.y + screenHeight*0.63f * 0.36f, screenWidth*0.08, screenHeight*0.63f * 0.11f, "", WHITE, WHITE, BLACK);
     textbox.resetTextbox();
     lineHeight = 20.0f;
+
+    setting_menu = Rectangle{screenWidth * 0.8f, screenHeight * 0.7f, screenWidth * 0.19f, screenHeight * 0.18f};
+    theme = SwitchThemeButton(setting_menu.x + 5, setting_menu.y + 5, setting_menu.width*0.43f, 50, "", MyColor1, MyColor1, WHITE);
+
+    camera.target = { (float)GetScreenWidth()/2, (float)GetScreenHeight()/2 };
+        camera.offset = { (float)GetScreenWidth()/2, (float)GetScreenHeight()/2 };
+        camera.rotation = 0.0f;
+        camera.zoom = 1.0f;
 }
 
 void Page::reset(){
@@ -104,6 +112,12 @@ void Page::draw() {
     DrawRectangleRoundedLinesEx(codeDisplayPLace, 0.1f, 20, 4, MyColor3);
     DrawRectangleRounded({screenWidth * 0.7f , screenHeight*0.934f , screenWidth * 0.182f,screenHeight * 0.095f / 3}, 20, 20, WHITE); //speed control
     speedSliding.DrawRounded(MyColor3);
+
+    //SETTING
+     DrawRectangleRounded(setting_menu, 0.42f, 30, MyColor3);
+    theme.Draw();
+    DrawTextEx(FONT, "THEME", {setting_menu.x + 20, setting_menu.y + 18}, 30, 2, WHITE);
+
 
     // timeSlider.Draw();
     stringstream ss;
@@ -150,6 +164,7 @@ void Page::draw() {
     }
     //Input
     if(currentOperation != Operation::Algorithm){
+        InputOptionButton.textColor = MyColor5;
         InputOptionButton.Draw(LIGHTGRAY, WHITE);
         InputPrevButton.Draw(LIGHTGRAY, WHITE);
         InputNextButton.Draw(LIGHTGRAY, WHITE);
@@ -171,7 +186,43 @@ void Page::event() {
         return;
     }
     float deltaTime = GetFrameTime();
+    Vector2 mousePos = GetMousePosition();
+    //SETTING
+    Rectangle targetPlace = Rectangle{screenWidth * 0.8f, screenHeight * 0.7f, screenWidth * 0.19f, screenHeight * 0.18f};
+    Rectangle closedPlace = Rectangle{(float) screenWidth * 0.99f, screenHeight * 0.7f, screenWidth * 0.19f, screenHeight * 0.18f};
+    Rectangle checkPlace = Rectangle{screenWidth * 0.9f, screenHeight * 0.7f, screenWidth * 0.5f, screenHeight * 0.18f};
+  
+        if (CheckCollisionPointRec(mousePos, targetPlace)) {
+        if(CheckCollisionPointRec(mousePos, checkPlace)){
+        setting_IsOpening = true;
+        setting_IsClosing = false;
+        animatingTime = 0;
+        }
+    } else {
+        setting_IsClosing = true;
+        setting_IsOpening = false;
+        animatingTime = 0;
+    }
 
+    if (setting_IsOpening) {
+        animatingTime += deltaTime;
+        float t = animatingTime / 0.1f;
+        if (t > 1.0f) {
+            t = 1.0f;
+            animatingTime = 0.0f;
+            setting_IsOpening = false;
+        }
+        setting_menu.x = Lerp(setting_menu.x, targetPlace.x, t); 
+    } else if (setting_IsClosing) {
+        animatingTime += deltaTime;
+        float t = animatingTime / 0.1f;
+        if (t > 1.0f) {
+            t = 1.0f;
+            animatingTime = 0.0f;
+            setting_IsClosing = false;
+        }
+        setting_menu.x = Lerp(setting_menu.x, closedPlace.x, t);
+    }
 
     //Code state
     pseudocodeX = codeDisplayPLace.x  + 5;
@@ -180,21 +231,21 @@ void Page::event() {
     
     //cout << lineHeight << endl;
     //animation thui
-            Rectangle targetPlace1 = codeDisplayPLace;
-            targetPlace1.height = pseudocode.size() * lineHeight + 10;
-            targetPlace1.width = textWidth * 1.02f;
-            Rectangle deltaRec = targetPlace1 - codeDisplayPLace;
-            if(deltaRec != Rectangle{0,0,0,0}) isExpanding = true;
-            if(isExpanding){
-            animatingTime += deltaTime;
-            float t = animatingTime / 0.2f;
-            if(t > 1){
-                t = 1;
-                isExpanding = false;
-                animatingTime = 0;
-            }
-            codeDisplayPLace = codeDisplayPLace + deltaRec * t;
-            }
+    Rectangle targetPlace1 = codeDisplayPLace;
+    targetPlace1.height = pseudocode.size() * lineHeight + 10;
+    targetPlace1.width = textWidth * 1.02f;
+    Rectangle deltaRec = targetPlace1 - codeDisplayPLace;
+    if(deltaRec != Rectangle{0,0,0,0}) isExpanding = true;
+    if(isExpanding){
+    animatingTime += deltaTime;
+    float t = animatingTime / 0.2f;
+    if(t > 1){
+        t = 1;
+        isExpanding = false;
+        animatingTime = 0;
+    }
+    codeDisplayPLace = codeDisplayPLace + deltaRec * t;
+    }
     // TỰ LÀM PHẦN HIGHLIGHT!!!! tham khảo Graph.draw() && psuedo code thi tuy phan
 
     //Code box event
@@ -226,15 +277,14 @@ void Page::event() {
     //side event
     
     float sideDuration =0.2f; 
-    Vector2 mousePos = GetMousePosition();
-    Rectangle targetPlace = Rectangle{0, screenHeight / 2 - screenHeight * 0.64f / 2, screenWidth * 0.24f, screenHeight * 0.45f}; 
-    Rectangle closedPlace = Rectangle{-side.width, screenHeight / 2 - screenHeight * 0.64f / 2, screenWidth * 0.24f, screenHeight * 0.32f}; 
+    Rectangle targetPlace2 = Rectangle{0, screenHeight / 2 - screenHeight * 0.64f / 2, screenWidth * 0.3f, screenHeight * 0.54f}; 
+    Rectangle closedPlace2 = Rectangle{-side.width, screenHeight / 2 - screenHeight * 0.64f / 2, screenWidth * 0.24f, screenHeight * 0.32f}; 
     Rectangle sidePlace = Rectangle{0,screenHeight / 2 - screenHeight * 0.64f / 2,screenWidth*0.12f,screenHeight*0.32f};
-    if (CheckCollisionPointRec(mousePos, targetPlace)) {
+    if (CheckCollisionPointRec(mousePos, targetPlace2)) {
         if(CheckCollisionPointRec(mousePos, sidePlace)){
-        isExpandingSide = true;
-        isClosingSide = false;
-        animatingTime = 0;
+            isExpandingSide = true;
+            isClosingSide = false;
+            animatingTime = 0;
         }
     } else {
         isClosingSide = true;
@@ -250,7 +300,7 @@ void Page::event() {
             animatingTime = 0.0f;
             isExpandingSide = false;
         }
-        side.x = Lerp(side.x, targetPlace.x, t); 
+        side.x = Lerp(side.x, targetPlace2.x, t); 
     } else if (isClosingSide) {
         animatingTime += deltaTime;
         float t = animatingTime / sideDuration;
@@ -259,7 +309,7 @@ void Page::event() {
             animatingTime = 0.0f;
             isClosingSide = false;
         }
-        side.x = Lerp(side.x, closedPlace.x, t);
+        side.x = Lerp(side.x, closedPlace2.x, t);
     }
 
     updateSide();
@@ -325,10 +375,28 @@ void Page::event() {
     if (InputOptions[selectedInputIndex] == "KEYBOARD") currentInput = InputType::Keyboard;
     if (InputOptions[selectedInputIndex] == "RANDOM") currentInput = InputType::Random;
     if (InputOptions[selectedInputIndex] == "FILE") currentInput = InputType::File;
+
+
+    float wheel = GetMouseWheelMove();
+    if (wheel != 0) {
+        // camera.target = GetMousePosition();
+        camera.zoom += wheel * 0.1f;
+        if (camera.zoom < 0.2f) camera.zoom = 0.2f;
+        if (camera.zoom > 5.0f) camera.zoom = 5.0f;
+    }
+ 
+    if (IsMouseButtonDown(MOUSE_BUTTON_LEFT)) {
+        if(!CheckCollisionPointRec(GetMousePosition(), side) && !CheckCollisionPointRec(mousePoint, speedSliding.bounds) ){
+        Vector2 delta = GetMouseDelta();
+        delta = Vector2Scale(delta, -1.0f / camera.zoom);
+        camera.target = Vector2Add(camera.target, delta);
+        }
+    }
 }
 
 std::mt19937 rng(std::random_device{}());
 void Page::RANDOM_INPUT(){
+    
     std::uniform_int_distribution<int> dist(0, 999); // Giới hạn số từ 0-999
     textbox.inputText = {to_string(dist(rng))}; // Lấy số ngẫu nhiên
 }
@@ -361,8 +429,10 @@ void Page::handleInput(){
             switch (currentInput) {
             case InputType::Random:
                     if (InputOptionButton.IsClicked()) {
+                        textbox.reset();
                         RANDOM_INPUT();
                     }
+                    textbox.HandleInput();
             break;
             case InputType::Keyboard:
                 KEYBOARD_INPUT();
@@ -380,6 +450,7 @@ void Page::handleInput(){
             switch (currentInput) {
             case InputType::Random:
                 if (InputOptionButton.IsClicked()) RANDOM_INPUT();
+                textbox.HandleInput();
             break;
             case InputType::Keyboard:
                 KEYBOARD_INPUT();
