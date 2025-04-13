@@ -79,6 +79,17 @@ void LinkedList::reset(){
     lineHeight = 30;
 }
 
+void LinkedList::RANDOM_INPUT(){
+     std::mt19937 rng(std::random_device{}());
+    std::uniform_int_distribution<int> dist(0, 15);
+    if(currentOperation == Operation::Create){
+        textbox.inputText = {to_string(dist(rng))};
+    }
+    else{
+        Page::RANDOM_INPUT();
+    }
+}
+
 void LinkedList::event() {
     Page::event();
     //Choose Operation

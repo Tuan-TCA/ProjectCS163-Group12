@@ -212,4 +212,5 @@ public:
     void init() override;
     void draw() override;
     void reset() override;
+    void RANDOM_INPUT() override;
 };
