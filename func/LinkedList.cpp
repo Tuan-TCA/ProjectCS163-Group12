@@ -55,14 +55,27 @@ void LinkedList::reset(){
         head = head->next;
         delete tmp;
     }
-    camera.target = headPos;
-    camera.offset = headPos;
     head = nullptr;
     workplace = {400,300,600,600};
+     headPos = {400,300};
+      camera.target = headPos;
+    camera.offset = headPos;
+    // position = {workplace.x*1.1f, workplace.y*1.1f};
     isInserting = false;
     isSearching = false;
     isDeleting = false;
     isUpdating = false;
+    //isCreating = false;
+
+    hasInsert = false;
+    hasSearch = false;
+    hasDelete = false;
+    hasCreate = false;
+
+    cur = -1;
+    curCode = -1;
+    pseudocode = {};
+    lineHeight = 30;
 }
 
 void LinkedList::Create(){
@@ -549,22 +562,21 @@ void LinkedList::updateLLNodePositions(Node* &a, Node* b, float &tmp) {
 
 
 
-void LinkedList::DrawArrow(Node* start, Node* end) {
-    
-    // start->Pos = {start.Pos.x + radius, start->Pos.y};
-    // end = {end.x - radius, end.y};
+void LinkedList::DrawArrow(Vector2 start, Vector2 end) {
+    start = {start.x + radius, start.y};
+    end = {end.x - radius, end.y};
     float arrowAngle = PI/6;
-    float angle = atan2f(end->Pos.y - start->Pos.y, end->Pos.x - start->Pos.x);
-    Vector2 arrowHead = {end->Pos.x, end->Pos.y};
+    float angle = atan2f(end.y - start.y, end.x - start.x);
+    Vector2 arrowHead = {end.x, end.y};
 
     Vector2 left = {arrowHead.x - arrow_size * cos(angle + arrowAngle), 
                     arrowHead.y - arrow_size * sin(angle + arrowAngle)};
     Vector2 right = {arrowHead.x - arrow_size * cos(angle - arrowAngle), 
                      arrowHead.y - arrow_size * sin(angle - arrowAngle)};
     Color arrow_color = MyColor1;
-    DrawLineEx(start->Pos, arrowHead, 5, arrow_color);
-    DrawLineEx(arrowHead, left, 3, arrow_color);
-    DrawLineEx(arrowHead, right, 3, arrow_color);
+    DrawLineEx(start, arrowHead, radius / 10, arrow_color);
+    DrawLineEx(arrowHead, left, radius / 10, arrow_color);
+    DrawLineEx(arrowHead, right, radius / 10, arrow_color);
 }
 
 //moi
@@ -614,7 +626,7 @@ void LinkedList::DrawLL(Node* head) {
         // Vector2 newCenter = {center.x + 2 * radius + spacing, center.y};
         // if(cur->next && cur->next->next == nullptr) return;
         if (cur->next){
-            DrawArrow(cur, cur->next);
+            DrawArrow(cur->Pos, cur->next->Pos);
         }
         DrawNode(cur);
         cur = cur->next;

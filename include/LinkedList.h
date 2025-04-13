@@ -185,7 +185,7 @@ public:
     void drawStep(LLpaint a, int Found = -1);
     
     int CountNode(Node* head); //ok
-    void DrawArrow(Node* start, Node* end); //ok
+    void DrawArrow(Vector2 start, Vector2 end); //ok
     void DrawNode(Node * node); // ok
     void DrawLL(Node* head); // ok
 
