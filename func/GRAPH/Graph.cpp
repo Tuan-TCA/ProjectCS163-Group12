@@ -105,7 +105,7 @@ void Graph::event(){
         addFromTextbox();
     }
     //code display event
-        if(currentOperation == Operation::Algorithm){
+        if(currentOperation == Operation::Algorithm && currentALgorithm != Algorithm::CC){
         isClosingCodePlace = false;
         isExpandingCodePlace = true;
         animatingTime = 0;
@@ -310,6 +310,7 @@ void Graph::handleChoice(){
                 " while !Q.empty // Q is a normal queue",
                 "   for each neighbor v of u = Q.front, Q.pop",
                 "       if v is unvisited, tree edge, Q.push(v)",
+                "done with s"
             };
             handleBFS();
             break;
@@ -326,9 +327,16 @@ void Graph::handleChoice(){
             handleMST();
             break;
         case Algorithm::DFS:
-            pseudocode = {
-
+           pseudocode = {
+                "DFS(u):",                                     // 0
+                "  mark u as visited",                         // 1
+                "  for each neighbor v of u:",                // 2
+                "    if v is not visited:",                    // 3          
+                "      DFS(v)",                                // 4
+                "      backtrack to u",
+                "done with u"                        // 5
             };
+            handleDFS();
             break;
             case Algorithm::CC:
             pseudocode = {};

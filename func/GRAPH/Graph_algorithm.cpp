@@ -1,5 +1,6 @@
 #include "Graph.h"
 #include <unordered_set>
+#include <stack>
 
 Edge* Graph::findEdge(Vertex* v1, Vertex* v2){
     for(auto& e: edge){
@@ -49,7 +50,21 @@ Vertex* Graph::findVertex(int value){
     return nullptr;
 }
 
+vector<vector<int>> matrixToAdjList(const vector<vector<int>>& matrix) {
+    int n = matrix.size();
+    vector<vector<int>> adjList(n);
 
+    for (int i = 0; i < n; ++i) {
+        for (int j = 0; j < n; ++j) {
+            if (matrix[i][j] != 0) { 
+                adjList[i].push_back(j);
+                if (i != j) adjList[j].push_back(i);
+            }
+        }
+    }
+
+    return adjList;
+}
 
 // BREADTH FIRST SEARCH
 void Graph::bfs(Vertex* source) {
@@ -116,6 +131,9 @@ void Graph::bfs(Vertex* source) {
 
         
     }
+
+    StepQueue.push_back({4});
+    arrayQueue.push_back({});
 }
 
 void Graph::handleBFS(){
@@ -167,6 +185,108 @@ void Graph::handleBFS(){
     } 
     
 }
+
+//DEPTH-FIRST SEARCH
+void Graph::dfs_recursive(Vertex* v, 
+                          unordered_set<Vertex*>& visitedVertices,
+                          unordered_set<Edge*>& visitedEdges, 
+                          vector<vector<int>>& adjList) {
+    //Mark current vertex
+    v->targetColor = ORANGE;
+    visitedVertices.insert(v);
+    arrayQueue.push_back({v});             
+    StepQueue.push_back({1});             
+    int value = v->value;
+    for (auto& u : adjList[value]) {
+    
+            Vertex* next = findVertex(u);
+            if (next != nullptr && visitedVertices.find(next) == visitedVertices.end()) {
+                Edge* e = findEdge(v, next);
+                
+                if (e != nullptr && visitedEdges.find(e) == visitedEdges.end()) {
+                    e->targetColor = ORANGE;
+                    visitedEdges.insert(e);
+
+                    arrayQueue.push_back({e});
+                    StepQueue.push_back({3, 4});
+                }
+
+                dfs_recursive(next, visitedVertices, visitedEdges, adjList);
+
+       
+                next->targetColor = ORANGE;
+                arrayQueue.push_back({next});
+                StepQueue.push_back({5}); 
+            }
+    }
+}
+
+
+void Graph::dfs(Vertex*& source){
+     int n = matrix.size();
+    if (n == 0) return;
+    arrayQueue.clear();
+    StepQueue.clear();
+     unordered_set<Vertex*> visitedVertices;
+    unordered_set<Edge*> visitedEdges;
+    vector<vector<int>> adjList;
+    adjList = matrixToAdjList(matrix);
+
+    dfs_recursive(source, visitedVertices, visitedEdges, adjList);
+    StepQueue.push_back({6});
+    arrayQueue.push_back({});
+}
+
+void Graph::handleDFS(){
+     float deltaTime = GetFrameTime();
+     if(!got1stV){
+        clickedV = getFirstVertexClicked();
+    }
+    
+    if( isAnimating && clickedV){
+         if (!AlgoCalled) {
+            dfs(clickedV);
+            startAnimation(1);
+            arrayQueue[currentQueueIndex][0]->startAnimation(ORANGE, 1);
+            AlgoCalled = true;
+        }
+            if (!arrayQueue.empty() && currentQueueIndex < arrayQueue.size()) {
+            
+            vector<Drawable*> current = arrayQueue[currentQueueIndex];
+ 
+            int checkDoneAnimating = 0;
+            for(int i = 0; i < current.size(); i++){
+                if (!current[i]->isAnimating) { // done or hasn't started yet
+                checkDoneAnimating++;      
+                }
+               
+                if(isPlaying) current[i]->Update(deltaTime);
+            }
+            if(checkDoneAnimating == current.size()) {
+                if(!arrayQueue.empty() && currentQueueIndex + 1 < arrayQueue.size()){
+                        
+                        current = arrayQueue[++currentQueueIndex];
+                        for(auto& elem: current){
+                            elem->startAnimation(ORANGE, 1);
+                        }
+
+                    }
+                else if(currentQueueIndex >= arrayQueue.size()){
+                    isPlaying = false;
+                }
+            }
+        }
+        else{
+            isAnimating = false;
+        }
+    }
+    else {
+        AlgoCalled = false;
+        
+    } 
+
+}
+
 
 //Kruskal's
 void Graph::mst(){
