@@ -26,7 +26,7 @@ void Page::updateSide(){
     textbox.bounds = Rectangle{side.x + 5, side.y + screenHeight*0.63f * 0.3f + 15, screenWidth*0.25f - 100, screenHeight*0.63f * 0.15f};
     oldTextBox.bounds = Rectangle{side. x + 5, side.y + screenHeight*0.63f * 0.36f, screenWidth*0.08f, screenHeight*0.63f * 0.11f};
     newTextBox.bounds = Rectangle{side.x + screenWidth*0.08f + 10, side.y + screenHeight*0.63f * 0.36f, screenWidth*0.08f, screenHeight*0.63f * 0.11f};
-
+    theme.bounds = {setting_menu.x + setting_menu.width * 0.6f, setting_menu.y + 5, setting_menu.width*0.3f, setting_menu.width*0.3f * 0.61f};
 
 }
 
@@ -80,6 +80,9 @@ void Page::init() {
     textbox.resetTextbox();
     lineHeight = 20.0f;
 
+    setting_menu = Rectangle{screenWidth * 0.8f, screenHeight * 0.7f, screenWidth * 0.19f, screenHeight * 0.18f};
+    theme = SwitchThemeButton(setting_menu.x + 5, setting_menu.y + 5, setting_menu.width*0.43f, 50, "", MyColor1, MyColor1, WHITE);
+
     camera.target = { (float)GetScreenWidth()/2, (float)GetScreenHeight()/2 };
         camera.offset = { (float)GetScreenWidth()/2, (float)GetScreenHeight()/2 };
         camera.rotation = 0.0f;
@@ -109,6 +112,12 @@ void Page::draw() {
     DrawRectangleRoundedLinesEx(codeDisplayPLace, 0.1f, 20, 4, MyColor3);
     DrawRectangleRounded({screenWidth * 0.7f , screenHeight*0.934f , screenWidth * 0.182f,screenHeight * 0.095f / 3}, 20, 20, WHITE); //speed control
     speedSliding.DrawRounded(MyColor3);
+
+    //SETTING
+     DrawRectangleRounded(setting_menu, 0.42f, 30, MyColor3);
+    theme.Draw();
+    DrawTextEx(FONT, "THEME", {setting_menu.x + 20, setting_menu.y + 18}, 30, 2, WHITE);
+
 
     // timeSlider.Draw();
     stringstream ss;
@@ -176,7 +185,45 @@ void Page::event() {
         return;
     }
     float deltaTime = GetFrameTime();
+    Vector2 mousePos = GetMousePosition();
+    //SETTING
 
+    
+    Rectangle targetPlace = Rectangle{screenWidth * 0.8f, screenHeight * 0.7f, screenWidth * 0.19f, screenHeight * 0.18f};
+    Rectangle closedPlace = Rectangle{(float) screenWidth * 0.99f, screenHeight * 0.7f, screenWidth * 0.19f, screenHeight * 0.18f};
+    Rectangle checkPlace = Rectangle{screenWidth * 0.9f, screenHeight * 0.7f, screenWidth * 0.5f, screenHeight * 0.18f};
+  
+        if (CheckCollisionPointRec(mousePos, targetPlace)) {
+        if(CheckCollisionPointRec(mousePos, checkPlace)){
+        setting_IsOpening = true;
+        setting_IsClosing = false;
+        animatingTime = 0;
+        }
+    } else {
+        setting_IsClosing = true;
+        setting_IsOpening = false;
+        animatingTime = 0;
+    }
+
+    if (setting_IsOpening) {
+        animatingTime += deltaTime;
+        float t = animatingTime / 0.1f;
+        if (t > 1.0f) {
+            t = 1.0f;
+            animatingTime = 0.0f;
+            setting_IsOpening = false;
+        }
+        setting_menu.x = Lerp(setting_menu.x, targetPlace.x, t); 
+    } else if (setting_IsClosing) {
+        animatingTime += deltaTime;
+        float t = animatingTime / 0.1f;
+        if (t > 1.0f) {
+            t = 1.0f;
+            animatingTime = 0.0f;
+            setting_IsClosing = false;
+        }
+        setting_menu.x = Lerp(setting_menu.x, closedPlace.x, t);
+    }
 
     //Code state
     pseudocodeX = codeDisplayPLace.x  + 5;
@@ -231,11 +278,10 @@ void Page::event() {
     //side event
     
     float sideDuration =0.2f; 
-    Vector2 mousePos = GetMousePosition();
-    Rectangle targetPlace = Rectangle{0, screenHeight / 2 - screenHeight * 0.64f / 2, screenWidth * 0.3f, screenHeight * 0.54f}; 
-    Rectangle closedPlace = Rectangle{-side.width, screenHeight / 2 - screenHeight * 0.64f / 2, screenWidth * 0.24f, screenHeight * 0.32f}; 
+    Rectangle targetPlace2 = Rectangle{0, screenHeight / 2 - screenHeight * 0.64f / 2, screenWidth * 0.3f, screenHeight * 0.54f}; 
+    Rectangle closedPlace2 = Rectangle{-side.width, screenHeight / 2 - screenHeight * 0.64f / 2, screenWidth * 0.24f, screenHeight * 0.32f}; 
     Rectangle sidePlace = Rectangle{0,screenHeight / 2 - screenHeight * 0.64f / 2,screenWidth*0.12f,screenHeight*0.32f};
-    if (CheckCollisionPointRec(mousePos, targetPlace)) {
+    if (CheckCollisionPointRec(mousePos, targetPlace2)) {
         if(CheckCollisionPointRec(mousePos, sidePlace)){
             isExpandingSide = true;
             isClosingSide = false;
@@ -255,7 +301,7 @@ void Page::event() {
             animatingTime = 0.0f;
             isExpandingSide = false;
         }
-        side.x = Lerp(side.x, targetPlace.x, t); 
+        side.x = Lerp(side.x, targetPlace2.x, t); 
     } else if (isClosingSide) {
         animatingTime += deltaTime;
         float t = animatingTime / sideDuration;
@@ -264,7 +310,7 @@ void Page::event() {
             animatingTime = 0.0f;
             isClosingSide = false;
         }
-        side.x = Lerp(side.x, closedPlace.x, t);
+        side.x = Lerp(side.x, closedPlace2.x, t);
     }
 
     updateSide();

@@ -45,11 +45,8 @@ class Graph : public Page{
     Button AlgorithmNextButton;
 
     //Setting
-    Rectangle setting_menu;
-    SwitchThemeButton theme;
+   
     SwitchButton show_weight;
-    bool setting_IsOpening = false,
-         setting_IsClosing = false;
 
     bool added;
     vector<Vertex> vertex;

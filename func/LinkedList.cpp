@@ -713,7 +713,7 @@ void LinkedList::Insert(int key) {
     while (a && a->next) {
         addStep(this->head, 2);
         a = a->next;
-        cout<<"3";
+        // cout<<"3";
         a->isHighLight = -1;
         addStep(this->head,3);  
         a->isHighLight = 0;
