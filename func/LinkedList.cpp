@@ -1,6 +1,5 @@
 #include "LinkedList.h"
 #include <raylib.h>
-#include <raymath.h>
 #include <thread>
 #include <random>
 #include<iostream>
@@ -56,51 +55,38 @@ void LinkedList::reset(){
         head = head->next;
         delete tmp;
     }
+    camera.target = headPos;
+    camera.offset = headPos;
     head = nullptr;
     workplace = {400,300,600,600};
-     headPos = {400,300};
-      camera.target = headPos;
-    camera.offset = headPos;
-    // position = {workplace.x*1.1f, workplace.y*1.1f};
     isInserting = false;
     isSearching = false;
     isDeleting = false;
     isUpdating = false;
-    //isCreating = false;
-
-    hasInsert = false;
-    hasSearch = false;
-    hasDelete = false;
-    hasCreate = false;
-
-    cur = -1;
-    curCode = -1;
-    pseudocode = {};
-    lineHeight = 30;
 }
 
-void LinkedList::RANDOM_INPUT(){
-     std::mt19937 rng(std::random_device{}());
-    std::uniform_int_distribution<int> dist(0, 15);
-    if(currentOperation == Operation::Create){
-        textbox.inputText = {to_string(dist(rng))};
+void LinkedList::Create(){
+    if (!createKeys.empty()) {
+        Insert(createKeys.front());
+        createKeys.erase(createKeys.begin());
+        // std::this_thread::sleep_for(std::chrono::milliseconds((int) (300 / animationSpeed)));
     }
-    else{
-        Page::RANDOM_INPUT();
+    if (createKeys.empty()) {
+        isCreating = false;
+            isPlaying = true;
     }
 }
-
 void LinkedList::event() {
     Page::event();
     //Choose Operation
    
     if(currentOperation == Operation::Create) {
-         hasInsert = false;
+     hasInsert = false;
         hasSearch = false;
         hasDelete = false;
         hasCreate = true;
         cur = 0;
-        BeginMode2D(camera);  
+       BeginMode2D(camera);  
         DrawLL(this->head);   
         EndMode2D();
         steps.clear();
@@ -134,7 +120,7 @@ void LinkedList::event() {
             hasDelete = false;
             hasCreate = false;
             cur = 0;
-            BeginMode2D(camera);  
+             BeginMode2D(camera);  
         DrawLL(this->head);   
         EndMode2D();
             steps.clear();
@@ -194,8 +180,6 @@ void LinkedList::event() {
         animatingTime = 0;
     }
     handleUI();
-
-    
     //...Lưu ý: Cần chỉnh sửa hiển thị nút play, pause cho phù hợp
 }
 
@@ -206,35 +190,38 @@ void LinkedList::draw() {
     static float elapsedTime = 0.0f;
     const float stepDuration = 0.5f / animationSpeed;
 
-    if(currentOperation == Operation::Create) {
+    
+    // if(IsKeyPressed(KEY_A)) {
+    //     Vector2 k = GetMousePosition();
+    //     auto t = head->Pos;
+    //     head->Pos = k;
+    //     DrawLL(head);
+    //     head->Pos = t;
+    // }
+        if(currentOperation == Operation::Create) {
         if (isCreating) {
             hasCreate = true;
             this->Create();
             
         }
         else {
-            BeginMode2D(camera);  
+
+       BeginMode2D(camera);  
         DrawLL(this->head);   
-        EndMode2D();
+        EndMode2D(); 
+  
             // isPlaying = false;
         }
     }
     else{
-        if(hasCreate && isCreating == false){
-            BeginMode2D(camera);  
-        DrawLL(this->head);   
-        EndMode2D();
-            // isPlaying = false;
-        }
-    }
-    if(IsKeyPressed(KEY_A)) {
-        Vector2 k = GetMousePosition();
-        auto t = head->Pos;
-        head->Pos = k;
+        if(hasCreate && !isCreating){
+           
         BeginMode2D(camera);  
         DrawLL(this->head);   
-        EndMode2D();
-        head->Pos = t;
+        EndMode2D(); 
+  
+            // isPlaying = false;
+        }
     }
     
     // if(currentOperation == Operation::Create) {
@@ -255,15 +242,13 @@ void LinkedList::draw() {
     //         isPlaying = true;
     //     }
     //     else {
-            BeginMode2D(camera);  
-        DrawLL(this->head);   
-        EndMode2D();
+    //         DrawLL(head);
     //         isPlaying = false;
     //     }
     // }
     if (currentOperation == Operation::Insert) {
         if (isInserting) {
-            // cout<<"Insert";
+            cout<<"Insert";
             this->Insert(lastInsertedKey);
       
             addStep(this->head);
@@ -486,11 +471,12 @@ void LinkedList::updatePseudocode(){
         pseudocode = {
             "if empty, return NOT_FOUND",           //0
             "Node* cur = head, * prev = nullptr",   //1
-            "while(cur && cur->val != value)",      //2
-            "   prev = cur, cur = cur->next",       //3
-            "if cur == nullptr",                    //4
-            "   return NOT_FOUND",                  //5
-            "prev->next = cur->next, delete cur"    //6
+            "while cur is not null",                //2
+            "   if(cur->val == key)",                   //3
+            "       prev->next = cur->next",            //4
+            "       delete cur",                        //5
+            "   else prev = cur, cur = cur->next",       //6                   //4
+            "   return NOT_FOUND",    //6
         };
             default:
             break;
@@ -715,7 +701,7 @@ void LinkedList::Insert(int key) {
     while (a && a->next) {
         addStep(this->head, 2);
         a = a->next;
-        // cout<<"3";
+        cout<<"3";
         a->isHighLight = -1;
         addStep(this->head,3);  
         a->isHighLight = 0;
@@ -764,6 +750,7 @@ bool LinkedList::Search(int key) {
 
 bool LinkedList::DeleteNode(int key) {
     if(!head) {
+        addStep(this->head, 0);
         return false;
     }
 
@@ -775,11 +762,12 @@ bool LinkedList::DeleteNode(int key) {
     a->isHighLight = 0;
 
     while(a) {
+        addStep(this->head,2); 
         if(a->val == key) {
             if(a == head) {
                 
                 a->isHighLight = 1;
-                addStep(this->head,0);  
+                addStep(this->head,3);  
                 a->isHighLight = 0;
                 
                 Node* tmp = this->head;
@@ -787,34 +775,35 @@ bool LinkedList::DeleteNode(int key) {
 
                 delete tmp; 
 
-                addStep(this->head,1,1);  
+                addStep(this->head,5,1);  
                 return true;
                 
             }
             
             a->isHighLight = 1;
-            addStep(this->head,1);  
+            addStep(this->head,3);  
             a->isHighLight = 0;
 
             pre->next = a->next;
+            addStep(this->head,4); 
             delete a;
             a = nullptr;                  
             
-            addStep(this->head,1,1);  
+            addStep(this->head,5,1);  
 
             return true;
 
         }
 
         a->isHighLight = -1;
-        addStep(this->head,0);  
+        addStep(this->head,6);  
         a->isHighLight = 0;
 
         pre = a;
         a = a->next;
         
     }
-
+    addStep(this->head,7); 
     return false;
 }
 
@@ -869,178 +858,13 @@ void LinkedList::handleUI(){
     }
 }
 
-void LinkedList::Create(){
-    if (!createKeys.empty()) {
-        Insert(createKeys.front());
-        createKeys.erase(createKeys.begin());
-        // std::this_thread::sleep_for(std::chrono::milliseconds((int) (300 / animationSpeed)));
+void LinkedList::RANDOM_INPUT(){
+     std::mt19937 rng(std::random_device{}());
+    std::uniform_int_distribution<int> dist(0, 15);
+    if(currentOperation == Operation::Create){
+        textbox.inputText = {to_string(dist(rng))};
     }
-    if (createKeys.empty()) {
-        isCreating = false;
-            isPlaying = true;
+    else{
+        Page::RANDOM_INPUT();
     }
 }
-// bool LinkedList::DrawSearchNode(int key){
-//     if (!head){
-//         cout << "Head is NULL\n";
-//         return false;
-//     }
-//     bool found = false;
-
-//     Pos = GetPosition(CountNode(head));
-//     Vector2 center = Pos;
-//     //DrawLL(center);
-
-//     Node * a = head;
-//     while (a){
-
-//         cout << "SEARCH: " << a->val << ' ' << key << '\n';
-
-//         if(a->val == key){
-//             animationController.AddStep([this, a,center]() {
-//             DrawLL(Pos);
-//             DrawNode(center, a->val, 1);
-//             });
-//             found = true;
-//             //std::this_thread::sleep_for(std::chrono::milliseconds(700));
-//             return true;
-//         }
-//         animationController.AddStep([this, a,center]() {
-//         DrawLL(Pos);
-//         DrawNode(center, a->val, -1);
-//         });
-//         a = a->next;
-//         Vector2 newCenter = {center.x + 2*radius + spacing, center.y};
-//         center = newCenter;
-//         //std::this_thread::sleep_for(std::chrono::milliseconds((int)(500.0f / animationSpeed)));
-//     }
-//     if (!found) {
-//         animationController.AddStep([this, a,center]() {
-//         DrawLL(Pos);  
-         
-//         int textW = MeasureText("NOT FOUND", font_size); 
-//         int listWidth = max(CountNode(head), 1) * (2 * radius + spacing); 
-//         int posX = Pos.x + (listWidth - textW) / 2 - radius;
-//         int posY = Pos.y + font_size + 100;  
-    
-//         DrawText("NOT FOUND", posX, posY, font_size, RED);
-//         });
-//         //EndDrawing(); 
-//         //std::this_thread::sleep_for(std::chrono::milliseconds(1000));  
-//     }
-
-//     return found;
-// }
-
-// void LinkedList::DrawDeleteNode(int key) {
-//     if (!head) {
-//         animationController.AddStep([this]() {
-//             DrawLL(this->Pos);
-//             DrawText("List is empty", Pos.x, Pos.y - 50, font_size, RED);
-//         });
-//         return;
-//     }
-
-//     Pos = GetPosition(CountNode(head));
-//     Vector2 center = Pos;
-
-//     // Tạo bản sao
-
-//     Node *a = head, *prev = nullptr;
-//     bool found = false;
-
-    
-//     LinkedList* tmp = this->copy();
-//     while (a) {
-//         Vector2 currentCenter = center;
-//         int val = a->val;
-//         animationController.AddStep([tmp, currentCenter, val]() {
-//             tmp->DrawLL(tmp);
-//             tmp->DrawNode(currentCenter, val, -1);
-//         });
-
-//         if (a->val == key && !found) {
-//             found = true;
-//             animationController.AddStep([tmp, currentCenter, val]() {
-//                 tmp->DrawLL(tmp->Pos);
-//                 tmp->DrawNode(currentCenter, val, 1);
-//             });
-//             break;
-//         }
-
-//         prev = a;
-//         a = a->next;
-//         center = {center.x + 2 * radius + spacing, center.y};
-//     }
-
-//     if (found) {
-//         NewPos = GetPosition(CountNode(head) - 1);
-//         tmp = this->copy();
-//         animationController.AddStep([this, tmp, key]() {
-//             Node *a = head, *prev = nullptr;
-//             while (a && a->val != key) {
-//                 prev = a;
-//                 a = a->next;
-//             }
-//             if (a) {
-//                 if (prev) {
-//                     prev->next = a->next;
-//                 } else {
-//                     head = a->next;
-//                 }
-//                 delete a;
-//             }
-//             DrawLL(Pos); // Redraw after deletion (dùng this)
-//         });
-//     } 
-
-//     else {
-//         animationController.AddStep([tmp]() {
-//             tmp->DrawLL(tmp->Pos);
-//             int textW = MeasureText("NOT FOUND", tmp->font_size);
-//             int listWidth = max(tmp->CountNode(tmp->head), 1) * (2 * tmp->radius + tmp->spacing);
-//             int posX = tmp->Pos.x + (listWidth - textW) / 2 - tmp->radius;
-//             int posY = tmp->Pos.y + tmp->font_size + 100;
-//             DrawText("NOT FOUND", posX, posY, tmp->font_size, RED);
-//         });
-//     }
-
-//     delete tmp;     // Giải phóng bản sao
-// }
-
-
-
-// void LinkedList::DrawUpDateNode(int first, int second){
-//     if(!head){
-//         cout << "Head is empty\n";
-//         return;
-//     }
-//     Pos = GetPosition(CountNode(head));
-
-//     Vector2 center = Pos;
-//     DrawLL(center);
-
-//     Node * a = head;
-//     while(a){
-//         if(a->val == first){
-//             BeginDrawing();
-//             DrawNode(center, a->val, 1);
-//             EndDrawing();
-//             std::this_thread::sleep_for(std::chrono::milliseconds((int)(500.0f / animationSpeed)));
-//             BeginDrawing();
-//             DrawNode(center, second, 1);
-//             EndDrawing();
-//             std::this_thread::sleep_for(std::chrono::milliseconds((int)(500.0f / animationSpeed)));
-//             a->val = second;
-//             return;
-//         }
-//         BeginDrawing();
-//         DrawLL(Pos);
-//         DrawNode(center, a->val, -1);
-//         EndDrawing();
-//         a = a->next;
-//         Vector2 newCenter = {center.x + 2*radius + spacing, center.y};
-//         center = newCenter;
-//         std::this_thread::sleep_for(std::chrono::milliseconds((int)(500.0f / animationSpeed)));
-//     }
-// }
