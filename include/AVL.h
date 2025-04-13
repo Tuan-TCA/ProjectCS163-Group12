@@ -159,6 +159,7 @@ public:
     //Model
     void insert(int key, TreeNode*& root, TreeNode* parent = nullptr);
     bool search(int key, TreeNode*& root, TreeNode* parent = nullptr);
+    void Create();
     bool deleteAVL(TreeNode* &root, TreeNode* &parent, int key);
     void balance(TreeNode * &root, TreeNode *& parent, int key);
 
@@ -209,7 +210,7 @@ public:
 
     bool isCreating;
     bool hasCreate = false;
-
+    vector<int> createKeys;
 
     bool isUpdating;
     int UpdateKey;
@@ -231,6 +232,7 @@ public:
     void init() override;
     void draw() override;
     void reset() override;
+    void RANDOM_INPUT() override;
 };
 
 

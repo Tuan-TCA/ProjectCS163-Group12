@@ -3,6 +3,7 @@
 #include <iostream>
 #include<stack>
 #include <vector>
+#include <sstream>
 
 
 void updateRotation(float stepDuration, AVLpaint& tmp, AVLpaint& tar) {
@@ -72,6 +73,7 @@ void AVL::reset(){
     curCode = -1;
     pseudocode = {};
      lineHeight = 30;
+     createKeys.clear();
 }
 
 void AVL::balance(TreeNode * &root, TreeNode *& parent, int key) {
@@ -457,39 +459,36 @@ void AVL::draw() {
     const float stepDuration = 0.5f / animationSpeed;
 
     
-    if(IsKeyPressed(KEY_A)) {
-        Vector2 k = GetMousePosition();
-        auto t = root->Pos;
-        root->Pos = k;
-        BeginMode2D(camera);  
-        DrawTree(root);
-        EndMode2D();
+    // if(IsKeyPressed(KEY_A)) {
+    //     Vector2 k = GetMousePosition();
+    //     auto t = root->Pos;
+    //     root->Pos = k;
+    //     BeginMode2D(camera);  
+    //     DrawTree(root);
+    //     EndMode2D();
         
-        root->Pos = t;
-    }
+    //     root->Pos = t;
+    // }
 
     if(currentOperation == Operation::Create) {
         if (isCreating) {
             hasCreate = true;
-            random_device rd;
-            mt19937 gen(rd());
-            uniform_int_distribution<int> dist(2,11);
-            uniform_int_distribution<int> dist2(100,999);
-
-            int t = dist(gen);
-            while(t--) {
-                int k = dist2(gen);
-                this->insert(k, root);
-            }
-            steps.clear();
-            isCreating = false;
-            isPlaying = true;
+            Create();
+            
         }
         else {
             BeginMode2D(camera);  
             DrawTree(root);
             EndMode2D();
             isPlaying = false;
+        }
+    }
+    else{
+        if(hasCreate && isCreating == false){
+            BeginMode2D(camera);  
+            DrawTree(root);  
+            EndMode2D();
+            // isPlaying = false;
         }
     }
     if (currentOperation == Operation::Insert) {
@@ -711,11 +710,22 @@ void AVL::event() {
         hasSearch = false;
         hasDelete = false;
         hasCreate = true;
-        if(Page::Ok.IsClicked()) {
+        cur = 0;
+        BeginMode2D(camera);  
+            DrawTree(root);  
+            EndMode2D();
+        steps.clear();
+        
+        addStep(root);
+        if (textbox.nums.size() > 0) {
+            textbox.nums.erase(textbox.nums.begin());
             DestroyRecursive(root);
             root = nullptr;
+            createKeys = textbox.nums;
+            textbox.nums.clear();
+            textbox.inputText = {""};
             isCreating = true;
-        }       
+        }    
     }
     
     if(currentOperation == Operation::Insert) {
@@ -1160,6 +1170,56 @@ void AVL::DrawTree(TreeNode* root) {
         DrawTree(root->right);
     }
 }
+void AVL::RANDOM_INPUT(){
+   std::mt19937 rng(std::random_device{}());
+    
+    if(currentOperation == Operation::Create){
+            textbox.reset();
+        
+            std::uniform_int_distribution<int> value(0, 999);
+            std::uniform_int_distribution<int> valueSize(2, 11);
+            int size = valueSize(rng);
+            std::vector<int> Values;
+            std::vector<std::string> lines;
+            std::ostringstream ss;
 
+            for (int i = 0; i < size; ++i) {
+                int num = value(rng);
+        
+                while (find(Values.begin(), Values.end(), num) != Values.end()) {
+                    num = value(rng);
+                }
+                Values.push_back(num);  
+            }
 
+         
+            ss << size;
+            lines.push_back(ss.str());
+            ss.str("");  
+
+          
+            for (int i = 0; i < Values.size(); ++i) {
+                ss << Values[i] << " ";
+            }
+            lines.push_back(ss.str());
+            ss.str("");  
+            
+            textbox.inputText = lines;
+            
+    }
+    else{
+        Page::RANDOM_INPUT();
+    }
+}
+void AVL::Create(){
+     if (!createKeys.empty()) {
+         this->insert(createKeys.front(), root);
+        createKeys.erase(createKeys.begin());
+        // std::this_thread::sleep_for(std::chrono::milliseconds((int) (300 / animationSpeed)));
+    }
+    if (createKeys.empty()) {
+        isCreating = false;
+            isPlaying = true;
+    }
+}
 
