@@ -666,6 +666,16 @@ void AVL::draw() {
                 }
         }
     }
+
+    //RUN AT ONCE
+    if(forward1.IsClicked() || forward2.IsClicked()){
+        cur = steps.size() - 1;
+        isPlaying = false;
+    }
+    if(backward1.IsClicked() || backward2.IsClicked()){
+         cur = 0;
+         isPlaying = false;
+    }
 }
 
 
@@ -785,7 +795,7 @@ void AVL::event() {
         }
     }
 
-     if(currentOperation != Operation::Create){
+     if(currentOperation != Operation::Create && currentOperation != Operation::Update){
         isClosingCodePlace = false;
         isExpandingCodePlace = true;
         animatingTime = 0;
@@ -802,19 +812,6 @@ void AVL::event() {
         lastOp = currentOperation;
     }
 
-    if(!isPlaying){
-        if(!switchState ? play1.IsClicked() : play2.IsClicked()){
-            isPlaying = true;
-            TraceLog(LOG_INFO, "is playing");
-        }
-    }
-    else{
-        if(!switchState ? pause1.IsClicked() : pause2.IsClicked())
-        {
-            isPlaying = false;
-            TraceLog(LOG_INFO, "is pausing");
-        }
-    }
 
     
     if (back1.IsClicked() || back2.IsClicked()) { 

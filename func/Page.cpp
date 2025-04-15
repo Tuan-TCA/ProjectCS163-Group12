@@ -38,7 +38,7 @@ void Page::init() {
     InputNextButton = Button((side.x + side.width) * 0.85f + 5, side.y + screenHeight*0.63f * 0.15f + 10,  screenWidth*0.24f * 0.15f - 10, screenHeight*0.63f * 0.15f, ">", WHITE, LIGHTGRAY, MyColor5);
     currentInput = InputType::Keyboard;
 
-    OperationOptions  = {"INSERT", "CREATE", "DELETE", "SEARCH"};
+    OperationOptions  = {"INSERT", "CREATE", "DELETE", "SEARCH", "UPDATE"};
     selectedOperationIndex = 0;
     OperationOptionButton = Button((side.x + side.width) * 0.15f, side.y + 5, screenWidth*0.24f * 0.7f, screenHeight*0.63f * 0.15f, OperationOptions[selectedOperationIndex].c_str(), MyColor7, Fade(MyColor7, 0.8f), WHITE);
     OperationPrevButton = Button(side.x + 5, side.y + 5, screenWidth*0.24f * 0.15f - 10, screenHeight*0.63f * 0.15f, "<", MyColor7, Fade(MyColor7, 0.8f), WHITE);
@@ -77,6 +77,8 @@ void Page::init() {
     textbox = TextBox(side.x + 5, side.y + screenHeight*0.63f * 0.3f + 15, screenWidth*0.25f - 100, screenHeight*0.63f * 0.15f, "", WHITE, WHITE, BLACK);
     oldTextBox = TextBox(side. x + 5, side.y + screenHeight*0.63f * 0.36f, screenWidth*0.08, screenHeight*0.63f * 0.11f, "", WHITE, WHITE, BLACK);
     newTextBox = TextBox(side.x + screenWidth*0.08f + 10, side.y + screenHeight*0.63f * 0.36f, screenWidth*0.08, screenHeight*0.63f * 0.11f, "", WHITE, WHITE, BLACK);
+    oldTextBox.resetTextbox();
+    newTextBox.resetTextbox();
     textbox.resetTextbox();
     lineHeight = 20.0f;
 
@@ -338,11 +340,13 @@ void Page::event() {
     //Operation event
    if (OperationPrevButton.IsClicked()) {
         textbox.reset();
+        selectedInputIndex = 0;
         selectedOperationIndex = (selectedOperationIndex - 1 + OperationOptions.size()) % OperationOptions.size();
     }
 
     if (OperationNextButton.IsClicked()) {
         textbox.reset();
+        selectedInputIndex = 0;
         selectedOperationIndex = (selectedOperationIndex + 1) % OperationOptions.size();
     }
      OperationOptionButton.label = OperationOptions[selectedOperationIndex].c_str(); 
@@ -353,7 +357,7 @@ void Page::event() {
     if(OperationOptions[selectedOperationIndex] == "DELETE") currentOperation = Operation::Delete;
 
     //INPUT Event
-        textbox.update();
+        
     handleInput();
 
     if (InputPrevButton.IsClicked()) {
@@ -396,9 +400,9 @@ void Page::event() {
 
 std::mt19937 rng(std::random_device{}());
 void Page::RANDOM_INPUT(){
-    
     std::uniform_int_distribution<int> dist(0, 999); // Giới hạn số từ 0-999
     textbox.inputText = {to_string(dist(rng))}; // Lấy số ngẫu nhiên
+    
 }
 void Page::KEYBOARD_INPUT(){
      textbox.HandleInput();
@@ -422,7 +426,14 @@ void Page::FILE_INPUT(){
 }
 
 void Page::handleInput(){
-    
+
+    if(currentOperation == Operation::Update){
+        oldTextBox.update();
+    newTextBox.update();
+    }
+    else{
+        textbox.update();
+    }
      switch (currentOperation) {
         case Operation::Insert:
         case Operation::Create:
@@ -469,6 +480,8 @@ void Page::handleInput(){
                         newTextBox.inputText = {to_string(dist(rng))}; 
                         oldTextBox.inputText = {to_string(dist(rng))}; 
                     }
+                    newTextBox.HandleInput();
+                    oldTextBox.HandleInput();
                     break;
                 case InputType::Keyboard:
                     newTextBox.HandleInput();

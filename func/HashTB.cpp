@@ -6,7 +6,6 @@
 #include <iostream>
 #include <random>
 #include <sstream>
-#include "DrawUtils.h"
 #include "Program.h"
 using namespace std;
 
@@ -677,7 +676,7 @@ void HashTB::event() {
         }
     }
 
-    if(currentOperation != Operation::Create){
+    if(currentOperation != Operation::Create && currentOperation != Operation::Update){
         isClosingCodePlace = false;
         isExpandingCodePlace = true;
         animatingTime = 0;
@@ -688,6 +687,7 @@ void HashTB::event() {
         animatingTime = 0;
     }
 
+ 
     //Mouse handling
      float wheelMove = GetMouseWheelMove();
         origin.y += (int)wheelMove * 23;
@@ -707,21 +707,15 @@ void HashTB::handleUI(){
         lastOp = currentOperation;
     }
 
-    if(!isPlaying){
-        if(!switchState ? play1.IsClicked() : play2.IsClicked()){
-            isPlaying = true;
-            TraceLog(LOG_INFO, "is playing");
-        }
+    //RUN AT ONCE
+    if(forward1.IsClicked() || forward2.IsClicked()){
+        cur = steps.size() - 1;
+        isPlaying = false;
     }
-    else{
-        if(!switchState ? pause1.IsClicked() : pause2.IsClicked())
-        {
-            isPlaying = false;
-            TraceLog(LOG_INFO, "is pausing");
-        }
+    if(backward1.IsClicked() || backward2.IsClicked()){
+         cur = 0;
+         isPlaying = false;
     }
-
-    
     if (back1.IsClicked() || back2.IsClicked()) { 
         if (cur > 0) {
             cur--;
@@ -866,6 +860,10 @@ void HashTB::reset(){
      DeleteKey = -1;
      isDuplicateInsert = false;
      createKeys.clear();
+
+    cur = -1;
+    curCode = -1;
+    pseudocode = {};
 }
 
 void HashTB::RANDOM_INPUT(){
