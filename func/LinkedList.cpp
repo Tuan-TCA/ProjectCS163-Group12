@@ -78,17 +78,7 @@ void LinkedList::reset(){
     lineHeight = 30;
 }
 
-void LinkedList::Create(){
-    if (!createKeys.empty()) {
-        Insert(createKeys.front());
-        createKeys.erase(createKeys.begin());
-        // std::this_thread::sleep_for(std::chrono::milliseconds((int) (300 / animationSpeed)));
-    }
-    if (createKeys.empty()) {
-        isCreating = false;
-            isPlaying = true;
-    }
-}
+
 void LinkedList::event() {
     Page::event();
     //Choose Operation
@@ -182,7 +172,7 @@ void LinkedList::event() {
             textbox.inputText = {""};
         }
     }
-    if(currentOperation != Operation::Create){
+    if(currentOperation != Operation::Create && currentOperation != Operation::Update){
         isClosingCodePlace = false;
         isExpandingCodePlace = true;
         animatingTime = 0;
@@ -237,28 +227,6 @@ void LinkedList::draw() {
         }
     }
     
-    // if(currentOperation == Operation::Create) {
-    //     if (isCreating) {
-    //         hasCreate = true;
-    //         random_device rd;
-    //         mt19937 gen(rd());
-    //         uniform_int_distribution<int> dist(2,11);
-    //         uniform_int_distribution<int> dist2(100,999);
-
-    //         int t = dist(gen);
-    //         while(t--) {
-    //             int k = dist2(gen);
-    //             this->insert(k, head);
-    //         }
-    //         steps.clear();
-    //         isCreating = false;
-    //         isPlaying = true;
-    //     }
-    //     else {
-    //         DrawLL(head);
-    //         isPlaying = false;
-    //     }
-    // }
     if (currentOperation == Operation::Insert) {
         if (isInserting) {
             cout<<"Insert";
@@ -452,8 +420,19 @@ void LinkedList::draw() {
         }
     }
 
+    
 }
-
+void LinkedList::Create(){
+    if (!createKeys.empty()) {
+        Insert(createKeys.front());
+        createKeys.erase(createKeys.begin());
+        // std::this_thread::sleep_for(std::chrono::milliseconds((int) (300 / animationSpeed)));
+    }
+    if (createKeys.empty()) {
+        isCreating = false;
+            isPlaying = true;
+    }
+}
 void LinkedList::updatePseudocode(){
     switch (currentOperation){
         case Operation::Insert:
@@ -827,18 +806,14 @@ void LinkedList::handleUI(){
         lastOp = currentOperation;
     }
 
-    if(!isPlaying){
-        if(!switchState ? play1.IsClicked() : play2.IsClicked()){
-            isPlaying = true;
-            TraceLog(LOG_INFO, "is playing");
-        }
+    //RUN AT ONCE
+    if(forward1.IsClicked() || forward2.IsClicked()){
+        cur = steps.size() - 1;
+        isPlaying = false;
     }
-    else{
-        if(!switchState ? pause1.IsClicked() : pause2.IsClicked())
-        {
-            isPlaying = false;
-            TraceLog(LOG_INFO, "is pausing");
-        }
+    if(backward1.IsClicked() || backward2.IsClicked()){
+         cur = 0;
+         isPlaying = false;
     }
 
     

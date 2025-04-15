@@ -96,10 +96,7 @@ class Graph : public Page{
     void handleCC();
 
 
-    void init() override;
-    void draw() override;
-    void event() override;
-    void reset() override;
+    
 
     void startAnimation( float duration);
     void handleChoice();
@@ -114,4 +111,9 @@ class Graph : public Page{
     void RANDOM_INPUT() override; 
     void handleInput() override;
     void updateSide() override;
+
+    void init() override;
+    void draw() override;
+    void event() override;
+    void reset() override;
 };
