@@ -632,7 +632,7 @@ public:
         DrawRectangleRounded(bounds, 0.1f, 8, WHITE);
 
         float filledWidth = (value - minValue) / (maxValue - minValue) * bounds.width;
-        DrawRectangleRounded({bounds.x, bounds.y, filledWidth, bounds.height}, 0.1f, 8, LIGHTGRAY);
+        DrawRectangleRounded({bounds.x, bounds.y, filledWidth, bounds.height}, 0.1f, 8, Fade(MyColor7, 0.4f));
 
         float knobX = bounds.x + filledWidth - 10;
         float knobY = bounds.y ;

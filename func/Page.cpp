@@ -124,7 +124,7 @@ void Page::draw() {
     speedSliding.DrawRounded(MyColor3);
     showCodeButton.color = MyColor7;
     showCodeButton.hoverColor = Fade(MyColor7, 0.8f);
-    showCodeButton.DrawRounded();
+    if(currentOperation != Operation::Create && currentOperation != Operation::Update)  showCodeButton.DrawRounded();
 
     //SETTING
      DrawRectangleRounded(setting_menu, 0.42f, 30, MyColor3);
@@ -205,7 +205,7 @@ void Page::event() {
     //SETTING
     musicVolume.Update();
     volume = musicVolume.value;
-    cout << volume << endl;
+ 
     Rectangle targetPlace = Rectangle{screenWidth * 0.8f, screenHeight * 0.7f, screenWidth * 0.19f, screenHeight * 0.18f};
     Rectangle closedPlace = Rectangle{(float) screenWidth * 0.99f, screenHeight * 0.7f, screenWidth * 0.19f, screenHeight * 0.18f};
     Rectangle checkPlace = Rectangle{screenWidth * 0.9f, screenHeight * 0.7f, screenWidth * 0.5f, screenHeight * 0.18f};
@@ -418,7 +418,7 @@ void Page::event() {
 
 
     float wheel = GetMouseWheelMove();
-    if (wheel != 0) {
+    if (wheel != 0 && CheckCollisionPointRec(mousePos, workplace)) {
         // camera.target = GetMousePosition();
         camera.zoom += wheel * 0.1f;
         if (camera.zoom < 0.2f) camera.zoom = 0.2f;
@@ -426,7 +426,7 @@ void Page::event() {
     }
  
     if (IsMouseButtonDown(MOUSE_BUTTON_LEFT)) {
-        if(!CheckCollisionPointRec(GetMousePosition(), side) && !CheckCollisionPointRec(mousePoint, speedSliding.bounds) ){
+        if(CheckCollisionPointRec(mousePos, workplace) && !CheckCollisionPointRec(mousePos, targetPlace)){
         Vector2 delta = GetMouseDelta();
         delta = Vector2Scale(delta, -1.0f / camera.zoom);
         camera.target = Vector2Add(camera.target, delta);
