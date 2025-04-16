@@ -25,6 +25,7 @@ void Graph::init(){
     minDistance = 100.0f;
     got1stV = false;
     isAnimating = false;
+    clickedV = nullptr;
     textWidth = 20;
     show_weight = SwitchButton(setting_menu.x + setting_menu.width * 0.5f, setting_menu.y + setting_menu.width*0.3f * 0.61f * 2 + 10, setting_menu.width*0.3f, setting_menu.width*0.3f * 0.61f, "", MyColor1,MyColor1, WHITE);
 }
@@ -106,12 +107,16 @@ void Graph::event(){
         isClosingCodePlace = true;
         isExpandingCodePlace = false;
         animatingTime = 0;
+
         }else{
             if(showCodeButton.IsClicked()){
             animatingTime = 0;
+           
             isClosingCodePlace = !isClosingCodePlace;
             isExpandingCodePlace = !isExpandingCodePlace;
             }
+             if(isClosingCodePlace) showCodeButton.label = "SHOW CODE";
+            else showCodeButton.label = "HIDE CODE";
         }
     }
 

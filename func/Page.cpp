@@ -39,7 +39,7 @@ void Page::init() {
     // timeSlider = Slider({screenWidth * 0.05f , screenHeight*0.936f,  screenWidth * 0.3f ,screenHeight * 0.095f / 3 * 0.9f}, 0.0f, 1.0f);
     isClosingCodePlace = false;
     isExpandingCodePlace = true;
-    showCodeButton = Button(-screenWidth * 0.02f, screenHeight * 0.5f , screenWidth * 0.15, screenHeight * 0.05f, " SHOW CODE", MyColor7, Fade(MyColor7, 0.8f), WHITE);
+    showCodeButton = Button(-screenWidth * 0.02f, screenHeight * 0.5f , screenWidth * 0.15, screenHeight * 0.05f, "HIDE CODE", MyColor7, Fade(MyColor7, 0.8f), WHITE);
     codeDisplayPLace = Rectangle{screenWidth * 0.01f, screenHeight * 0.56f, screenWidth * 0.24f - 12.0f, screenHeight * 0.35f};
     speedSliding = MyRec(screenWidth * 0.712f , screenHeight*0.936f,  screenWidth * 0.182f * 0.38f,screenHeight * 0.095f / 3 * 0.9f, "", MyColor3, WHITE);
     background1 = resizedImage("res/BackGround.png", screenWidth, screenHeight);   
@@ -71,6 +71,7 @@ void Page::init() {
 void Page::reset(){
     animatingTime = 0;
     isExpanding             = false;
+    showCodeButton.label = "HIDE CODE";
     isExpandingCodePlace    = true;
     isClosingCodePlace      = false;
     isExpandingSide         = false;
@@ -252,7 +253,10 @@ void Page::event() {
             animatingTime = 0;
             isClosingCodePlace = !isClosingCodePlace;
             isExpandingCodePlace = !isExpandingCodePlace;
+
             }
+            if(isClosingCodePlace) showCodeButton.label = "SHOW CODE";
+            else showCodeButton.label = "HIDE CODE";
         }
         else{
             isClosingCodePlace = true;

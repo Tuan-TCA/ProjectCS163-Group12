@@ -13,6 +13,15 @@ Edge* Graph::findEdge(Vertex* v1, Vertex* v2){
     return nullptr;
 }
 Vertex* Graph::getFirstVertexClicked(){
+      int value = -1;
+     if(!textbox.nums.empty()){ // Or get from textbox
+             value = textbox.nums[0];
+   
+            textbox.nums.clear();
+     }
+     if (AlgorithmOptionButton.IsClicked()){ //or click directly on the button(randomly pick any vertex)
+             value = rand()% (vertex.size() - 1);
+     }
     for(auto& v: vertex){
         if(v.isClicked()) { //We can click on specific vertex to start animating
             got1stV = true;
@@ -20,25 +29,13 @@ Vertex* Graph::getFirstVertexClicked(){
             isPlaying = true;
             return &v;
         } 
-        if(!textbox.nums.empty()){ // Or get from textbox
-            int value = textbox.nums[0];
-            textbox.nums.erase(textbox.nums.begin());
-            if(v.value == value){
+        
+            if(value != -1 && v.value == value){
                 got1stV = true;
                 isAnimating = true;
                 isPlaying = true;
                 return &v;
             }
-        }
-        if (AlgorithmOptionButton.IsClicked()){ //or click directly on the button(randomly pick any vertex)
-            int value = rand()% (vertex.size() - 1);
-            if(v.value == value){
-                got1stV = true;
-                isAnimating = true;
-                isPlaying = true;
-                return &v;
-            }
-        }
     }
     return nullptr;
 }
