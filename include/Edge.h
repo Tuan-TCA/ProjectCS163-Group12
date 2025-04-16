@@ -1,8 +1,6 @@
 #pragma once
-#include <iostream>
-#include<raylib.h>
 #include "Vertex.h"
-using namespace std;
+#include "Variables.h"
 
 class Edge : public Drawable {
 public:

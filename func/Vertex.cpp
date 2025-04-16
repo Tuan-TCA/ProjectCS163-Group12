@@ -1,5 +1,5 @@
 #include "Vertex.h"
-#include "Variables.h"
+
 void Vertex::Update(float deltaTime){
     if(isAnimating){
         animationTime += deltaTime;

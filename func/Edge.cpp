@@ -1,6 +1,4 @@
 #include "Edge.h"
-#include "Variables.h"
-#include <cmath>
 
 void Edge::Update(float deltaTime){
 

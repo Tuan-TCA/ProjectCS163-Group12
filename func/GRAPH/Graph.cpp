@@ -1,13 +1,7 @@
 #include "Graph.h"
-#include <fstream>
-#include <iostream>
-#include <cmath>
+
 #include <algorithm>
-#include <vector>
-#include <unordered_set>
-#include <random>
-#include <sstream>
-using namespace std;
+
 
 float distance(Vector2 pos1, Vector2 pos2){
     return sqrt(pow(pos1.x - pos2.x, 2) + pow(pos1.y - pos2.y, 2));

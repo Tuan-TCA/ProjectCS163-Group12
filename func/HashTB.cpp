@@ -1,13 +1,5 @@
 #include "HashTB.h"
-#include <raylib.h>
-#include <cmath>
-#include <thread>
-#include <chrono>
-#include <iostream>
-#include <random>
-#include <sstream>
-#include "Program.h"
-using namespace std;
+
 
 void HashTB::init(){
     Page::init();
