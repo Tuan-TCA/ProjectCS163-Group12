@@ -20,25 +20,21 @@ void HashTB::init(){
     // nullptr
     for(int i=0; i< tableSize; i++){
         if(!heads[i]) heads[i] = new LinkedList();
-        heads[i]->headPos = {origin.x , origin.y+ (spacing+ radius)*i};
+        heads[i]->headPos = {origin.x , origin.y+ (spacing*1.5f+ radius)*i};
         heads[i]->head = new Node(i, nullptr, heads[i]->headPos, 0);
     }
-
-  
-    // isInserting = false;
-    // lastInsertedKey = -1;
-    // isCreating = false;
-    // isDuplicateInsert = false;
 
     isInserting = false;
     isSearching = false;
     isDeleting = false;
     isCreating = false;
+    isUpdating = false;
 
     hasInsert = false;
     hasSearch = false;
     hasDelete = false;
     hasCreate = false;
+    hasUpdate = false;
 
     cur = -1;
     curCode = -1;
@@ -170,6 +166,15 @@ void HashTB::Insert(int key) {
     lastInsertedKey = key;
 }
 
+bool HashTB::Update(int oldKey, int newKey) {
+    bool t = DeleteNode(oldKey);
+    if(t) {
+        Insert(newKey);
+    }
+    return t;
+}
+
+
 bool HashTB::DeleteNode(int key) {
     int index = HashFunction(key);
 
@@ -213,11 +218,16 @@ bool HashTB::DeleteNode(int key) {
 
 void HashTB::DrawHashTB(vector<LinkedList*>& heads) {
     updateVariables(heads);
+    int i = 0;
     for(auto& x : heads){
         x->DrawLL(x->head);
+        DrawRectangleRounded(Rectangle{x->headPos.x - x->radius, x->headPos.y - x->radius, 2.0f * x->radius , 2.0f* x->radius}, 0.2f, 20.0f, MyColor2);
+         int Fs = max(10, static_cast<int>(x->font_size - to_string(i).size() * 3));
+            int wNode = MeasureText(to_string(i).c_str(), Fs);
+        DrawText(to_string(i).c_str(), x->headPos.x - wNode / 2, x->headPos.y - Fs / 2, Fs, x->text_color);
+        i++;
     }
 }
-
 
 void HashTB::drawStep(HashTBpaint& a, int Found) {
 
@@ -355,43 +365,9 @@ void HashTB::draw() {
             isPlaying = true;
             elapsedTime = 0.0f;
             
-            //rotationStartTime = GetTime();
-            //isMove = false;
         } else if (!steps.empty()) {
             if (cur >= 0 && cur < steps.size()) {
-                // Xử lý animation xoay - chỉ khi đang phát (isPlaying)
-                // if (steps[cur].isMove && isPlaying) {
-                //     if (!isMove) {
-                //         // Bắt đầu animation xoay
-                //         isMove = true;
-                //         rotationStartTime = GetTime();
-                //     }
-    
-                //     float rotationProgress = (GetTime() - rotationStartTime) / stepDuration;
-                    
-                //     if (rotationProgress < 1.0f) {
-                //         // Đang trong quá trình xoay
-                //         AVLpaint tmp;
-                //         tmp.copy(steps[cur].heads);
-                //         tmp.isMove = true;
-                        
-                //         updateNodePositions(tmp.heads, steps[cur+1].heads, rotationProgress);
-                        
-                //         drawStep(tmp);
-                //     } else {
-                //         // Kết thúc xoay, chuyển sang bước tiếp theo
-                //         isMove = false;
-                //         cur++;
-                //         drawStep(steps[cur]);
-                //     }
-                // } 
-
-                // else {
-                    // Vẽ bước hiện tại (không xoay hoặc không phải đang phát)
-                    
                     drawStep(steps[cur]);
-                    //cout<<"@";
-                    
                     // Tự động chuyển bước nếu đang phát
                     if (isPlaying) {
                         elapsedTime += GetFrameTime();
@@ -414,6 +390,94 @@ void HashTB::draw() {
             }
         }
     }
+
+    if (currentOperation == Operation::Update) {
+        if (isUpdating) {
+            Found = (this->Update(UpdateKey, newKey)) ? 1 : 0;
+            cout<<"ok\n";
+            cout<<UpdateKey<<" "<<newKey;
+            if(!Found) {
+                addStepH(this->heads, 2);
+            }
+            index = HashFunction(UpdateKey);
+
+            CalculatePos(index, heads[index]->headPos);
+            addStepH(this->heads);
+            isUpdating = false;
+            
+            isPlaying = true;
+            elapsedTime = 0.0f;
+            rotationStartTime = GetTime();
+            isMove = false;
+        } else if (!steps.empty()) {
+
+            if (cur >= 0 && cur < steps.size()) {
+
+                if (steps[cur].isMove && isPlaying) {
+                    if (!isMove) {
+                        // Bắt đầu animation xoay
+                        isMove = true;
+                        rotationStartTime = GetTime();
+                    }
+                    float rotationProgress = (GetTime() - rotationStartTime) / stepDuration;
+                    
+                    if (rotationProgress < 1.0f) {
+                        HashTBpaint tmp;
+                        tmp.copy(steps[cur].heads);
+
+        
+
+                        Node* aa = tmp.heads[index]->head;
+                        
+                        tmp.isMove = true;
+                        // cout<<"X";
+                        updateHTBNodePositions(tmp.heads[index]->head, steps[cur+1].heads[index]->head, rotationProgress);
+                        
+                        // Xử lý riêng cho trường hợp delete
+                        //cout << cur << endl;
+                        if (cur == steps.size()-2) {
+                            drawStep(tmp, Found);
+                            
+                        } else {
+                            drawStep(tmp);
+                            // cout<<"hee";
+                        }
+                    } else {
+                        // Kết thúc xoay, chuyển sang bước tiếp theo
+                        isMove = false;
+                        cur++;
+                        if (cur == steps.size()-1) {
+                            drawStep(steps[cur], Found);
+                        } else {
+                            drawStep(steps[cur]);
+                        }
+                    }
+                } 
+                else {
+                    //Vẽ bước hiện tại (không xoay hoặc không phải đang phát)
+                    if (cur == steps.size()-2) {
+                        drawStep(steps[cur], Found);
+                    } else {
+                        drawStep(steps[cur]);
+                    }
+                    
+                    // Tự động chuyển bước nếu đang phát
+                    if (isPlaying) {
+                        elapsedTime += GetFrameTime();
+                        if (elapsedTime >= stepDuration) {
+                            if (cur < steps.size() - 1) {
+                                cur++;
+                                elapsedTime = 0.0f;
+                            } else {
+                                isPlaying = false;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+
 
 
     if (currentOperation == Operation::Delete) {
@@ -452,8 +516,6 @@ void HashTB::draw() {
                         // Đang trong quá trình xoay
                         HashTBpaint tmp;
                         tmp.copy(steps[cur].heads);
-
-                        if(index >= tmp.heads.size()) ;
 
                         Node* aa = tmp.heads[index]->head;
                         
@@ -551,28 +613,6 @@ void HashTB::draw() {
 
 }
 
-// void HashTB::draw() {
-//     Page::draw();
-  
-//     DrawHashTable();
-//     DrawSearchEffect();
-//     DrawInsertEffect();
-//     DrawDeleteEffect();
-//     // for(auto& a: heads){
-//     //     a->draw();
-//     // }
-//     head.Draw(MyColor2, getMODE());
-//     switchState ? home2.Draw() : home.Draw();
-//     if (isCreating && !createKeys.empty()) {
-//         Insert(createKeys.front());
-//         createKeys.erase(createKeys.begin());
-
-//     }
-//     if (createKeys.empty()) isCreating = false;
-// }
-
-
-
 void HashTB::event() {
     Page::event();
     
@@ -603,7 +643,7 @@ void HashTB::event() {
                 heads.resize(tableSize, nullptr);
                 for(int i=0; i< tableSize; i++){
                     if(!heads[i]) heads[i] = new LinkedList();
-                    heads[i]->headPos = {origin.x , origin.y+ (spacing+radius)*i};
+                    heads[i]->headPos = {origin.x , origin.y+ (spacing * 1.5f+radius)*i};
                     heads[i]->head = new Node(i, nullptr, heads[i]->headPos, 0);
                 }
 
@@ -625,6 +665,7 @@ void HashTB::event() {
             hasSearch = false;
             hasDelete = false;
             hasCreate = false;
+            hasUpdate = false;
             cur = 0;
             BeginMode2D(camera);  
             DrawHashTB(this->heads);  
@@ -647,6 +688,7 @@ void HashTB::event() {
             hasSearch = true;
             hasDelete = false;
             hasCreate = false;
+            hasUpdate = false;
             cur = 0;
             steps.clear();
             addStepH(this->heads);
@@ -664,6 +706,7 @@ void HashTB::event() {
             hasSearch = false;
             hasDelete = true;
             hasCreate = false;
+            hasUpdate = false;
             cur = 0;
             steps.clear();
             addStepH(this->heads);
@@ -676,15 +719,25 @@ void HashTB::event() {
         }
     }
 
-    if(currentOperation != Operation::Create && currentOperation != Operation::Update){
-        isClosingCodePlace = false;
-        isExpandingCodePlace = true;
-        animatingTime = 0;
-    }
-    else{
-        isClosingCodePlace = true;
-        isExpandingCodePlace = false;
-        animatingTime = 0;
+    
+    if(currentOperation == Operation::Update) {
+        if(!hasUpdate) {
+            hasInsert = false;
+            hasSearch = false;
+            hasDelete = false;
+            hasCreate = false;
+            hasUpdate = true;
+            cur = 0;
+            steps.clear();
+            addStepH(this->heads);
+        }
+        if(textbox.nums.size() > 0) {
+            UpdateKey = textbox.nums[0];
+            newKey = textbox.nums[1];
+            textbox.nums.clear();
+            isUpdating = true;
+            textbox.inputText = {""};
+        }
     }
 
  
@@ -871,7 +924,7 @@ void HashTB::RANDOM_INPUT(){
     
     if(currentOperation == Operation::Create){
             textbox.reset();
-            std::uniform_int_distribution<int> bucket(3, 9); 
+            std::uniform_int_distribution<int> bucket(3, 8); 
             int numBucket = bucket(rng);
             std::uniform_int_distribution<int> value(0, 999);
             std::uniform_int_distribution<int> valueSize(5, 30);
@@ -913,7 +966,6 @@ void HashTB::Create(){
     if (!createKeys.empty()) {
         Insert(createKeys.front());
         createKeys.erase(createKeys.begin());
-        // std::this_thread::sleep_for(std::chrono::milliseconds((int) (300 / animationSpeed)));
     }
     if (createKeys.empty()) {
         isCreating = false;

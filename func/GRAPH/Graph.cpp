@@ -409,7 +409,7 @@ void Graph::RANDOM_INPUT() {
     switch (currentOperation) {
         case Operation::Create: {
             textbox.reset();
-            std::uniform_int_distribution<int> vertexDist(5, 20);
+            std::uniform_int_distribution<int> vertexDist(4, 9);
             int numVertices = vertex_textbox.inputText.empty() || vertex_textbox.inputText[0].empty() ? vertexDist(rng) : stoi(vertex_textbox.inputText[0]);
             if (vertex_textbox.inputText[0].empty()) vertex_textbox.inputText[0] = to_string(numVertices);
 

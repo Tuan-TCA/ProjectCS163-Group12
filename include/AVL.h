@@ -7,7 +7,7 @@ using namespace std;
 #include <raylib.h>
 #include "Variables.h"
 #include "Page.h"
-#include "ControlAnimation.h"
+
 
 class TreeNode {
 public:
@@ -57,8 +57,7 @@ public:
 class AVLpaint {
     public:
     TreeNode *root;
-    Rectangle workplace = {screenWidth*0.24f,screenHeight*0.2f,(float) screenWidth *(1-0.24f),screenHeight*(1-0.095f)};
-    Vector2 rootPos= {workplace.x + workplace.width / 2, workplace.y};      
+    Vector2 rootPos= {screenWidth*0.6f, screenHeight*0.2f};            
     const int radius = 40;
     const int font_size = 30;
     const int spacing = 50;
@@ -81,7 +80,7 @@ class AVLpaint {
     int posX = 800;
     int posY = 800;
     void noti() {
-        DrawText("NOT FOUND", posX, posY, font_size*2, RED);
+        DrawText("NOT FOUND", screenWidth * 0.7f, screenHeight * 0.85f , font_size * 1.3f, RED);
     }
 
     TreeNode* copyTree(TreeNode* root) {
@@ -104,40 +103,28 @@ class AVLpaint {
     void updateTargetPos(const AVLpaint& b) {
         if (!this->root) return;
     
-        // Cập nhật targetPos cho tất cả các node dựa trên cây đích b
         updateTargetPositions(this->root, b.root);
     }
     
     TreeNode* findNodeByValue(TreeNode* node, int value);
 
-    // Hàm phụ để cập nhật targetPos dựa trên cây đích
     void updateTargetPositions(TreeNode* current, TreeNode* targetRoot) {
         if (!current) return;
 
-        // Tìm node tương ứng trong cây đích dựa trên val
         TreeNode* target = findNodeByValue(targetRoot, current->val);
         if (target) {
-            current->targetPos = target->Pos; // Gán targetPos từ vị trí của node đích
         }
 
-        // Đệ quy cập nhật cho cây con trái và phải
         updateTargetPositions(current->left, targetRoot);
         updateTargetPositions(current->right, targetRoot);
     }
 
-    // Hàm phụ để tìm node trong cây đích theo giá trị
-    //TreeNode* findNode(TreeNode* root, int val);
-    //void updateNodePositions(TreeNode* src, TreeNode* target, float progress);
     void updateRotation(float stepDuration, AVLpaint& tmp, AVLpaint& tar);
 };
-
-
-//void updateRotation(float stepDuration, AVLpaint& tmp, AVLpaint& tar);
 
 class AVL : public Page{
 public:
     TreeNode *root;
-    Rectangle workplace;
     Vector2 rootPos;
     
 
@@ -148,10 +135,10 @@ public:
     const Color choose_color = { 0, 128, 0, 128 };//green
     const Color visit_color = RED;//red
     const Color ring = MyColor2;
-    const Color circle = MyColor2;
+    const Color circe = MyColor2;
     const Color text_color = WHITE;
     const float arrow_size = 15.0;
-    const Color arrow_color = MyColor1;
+    Color arrow_color = MyColor1;
     float rotationStartTime = 0;
 
     ~AVL();
@@ -160,6 +147,7 @@ public:
     void insert(int key, TreeNode*& root, TreeNode* parent = nullptr);
     bool search(int key, TreeNode*& root, TreeNode* parent = nullptr);
     void Create();
+    bool Update(int UpdateKey, int newKey);
     bool deleteAVL(TreeNode* &root, TreeNode* &parent, int key);
     void balance(TreeNode * &root, TreeNode *& parent, int key);
 
@@ -194,7 +182,11 @@ public:
 
 
     //Page control
-    ControlAnimation animationController;
+
+    bool isUpdating = false;
+    int newKey = -1, UpdateKey = -1;
+    bool hasUpdate = false;
+    
     bool isInserting;
     bool hasInsert = false;
     int lastInsertedKey;
@@ -212,9 +204,7 @@ public:
     bool hasCreate = false;
     vector<int> createKeys;
 
-    bool isUpdating;
-    int UpdateKey;
-    int newVal;
+
 
     bool isRotating = false;
 

@@ -3,7 +3,6 @@
 #include <thread>
 #include <random>
 #include<iostream>
-#include "ControlAnimation.h"
 using namespace std;
 
 LinkedList::LinkedList() {
@@ -39,6 +38,7 @@ void LinkedList::init(){
     hasSearch = false;
     hasDelete = false;
     hasCreate = false;
+    hasUpdate = false;
 
     cur = -1;
     curCode = -1;
@@ -84,10 +84,11 @@ void LinkedList::event() {
     //Choose Operation
    
     if(currentOperation == Operation::Create) {
-     hasInsert = false;
+        hasInsert = false;
         hasSearch = false;
         hasDelete = false;
         hasCreate = true;
+        hasUpdate = false;
         cur = 0;
        BeginMode2D(camera);  
         DrawLL(this->head);   
@@ -122,6 +123,7 @@ void LinkedList::event() {
             hasSearch = false;
             hasDelete = false;
             hasCreate = false;
+            hasUpdate = false;
             cur = 0;
              BeginMode2D(camera);  
         DrawLL(this->head);   
@@ -144,6 +146,7 @@ void LinkedList::event() {
             hasSearch = true;
             hasDelete = false;
             hasCreate = false;
+            hasUpdate = false;
             cur = 0;
             steps.clear();
             addStep(this->head);
@@ -155,12 +158,37 @@ void LinkedList::event() {
             textbox.inputText = {""};
         }
     }
+
+    
+    if(currentOperation == Operation::Update) {
+        if(!hasUpdate) {
+            hasInsert = false;
+            hasSearch = false;
+            hasDelete = false;
+            hasCreate = false;
+            hasUpdate = true;
+            cur = 0;
+            steps.clear();
+            addStep(this->head);
+        }
+        if(textbox.nums.size() > 0) {
+            UpdateKey = textbox.nums[0];
+            newKey = textbox.nums[1];
+            cout << UpdateKey << " " << newKey << endl;
+            textbox.nums.erase(textbox.nums.begin());
+            textbox.nums.erase(textbox.nums.begin());
+            isUpdating = true;
+            textbox.inputText = {""};
+        }
+    }
+
     if(currentOperation == Operation::Delete) {
         if(!hasDelete) {
             hasInsert = false;
             hasSearch = false;
             hasDelete = true;
             hasCreate = false;
+            hasUpdate = false;
             cur = 0;
             steps.clear();
             addStep(this->head);
@@ -172,36 +200,22 @@ void LinkedList::event() {
             textbox.inputText = {""};
         }
     }
-    if(currentOperation != Operation::Create && currentOperation != Operation::Update){
-        isClosingCodePlace = false;
-        isExpandingCodePlace = true;
-        animatingTime = 0;
-    }
-    else{
-        isClosingCodePlace = true;
-        isExpandingCodePlace = false;
-        animatingTime = 0;
-    }
+    
+
     handleUI();
     //...Lưu ý: Cần chỉnh sửa hiển thị nút play, pause cho phù hợp
 }
 
 
 void LinkedList::draw() {
+
+
     Page::draw();
 
     static float elapsedTime = 0.0f;
     const float stepDuration = 0.5f / animationSpeed;
 
-    
-    // if(IsKeyPressed(KEY_A)) {
-    //     Vector2 k = GetMousePosition();
-    //     auto t = head->Pos;
-    //     head->Pos = k;
-    //     DrawLL(head);
-    //     head->Pos = t;
-    // }
-        if(currentOperation == Operation::Create) {
+    if(currentOperation == Operation::Create) {
         if (isCreating) {
             hasCreate = true;
             this->Create();
@@ -241,40 +255,7 @@ void LinkedList::draw() {
             //isMove = false;
         } else if (!steps.empty()) {
             if (cur >= 0 && cur < steps.size()) {
-                // Xử lý animation xoay - chỉ khi đang phát (isPlaying)
-                // if (steps[cur].isMove && isPlaying) {
-                //     if (!isMove) {
-                //         // Bắt đầu animation xoay
-                //         isMove = true;
-                //         rotationStartTime = GetTime();
-                //     }
-    
-                //     float rotationProgress = (GetTime() - rotationStartTime) / stepDuration;
-                    
-                //     if (rotationProgress < 1.0f) {
-                //         // Đang trong quá trình xoay
-                //         AVLpaint tmp;
-                //         tmp.copy(steps[cur].head);
-                //         tmp.isMove = true;
-                        
-                //         updateNodePositions(tmp.head, steps[cur+1].head, rotationProgress);
-                        
-                //         drawStep(tmp);
-                //     } else {
-                //         // Kết thúc xoay, chuyển sang bước tiếp theo
-                //         isMove = false;
-                //         cur++;
-                //         drawStep(steps[cur]);
-                //     }
-                // } 
-
-                // else {
-                    // Vẽ bước hiện tại (không xoay hoặc không phải đang phát)
-                    
                     drawStep(steps[cur]);
-                    
-                    
-                    // Tự động chuyển bước nếu đang phát
                     if (isPlaying) {
                         elapsedTime += GetFrameTime();
                         if (elapsedTime >= stepDuration) {
@@ -287,16 +268,52 @@ void LinkedList::draw() {
                         }
                     
                     }
-
-                    // if(cur == steps.size() && cur!=0) {  
-                    //     drawStep(steps[cur-1]);   
-                    //     cout<<"ok";      
-                    //     isPlaying = false;
-                    // }
             }
         }
     }
 
+    if (currentOperation == Operation::Update) {
+        if (isUpdating) {
+            Found = (this->Update(UpdateKey, newKey)) ? 1 : 0;
+            cout << "ok";
+            if(!Found) {
+                addStep(this->head, 6);
+            }
+            addStep(this->head);
+            isPlaying = true;
+            isUpdating = false;                 
+            elapsedTime = 0.0f;      
+            
+        } else {
+        
+                if (!steps.empty()) {
+                    if(cur >= 0 && cur< steps.size()) {
+                        
+                        if(cur == steps.size()-2) {
+                            drawStep(steps[cur], Found);
+                        }
+                        else 
+                            drawStep(steps[cur]);
+                    }
+
+    
+                    if (isPlaying) {
+                        elapsedTime += GetFrameTime();
+                        if (elapsedTime >= stepDuration) {
+                            if (cur < steps.size() ) {
+                                cur++;
+                                elapsedTime = 0.0f;
+                            }
+                        }
+                    }
+                    
+                    if(cur == steps.size() && cur!=0) {  
+                        drawStep(steps[cur-1]);         
+                        isPlaying = false;
+                    }
+                }
+        }
+    }
     
     if (currentOperation == Operation::Delete) {
         if (isDeleting) {
@@ -316,7 +333,6 @@ void LinkedList::draw() {
             if (cur >= 0 && cur < steps.size()) {
                 // Xử lý animation xoay - chỉ khi đang phát (isPlaying)
                 if (steps[cur].isMove && isPlaying) {
-                    //cout<<steps[cur].head->val<<" ";
                     if (!isMove) {
                         // Bắt đầu animation xoay
                         isMove = true;
@@ -332,7 +348,6 @@ void LinkedList::draw() {
                         tmp.isMove = true;
                         
                         updateLLNodePositions(tmp.head, steps[cur+1].head, rotationProgress);
-                        //cout<<endl<<"why";
                         // Xử lý riêng cho trường hợp delete
                         if (cur == steps.size()-2) {
                             drawStep(tmp, Found);
@@ -476,13 +491,7 @@ void LinkedList::updatePseudocode(){
 
 }
 
-Vector2 LinkedList::GetPosition(int count){
-    int d = 2 * radius * count + (count - 1)*spacing;
-    int X = max((W/2 - d/2) + radius, 0) + 400;
-    int Y = H/2;
-    Vector2 center = {(float)X, (float)Y};
-    return center; 
-}
+
 
 int LinkedList::CountNode(Node* head){
     if(!head) return 0;
@@ -739,6 +748,37 @@ bool LinkedList::Search(int key) {
     return false;
 }
 
+bool LinkedList::Update(int oldKey, int newKey) {
+    if(!head) {
+        return false;
+    }
+
+    Node* a = head;
+    while(a) {
+        addStep(this->head); 
+        if(a->val == oldKey) {
+            
+            a->isHighLight = 1;
+            addStep(this->head);  
+            a->isHighLight = 0;
+
+            a->val = newKey;
+            a->isHighLight = 1;
+            addStep(this->head);  
+            a->isHighLight = 0;
+            return true;
+        }
+
+        a->isHighLight = -1;
+        addStep(this->head);  
+        a->isHighLight = 0;
+
+        a = a->next;
+    }
+    addStep(this->head);
+    return false;
+}
+
 bool LinkedList::DeleteNode(int key) {
     if(!head) {
         addStep(this->head, 0);
@@ -748,9 +788,9 @@ bool LinkedList::DeleteNode(int key) {
     Node* pre = nullptr;
     Node* a = head;
     
-    a->isHighLight = -1;
-    addStep(this->head,1);  
-    a->isHighLight = 0;
+    // a->isHighLight = -1;
+    // addStep(this->head,1);  
+    // a->isHighLight = 0;
 
     while(a) {
         addStep(this->head,2); 
@@ -805,7 +845,6 @@ void LinkedList::handleUI(){
         updatePseudocode();
         lastOp = currentOperation;
     }
-
     //RUN AT ONCE
     if(forward1.IsClicked() || forward2.IsClicked()){
         cur = steps.size() - 1;
@@ -847,7 +886,7 @@ void LinkedList::handleUI(){
 
 void LinkedList::RANDOM_INPUT(){
      std::mt19937 rng(std::random_device{}());
-    std::uniform_int_distribution<int> dist(0, 15);
+    std::uniform_int_distribution<int> dist(2, 8);
     if(currentOperation == Operation::Create){
         textbox.inputText = {to_string(dist(rng))};
     }

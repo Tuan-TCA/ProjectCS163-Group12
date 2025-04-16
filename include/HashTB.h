@@ -104,7 +104,9 @@ public:
      float arrow_size = 9.0f;
 
     // Logic variables
-    
+    bool isUpdating = false;
+    int UpdateKey = -1;
+    int newKey = -1;
     bool isInserting = false;
     int lastInsertedKey = -1;
 
@@ -131,6 +133,7 @@ public:
     bool hasSearch;
     bool hasDelete;
     bool hasCreate;
+    bool hasUpdate;
 
     // Constructor & Destructor
     // HashTB();
@@ -149,6 +152,7 @@ public:
     void Insert(int key);
     bool Search(int key);
     bool DeleteNode(int key);
+    bool Update(int oldKey, int newKey);
     void Create();
 
     void Clear(); // optional reset function

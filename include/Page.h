@@ -21,6 +21,7 @@ enum class InputType {
     Keyboard,
     File
 };
+
 class Page {
 protected:
 vector<string> OperationOptions;
@@ -67,6 +68,7 @@ public:
     bool isExpanding = false;
     bool isExpandingCodePlace = false;
     bool isClosingCodePlace = false;
+    Button showCodeButton;
     MyRec speedSliding;
     // Slider timeSlider;
     ButtonFromImage back1, next1, pause1, play1, backward1, forward1;
