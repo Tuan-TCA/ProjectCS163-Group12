@@ -9,6 +9,7 @@ Program::Program () {
 }
 
 void Program::init(){
+    FONT = LoadFont("res/font/MouldyCheeseRegular-WyMWG.ttf");
     menu.init();
     LL.init();
     graph.init();

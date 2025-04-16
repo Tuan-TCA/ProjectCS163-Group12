@@ -45,7 +45,6 @@ public:
     Button OperationNextButton;
 
     //others
-    int newValue, oldValue;
     bool isPlaying;
     MyRec head;
     Rectangle bottom;
@@ -57,8 +56,7 @@ public:
     TextBox textbox;
     TextBox oldTextBox;
     TextBox newTextBox;
-    
-    Font FONT2;
+
     Slider musicVolume;
     Rectangle setting_menu;
     SwitchThemeButton theme;

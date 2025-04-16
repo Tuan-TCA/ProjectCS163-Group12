@@ -19,7 +19,7 @@ float volume = 0.3f;
 bool pause = false;
 bool switchState = false;
 char filePath[50];
-Font FONT = LoadFont("res/font/setback.png");
+Font FONT = LoadFont("res/font/MouldyCheeseRegular-WyMWG.ttf");
 
 Color MyColor1 = Color{17, 105, 124, 255};
 Color MyColor2 = Color{27, 177, 177, 255};

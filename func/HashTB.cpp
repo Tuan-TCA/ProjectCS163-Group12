@@ -258,8 +258,8 @@ void HashTB::DrawHashTB(vector<LinkedList*>& heads) {
         x->DrawLL(x->head);
         DrawRectangleRounded(Rectangle{x->headPos.x - x->radius, x->headPos.y - x->radius, 2.0f * x->radius , 2.0f* x->radius}, 0.2f, 20.0f, MyColor2);
          int Fs = max(10, static_cast<int>(x->font_size - to_string(i).size() * 3));
-            int wNode = MeasureText(to_string(i).c_str(), Fs);
-        DrawText(to_string(i).c_str(), x->headPos.x - wNode / 2, x->headPos.y - Fs / 2, Fs, x->text_color);
+            int wNode = MeasureTextEx(FONT, to_string(i).c_str(), Fs, 2).x;
+        DrawTextEx(FONT, to_string(i).c_str(),{ x->headPos.x - wNode / 2, x->headPos.y - Fs / 2}, Fs, 2, x->text_color);
         i++;
     }
 }
@@ -276,7 +276,7 @@ void HashTB::drawStep(HashTBpaint& a, int Found) {
         // Tìm dòng dài nhất để làm kích thước chuẩn
         
         for(const auto& line : pseudocode) {
-            Vector2 lineWidth = MeasureTextEx(FONT2, line.c_str(), 20, 3);
+            Vector2 lineWidth = MeasureTextEx(FONT, line.c_str(), 20, 3);
             if(lineWidth.x > maxWidth.x) maxWidth = lineWidth;
         }
         textWidth = maxWidth.x;
@@ -291,7 +291,7 @@ void HashTB::drawStep(HashTBpaint& a, int Found) {
             }
             
             // Vẽ chữ
-            DrawTextEx(FONT2, pseudocode[i].c_str(), 
+            DrawTextEx(FONT, pseudocode[i].c_str(), 
                       {pseudocodeX, pseudocodeY + i*lineHeight}, 
                       20, 3, textColor);
         }

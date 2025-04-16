@@ -30,7 +30,6 @@ void Page::updateSide(){
 }
 
 void Page::init() {
-    FONT2 = LoadFont("res/font/MouldyCheeseRegular-WyMWG.ttf"); 
     selectedInputIndex = 0;
     InputOptionButton = Button((side.x + side.width) * 0.15f, side.y + screenHeight*0.63f * 0.15f + 10 , screenWidth*0.24f * 0.7f, screenHeight*0.63f * 0.15f, InputOptions[selectedInputIndex].c_str(), WHITE, LIGHTGRAY, MyColor5);
     InputPrevButton = Button(side.x + 5,side.y + screenHeight*0.63f * 0.15f + 10 ,  screenWidth*0.24f * 0.15f - 10, screenHeight*0.63f * 0.15f, "<", WHITE, LIGHTGRAY, MyColor5);
@@ -113,7 +112,9 @@ void Page::reset(){
 void Page::draw() {
     ClearBackground(RAYWHITE);
     DrawTexture(switchState ? background2 : background1, 0, 0, WHITE);
-    head.Draw(MyColor2, getMODE());
+    DrawRectangleRec(head.bounds, MyColor2);
+     int textWidth = MeasureTextEx(FONT,getMODE().c_str(), 40, 3).x;
+    DrawTextEx(FONT, getMODE().c_str(), {head.bounds.x + (head.bounds.width - textWidth) / 2, head.bounds.y + (head.bounds.height - 30) / 2}, 40, 3, WHITE);
     DrawRectangleRounded(bottom, 20, 20, MyColor2);
     DrawRectangleRec(side, MyColor3);
     DrawRectangleRounded({-10, screenHeight / 2 - screenHeight * 0.64f / 2, 30,screenHeight*0.305f }, 0.5f, 30, MyColor3);
@@ -130,8 +131,8 @@ void Page::draw() {
      DrawRectangleRounded(setting_menu, 0.42f, 30, MyColor3);
      musicVolume.Draw();
     theme.Draw();
-    DrawTextEx(FONT2, "THEME", {setting_menu.x + 15, setting_menu.y + 18}, 25, 2, WHITE);
-    DrawTextEx(FONT2, "VOLUME", {setting_menu.x + 15, musicVolume.bounds.y + musicVolume.bounds.height / 3}, 23, 2, WHITE);
+    DrawTextEx(FONT, "THEME", {setting_menu.x + 15, setting_menu.y + 18}, 25, 2, WHITE);
+    DrawTextEx(FONT, "VOLUME", {setting_menu.x + 15, musicVolume.bounds.y + musicVolume.bounds.height / 3}, 23, 2, WHITE);
 
 
     // timeSlider.Draw();
@@ -157,7 +158,7 @@ void Page::draw() {
     }
     else{
         DrawRectangle(side.x * 1.2f + 5, side.y + screenHeight*0.63f * 0.3f + 15, screenWidth*0.24f - 10, screenHeight*0.63f * 0.15f, WHITE);
-        DrawText("DROP FILE HERE", side.x * 1.2f + 30, screenHeight / 2 - screenHeight*0.63f * 0.118f, 25, GRAY);
+        DrawTextEx(FONT, "DROP FILE HERE", {side.x * 1.2f + 50, screenHeight / 2 - screenHeight*0.63f * 0.118f}, 25, 2, GRAY);
         //drop file field
     }
     

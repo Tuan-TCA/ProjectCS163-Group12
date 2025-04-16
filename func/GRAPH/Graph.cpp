@@ -47,7 +47,7 @@ void Graph::draw(){
 
     //setting
     show_weight.Draw();
-    DrawTextEx(FONT2, "WEIGHT", {setting_menu.x + 15, setting_menu.y + 18 + setting_menu.width*0.3f * 0.61f * 2 + 15}, 25, 2, WHITE);
+    DrawTextEx(FONT, "WEIGHT", {setting_menu.x + 15, setting_menu.y + 18 + setting_menu.width*0.3f * 0.61f * 2 + 15}, 25, 2, WHITE);
     //Algorithm
     if(currentOperation == Operation::Algorithm){
         AlgorithmOptionButton.Draw(LIGHTGRAY, WHITE);
@@ -68,7 +68,7 @@ void Graph::draw(){
     Vector2 maxWidth = {0,0};
         // Tìm dòng dài nhất để làm kích thước chuẩn
         for(const auto& line : pseudocode) {
-            Vector2 lineWidth = MeasureTextEx(FONT2, line.c_str(), 15, 3);
+            Vector2 lineWidth = MeasureTextEx(FONT, line.c_str(), 15, 3);
             if(lineWidth.x > maxWidth.x) maxWidth = lineWidth;
         }
         textWidth = maxWidth.x; 
@@ -83,7 +83,7 @@ void Graph::draw(){
             currentColor.a = 0;
         }
         DrawRectangleRounded(Rectangle{codeDisplayPLace.x, codeDisplayPLace.y + 10 + i * lineHeight, codeDisplayPLace.width,  lineHeight}, 0, 5, currentColor);
-        DrawTextEx(FONT2, pseudocode[i].c_str(), {codeDisplayPLace.x + 5, codeDisplayPLace.y + 10 + i * lineHeight} , 15, 3, MyColor4);
+        DrawTextEx(FONT, pseudocode[i].c_str(), {codeDisplayPLace.x + 5, codeDisplayPLace.y + 10 + i * lineHeight} , 15, 3, MyColor4);
         
     }
     }
