@@ -1073,9 +1073,9 @@ int AVL::getLevel(TreeNode *root) {
 
 
 Vector2 AVL::calculateChildPos(Vector2 parentPos, bool isLeft, int level) {
-    float xOffset = 850 / pow(2, level + 2);
+    float xOffset = 850 / pow(2, level + 1.5);
     return {
-        isLeft ? parentPos.x - 4.2f * xOffset : parentPos.x + 4.2f *xOffset,
+        isLeft ? parentPos.x - 4.f * xOffset : parentPos.x + 4.f *xOffset,
         parentPos.y + 3.5f *radius  
     };
 }
