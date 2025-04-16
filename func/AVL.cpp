@@ -1207,8 +1207,8 @@ void AVL::DrawTN(TreeNode *a){
 
     int Fs = max(10, static_cast<int>(font_size-s.size()*3));
     
-    int wNode =  MeasureText(s.c_str(), Fs);
-    DrawText(s.c_str(), center.x - wNode / 2, center.y - Fs/2, Fs, text_color);
+    int wNode =  MeasureTextEx(FONT, s.c_str(), Fs, 2).x;
+    DrawTextEx(FONT, s.c_str(), {center.x - wNode / 2, center.y - Fs/2}, Fs, 2, text_color);
     
     
 }

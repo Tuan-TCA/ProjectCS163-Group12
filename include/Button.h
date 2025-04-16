@@ -232,7 +232,7 @@ public:
 
             float lineHeight = 25;
             // Vector2 textHeight = MeasureTextEx(FONT, displayText.c_str(), 25, 1);
-            DrawText(displayText.c_str(), bounds.x + 5 , bounds.y + 5  + cnt * lineHeight, 25, textColor);
+            DrawTextEx(FONT, displayText.c_str(), {bounds.x + 5 , bounds.y + 5  + cnt * lineHeight}, 25, 2, textColor);
             cnt++;
             
         }

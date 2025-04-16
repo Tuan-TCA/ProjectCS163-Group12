@@ -204,18 +204,19 @@ void Page::event() {
     float deltaTime = GetFrameTime();
     Vector2 mousePos = GetMousePosition();
     //SETTING
+    
+    Rectangle targetPlace = Rectangle{screenWidth * 0.8f, screenHeight * 0.7f, screenWidth * 0.19f, screenHeight * 0.18f};
+    Rectangle closedPlace = Rectangle{(float) screenWidth * 0.99f, screenHeight * 0.7f, screenWidth * 0.19f, screenHeight * 0.18f};
+    Rectangle checkPlace = Rectangle{screenWidth * 0.9f, screenHeight * 0.7f, screenWidth * 0.5f, screenHeight * 0.18f};
+    
     musicVolume.Update();
     float wheel1 = GetMouseWheelMove();
-    if(wheel1) {
+    if(wheel1 && CheckCollisionPointRec(mousePos, targetPlace)) {
         musicVolume.value += wheel1 * 0.1f;
         if(musicVolume.value > 1) musicVolume.value = 1;
         else if(musicVolume.value < 0) musicVolume.value = 0;
     }
     volume = musicVolume.value;
-    Rectangle targetPlace = Rectangle{screenWidth * 0.8f, screenHeight * 0.7f, screenWidth * 0.19f, screenHeight * 0.18f};
-    Rectangle closedPlace = Rectangle{(float) screenWidth * 0.99f, screenHeight * 0.7f, screenWidth * 0.19f, screenHeight * 0.18f};
-    Rectangle checkPlace = Rectangle{screenWidth * 0.9f, screenHeight * 0.7f, screenWidth * 0.5f, screenHeight * 0.18f};
-  
         if (CheckCollisionPointRec(mousePos, targetPlace)) {
         if(CheckCollisionPointRec(mousePos, checkPlace)){
         setting_IsOpening = true;
