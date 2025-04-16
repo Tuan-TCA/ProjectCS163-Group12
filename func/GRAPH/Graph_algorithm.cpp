@@ -483,6 +483,7 @@ void Graph::bfsComponents(Vertex* source, Color CC_COLOR, unordered_set<Vertex*>
 }
 
 void Graph::findConnectedComponents(){
+    if(matrix.empty()) return;
     unordered_set<Vertex*> visited;
     vector<Color> colors = {ORANGE, RED, GREEN, BLUE, YELLOW, PURPLE, PINK, SKYBLUE, LIME, MAGENTA, RAYWHITE, DARKGREEN, DARKPURPLE, DARKBROWN}; // Nhiều màu hơn
     int colorIndex = 0;
@@ -496,6 +497,7 @@ void Graph::findConnectedComponents(){
 }
 
 void Graph::handleCC(){
+    if(matrix.empty()) return;
      float deltaTime = GetFrameTime();
      if(AlgorithmOptionButton.IsClicked() || Ok.IsClicked()){
         isAnimating = true;

@@ -41,6 +41,41 @@ void HashTB::init(){
     pseudocode = {};
 }
 
+void HashTB::reset(){
+    Page::reset();
+    tableSize = 3;
+    origin = { screenWidth * 0.416f, screenHeight * 0.22f };
+    camera.target = origin;
+    camera.offset = origin;
+    for(auto& head: heads){
+        head->reset();
+        
+    }
+    heads.clear();
+    
+    heads.resize(tableSize, nullptr);
+    for(int i=0; i< tableSize; i++){
+        if(!heads[i]) heads[i] = new LinkedList();
+        heads[i]->headPos = {origin.x , origin.y+ (spacing * 1.5f+radius)*i};
+        heads[i]->head = new Node(i, nullptr, heads[i]->headPos, 0);
+    }
+     isInserting = false;
+    isSearching = false;
+    isDeleting = false;
+    isCreating = false;
+    isUpdating = false;
+
+    hasInsert = false;
+    hasSearch = false;
+    hasDelete = false;
+    hasCreate = false;
+    hasUpdate = false;
+     createKeys.clear();
+
+    cur = -1;
+    curCode = -1;
+}
+
 
 HashTB::HashTB(int size) {
     tableSize = size;
@@ -147,7 +182,7 @@ void HashTB::Insert(int key) {
     while (a && a->next) {
         addStepH(this->heads, 3);
         a = a->next;
-        // cout<<"3";
+      
         a->isHighLight = -1;
         addStepH(this->heads,4);  
         a->isHighLight = 0;
@@ -193,11 +228,11 @@ bool HashTB::DeleteNode(int key) {
             a->isHighLight = 1;
             addStepH(this->heads,1);  
             a->isHighLight = 0;
-            // cout<<"@@";
+          
             pre->next = a->next;
             delete a;
             a = nullptr;
-            // cout<<"oke";
+          
 
             addStepH(this->heads,1,1);  
             return true;
@@ -310,10 +345,8 @@ void HashTB::updateHTBNodePositions(Node* &a, Node*b, float &tmp) {
         if (targetNode) {
             acur->Pos.x = acur->Pos.x + tmp * (targetNode->Pos.x - acur->Pos.x);
         }
-        //cout<<targetNode->val<<" "<<targetNode->Pos.x<<"---";
         acur = acur->next;
     }
-    //cout<<endl;
 }
 
 
@@ -357,7 +390,6 @@ void HashTB::draw() {
 
     if (currentOperation == Operation::Insert) {
         if (isInserting) {
-            // cout<<"Insert";
             this->Insert(lastInsertedKey);
       
             addStepH(this->heads);
@@ -384,7 +416,6 @@ void HashTB::draw() {
 
                     if(cur == steps.size() && cur!=0) {  
                         drawStep(steps[cur-1]);   
-                        // cout<<"ok";      
                         isPlaying = false;
                     }
             }
@@ -394,8 +425,6 @@ void HashTB::draw() {
     if (currentOperation == Operation::Update) {
         if (isUpdating) {
             Found = (this->Update(UpdateKey, newKey)) ? 1 : 0;
-            cout<<"ok\n";
-            cout<<UpdateKey<<" "<<newKey;
             if(!Found) {
                 addStepH(this->heads, 2);
             }
@@ -430,17 +459,14 @@ void HashTB::draw() {
                         Node* aa = tmp.heads[index]->head;
                         
                         tmp.isMove = true;
-                        // cout<<"X";
                         updateHTBNodePositions(tmp.heads[index]->head, steps[cur+1].heads[index]->head, rotationProgress);
                         
                         // Xử lý riêng cho trường hợp delete
-                        //cout << cur << endl;
                         if (cur == steps.size()-2) {
                             drawStep(tmp, Found);
                             
                         } else {
                             drawStep(tmp);
-                            // cout<<"hee";
                         }
                     } else {
                         // Kết thúc xoay, chuyển sang bước tiếp theo
@@ -499,11 +525,9 @@ void HashTB::draw() {
         } else if (!steps.empty()) {
             if (cur >= 0 && cur < steps.size()) {
                 // Xử lý animation xoay - chỉ khi đang phát (isPlaying)
-                // if(isPlaying) cout << "is Playing"<<endl;
-                // else cout << "NOt playing\n";
-                // cout<<"K";
+
                 if (steps[cur].isMove && isPlaying) {
-                    //cout<<steps[cur].head->val<<" ";
+      
                     if (!isMove) {
                         // Bắt đầu animation xoay
                         isMove = true;
@@ -520,17 +544,17 @@ void HashTB::draw() {
                         Node* aa = tmp.heads[index]->head;
                         
                         tmp.isMove = true;
-                        // cout<<"X";
+                  
                         updateHTBNodePositions(tmp.heads[index]->head, steps[cur+1].heads[index]->head, rotationProgress);
                         
                         // Xử lý riêng cho trường hợp delete
-                        //cout << cur << endl;
+                   
                         if (cur == steps.size()-2) {
                             drawStep(tmp, Found);
                             
                         } else {
                             drawStep(tmp);
-                            // cout<<"hee";
+                     
                         }
                     } else {
                         // Kết thúc xoay, chuyển sang bước tiếp theo
@@ -798,52 +822,6 @@ void HashTB::handleUI(){
 }
 
 
-// void HashTB::event() {
-//     Page::event();
-
-//     updateVariables();  
-//     // for e->event();
-//     if (currentOperation == Operation:: Insert) {
-//         if (textbox.nums.size() > 0) {
-//             cout << "mimi\n";
-//             lastInsertedKey = textbox.nums[0];
-//             textbox.nums.erase(textbox.nums.begin());
-//             textbox.inputText = {""};
-//             Insert(lastInsertedKey);
-//             cout << "mama\n";
-//         }
-//     }
-
-//     if (currentOperation == Operation:: Search) {
-//         if (textbox.nums.size() > 0) {
-//             SearchKey = textbox.nums[0];
-//             textbox.nums.erase(textbox.nums.begin());
-//             textbox.inputText = {""};
-//             isSearching = true;
-//         }
-//     }
-//     if (currentOperation == Operation:: Delete) {
-//         if (textbox.nums.size() > 0) {
-//             DeleteKey = textbox.nums[0];
-//             textbox.nums.erase(textbox.nums.begin());
-//             textbox.inputText = {""};
-//             isDeleting = true;
-//         }
-//     }
-//     if (currentOperation == Operation:: Create) {
-         
-        
-//     }    
-//        for (int i = 0; i < heads.size(); ++i) {
-//     if (heads[i]) {
-       
-//         heads[i]->handleUI();
-//     } else {
-//         cout << "null at index " << i << "\n";
-//     }
-//     }
-// }
-
 void HashTB::updatePseudocode() {
     switch(currentOperation) {
         case Operation::Insert:
@@ -882,41 +860,6 @@ void HashTB::updatePseudocode() {
             // pseudocode = {};
             break;
     }
-}
-
-void HashTB::reset(){
-    Page::reset();
-    tableSize = 3;
-    origin = { screenWidth * 0.416f, screenHeight * 0.22f };
-    camera.target = origin;
-    camera.offset = origin;
-    for(auto& head: heads){
-        head->reset();
-        
-    }
-    heads.clear();
-    
-    heads.resize(tableSize, nullptr);
-    for(int i=0; i< tableSize; i++){
-        if(!heads[i]) heads[i] = new LinkedList();
-        heads[i]->headPos = {origin.x , origin.y+ (spacing+radius)*i};
-        heads[i]->head = new Node(i, nullptr, heads[i]->headPos, 0);
-    }
-     isInserting = false;
-     lastInsertedKey = -1;
-
-     isSearching = false;
-     SearchKey = -1;
-     searchFound = false; 
-
-     isDeleting = false;
-     DeleteKey = -1;
-     isDuplicateInsert = false;
-     createKeys.clear();
-
-    cur = -1;
-    curCode = -1;
-    pseudocode = {};
 }
 
 void HashTB::RANDOM_INPUT(){

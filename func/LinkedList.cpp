@@ -60,21 +60,22 @@ void LinkedList::reset(){
      headPos = {400,300};
       camera.target = headPos;
     camera.offset = headPos;
-    // position = {workplace.x*1.1f, workplace.y*1.1f};
+    isClosingCodePlace = false;
+    isExpandingCodePlace = true;
     isInserting = false;
     isSearching = false;
     isDeleting = false;
     isUpdating = false;
-    //isCreating = false;
+    isCreating = false;
 
     hasInsert = false;
     hasSearch = false;
     hasDelete = false;
     hasCreate = false;
+    hasCreate = false;
 
     cur = -1;
     curCode = -1;
-    pseudocode = {};
     lineHeight = 30;
 }
 
@@ -174,7 +175,7 @@ void LinkedList::event() {
         if(textbox.nums.size() > 0) {
             UpdateKey = textbox.nums[0];
             newKey = textbox.nums[1];
-            cout << UpdateKey << " " << newKey << endl;
+    
             textbox.nums.erase(textbox.nums.begin());
             textbox.nums.erase(textbox.nums.begin());
             isUpdating = true;
@@ -243,7 +244,7 @@ void LinkedList::draw() {
     
     if (currentOperation == Operation::Insert) {
         if (isInserting) {
-            cout<<"Insert";
+ 
             this->Insert(lastInsertedKey);
       
             addStep(this->head);
@@ -275,7 +276,7 @@ void LinkedList::draw() {
     if (currentOperation == Operation::Update) {
         if (isUpdating) {
             Found = (this->Update(UpdateKey, newKey)) ? 1 : 0;
-            cout << "ok";
+        
             if(!Found) {
                 addStep(this->head, 6);
             }
@@ -541,10 +542,10 @@ void LinkedList::updateLLNodePositions(Node* &a, Node* b, float &tmp) {
         if (targetNode) {
             acur->Pos.x = acur->Pos.x + tmp * (targetNode->Pos.x - acur->Pos.x);
         }
-        //cout<<targetNode->val<<" "<<targetNode->Pos.x<<"---";
+
         acur = acur->next;
     }
-    //cout<<endl;
+
 }
 
 
@@ -601,14 +602,14 @@ void LinkedList::DrawNode(Node* node) {
 
 void LinkedList::DrawLL(Node* head) {
     if (!head){
-        // cout << "Head is null\n";
+
         return;
     }
     Node * cur = head;
     int num = CountNode(head);
 
     Vector2 center = head->Pos;
-    // cout << center.x;
+
     while (cur){
         
         // Vector2 newCenter = {center.x + 2 * radius + spacing, center.y};
@@ -701,7 +702,7 @@ void LinkedList::Insert(int key) {
     while (a && a->next) {
         addStep(this->head, 2);
         a = a->next;
-        // cout<<"3";
+
         a->isHighLight = -1;
         addStep(this->head,3);  
         a->isHighLight = 0;

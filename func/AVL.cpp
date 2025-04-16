@@ -64,10 +64,10 @@ void AVL::reset(){
     hasInsert = false;
     hasSearch = false;
     hasDelete = false;
-
+    hasCreate = false;
+    hasUpdate = false;
     cur = -1;
     curCode = -1;
-    pseudocode = {};
      lineHeight = 30;
      createKeys.clear();
 }
@@ -1009,7 +1009,7 @@ void AVL::init() {
     hasSearch = false;
     hasDelete = false;
     hasUpdate = false;
-
+    hasCreate = false;
     cur = -1;
     curCode = -1;
     pseudocode = {};
