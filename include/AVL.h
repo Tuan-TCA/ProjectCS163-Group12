@@ -7,7 +7,7 @@ using namespace std;
 #include <raylib.h>
 #include "Variables.h"
 #include "Page.h"
-#include "ControlAnimation.h"
+
 
 class TreeNode {
 public:
@@ -57,8 +57,7 @@ public:
 class AVLpaint {
     public:
     TreeNode *root;
-    Rectangle workplace = {screenWidth*0.24f,screenHeight*0.2f,(float) screenWidth *(1-0.24f),screenHeight*(1-0.095f)};
-    Vector2 rootPos= {workplace.x + workplace.width / 2, workplace.y};      
+    Vector2 rootPos= {screenWidth*0.6f, screenHeight*0.2f};            
     const int radius = 40;
     const int font_size = 30;
     const int spacing = 50;
@@ -104,40 +103,28 @@ class AVLpaint {
     void updateTargetPos(const AVLpaint& b) {
         if (!this->root) return;
     
-        // Cập nhật targetPos cho tất cả các node dựa trên cây đích b
         updateTargetPositions(this->root, b.root);
     }
     
     TreeNode* findNodeByValue(TreeNode* node, int value);
 
-    // Hàm phụ để cập nhật targetPos dựa trên cây đích
     void updateTargetPositions(TreeNode* current, TreeNode* targetRoot) {
         if (!current) return;
 
-        // Tìm node tương ứng trong cây đích dựa trên val
         TreeNode* target = findNodeByValue(targetRoot, current->val);
         if (target) {
-            current->targetPos = target->Pos; // Gán targetPos từ vị trí của node đích
         }
 
-        // Đệ quy cập nhật cho cây con trái và phải
         updateTargetPositions(current->left, targetRoot);
         updateTargetPositions(current->right, targetRoot);
     }
 
-    // Hàm phụ để tìm node trong cây đích theo giá trị
-    //TreeNode* findNode(TreeNode* root, int val);
-    //void updateNodePositions(TreeNode* src, TreeNode* target, float progress);
     void updateRotation(float stepDuration, AVLpaint& tmp, AVLpaint& tar);
 };
-
-
-//void updateRotation(float stepDuration, AVLpaint& tmp, AVLpaint& tar);
 
 class AVL : public Page{
 public:
     TreeNode *root;
-    Rectangle workplace;
     Vector2 rootPos;
     
 
@@ -195,7 +182,6 @@ public:
 
 
     //Page control
-    ControlAnimation animationController;
 
     bool isUpdating = false;
     int newKey = -1, UpdateKey = -1;

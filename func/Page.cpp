@@ -6,7 +6,6 @@
 #include <sstream>
 #include <random>
 #include <raymath.h>
-#include "ControlAnimation.h"
 #include "Page.h"
 #include "Variables.h"
 using namespace std;
@@ -64,7 +63,9 @@ void Page::init() {
     pause2 = ButtonFromImage("res/button/2-pause.png", "res/button/2-pause.png", screenWidth / 2 -   screenWidth * 0.05f / 2  , screenHeight*0.92f,  screenWidth * 0.05f, screenWidth*0.05f);
     play2 = ButtonFromImage("res/button/2-play.png", "res/button/2-play.png", screenWidth / 2 -   screenWidth * 0.05f / 2  , screenHeight*0.92f,  screenWidth * 0.05f, screenWidth*0.05f);
     // timeSlider = Slider({screenWidth * 0.05f , screenHeight*0.936f,  screenWidth * 0.3f ,screenHeight * 0.095f / 3 * 0.9f}, 0.0f, 1.0f);
-    
+    isClosingCodePlace = false;
+    isExpandingCodePlace = true;
+    showCodeButton = Button(-screenWidth * 0.02f, screenHeight * 0.5f , screenWidth * 0.15, screenHeight * 0.05f, " SHOW CODE", MyColor7, Fade(MyColor7, 0.8f), WHITE);
     codeDisplayPLace = Rectangle{screenWidth * 0.01f, screenHeight * 0.56f, screenWidth * 0.24f - 12.0f, screenHeight * 0.35f};
     speedSliding = MyRec(screenWidth * 0.712f , screenHeight*0.936f,  screenWidth * 0.182f * 0.38f,screenHeight * 0.095f / 3 * 0.9f, "", MyColor3, WHITE);
     background1 = resizedImage("res/BackGround.png", screenWidth, screenHeight);   
@@ -114,7 +115,7 @@ void Page::draw() {
     DrawRectangleRoundedLinesEx(codeDisplayPLace, 0.1f, 20, 4, MyColor3);
     DrawRectangleRounded({screenWidth * 0.7f , screenHeight*0.934f , screenWidth * 0.182f,screenHeight * 0.095f / 3}, 20, 20, WHITE); //speed control
     speedSliding.DrawRounded(MyColor3);
-
+    showCodeButton.DrawRounded();
     //SETTING
      DrawRectangleRounded(setting_menu, 0.42f, 30, MyColor3);
     theme.Draw();
@@ -251,6 +252,19 @@ void Page::event() {
     // TỰ LÀM PHẦN HIGHLIGHT!!!! tham khảo Graph.draw() && psuedo code thi tuy phan
 
     //Code box event
+    if(currentOperation != Operation::Create && currentOperation != Operation::Update){
+        if(showCodeButton.IsClicked()){
+        animatingTime = 0;
+        isClosingCodePlace = !isClosingCodePlace;
+        isExpandingCodePlace = !isExpandingCodePlace;
+        }
+    }
+    else{
+        isClosingCodePlace = true;
+        isExpandingCodePlace = false;
+        animatingTime = 0;
+    }
+    
     Rectangle targetCodePlace = Rectangle{screenWidth * 0.01f, screenHeight * 0.56f, screenWidth * 0.24f - 12.0f, screenHeight * 0.35f};
     Rectangle closeCodePlace = Rectangle{-codeDisplayPLace.width, screenHeight * 0.56f, screenWidth * 0.24f - 12.0f, screenHeight * 0.35f};
 
@@ -338,16 +352,25 @@ void Page::event() {
     }
 
     //Operation event
-   if (OperationPrevButton.IsClicked()) {
+    if (OperationPrevButton.IsClicked()) {
         textbox.reset();
         selectedInputIndex = 0;
+        
         selectedOperationIndex = (selectedOperationIndex - 1 + OperationOptions.size()) % OperationOptions.size();
+        if (selectedOperationIndex != 1 && selectedOperationIndex != 4){
+            isClosingCodePlace = false;
+            isExpandingCodePlace = true;
+        }
     }
 
     if (OperationNextButton.IsClicked()) {
         textbox.reset();
         selectedInputIndex = 0;
         selectedOperationIndex = (selectedOperationIndex + 1) % OperationOptions.size();
+        if (selectedOperationIndex != 1 && selectedOperationIndex != 4){
+            isClosingCodePlace = false;
+            isExpandingCodePlace = true;
+        }
     }
      OperationOptionButton.label = OperationOptions[selectedOperationIndex].c_str(); 
     if(OperationOptions[selectedOperationIndex] == "INSERT") currentOperation = Operation::Insert;

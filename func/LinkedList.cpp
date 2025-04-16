@@ -3,7 +3,6 @@
 #include <thread>
 #include <random>
 #include<iostream>
-#include "ControlAnimation.h"
 using namespace std;
 
 LinkedList::LinkedList() {
@@ -203,16 +202,6 @@ void LinkedList::event() {
     }
     
 
-    if(currentOperation != Operation::Create && currentOperation != Operation::Update){
-        isClosingCodePlace = false;
-        isExpandingCodePlace = true;
-        animatingTime = 0;
-    }
-    else{
-        isClosingCodePlace = true;
-        isExpandingCodePlace = false;
-        animatingTime = 0;
-    }
     handleUI();
     //...Lưu ý: Cần chỉnh sửa hiển thị nút play, pause cho phù hợp
 }
@@ -344,7 +333,6 @@ void LinkedList::draw() {
             if (cur >= 0 && cur < steps.size()) {
                 // Xử lý animation xoay - chỉ khi đang phát (isPlaying)
                 if (steps[cur].isMove && isPlaying) {
-                    //cout<<steps[cur].head->val<<" ";
                     if (!isMove) {
                         // Bắt đầu animation xoay
                         isMove = true;
@@ -360,7 +348,6 @@ void LinkedList::draw() {
                         tmp.isMove = true;
                         
                         updateLLNodePositions(tmp.head, steps[cur+1].head, rotationProgress);
-                        //cout<<endl<<"why";
                         // Xử lý riêng cho trường hợp delete
                         if (cur == steps.size()-2) {
                             drawStep(tmp, Found);
@@ -504,13 +491,7 @@ void LinkedList::updatePseudocode(){
 
 }
 
-Vector2 LinkedList::GetPosition(int count){
-    int d = 2 * radius * count + (count - 1)*spacing;
-    int X = max((W/2 - d/2) + radius, 0) + 400;
-    int Y = H/2;
-    Vector2 center = {(float)X, (float)Y};
-    return center; 
-}
+
 
 int LinkedList::CountNode(Node* head){
     if(!head) return 0;

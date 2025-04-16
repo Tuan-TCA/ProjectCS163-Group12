@@ -95,7 +95,7 @@ public:
     }
     void DrawRounded(){
         Update();
-        DrawRectangleRounded(bounds, 20, 0,isHovered ? MyColor2 : MyColor1);
+        DrawRectangleRounded(bounds, 20, 0,isHovered ? hoverColor : color);
         int textWidth = MeasureText(label, 20);
         DrawTextEx(FONT, label, {bounds.x + (bounds.width - textWidth) / 2, bounds.y + (bounds.height - 20) / 2}, 20, 3, textColor );
     }

@@ -1,34 +1,28 @@
 #pragma once
+
 #include <string>
 #include <cmath>
 #include <iostream>
-using namespace std;
+#include <vector>
 
 #include <raylib.h>
 #include "LinkedList.h"
 #include "Variables.h"
 #include "Page.h"
 
-// struct HashNode {
-//     int key;
-//     HashNode* next;
-//     HashNode(int k, HashNode* nxt = nullptr) {
-//         key = k;
-//         next = nxt;
-//     }
-// };
+using namespace std;
 
-//vector<LinkedList*> heads;
-class HashTBpaint : public LLpaint{
+// ========================= CLASS HashTBpaint ========================= //
+class HashTBpaint : public LLpaint {
 public:
-    // Origin point for drawing the hash table
+    // Position
     Vector2 origin = {200, 200};
-    
-    // Hash table size and heads of chains
+
+    // Hash table
     int tableSize = 3;
     vector<LinkedList*> heads;
 
-    // Drawing configuration
+    // Drawing settings
     const int bucket_width = 100;
     const int bucket_height = 60;
     const int spacing = 100;
@@ -46,130 +40,122 @@ public:
     const Color choose_color = GREEN;
     const Color visit_color = RED;
 
+    // Animation
     int curCode = -1;
     bool isMove = false;
 
+    // Constructor
     HashTBpaint() {}
 
+    // Copy linked lists
     void copy(const vector<LinkedList*>& tmp) {
         vector<LinkedList*> newLists;
         for (auto& oldList : tmp) {
-            LinkedList* newList = new LinkedList();          
+            LinkedList* newList = new LinkedList();
             newList->head = copyLL(oldList->head);
             newList->headPos = oldList->headPos;
             newLists.push_back(newList);
-            
         }
         this->heads = newLists;
     }
-
 
     void copy(Node* a) {
         this->head = copyLL(a);
     }
 };
 
-class HashTB : public Page  {
+// =========================== CLASS HashTB ============================ //
+class HashTB : public Page {
 public:
+    // Core data
     Vector2 origin;
     int tableSize = 3;
     vector<LinkedList*> heads;
-    
+
+    // Animation states
     vector<HashTBpaint> steps;
     int cur = -1;
     int curCode = -1;
 
-    // Cấu hình cho vẽ node
-     Color ring = BLACK;
-     Color circle = {64, 210, 173, 255};
-     Color choose_color = GREEN;
-     Color visit_color = RED;
-    Rectangle bucket = {
-        origin.x ,
-        origin.y + 50,
-        (float)bucket_width,
-        (float)spacing * (tableSize)
-    };
-    // UI settings
-     int bucket_width = 25;
-     int bucket_height = 40;
-     int spacing = 40;
-     int radius = 30;
-     int font_size = 25;
+    // Drawing settings
+    int bucket_width = 25;
+    int bucket_height = 40;
+    int spacing = 40;
+    int radius = 30;
+    int font_size = 25;
 
     Color bucket_color = MyColor6;
-     Color node_color = SKYBLUE;
-     Color text_color = BLACK;
-     Color arrow_color = BLACK;
-     float arrow_size = 9.0f;
+    Color node_color = SKYBLUE;
+    Color text_color = BLACK;
+    Color arrow_color = BLACK;
+    float arrow_size = 9.0f;
 
-    // Logic variables
+    Color ring = BLACK;
+    Color circle = {64, 210, 173, 255};
+    Color choose_color = GREEN;
+    Color visit_color = RED;
+
+    // Logic flags
     bool isUpdating = false;
     int UpdateKey = -1;
     int newKey = -1;
+
     bool isInserting = false;
     int lastInsertedKey = -1;
 
     bool isSearching = false;
     int SearchKey = -1;
-    bool searchFound = false;  // (tuỳ chọn) để biết có tìm thấy hay không
+    bool searchFound = false;
 
     bool isDeleting = false;
     int DeleteKey = -1;
+
     bool isDuplicateInsert = false;
 
-    void addStepH(const vector<LinkedList*>& heads, int curCode = -1, bool isMove = false) {
-        HashTBpaint tmp;
-        tmp.copy(heads);
-        updateVariables(tmp.heads);
-        tmp.curCode = curCode;
-        tmp.isMove = isMove;
-        steps.push_back(tmp);
-    }
-    void drawStep(HashTBpaint &a, int Found = -1);
-    void handleUI();
-    int Found = -1;
+    // Status flags
     bool hasInsert;
     bool hasSearch;
     bool hasDelete;
     bool hasCreate;
     bool hasUpdate;
 
+    bool isCreating = false;
+    vector<int> createKeys;
+    float rotationStartTime;
+    bool isMove = false;
+    int index = -1;
+    int Found = -1;
+
     // Constructor & Destructor
-    // HashTB();
-    HashTB(){};
+    HashTB() {}
     ~HashTB();
     HashTB(int size);
+
+    // Hash Table core
     int HashFunction(int key);
-    
-    void CalculatePos(int index, Vector2 PosHead);
-
-       void updatePseudocode();
-    void updateVariables(vector<LinkedList*>& a);
-    void DrawHashTB(vector<LinkedList*>& heads);
-
-    // Core functions
     void Insert(int key);
     bool Search(int key);
     bool DeleteNode(int key);
     bool Update(int oldKey, int newKey);
     void Create();
+    void Clear();  // Reset table
 
-    void Clear(); // optional reset function
-    int index = -1;
+    // Drawing & animation
+    void addStepH(const vector<LinkedList*>& heads, int curCode = -1, bool isMove = false);
+    void drawStep(HashTBpaint &a, int Found = -1);
+    void DrawHashTB(vector<LinkedList*>& heads);
+    void CalculatePos(int index, Vector2 PosHead);
     void updateHTBNodePositions(Node* &a, Node* b, float &tmp);
     Node* findNode(Node* head, int key);
 
-    bool isCreating = false;
-    vector<int> createKeys;
-    float rotationStartTime;
-    bool isMove = false;
-
-    // Integration with Page
+    // Page override
     void init() override;
     void draw() override;
     void event() override;
     void reset() override;
     void RANDOM_INPUT() override;
-    
+
+    // Pseudocode support
+    void updatePseudocode();
+    void updateVariables(vector<LinkedList*>& a);
 };

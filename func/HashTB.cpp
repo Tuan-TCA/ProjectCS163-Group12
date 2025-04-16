@@ -613,28 +613,6 @@ void HashTB::draw() {
 
 }
 
-// void HashTB::draw() {
-//     Page::draw();
-  
-//     DrawHashTable();
-//     DrawSearchEffect();
-//     DrawInsertEffect();
-//     DrawDeleteEffect();
-//     // for(auto& a: heads){
-//     //     a->draw();
-//     // }
-//     head.Draw(MyColor2, getMODE());
-//     switchState ? home2.Draw() : home.Draw();
-//     if (isCreating && !createKeys.empty()) {
-//         Insert(createKeys.front());
-//         createKeys.erase(createKeys.begin());
-
-//     }
-//     if (createKeys.empty()) isCreating = false;
-// }
-
-
-
 void HashTB::event() {
     Page::event();
     
@@ -760,18 +738,6 @@ void HashTB::event() {
             isUpdating = true;
             textbox.inputText = {""};
         }
-    }
-
-
-    if(currentOperation != Operation::Create && currentOperation != Operation::Update){
-        isClosingCodePlace = false;
-        isExpandingCodePlace = true;
-        animatingTime = 0;
-    }
-    else{
-        isClosingCodePlace = true;
-        isExpandingCodePlace = false;
-        animatingTime = 0;
     }
 
  

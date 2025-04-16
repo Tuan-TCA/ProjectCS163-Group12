@@ -6,13 +6,7 @@ using namespace std;
 #include <raylib.h>
 #include "Variables.h"
 #include "Page.h"
-#include "ControlAnimation.h"
-// class Node {
-// public:
-//     int val;
-//     Node* next;
-//     Node(int key, Node* nextnode);
-// };
+
 class Node {
 public:
     int val;
@@ -79,7 +73,7 @@ public:
     }
 
     void noti() {
-        DrawText("NOT FOUND", screenWidth  / 3, screenHeight * 0.6f , font_size * 2, RED);
+        DrawText("NOT FOUND", screenWidth * 0.7f, screenHeight * 0.8f , font_size * 2, RED);
     }
 
     // Copy linked list (deep copy)
@@ -134,7 +128,7 @@ public:
     int H = 600;
     
     // Biến kiểm soát hiệu ứng chèn
-    ControlAnimation animationController;
+
     bool isInserting;
     int lastInsertedKey;
 
@@ -171,7 +165,7 @@ public:
     LinkedList* copy() const;
     //animation
     vector<LLpaint> steps;
-    Vector2 GetPosition(int count);
+
     Vector2 Pos = {400,300}, NewPos, finishedPos;
     bool hasFinishedOnce = false;
     void addStep(Node*  head, int curCode = -1, bool isMove = 0) {
@@ -197,7 +191,6 @@ public:
     bool Update(int oldKey, int newKey);
     void Create();
     
-    //void DrawUpDateNode(int first, int second);
     void updatePseudocode();
     void CalculatePos(Vector2 PosHead);
     void handleUI();
