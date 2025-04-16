@@ -25,8 +25,8 @@ void Page::updateSide(){
     textbox.bounds = Rectangle{side.x + 5, side.y + screenHeight*0.63f * 0.3f + 15, screenWidth*0.25f - 100, screenHeight*0.63f * 0.15f};
     oldTextBox.bounds = Rectangle{side. x + 5, side.y + screenHeight*0.63f * 0.36f, screenWidth*0.08f, screenHeight*0.63f * 0.11f};
     newTextBox.bounds = Rectangle{side.x + screenWidth*0.08f + 10, side.y + screenHeight*0.63f * 0.36f, screenWidth*0.08f, screenHeight*0.63f * 0.11f};
-    theme.bounds = {setting_menu.x + setting_menu.width * 0.6f, setting_menu.y + 5, setting_menu.width*0.3f, setting_menu.width*0.3f * 0.61f};
-    musicVolume.bounds = {setting_menu.x + setting_menu.width * 0.45f, setting_menu.y + setting_menu.width*0.3f * 0.61f + 10, setting_menu.width*0.5f, setting_menu.width*0.3f * 0.61f};
+    theme.bounds = {setting_menu.x + setting_menu.width * 0.5f, setting_menu.y + 5, setting_menu.width*0.3f, setting_menu.width*0.3f * 0.61f};
+    musicVolume.bounds = {setting_menu.x + setting_menu.width * 0.5f, setting_menu.y + setting_menu.width*0.3f * 0.61f + 10, setting_menu.width*0.45f, setting_menu.width*0.3f * 0.61f};
 }
 
 void Page::init() {
@@ -84,7 +84,7 @@ void Page::init() {
     lineHeight = 20.0f;
 
     setting_menu = Rectangle{screenWidth * 0.8f, screenHeight * 0.7f, screenWidth * 0.19f, screenHeight * 0.18f};
-    Slider musicVolume  = Slider({setting_menu.x + setting_menu.width * 0.45f, setting_menu.y + setting_menu.width*0.3f * 0.61f + 5, setting_menu.width*0.5f, setting_menu.width*0.3f * 0.61f}, 0, 1);
+    Slider musicVolume  = Slider({setting_menu.x + setting_menu.width * 0.5f, setting_menu.y + setting_menu.width*0.3f * 0.61f + 10, setting_menu.width*0.45f, setting_menu.width*0.3f * 0.61f}, 0, 1);
     musicVolume.value = 0.5f;
     theme = SwitchThemeButton(setting_menu.x + 5, setting_menu.y + 5, setting_menu.width*0.43f, 50, "", MyColor1, MyColor1, WHITE);
 
@@ -130,8 +130,8 @@ void Page::draw() {
      DrawRectangleRounded(setting_menu, 0.42f, 30, MyColor3);
      musicVolume.Draw();
     theme.Draw();
-    DrawTextEx(FONT2, "THEME", {setting_menu.x + 15, setting_menu.y + 18}, 20, 2, WHITE);
-    DrawTextEx(FONT2, "VOLUME", {setting_menu.x + 15, musicVolume.bounds.y + musicVolume.bounds.height / 3}, 20, 2, WHITE);
+    DrawTextEx(FONT2, "THEME", {setting_menu.x + 15, setting_menu.y + 18}, 25, 2, WHITE);
+    DrawTextEx(FONT2, "VOLUME", {setting_menu.x + 15, musicVolume.bounds.y + musicVolume.bounds.height / 3}, 23, 2, WHITE);
 
 
     // timeSlider.Draw();

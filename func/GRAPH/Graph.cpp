@@ -32,8 +32,7 @@ void Graph::init(){
     got1stV = false;
     isAnimating = false;
     textWidth = 20;
-    show_weight = SwitchButton(setting_menu.x + setting_menu.width * 0.5f, setting_menu.y + 10 + setting_menu.width*0.3f * 0.61f, setting_menu.width*0.3f, setting_menu.width*0.3f * 0.61f, "", MyColor1,MyColor1, WHITE);
-    tes = TextBox{500, 500, 100 , 100, "", WHITE, WHITE, BLACK};
+    show_weight = SwitchButton(setting_menu.x + setting_menu.width * 0.5f, setting_menu.y + setting_menu.width*0.3f * 0.61f * 2 + 10, setting_menu.width*0.3f, setting_menu.width*0.3f * 0.61f, "", MyColor1,MyColor1, WHITE);
 }
 
 void Graph::draw(){
@@ -48,7 +47,7 @@ void Graph::draw(){
 
     //setting
     show_weight.Draw();
-    DrawTextEx(FONT, "WEIGHT", {setting_menu.x + 20, setting_menu.y + 18 + setting_menu.width*0.3f * 0.61f}, 30, 2, WHITE);
+    DrawTextEx(FONT2, "WEIGHT", {setting_menu.x + 15, setting_menu.y + 18 + setting_menu.width*0.3f * 0.61f * 2 + 15}, 25, 2, WHITE);
     //Algorithm
     if(currentOperation == Operation::Algorithm){
         AlgorithmOptionButton.Draw(LIGHTGRAY, WHITE);
@@ -607,5 +606,5 @@ void Graph::updateSide(){
     AlgorithmNextButton.bounds = Rectangle{side.x + (side.x + side.width) * 0.85f + 5, side.y + screenHeight*0.63f * 0.15f + 10,  screenWidth*0.24f * 0.15f - 10, screenHeight*0.63f * 0.15f};
     vertex_textbox.bounds = {side.x + 5, side.y + screenHeight*0.63f * 0.54f, screenWidth*0.08f, screenHeight*0.63f * 0.11f};
     edge_textbox.bounds = {side.x + screenWidth*0.08f + 10, side.y + screenHeight*0.63f * 0.54f, screenWidth*0.08f, screenHeight*0.63f * 0.11f};
-    show_weight.bounds = {setting_menu.x + setting_menu.width * 0.6f, setting_menu.y + 10 + setting_menu.width*0.3f * 0.61f, setting_menu.width*0.3f, setting_menu.width*0.3f * 0.61f};
+    show_weight.bounds = {setting_menu.x + setting_menu.width * 0.5f, setting_menu.y + setting_menu.width*0.3f * 0.61f * 2 + 20, setting_menu.width*0.3f, setting_menu.width*0.3f * 0.61f};
 }
