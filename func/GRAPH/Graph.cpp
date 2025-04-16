@@ -50,6 +50,7 @@ void Graph::draw(){
     DrawTextEx(FONT, "WEIGHT", {setting_menu.x + 15, setting_menu.y + 18 + setting_menu.width*0.3f * 0.61f * 2 + 15}, 25, 2, WHITE);
     //Algorithm
     if(currentOperation == Operation::Algorithm){
+        AlgorithmOptionButton.textColor = AlgorithmNextButton.textColor = AlgorithmPrevButton.textColor = MyColor5;
         AlgorithmOptionButton.Draw(LIGHTGRAY, WHITE);
         AlgorithmPrevButton.Draw(LIGHTGRAY, WHITE);
         AlgorithmNextButton.Draw(LIGHTGRAY, WHITE);

@@ -158,7 +158,7 @@ void Page::draw() {
     }
     else{
         DrawRectangle(side.x * 1.2f + 5, side.y + screenHeight*0.63f * 0.3f + 15, screenWidth*0.24f - 10, screenHeight*0.63f * 0.15f, WHITE);
-        DrawTextEx(FONT, "DROP FILE HERE", {side.x * 1.2f + 50, screenHeight / 2 - screenHeight*0.63f * 0.118f}, 25, 2, GRAY);
+        DrawTextEx(FONT, "DRAG & DROP YOUR FILE", {side.x * 1.2f + 20, screenHeight / 2 - screenHeight*0.63f * 0.12f}, 20, 2, GRAY);
         //drop file field
     }
     
@@ -180,7 +180,7 @@ void Page::draw() {
     }
     //Input
     if(currentOperation != Operation::Algorithm){
-        InputOptionButton.textColor = MyColor5;
+        InputOptionButton.textColor =  InputNextButton.textColor = InputPrevButton.textColor = MyColor5;
         InputOptionButton.Draw(LIGHTGRAY, WHITE);
         InputPrevButton.Draw(LIGHTGRAY, WHITE);
         InputNextButton.Draw(LIGHTGRAY, WHITE);
