@@ -59,6 +59,7 @@ public:
     TextBox newTextBox;
     
     Font FONT2;
+    Slider musicVolume;
     Rectangle setting_menu;
     SwitchThemeButton theme;
         bool setting_IsOpening = false,
