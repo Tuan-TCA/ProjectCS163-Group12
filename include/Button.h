@@ -607,10 +607,10 @@ public:
     float maxValue;
     bool isDragging;
 
-    Slider() : isDragging(false), value(0), minValue(0), maxValue(1) {}
+    Slider() : isDragging(false), value(0.5), minValue(0), maxValue(1) {}
 
     Slider(Rectangle bounds, float minValue, float maxValue)
-        : bounds(bounds), minValue(minValue), maxValue(maxValue), value(minValue), isDragging(false) {}
+        : bounds(bounds), minValue(minValue), maxValue(maxValue), value((minValue + maxValue) / 2.0f), isDragging(false) {}
 
     void Update() {
         Vector2 mouse = GetMousePosition();
@@ -628,14 +628,12 @@ public:
     }
 
     void Draw() {
-        // Vẽ thanh nền
+   
         DrawRectangleRounded(bounds, 0.1f, 8, WHITE);
 
-        // Vẽ phần đã kéo
         float filledWidth = (value - minValue) / (maxValue - minValue) * bounds.width;
         DrawRectangleRounded({bounds.x, bounds.y, filledWidth, bounds.height}, 0.1f, 8, LIGHTGRAY);
 
-        // Vẽ nút tròn kéo (slider knob)
         float knobX = bounds.x + filledWidth - 10;
         float knobY = bounds.y ;
         DrawRectangleRounded({knobX, knobY, bounds.width * 0.1f, bounds.height}, 0.5f, 20, MyColor7);
