@@ -21,6 +21,7 @@ enum class InputType {
     Keyboard,
     File
 };
+
 class Page {
 protected:
 vector<string> OperationOptions;

@@ -213,11 +213,16 @@ bool HashTB::DeleteNode(int key) {
 
 void HashTB::DrawHashTB(vector<LinkedList*>& heads) {
     updateVariables(heads);
+    int i = 0;
     for(auto& x : heads){
         x->DrawLL(x->head);
+        DrawRectangleRounded(Rectangle{x->headPos.x - x->radius, x->headPos.y - x->radius, 2.0f * x->radius , 2.0f* x->radius}, 0.2f, 20.0f, MyColor2);
+         int Fs = max(10, static_cast<int>(x->font_size - to_string(i).size() * 3));
+            int wNode = MeasureText(to_string(i).c_str(), Fs);
+        DrawText(to_string(i).c_str(), x->headPos.x - wNode / 2, x->headPos.y - Fs / 2, Fs, x->text_color);
+        i++;
     }
 }
-
 
 void HashTB::drawStep(HashTBpaint& a, int Found) {
 
@@ -355,8 +360,6 @@ void HashTB::draw() {
             isPlaying = true;
             elapsedTime = 0.0f;
             
-            //rotationStartTime = GetTime();
-            //isMove = false;
         } else if (!steps.empty()) {
             if (cur >= 0 && cur < steps.size()) {
                 // Xử lý animation xoay - chỉ khi đang phát (isPlaying)

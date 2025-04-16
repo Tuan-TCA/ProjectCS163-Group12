@@ -149,7 +149,7 @@ public:
 
     bool isUpdating;
     int UpdateKey;
-    int newVal;
+    int newKey;
 
     LinkedList();
 
@@ -194,6 +194,7 @@ public:
     void Insert(int key);
     bool Search(int key);
     bool DeleteNode(int key);
+    bool Update(int oldKey, int newKey);
     void Create();
     
     //void DrawUpDateNode(int first, int second);
@@ -206,7 +207,7 @@ public:
     bool hasSearch;
     bool hasDelete;
     bool hasCreate;
-    
+    bool hasUpdate;
     
     void event() override;
     void init() override;
