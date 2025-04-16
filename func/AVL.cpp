@@ -280,6 +280,13 @@ bool AVL::deleteAVL(TreeNode*& root, TreeNode*& parent, int key) {
     return true;
 }
 
+bool AVL::Update(int oldKey, int newKey) {
+    bool t = deleteAVL(this->root, this->root->parent, oldKey);
+    if(t) {
+        insert(newKey, this->root);
+    }
+    return t;
+}
 
 bool AVL::search(int key, TreeNode*& root, TreeNode* parent) {   
     if (!root) {
@@ -548,6 +555,83 @@ void AVL::draw() {
             }
         }
     }
+
+    
+    if (currentOperation == Operation::Update) {
+        if (isUpdating) {
+            Found = (this->Update(UpdateKey,newKey)) ? 1 : 0;
+            if(!Found) {
+                addStep(this->root, 2);
+            }
+            addStep(this->root);
+            isUpdating = false;
+            isPlaying = true;
+            elapsedTime = 0.0f;
+            rotationStartTime = GetTime();
+            isRotating = false;
+        } else if (!steps.empty()) {
+            if (cur >= 0 && cur < steps.size()) {
+                // Xử lý animation xoay - chỉ khi đang phát (isPlaying)
+                if (steps[cur].isRotating && isPlaying) {
+                    if (!isRotating) {
+                        // Bắt đầu animation xoay
+                        isRotating = true;
+                        rotationStartTime = GetTime();
+                    }
+    
+                    //Chia để tính tỷ lệ đến khi GetTime - rotationStart = stepDuration thì là 1 bước
+                    float rotationProgress = (GetTime() - rotationStartTime) / stepDuration;
+                    
+                    if (rotationProgress < 1.0f) {
+                        // Đang trong quá trình xoay
+                        AVLpaint tmp;
+                        tmp.copy(steps[cur].root);
+                        tmp.isRotating = true;
+                        
+                        updateNodePositions(tmp.root, steps[cur+1].root, rotationProgress);
+                        
+                        // Xử lý riêng cho trường hợp delete
+                        if (cur == steps.size()-2) {
+                            drawStep(tmp, Found);
+                        } else {
+                            drawStep(tmp);
+                        }
+                    } else {
+                        // Kết thúc xoay, chuyển sang bước tiếp theo
+                        isRotating = false;
+                        cur++;
+                        if (cur == steps.size()-1) {
+                            drawStep(steps[cur], Found);
+                        } else {
+                            drawStep(steps[cur]);
+                        }
+                    }
+                } 
+                else {
+                    // Vẽ bước hiện tại (không xoay hoặc không phải đang phát)
+                    if (cur == steps.size()-2) {
+                        drawStep(steps[cur], Found);
+                    } else {
+                        drawStep(steps[cur]);
+                    }
+                    
+                    // Tự động chuyển bước nếu đang phát
+                    if (isPlaying) {
+                        elapsedTime += GetFrameTime();
+                        if (elapsedTime >= stepDuration) {
+                            if (cur < steps.size() - 1) {
+                                cur++;
+                                elapsedTime = 0.0f;
+                            } else {
+                                isPlaying = false;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+
     
     if (currentOperation == Operation::Delete) {
         if (isDeleting) {
@@ -720,6 +804,7 @@ void AVL::event() {
         hasSearch = false;
         hasDelete = false;
         hasCreate = true;
+        hasUpdate = false;
         cur = 0;
         BeginMode2D(camera);  
             DrawTree(root);  
@@ -743,6 +828,7 @@ void AVL::event() {
             hasInsert = true;
             hasSearch = false;
             hasDelete = false;
+            hasUpdate = false;
             hasCreate = false;
             cur = 0;
             BeginMode2D(camera);  
@@ -765,6 +851,7 @@ void AVL::event() {
             hasInsert = false;
             hasSearch = true;
             hasDelete = false;
+            hasUpdate = false;
             hasCreate = false;
             cur = 0;
             steps.clear();
@@ -783,6 +870,7 @@ void AVL::event() {
             hasSearch = false;
             hasDelete = true;
             hasCreate = false;
+            hasUpdate = false;
             cur = 0;
             steps.clear();
             addStep(this->root);
@@ -791,6 +879,27 @@ void AVL::event() {
             DeleteKey = textbox.nums[0];
             textbox.nums.erase(textbox.nums.begin());
             isDeleting = true;
+            textbox.inputText = {""};
+        }
+    }
+
+    
+    if(currentOperation == Operation::Update) {
+        if(!hasUpdate) {
+            hasInsert = false;
+            hasSearch = false;
+            hasDelete = false;
+            hasCreate = false;
+            hasUpdate = true;
+            cur = 0;
+            steps.clear();
+            addStep(this->root);
+        }
+        if(textbox.nums.size() > 0) {
+            UpdateKey = textbox.nums[0];
+            newKey = textbox.nums[1];
+            textbox.nums.clear();
+            isUpdating = true;
             textbox.inputText = {""};
         }
     }
@@ -926,6 +1035,7 @@ void AVL::init() {
     hasInsert = false;
     hasSearch = false;
     hasDelete = false;
+    hasUpdate = false;
 
     cur = -1;
     curCode = -1;

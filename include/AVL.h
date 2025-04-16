@@ -160,6 +160,7 @@ public:
     void insert(int key, TreeNode*& root, TreeNode* parent = nullptr);
     bool search(int key, TreeNode*& root, TreeNode* parent = nullptr);
     void Create();
+    bool Update(int UpdateKey, int newKey);
     bool deleteAVL(TreeNode* &root, TreeNode* &parent, int key);
     void balance(TreeNode * &root, TreeNode *& parent, int key);
 
@@ -195,6 +196,11 @@ public:
 
     //Page control
     ControlAnimation animationController;
+
+    bool isUpdating = false;
+    int newKey = -1, UpdateKey = -1;
+    bool hasUpdate = false;
+    
     bool isInserting;
     bool hasInsert = false;
     int lastInsertedKey;
@@ -212,9 +218,7 @@ public:
     bool hasCreate = false;
     vector<int> createKeys;
 
-    bool isUpdating;
-    int UpdateKey;
-    int newVal;
+
 
     bool isRotating = false;
 
