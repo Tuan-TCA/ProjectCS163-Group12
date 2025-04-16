@@ -1,5 +1,5 @@
 #include "Menu.h"
-#include "Variables.h"
+
 
 void Menu::init() {
     SwitchTheme = SwitchThemeButton(screenWidth*0.9f, screenHeight*0.016f, screenWidth*0.082f, screenWidth*0.05f, "", MyColor1, MyColor1, WHITE);
