@@ -249,15 +249,6 @@ public:
         }
     }   
 
-    // void MultiplesInputDraw(){
-    //      update();
-    //     Button::Draw();
-    //     string displayText = inputText;
-    //     if (active && ((int)(GetTime() * 2) % 2 == 0)) { 
-    //         displayText += "|";
-    //     }
-    //     DrawText(displayText.c_str(), bounds.x + bounds.width * 0.7 - MeasureText(displayText.c_str(), 12) / 2, bounds.y + bounds.height / 3 + 5 , 12, textColor);
-    // }
     void HandleInput() {
     if (active) {
         int key = GetCharPressed();
@@ -309,12 +300,6 @@ public:
                 else startColumnIndex = 0;
             }
 
-            // if(IsKeyPressed(KEY_DELETE)){
-            //     if(SubIndex[currentIndex] < inputText[currentIndex].size()){
-            //         int deletedIdx = SubIndex[currentIndex] + 1;
-            //         inputText[currentIndex].erase(inputText[currentIndex].begin() + deletedIdx);
-            //     } 
-            // }
         }
     }
 }
@@ -637,6 +622,6 @@ public:
         float knobX = bounds.x + filledWidth - 10;
         float knobY = bounds.y ;
         DrawRectangleRounded({knobX, knobY, bounds.width * 0.1f, bounds.height}, 0.5f, 20, MyColor7);
-        // DrawCircle((int)knobX, (int)knobY, bounds.height / 2 + 2, MyColor7);
+
     }
 };
