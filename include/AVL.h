@@ -76,11 +76,9 @@ class AVLpaint {
         rootPos = {600,500};
     }
                       
-    int textW = MeasureText("NOT FOUND", font_size*2); 
-    int posX = 800;
-    int posY = 800;
+    int textW = MeasureText("NOT FOUND", font_size*1.5f); 
     void noti() {
-        DrawText("NOT FOUND", screenWidth * 0.7f, screenHeight * 0.85f , font_size * 1.3f, RED);
+        DrawText("NOT FOUND", screenWidth * 0.05f, screenHeight * 0.85f , font_size * 1.5f, RED);
     }
 
     TreeNode* copyTree(TreeNode* root) {

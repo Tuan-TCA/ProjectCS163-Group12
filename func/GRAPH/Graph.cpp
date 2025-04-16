@@ -101,21 +101,26 @@ void Graph::event(){
        added = true;
    }
 
-    
+
     if( currentOperation == Operation::Create && currentInput != InputType::File){
         addFromTextbox();
     }
     //code display event
-        if(currentOperation == Operation::Algorithm && currentALgorithm != Algorithm::CC){
-        isClosingCodePlace = false;
-        isExpandingCodePlace = true;
-        animatingTime = 0;
-    }
-    else{
+        if(currentOperation == Operation::Algorithm ){
+        
+        if ( currentALgorithm == Algorithm::CC)    {
         isClosingCodePlace = true;
         isExpandingCodePlace = false;
         animatingTime = 0;
+        }else{
+            if(showCodeButton.IsClicked()){
+            animatingTime = 0;
+            isClosingCodePlace = !isClosingCodePlace;
+            isExpandingCodePlace = !isExpandingCodePlace;
+            }
+        }
     }
+
     //SETTING
        if(show_weight.isOpening){
         for(auto& e: edge){
@@ -129,17 +134,40 @@ void Graph::event(){
     }
     if(currentQueueIndex > arrayQueue.size()) isPlaying = false;
     //ALgorithm operation
+    if (OperationPrevButton.IsClicked()) {
+        selectedAlgorithmIndex = 0;
+        if (OperationOptions[selectedOperationIndex] != "CREATE"){
+            isClosingCodePlace = false;
+            isExpandingCodePlace = true;
+        
+        }
+    }
+
+    if (OperationNextButton.IsClicked()) {
+        selectedAlgorithmIndex = 0;
+        if (OperationOptions[selectedOperationIndex] != "CREATE" ){
+            isClosingCodePlace = false;
+            isExpandingCodePlace = true;
+        }
+    }
     if(OperationOptions[selectedOperationIndex] == "ALGORITHM") currentOperation = Operation::Algorithm;
 
     if (AlgorithmPrevButton.IsClicked()) {
         resetAnimation();
         selectedAlgorithmIndex = (selectedAlgorithmIndex - 1 + AlgorithmOptions.size()) % AlgorithmOptions.size();
-       
+       if(AlgorithmOptions[selectedAlgorithmIndex] != "Connected\nComponents"){
+            isClosingCodePlace = false;
+            isExpandingCodePlace = true;
+       }
     }
 
     if (AlgorithmNextButton.IsClicked()) {
         resetAnimation();
         selectedAlgorithmIndex = (selectedAlgorithmIndex + 1) % AlgorithmOptions.size();
+        if(AlgorithmOptions[selectedAlgorithmIndex] != "Connected\nComponents"){
+            isClosingCodePlace = false;
+            isExpandingCodePlace = true;
+       }
     
     }
      AlgorithmOptionButton.label = AlgorithmOptions[selectedAlgorithmIndex].c_str(); 
@@ -247,7 +275,7 @@ void Graph::event(){
         }
     }
 
-
+   
 
     if(currentOperation == Operation::Algorithm && (currentALgorithm == Algorithm::MST || currentALgorithm == Algorithm::CC)){
     Ok.label = "START";

@@ -62,9 +62,6 @@ public:
     const Color arrow_color = MyColor1;
 
     int curCode = -1; // current pseudocode line
-    int posX = 800;
-    int posY = 800;
-    int textW = MeasureText("NOT FOUND", font_size * 2);
     bool isMove = 0;
 
     LLpaint() {
@@ -72,8 +69,9 @@ public:
         headPos = { 600, 600 };
     }
 
+    int textW = MeasureText("NOT FOUND", font_size*1.5f); 
     void noti() {
-        DrawText("NOT FOUND", screenWidth * 0.7f, screenHeight * 0.85f , font_size * 1.3f, RED);
+        DrawText("NOT FOUND", screenWidth * 0.05f, screenHeight * 0.85f , font_size * 1.5f, RED);
     }
 
     // Copy linked list (deep copy)

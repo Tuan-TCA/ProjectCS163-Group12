@@ -37,7 +37,7 @@ void Page::init() {
     InputNextButton = Button((side.x + side.width) * 0.85f + 5, side.y + screenHeight*0.63f * 0.15f + 10,  screenWidth*0.24f * 0.15f - 10, screenHeight*0.63f * 0.15f, ">", WHITE, LIGHTGRAY, MyColor5);
     currentInput = InputType::Keyboard;
 
-    OperationOptions  = {"INSERT", "CREATE", "DELETE", "SEARCH", "UPDATE"};
+    OperationOptions  = {"CREATE", "INSERT", "DELETE", "SEARCH", "UPDATE"};
     selectedOperationIndex = 0;
     OperationOptionButton = Button((side.x + side.width) * 0.15f, side.y + 5, screenWidth*0.24f * 0.7f, screenHeight*0.63f * 0.15f, OperationOptions[selectedOperationIndex].c_str(), MyColor7, Fade(MyColor7, 0.8f), WHITE);
     OperationPrevButton = Button(side.x + 5, side.y + 5, screenWidth*0.24f * 0.15f - 10, screenHeight*0.63f * 0.15f, "<", MyColor7, Fade(MyColor7, 0.8f), WHITE);
@@ -93,13 +93,18 @@ void Page::init() {
 }
 
 void Page::reset(){
+    animatingTime = 0;
     isExpanding             = false;
-    isExpandingCodePlace    = false;
+    isExpandingCodePlace    = true;
     isClosingCodePlace      = false;
     isExpandingSide         = false;
     isClosingSide           = false;
     selectedInputIndex      = 0;
     selectedOperationIndex  = 0;
+     camera.target = { (float)GetScreenWidth()/2, (float)GetScreenHeight()/2 };
+        camera.offset = { (float)GetScreenWidth()/2, (float)GetScreenHeight()/2 };
+        camera.rotation = 0.0f;
+        camera.zoom = 1.0f;
     textbox.reset();
 }
 
@@ -233,9 +238,7 @@ void Page::event() {
     pseudocodeX = codeDisplayPLace.x  + 5;
     pseudocodeY = codeDisplayPLace.y  + 10;
     
-    
-    //cout << lineHeight << endl;
-    //animation thui
+
     Rectangle targetPlace1 = codeDisplayPLace;
     targetPlace1.height = pseudocode.size() * lineHeight + 10;
     targetPlace1.width = textWidth * 1.02f;
@@ -254,17 +257,19 @@ void Page::event() {
     // TỰ LÀM PHẦN HIGHLIGHT!!!! tham khảo Graph.draw() && psuedo code thi tuy phan
 
     //Code box event
-    if(currentOperation != Operation::Create && currentOperation != Operation::Update){
-        if(showCodeButton.IsClicked()){
-        animatingTime = 0;
-        isClosingCodePlace = !isClosingCodePlace;
-        isExpandingCodePlace = !isExpandingCodePlace;
+    if(currentOperation != Operation::Algorithm){
+        if(currentOperation != Operation::Create && currentOperation != Operation::Update){
+            if(showCodeButton.IsClicked()){
+            animatingTime = 0;
+            isClosingCodePlace = !isClosingCodePlace;
+            isExpandingCodePlace = !isExpandingCodePlace;
+            }
         }
-    }
-    else{
-        isClosingCodePlace = true;
-        isExpandingCodePlace = false;
-        animatingTime = 0;
+        else{
+            isClosingCodePlace = true;
+            isExpandingCodePlace = false;
+            animatingTime = 0;
+        }
     }
     
     Rectangle targetCodePlace = Rectangle{screenWidth * 0.01f, screenHeight * 0.56f, screenWidth * 0.24f - 12.0f, screenHeight * 0.35f};
@@ -349,8 +354,6 @@ void Page::event() {
 
     if(play1.IsClicked() || play2.IsClicked() || pause1.IsClicked() || pause2.IsClicked() || (!textbox.active &&  IsKeyPressed(KEY_SPACE))){
         isPlaying = !isPlaying;
-        if(!isPlaying) TraceLog(LOG_INFO, "is pausing");
-        else TraceLog(LOG_INFO, "is playing");
     }
 
     //Operation event
@@ -359,7 +362,7 @@ void Page::event() {
         selectedInputIndex = 0;
         
         selectedOperationIndex = (selectedOperationIndex - 1 + OperationOptions.size()) % OperationOptions.size();
-        if (selectedOperationIndex != 1 && selectedOperationIndex != 4){
+        if (OperationOptions[selectedOperationIndex] != "CREATE" && OperationOptions[selectedOperationIndex] != "UPDATE"){
             isClosingCodePlace = false;
             isExpandingCodePlace = true;
         }
@@ -369,7 +372,7 @@ void Page::event() {
         textbox.reset();
         selectedInputIndex = 0;
         selectedOperationIndex = (selectedOperationIndex + 1) % OperationOptions.size();
-        if (selectedOperationIndex != 1 && selectedOperationIndex != 4){
+        if (OperationOptions[selectedOperationIndex] != "CREATE" && OperationOptions[selectedOperationIndex] != "UPDATE"){
             isClosingCodePlace = false;
             isExpandingCodePlace = true;
         }
@@ -514,9 +517,6 @@ void Page::handleInput(){
                     break;
             }
             break;
-        // case Operation::Algorithm:
-        //     textbox.HandleInput();
-        //     break;
     }
 
         if ((Ok.IsClicked())) {
