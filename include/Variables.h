@@ -18,6 +18,8 @@ extern MODE mode;
 extern bool switchState; // true: red, false: blue
 extern const int screenWidth, screenHeight;
 extern float animationSpeed;
+extern bool pause;
+extern float volume;
 
 extern Color MyColor1;
 extern Color MyColor2;

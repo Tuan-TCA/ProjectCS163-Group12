@@ -25,12 +25,11 @@ void Page::updateSide(){
     textbox.bounds = Rectangle{side.x + 5, side.y + screenHeight*0.63f * 0.3f + 15, screenWidth*0.25f - 100, screenHeight*0.63f * 0.15f};
     oldTextBox.bounds = Rectangle{side. x + 5, side.y + screenHeight*0.63f * 0.36f, screenWidth*0.08f, screenHeight*0.63f * 0.11f};
     newTextBox.bounds = Rectangle{side.x + screenWidth*0.08f + 10, side.y + screenHeight*0.63f * 0.36f, screenWidth*0.08f, screenHeight*0.63f * 0.11f};
-    theme.bounds = {setting_menu.x + setting_menu.width * 0.6f, setting_menu.y + 5, setting_menu.width*0.3f, setting_menu.width*0.3f * 0.61f};
-
+    theme.bounds = {setting_menu.x + setting_menu.width * 0.5f, setting_menu.y + 5, setting_menu.width*0.3f, setting_menu.width*0.3f * 0.61f};
+    musicVolume.bounds = {setting_menu.x + setting_menu.width * 0.5f, setting_menu.y + setting_menu.width*0.3f * 0.61f + 10, setting_menu.width*0.45f, setting_menu.width*0.3f * 0.61f};
 }
 
 void Page::init() {
-    FONT2 = LoadFont("res/font/MouldyCheeseRegular-WyMWG.ttf"); 
     selectedInputIndex = 0;
     InputOptionButton = Button((side.x + side.width) * 0.15f, side.y + screenHeight*0.63f * 0.15f + 10 , screenWidth*0.24f * 0.7f, screenHeight*0.63f * 0.15f, InputOptions[selectedInputIndex].c_str(), WHITE, LIGHTGRAY, MyColor5);
     InputPrevButton = Button(side.x + 5,side.y + screenHeight*0.63f * 0.15f + 10 ,  screenWidth*0.24f * 0.15f - 10, screenHeight*0.63f * 0.15f, "<", WHITE, LIGHTGRAY, MyColor5);
@@ -84,6 +83,8 @@ void Page::init() {
     lineHeight = 20.0f;
 
     setting_menu = Rectangle{screenWidth * 0.8f, screenHeight * 0.7f, screenWidth * 0.19f, screenHeight * 0.18f};
+    Slider musicVolume  = Slider({setting_menu.x + setting_menu.width * 0.5f, setting_menu.y + setting_menu.width*0.3f * 0.61f + 10, setting_menu.width*0.45f, setting_menu.width*0.3f * 0.61f}, 0.3f, 0, 1);
+
     theme = SwitchThemeButton(setting_menu.x + 5, setting_menu.y + 5, setting_menu.width*0.43f, 50, "", MyColor1, MyColor1, WHITE);
 
     camera.target = { (float)GetScreenWidth()/2, (float)GetScreenHeight()/2 };
@@ -111,7 +112,9 @@ void Page::reset(){
 void Page::draw() {
     ClearBackground(RAYWHITE);
     DrawTexture(switchState ? background2 : background1, 0, 0, WHITE);
-    head.Draw(MyColor2, getMODE());
+    DrawRectangleRec(head.bounds, MyColor2);
+     int textWidth = MeasureTextEx(FONT,getMODE().c_str(), 40, 3).x;
+    DrawTextEx(FONT, getMODE().c_str(), {head.bounds.x + (head.bounds.width - textWidth) / 2, head.bounds.y + (head.bounds.height - 30) / 2}, 40, 3, WHITE);
     DrawRectangleRounded(bottom, 20, 20, MyColor2);
     DrawRectangleRec(side, MyColor3);
     DrawRectangleRounded({-10, screenHeight / 2 - screenHeight * 0.64f / 2, 30,screenHeight*0.305f }, 0.5f, 30, MyColor3);
@@ -122,11 +125,14 @@ void Page::draw() {
     speedSliding.DrawRounded(MyColor3);
     showCodeButton.color = MyColor7;
     showCodeButton.hoverColor = Fade(MyColor7, 0.8f);
-    showCodeButton.DrawRounded();
+    if(currentOperation != Operation::Create && currentOperation != Operation::Update)  showCodeButton.DrawRounded();
+
     //SETTING
      DrawRectangleRounded(setting_menu, 0.42f, 30, MyColor3);
+     musicVolume.Draw();
     theme.Draw();
-    DrawTextEx(FONT, "THEME", {setting_menu.x + 20, setting_menu.y + 18}, 30, 2, WHITE);
+    DrawTextEx(FONT, "THEME", {setting_menu.x + 15, setting_menu.y + 18}, 25, 2, WHITE);
+    DrawTextEx(FONT, "VOLUME", {setting_menu.x + 15, musicVolume.bounds.y + musicVolume.bounds.height / 3}, 23, 2, WHITE);
 
 
     // timeSlider.Draw();
@@ -152,7 +158,7 @@ void Page::draw() {
     }
     else{
         DrawRectangle(side.x * 1.2f + 5, side.y + screenHeight*0.63f * 0.3f + 15, screenWidth*0.24f - 10, screenHeight*0.63f * 0.15f, WHITE);
-        DrawText("DROP FILE HERE", side.x * 1.2f + 30, screenHeight / 2 - screenHeight*0.63f * 0.118f, 25, GRAY);
+        DrawTextEx(FONT, "DROP FILE HERE", {side.x * 1.2f + 50, screenHeight / 2 - screenHeight*0.63f * 0.118f}, 25, 2, GRAY);
         //drop file field
     }
     
@@ -198,10 +204,19 @@ void Page::event() {
     float deltaTime = GetFrameTime();
     Vector2 mousePos = GetMousePosition();
     //SETTING
+    
     Rectangle targetPlace = Rectangle{screenWidth * 0.8f, screenHeight * 0.7f, screenWidth * 0.19f, screenHeight * 0.18f};
     Rectangle closedPlace = Rectangle{(float) screenWidth * 0.99f, screenHeight * 0.7f, screenWidth * 0.19f, screenHeight * 0.18f};
     Rectangle checkPlace = Rectangle{screenWidth * 0.9f, screenHeight * 0.7f, screenWidth * 0.5f, screenHeight * 0.18f};
-  
+    
+    musicVolume.Update();
+    float wheel1 = GetMouseWheelMove();
+    if(wheel1 && CheckCollisionPointRec(mousePos, targetPlace)) {
+        musicVolume.value += wheel1 * 0.1f;
+        if(musicVolume.value > 1) musicVolume.value = 1;
+        else if(musicVolume.value < 0) musicVolume.value = 0;
+    }
+    volume = musicVolume.value;
         if (CheckCollisionPointRec(mousePos, targetPlace)) {
         if(CheckCollisionPointRec(mousePos, checkPlace)){
         setting_IsOpening = true;
@@ -410,7 +425,7 @@ void Page::event() {
 
 
     float wheel = GetMouseWheelMove();
-    if (wheel != 0) {
+    if (wheel != 0 && CheckCollisionPointRec(mousePos, workplace) && !CheckCollisionPointRec(mousePos, targetPlace)) {
         // camera.target = GetMousePosition();
         camera.zoom += wheel * 0.1f;
         if (camera.zoom < 0.2f) camera.zoom = 0.2f;
@@ -418,7 +433,7 @@ void Page::event() {
     }
  
     if (IsMouseButtonDown(MOUSE_BUTTON_LEFT)) {
-        if(!CheckCollisionPointRec(GetMousePosition(), side) && !CheckCollisionPointRec(mousePoint, speedSliding.bounds) ){
+        if(CheckCollisionPointRec(mousePos, workplace) && !CheckCollisionPointRec(mousePos, targetPlace)){
         Vector2 delta = GetMouseDelta();
         delta = Vector2Scale(delta, -1.0f / camera.zoom);
         camera.target = Vector2Add(camera.target, delta);

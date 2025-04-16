@@ -232,7 +232,7 @@ public:
 
             float lineHeight = 25;
             // Vector2 textHeight = MeasureTextEx(FONT, displayText.c_str(), 25, 1);
-            DrawText(displayText.c_str(), bounds.x + 5 , bounds.y + 5  + cnt * lineHeight, 25, textColor);
+            DrawTextEx(FONT, displayText.c_str(), {bounds.x + 5 , bounds.y + 5  + cnt * lineHeight}, 25, 2, textColor);
             cnt++;
             
         }
@@ -605,29 +605,38 @@ public:
     float value;
     float minValue;
     float maxValue;
-    bool isPressing;
-    Slider(){isPressing = false;}
-    Slider(Rectangle bounds, float minValue, float maxValue) {
-        this->bounds = bounds;
-        this->minValue = minValue;
-        this->maxValue = maxValue;
-        this->value = minValue;
-        isPressing = false;
-    }
+    bool isDragging;
+
+    Slider() : isDragging(false), value(0.3), minValue(0), maxValue(1) {}
+
+    Slider(Rectangle bounds, float value,float minValue, float maxValue)
+        : bounds(bounds), minValue(minValue), maxValue(maxValue), value(value), isDragging(false) {}
 
     void Update() {
+        Vector2 mouse = GetMousePosition();
+
         if (IsMouseButtonDown(MOUSE_LEFT_BUTTON)) {
-            if(CheckCollisionPointRec(GetMousePosition(), bounds) || isPressing){
-            value = minValue + (maxValue - minValue) * ((GetMousePosition().x - bounds.x) / bounds.width);
-            value = clamp(value, minValue, maxValue); //guarantee the value is always between maxvalue & minvalue
-            isPressing = true;
+            if (CheckCollisionPointRec(mouse, bounds) || isDragging) {
+                float ratio = (mouse.x - bounds.x) / bounds.width;
+                ratio = std::clamp(ratio, 0.0f, 1.0f);
+                value = minValue + (maxValue - minValue) * ratio;
+                isDragging = true;
             }
+        } else {
+            isDragging = false;
         }
-        else isPressing = false;
     }
 
     void Draw() {
-        DrawRectangleRounded(bounds, 20,20, WHITE);
-        DrawRectangleRounded({std::clamp(bounds.x + (value - minValue) / (maxValue - minValue) * bounds.width - bounds.width * 0.11f /2, bounds.x, bounds.x + bounds.width - bounds.width * 0.11f), bounds.y, bounds.width * 0.11f, bounds.height}, 20, 20, MyColor1);
+   
+        DrawRectangleRounded(bounds, 0.1f, 8, WHITE);
+
+        float filledWidth = (value - minValue) / (maxValue - minValue) * bounds.width;
+        DrawRectangleRounded({bounds.x, bounds.y, filledWidth, bounds.height}, 0.1f, 8, Fade(MyColor7, 0.4f));
+
+        float knobX = bounds.x + filledWidth - 10;
+        float knobY = bounds.y ;
+        DrawRectangleRounded({knobX, knobY, bounds.width * 0.1f, bounds.height}, 0.5f, 20, MyColor7);
+        // DrawCircle((int)knobX, (int)knobY, bounds.height / 2 + 2, MyColor7);
     }
 };

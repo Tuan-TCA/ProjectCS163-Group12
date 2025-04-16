@@ -47,7 +47,6 @@ class Graph : public Page{
     Button AlgorithmNextButton;
 
     //Setting
-   
     SwitchButton show_weight;
 
     bool added;
@@ -64,8 +63,7 @@ class Graph : public Page{
     int currentQueueIndex;
     TextBox vertex_textbox;
     TextBox edge_textbox;
-    bool isVertexPressing = false;
-    TextBox tes;
+
     //Other variables in Algo
     bool got1stV;
     bool AlgoCalled = false;

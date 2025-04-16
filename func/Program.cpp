@@ -9,6 +9,7 @@ Program::Program () {
 }
 
 void Program::init(){
+    FONT = LoadFont("res/font/MouldyCheeseRegular-WyMWG.ttf");
     menu.init();
     LL.init();
     graph.init();
@@ -17,11 +18,28 @@ void Program::init(){
 }
 void Program::run() {
     init();
+    InitAudioDevice();
+    Music music = LoadMusicStream("res/music/marbleSoda.mp3");
+    PlayMusicStream(music);
 
     while(!WindowShouldClose()) {
         BeginDrawing();
         ClearBackground(RAYWHITE);
+        //Event
         event();
+        //Music
+        UpdateMusicStream(music); 
+        if (!IsMusicStreamPlaying(music)) {
+            PlayMusicStream(music);  
+        }
+        SetMusicVolume(music, volume);
+         if (IsKeyPressed(KEY_P))
+        {
+            pause = !pause;
+
+            if (pause) PauseMusicStream(music);
+            else ResumeMusicStream(music);
+        }
 
         Vector2 mousePos = GetMousePosition();
         char posText[50];
@@ -33,6 +51,9 @@ void Program::run() {
         draw();
         EndDrawing();
     }
+    UnloadMusicStream(music);   
+
+    CloseAudioDevice(); 
     CloseWindow();
 }
 

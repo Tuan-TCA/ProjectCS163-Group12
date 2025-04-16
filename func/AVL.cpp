@@ -417,7 +417,7 @@ void AVL::drawStep(AVLpaint a, int Found) {
     if(currentOperation != Operation::Algorithm) {
         
         for(const auto& line : pseudocode) {
-            Vector2 lineWidth = MeasureTextEx(FONT2, line.c_str(), 20, 3);
+            Vector2 lineWidth = MeasureTextEx(FONT, line.c_str(), 20, 3);
             if(lineWidth.x > maxWidth.x) maxWidth = lineWidth;
         }
         textWidth = maxWidth.x;
@@ -431,7 +431,7 @@ void AVL::drawStep(AVLpaint a, int Found) {
             }
             
             // Vẽ chữ
-            DrawTextEx(FONT2, pseudocode[i].c_str(), 
+            DrawTextEx(FONT, pseudocode[i].c_str(), 
                       {pseudocodeX, pseudocodeY + i*lineHeight}, 
                       20, 3, textColor);
         }
@@ -1207,8 +1207,8 @@ void AVL::DrawTN(TreeNode *a){
 
     int Fs = max(10, static_cast<int>(font_size-s.size()*3));
     
-    int wNode =  MeasureText(s.c_str(), Fs);
-    DrawText(s.c_str(), center.x - wNode / 2, center.y - Fs/2, Fs, text_color);
+    int wNode =  MeasureTextEx(FONT, s.c_str(), Fs, 2).x;
+    DrawTextEx(FONT, s.c_str(), {center.x - wNode / 2, center.y - Fs/2}, Fs, 2, text_color);
     
     
 }
