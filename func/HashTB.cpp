@@ -924,7 +924,7 @@ void HashTB::RANDOM_INPUT(){
     
     if(currentOperation == Operation::Create){
             textbox.reset();
-            std::uniform_int_distribution<int> bucket(3, 9); 
+            std::uniform_int_distribution<int> bucket(3, 8); 
             int numBucket = bucket(rng);
             std::uniform_int_distribution<int> value(0, 999);
             std::uniform_int_distribution<int> valueSize(5, 30);
@@ -966,7 +966,6 @@ void HashTB::Create(){
     if (!createKeys.empty()) {
         Insert(createKeys.front());
         createKeys.erase(createKeys.begin());
-        // std::this_thread::sleep_for(std::chrono::milliseconds((int) (300 / animationSpeed)));
     }
     if (createKeys.empty()) {
         isCreating = false;

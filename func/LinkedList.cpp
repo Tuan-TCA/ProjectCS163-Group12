@@ -886,7 +886,7 @@ void LinkedList::handleUI(){
 
 void LinkedList::RANDOM_INPUT(){
      std::mt19937 rng(std::random_device{}());
-    std::uniform_int_distribution<int> dist(0, 15);
+    std::uniform_int_distribution<int> dist(2, 8);
     if(currentOperation == Operation::Create){
         textbox.inputText = {to_string(dist(rng))};
     }

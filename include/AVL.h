@@ -80,7 +80,7 @@ class AVLpaint {
     int posX = 800;
     int posY = 800;
     void noti() {
-        DrawText("NOT FOUND", posX, posY, font_size*2, RED);
+        DrawText("NOT FOUND", screenWidth * 0.7f, screenHeight * 0.85f , font_size * 1.3f, RED);
     }
 
     TreeNode* copyTree(TreeNode* root) {

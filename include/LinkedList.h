@@ -73,7 +73,7 @@ public:
     }
 
     void noti() {
-        DrawText("NOT FOUND", screenWidth * 0.7f, screenHeight * 0.8f , font_size * 2, RED);
+        DrawText("NOT FOUND", screenWidth * 0.7f, screenHeight * 0.85f , font_size * 1.3f, RED);
     }
 
     // Copy linked list (deep copy)
