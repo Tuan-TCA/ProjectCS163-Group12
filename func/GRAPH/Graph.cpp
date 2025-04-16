@@ -1,13 +1,7 @@
 #include "Graph.h"
-#include <fstream>
-#include <iostream>
-#include <cmath>
+
 #include <algorithm>
-#include <vector>
-#include <unordered_set>
-#include <random>
-#include <sstream>
-using namespace std;
+
 
 float distance(Vector2 pos1, Vector2 pos2){
     return sqrt(pow(pos1.x - pos2.x, 2) + pow(pos1.y - pos2.y, 2));
@@ -50,6 +44,7 @@ void Graph::draw(){
     DrawTextEx(FONT, "WEIGHT", {setting_menu.x + 15, setting_menu.y + 18 + setting_menu.width*0.3f * 0.61f * 2 + 15}, 25, 2, WHITE);
     //Algorithm
     if(currentOperation == Operation::Algorithm){
+        AlgorithmOptionButton.textColor = AlgorithmNextButton.textColor = AlgorithmPrevButton.textColor = MyColor5;
         AlgorithmOptionButton.Draw(LIGHTGRAY, WHITE);
         AlgorithmPrevButton.Draw(LIGHTGRAY, WHITE);
         AlgorithmNextButton.Draw(LIGHTGRAY, WHITE);

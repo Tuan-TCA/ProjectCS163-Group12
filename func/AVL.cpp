@@ -1,8 +1,4 @@
 #include "AVL.h"
-#include <iostream>
-#include<stack>
-#include <vector>
-#include <sstream>
 
 
 void updateRotation(float stepDuration, AVLpaint& tmp, AVLpaint& tar) {

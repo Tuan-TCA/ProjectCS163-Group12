@@ -5,7 +5,7 @@
 #include "Vertex.h"
 #include "Edge.h"
 #include "Page.h"
-#include "Variables.h"
+
 using namespace std;
 
 enum class Algorithm{

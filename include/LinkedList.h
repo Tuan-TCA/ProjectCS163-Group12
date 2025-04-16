@@ -1,10 +1,4 @@
 #pragma once
-#include <string>
-#include <math.h>
-#include <iostream>
-using namespace std;
-#include <raylib.h>
-#include "Variables.h"
 #include "Page.h"
 
 class Node {

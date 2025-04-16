@@ -1,13 +1,5 @@
 #include "HashTB.h"
-#include <raylib.h>
-#include <cmath>
-#include <thread>
-#include <chrono>
-#include <iostream>
-#include <random>
-#include <sstream>
-#include "Program.h"
-using namespace std;
+
 
 void HashTB::init(){
     Page::init();
@@ -357,13 +349,6 @@ void HashTB::draw() {
     static float elapsedTime = 0.0f;
     const float stepDuration = 0.5f / animationSpeed;
 
-    // if(IsKeyPressed(KEY_A)) {
-    //     Vector2 k = GetMousePosition();
-    //     auto t = head->Pos;
-    //     head->Pos = k;
-    //     DrawLL(head);
-    //     head->Pos = t;
-    // }
     
     if(currentOperation == Operation::Create) {
         if (isCreating) {

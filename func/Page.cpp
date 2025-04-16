@@ -1,33 +1,8 @@
 #include <raylib.h>
-#include <string>
-#include <iostream>
-#include <fstream>
-#include <iomanip>
-#include <sstream>
-#include <random>
+
 #include <raymath.h>
 #include "Page.h"
-#include "Variables.h"
-using namespace std;
 
-int lastInsertedKey;
-
-
-
-void Page::updateSide(){
-    InputOptionButton.bounds = Rectangle{side.x + (side.x + side.width) * 0.15f, side.y + screenHeight*0.63f * 0.15f + 10 , screenWidth*0.24f * 0.7f, screenHeight*0.63f * 0.15f};
-    InputPrevButton.bounds = Rectangle{side.x + 5,side.y + screenHeight*0.63f * 0.15f + 10 ,  screenWidth*0.24f * 0.15f - 10, screenHeight*0.63f * 0.15f};
-    InputNextButton.bounds = Rectangle{side.x + (side.x + side.width) * 0.85f + 5, side.y + screenHeight*0.63f * 0.15f + 10,  screenWidth*0.24f * 0.15f - 10, screenHeight*0.63f * 0.15f};
-    OperationOptionButton.bounds = Rectangle{side.x + (side.x + side.width) * 0.15f, side.y + 5, screenWidth*0.24f * 0.7f, screenHeight*0.63f * 0.15f};
-    OperationPrevButton.bounds = Rectangle{side.x + 5, side.y + 5, screenWidth*0.24f * 0.15f - 10, screenHeight*0.63f * 0.15f};
-    OperationNextButton.bounds = Rectangle{side.x + (side.x + side.width) * 0.85f + 5,side.y + 5,  screenWidth*0.24f * 0.15f - 10,screenHeight*0.63f * 0.15f};
-    Ok.bounds = Rectangle{side.x + (side.x  + side.width) * 0.74f, side.y + screenHeight*0.63f * 0.3f + 15, 73, screenHeight*0.63f * 0.15f};
-    textbox.bounds = Rectangle{side.x + 5, side.y + screenHeight*0.63f * 0.3f + 15, screenWidth*0.25f - 100, screenHeight*0.63f * 0.15f};
-    oldTextBox.bounds = Rectangle{side. x + 5, side.y + screenHeight*0.63f * 0.36f, screenWidth*0.08f, screenHeight*0.63f * 0.11f};
-    newTextBox.bounds = Rectangle{side.x + screenWidth*0.08f + 10, side.y + screenHeight*0.63f * 0.36f, screenWidth*0.08f, screenHeight*0.63f * 0.11f};
-    theme.bounds = {setting_menu.x + setting_menu.width * 0.5f, setting_menu.y + 5, setting_menu.width*0.3f, setting_menu.width*0.3f * 0.61f};
-    musicVolume.bounds = {setting_menu.x + setting_menu.width * 0.5f, setting_menu.y + setting_menu.width*0.3f * 0.61f + 10, setting_menu.width*0.45f, setting_menu.width*0.3f * 0.61f};
-}
 
 void Page::init() {
     selectedInputIndex = 0;
@@ -43,7 +18,7 @@ void Page::init() {
     OperationNextButton = Button((side.x + side.width) * 0.85f + 5,side.y + 5,  screenWidth*0.24f * 0.15f - 10,screenHeight*0.63f * 0.15f, ">", MyColor7, Fade(MyColor7, 0.8f), WHITE);
     currentOperation = Operation::Insert;
 
-    Ok = Button((side.x  + side.width) * 0.74f, side.y + screenHeight*0.63f * 0.3f + 15, 73, screenHeight*0.63f * 0.15f, "OK", MyColor1, MyColor2, WHITE);
+    Ok = Button((side.x  + side.width) * 0.74f, side.y + screenHeight*0.63f * 0.3f + 15, 73, screenHeight*0.63f * 0.15f, "GO", MyColor1, MyColor2, WHITE);
     head = MyRec(0, 10, (float) screenWidth, screenHeight*0.08f, getMODE().c_str(), MyColor2, WHITE);
     home = ButtonFromImage("res/button/back.png", "res/button/back-isOver.png", screenWidth*0.016f, screenHeight*0.016f, screenWidth*0.05f, screenWidth*0.05f); 
     home2 = ButtonFromImage("res/button/homeII_1.png", "res/button/homeII_2.png", screenWidth*0.016f, screenHeight*0.016f, screenWidth*0.05f, screenWidth*0.05f); 
@@ -158,7 +133,7 @@ void Page::draw() {
     }
     else{
         DrawRectangle(side.x * 1.2f + 5, side.y + screenHeight*0.63f * 0.3f + 15, screenWidth*0.24f - 10, screenHeight*0.63f * 0.15f, WHITE);
-        DrawTextEx(FONT, "DROP FILE HERE", {side.x * 1.2f + 50, screenHeight / 2 - screenHeight*0.63f * 0.118f}, 25, 2, GRAY);
+        DrawTextEx(FONT, "DRAG & DROP YOUR FILE", {side.x * 1.2f + 20, screenHeight / 2 - screenHeight*0.63f * 0.12f}, 20, 2, GRAY);
         //drop file field
     }
     
@@ -180,7 +155,7 @@ void Page::draw() {
     }
     //Input
     if(currentOperation != Operation::Algorithm){
-        InputOptionButton.textColor = MyColor5;
+        InputOptionButton.textColor =  InputNextButton.textColor = InputPrevButton.textColor = MyColor5;
         InputOptionButton.Draw(LIGHTGRAY, WHITE);
         InputPrevButton.Draw(LIGHTGRAY, WHITE);
         InputNextButton.Draw(LIGHTGRAY, WHITE);
@@ -269,7 +244,6 @@ void Page::event() {
     }
     codeDisplayPLace = codeDisplayPLace + deltaRec * t;
     }
-    // TỰ LÀM PHẦN HIGHLIGHT!!!! tham khảo Graph.draw() && psuedo code thi tuy phan
 
     //Code box event
     if(currentOperation != Operation::Algorithm){
@@ -440,7 +414,20 @@ void Page::event() {
         }
     }
 }
-
+void Page::updateSide(){
+    InputOptionButton.bounds = Rectangle{side.x + (side.x + side.width) * 0.15f, side.y + screenHeight*0.63f * 0.15f + 10 , screenWidth*0.24f * 0.7f, screenHeight*0.63f * 0.15f};
+    InputPrevButton.bounds = Rectangle{side.x + 5,side.y + screenHeight*0.63f * 0.15f + 10 ,  screenWidth*0.24f * 0.15f - 10, screenHeight*0.63f * 0.15f};
+    InputNextButton.bounds = Rectangle{side.x + (side.x + side.width) * 0.85f + 5, side.y + screenHeight*0.63f * 0.15f + 10,  screenWidth*0.24f * 0.15f - 10, screenHeight*0.63f * 0.15f};
+    OperationOptionButton.bounds = Rectangle{side.x + (side.x + side.width) * 0.15f, side.y + 5, screenWidth*0.24f * 0.7f, screenHeight*0.63f * 0.15f};
+    OperationPrevButton.bounds = Rectangle{side.x + 5, side.y + 5, screenWidth*0.24f * 0.15f - 10, screenHeight*0.63f * 0.15f};
+    OperationNextButton.bounds = Rectangle{side.x + (side.x + side.width) * 0.85f + 5,side.y + 5,  screenWidth*0.24f * 0.15f - 10,screenHeight*0.63f * 0.15f};
+    Ok.bounds = Rectangle{side.x + (side.x  + side.width) * 0.74f, side.y + screenHeight*0.63f * 0.3f + 15, 73, screenHeight*0.63f * 0.15f};
+    textbox.bounds = Rectangle{side.x + 5, side.y + screenHeight*0.63f * 0.3f + 15, screenWidth*0.25f - 100, screenHeight*0.63f * 0.15f};
+    oldTextBox.bounds = Rectangle{side. x + 5, side.y + screenHeight*0.63f * 0.36f, screenWidth*0.08f, screenHeight*0.63f * 0.11f};
+    newTextBox.bounds = Rectangle{side.x + screenWidth*0.08f + 10, side.y + screenHeight*0.63f * 0.36f, screenWidth*0.08f, screenHeight*0.63f * 0.11f};
+    theme.bounds = {setting_menu.x + setting_menu.width * 0.5f, setting_menu.y + 5, setting_menu.width*0.3f, setting_menu.width*0.3f * 0.61f};
+    musicVolume.bounds = {setting_menu.x + setting_menu.width * 0.5f, setting_menu.y + setting_menu.width*0.3f * 0.61f + 10, setting_menu.width*0.45f, setting_menu.width*0.3f * 0.61f};
+}
 std::mt19937 rng(std::random_device{}());
 void Page::RANDOM_INPUT(){
     std::uniform_int_distribution<int> dist(0, 999); // Giới hạn số từ 0-999

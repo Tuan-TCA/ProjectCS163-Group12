@@ -1,6 +1,4 @@
 #include "Program.h"
-#include <raylib.h>
-#include <iostream>
 
 Program::Program () {
     InitWindow(screenWidth, screenHeight, "Visualization App - CS 163 - Group 12");

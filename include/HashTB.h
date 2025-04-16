@@ -1,22 +1,11 @@
 #pragma once
 #include <string>
 #include <cmath>
-#include <iostream>
 using namespace std;
 
-#include <raylib.h>
 #include "LinkedList.h"
-#include "Variables.h"
 #include "Page.h"
 
-// struct HashNode {
-//     int key;
-//     HashNode* next;
-//     HashNode(int k, HashNode* nxt = nullptr) {
-//         key = k;
-//         next = nxt;
-//     }
-// };
 
 //vector<LinkedList*> heads;
 class HashTBpaint : public LLpaint{

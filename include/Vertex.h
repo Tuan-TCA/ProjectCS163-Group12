@@ -1,9 +1,6 @@
 #pragma once
 
-#include <raylib.h>
-#include <iostream>
 #include "Variables.h"
-using namespace std;
 
 class Vertex : public Drawable {
 public:

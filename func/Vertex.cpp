@@ -1,5 +1,5 @@
 #include "Vertex.h"
-#include "Variables.h"
+
 void Vertex::Update(float deltaTime){
     if(isAnimating){
         animationTime += deltaTime;
@@ -36,10 +36,10 @@ void Vertex::Draw() {
     DrawTextEx(
         FONT,
         to_string(value).c_str(), 
-        {position.x - MeasureTextEx(FONT,to_string(value).c_str(), 20, 2).x / 2, 
-        position.y  - radius * 0.3f}, 
+        {position.x - MeasureText(to_string(value).c_str(), 20) / 2, 
+        position.y - MeasureText(to_string(value).c_str(), 20) / 2 - radius * 0.2f}, 
         20,
-        2,
+        1,
         textColor
         );
     DrawRing(position, radius, radius + 5, 0, 360, 200, ringColor);

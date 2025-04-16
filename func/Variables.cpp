@@ -33,7 +33,7 @@ void UpdateColorsBasedOnSwitchState() {
     if (switchState) {
         MyColor1 = Color{143, 50, 81, 255};  
         MyColor2 = Color{212, 87, 107, 255}; 
-        MyColor3 = Color{255, 134, 154, 255};//ok
+        MyColor3 = Color{255, 134, 124, 255};//ok
         MyColor4 = Color{88, 33, 64, 255};//ok
         MyColor5 = Color{163, 62, 53, 255};
         MyColor6 = Color{255, 211, 207, 255};

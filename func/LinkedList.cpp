@@ -1,9 +1,5 @@
-#include "LinkedList.h"
-#include <raylib.h>
-#include <thread>
 #include <random>
-#include<iostream>
-using namespace std;
+#include "LinkedList.h"
 
 LinkedList::LinkedList() {
     head = nullptr;

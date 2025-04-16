@@ -2,7 +2,14 @@
 #include <string>
 #include <iostream>
 #include <vector>
-#include<raylib.h>
+#include <stack>
+#include <sstream>
+#include <cmath>
+#include <random>
+#include <fstream>
+#include <iomanip>
+#include <algorithm>
+#include <raylib.h>
 using namespace std;
 
 enum class MODE {

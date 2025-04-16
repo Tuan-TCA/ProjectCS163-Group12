@@ -1,11 +1,4 @@
 #pragma once
-#include <string>
-#include <math.h>
-#include <iostream>
-#include <random>
-using namespace std;
-#include <raylib.h>
-#include "Variables.h"
 #include "Page.h"
 
 
