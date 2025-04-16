@@ -115,6 +115,8 @@ void Page::draw() {
     DrawRectangleRoundedLinesEx(codeDisplayPLace, 0.1f, 20, 4, MyColor3);
     DrawRectangleRounded({screenWidth * 0.7f , screenHeight*0.934f , screenWidth * 0.182f,screenHeight * 0.095f / 3}, 20, 20, WHITE); //speed control
     speedSliding.DrawRounded(MyColor3);
+    showCodeButton.color = MyColor7;
+    showCodeButton.hoverColor = Fade(MyColor7, 0.8f);
     showCodeButton.DrawRounded();
     //SETTING
      DrawRectangleRounded(setting_menu, 0.42f, 30, MyColor3);

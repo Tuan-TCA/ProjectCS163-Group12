@@ -135,10 +135,10 @@ public:
     const Color choose_color = { 0, 128, 0, 128 };//green
     const Color visit_color = RED;//red
     const Color ring = MyColor2;
-    const Color circle = MyColor2;
+    const Color circe = MyColor2;
     const Color text_color = WHITE;
     const float arrow_size = 15.0;
-    const Color arrow_color = MyColor1;
+    Color arrow_color = MyColor1;
     float rotationStartTime = 0;
 
     ~AVL();

@@ -1237,6 +1237,7 @@ void AVL::DrawArrow(Vector2 start, Vector2 end) {
     Vector2 right = {arrowHead.x - (arrow_size+2) * cos(angle - arrowAngle), 
                      arrowHead.y - (arrow_size+2) * sin(angle - arrowAngle)};
 
+    arrow_color = MyColor1;
     DrawLineEx(start, arrowHead, 5, arrow_color);
     DrawLineEx(arrowHead, left, 3, arrow_color);
     DrawLineEx(arrowHead, right, 3, arrow_color);
