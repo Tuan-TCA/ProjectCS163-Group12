@@ -84,8 +84,8 @@ void Page::init() {
     lineHeight = 20.0f;
 
     setting_menu = Rectangle{screenWidth * 0.8f, screenHeight * 0.7f, screenWidth * 0.19f, screenHeight * 0.18f};
-    Slider musicVolume  = Slider({setting_menu.x + setting_menu.width * 0.5f, setting_menu.y + setting_menu.width*0.3f * 0.61f + 10, setting_menu.width*0.45f, setting_menu.width*0.3f * 0.61f}, 0, 1);
-    musicVolume.value = 0.5f;
+    Slider musicVolume  = Slider({setting_menu.x + setting_menu.width * 0.5f, setting_menu.y + setting_menu.width*0.3f * 0.61f + 10, setting_menu.width*0.45f, setting_menu.width*0.3f * 0.61f}, 0.3f, 0, 1);
+
     theme = SwitchThemeButton(setting_menu.x + 5, setting_menu.y + 5, setting_menu.width*0.43f, 50, "", MyColor1, MyColor1, WHITE);
 
     camera.target = { (float)GetScreenWidth()/2, (float)GetScreenHeight()/2 };
@@ -204,8 +204,13 @@ void Page::event() {
     Vector2 mousePos = GetMousePosition();
     //SETTING
     musicVolume.Update();
+    float wheel1 = GetMouseWheelMove();
+    if(wheel1) {
+        musicVolume.value += wheel1 * 0.1f;
+        if(musicVolume.value > 1) musicVolume.value = 1;
+        else if(musicVolume.value < 0) musicVolume.value = 0;
+    }
     volume = musicVolume.value;
- 
     Rectangle targetPlace = Rectangle{screenWidth * 0.8f, screenHeight * 0.7f, screenWidth * 0.19f, screenHeight * 0.18f};
     Rectangle closedPlace = Rectangle{(float) screenWidth * 0.99f, screenHeight * 0.7f, screenWidth * 0.19f, screenHeight * 0.18f};
     Rectangle checkPlace = Rectangle{screenWidth * 0.9f, screenHeight * 0.7f, screenWidth * 0.5f, screenHeight * 0.18f};
@@ -418,7 +423,7 @@ void Page::event() {
 
 
     float wheel = GetMouseWheelMove();
-    if (wheel != 0 && CheckCollisionPointRec(mousePos, workplace)) {
+    if (wheel != 0 && CheckCollisionPointRec(mousePos, workplace) && !CheckCollisionPointRec(mousePos, targetPlace)) {
         // camera.target = GetMousePosition();
         camera.zoom += wheel * 0.1f;
         if (camera.zoom < 0.2f) camera.zoom = 0.2f;

@@ -607,10 +607,10 @@ public:
     float maxValue;
     bool isDragging;
 
-    Slider() : isDragging(false), value(0.5), minValue(0), maxValue(1) {}
+    Slider() : isDragging(false), value(0.3), minValue(0), maxValue(1) {}
 
-    Slider(Rectangle bounds, float minValue, float maxValue)
-        : bounds(bounds), minValue(minValue), maxValue(maxValue), value((minValue + maxValue) / 2.0f), isDragging(false) {}
+    Slider(Rectangle bounds, float value,float minValue, float maxValue)
+        : bounds(bounds), minValue(minValue), maxValue(maxValue), value(value), isDragging(false) {}
 
     void Update() {
         Vector2 mouse = GetMousePosition();
