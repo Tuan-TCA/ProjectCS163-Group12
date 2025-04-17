@@ -725,6 +725,7 @@ bool LinkedList::Search(int key) {
     a->isHighLight = -1;
     addStep(this->head,1);  
     a->isHighLight = 0;
+    a = a->next;
     while(a) {
         addStep(this->head,2); 
         if(a->val == key) {
