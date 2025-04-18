@@ -144,7 +144,6 @@ public:
     bool Update(int oldKey, int newKey);
     void Create();
 
-    void Clear(); // optional reset function
     int index = -1;
     void updateHTBNodePositions(Node* &a, Node* b, float &tmp);
     Node* findNode(Node* head, int key);
