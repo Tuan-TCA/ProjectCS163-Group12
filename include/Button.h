@@ -112,7 +112,11 @@ public:
     }
     bool IsClicked() {
         Update();
-        return isHovered && IsMouseButtonPressed(MOUSE_LEFT_BUTTON);
+        if (isHovered && IsMouseButtonPressed(MOUSE_LEFT_BUTTON)){
+            PlaySound(sound);
+            return true;
+        }
+        return false;
     }
 };
 
@@ -155,6 +159,7 @@ public:
 
         if(active){
             if(IsKeyPressed(KEY_DOWN)){
+
                 currentIndex++;
                 if(currentIndex >= inputText.size()) currentIndex = inputText.size() - 1;
                 if(currentIndex - startRowIndex > 2) startRowIndex++;

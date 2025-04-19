@@ -53,8 +53,8 @@ void LinkedList::reset(){
     }
     head = nullptr;
     workplace = {400,300,600,600};
-     headPos = {400,300};
-      camera.target = headPos;
+    headPos = {400,300};
+    camera.target = headPos;
     camera.offset = headPos;
     isClosingCodePlace = false;
     isExpandingCodePlace = true;
@@ -68,7 +68,7 @@ void LinkedList::reset(){
     hasSearch = false;
     hasDelete = false;
     hasCreate = false;
-    hasCreate = false;
+    hasUpdate = false;
 
     cur = -1;
     curCode = -1;
@@ -725,6 +725,7 @@ bool LinkedList::Search(int key) {
     a->isHighLight = -1;
     addStep(this->head,1);  
     a->isHighLight = 0;
+    a = a->next;
     while(a) {
         addStep(this->head,2); 
         if(a->val == key) {

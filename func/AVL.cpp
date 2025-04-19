@@ -1040,20 +1040,22 @@ int AVL::getLevel(TreeNode *root) {
     return 0;
 }
 
-
 Vector2 AVL::calculateChildPos(Vector2 parentPos, bool isLeft, int level) {
-    float xOffset = (screenWidth*0.65) / pow(2, level + 1.75);
-    float mul = 4.3;
-    if(level > 3) {
-        xOffset = (screenWidth*0.7) / pow(2, level + 1.75);
-        mul = 4.7;
+    float xOffset;
+    if (level >= 5) {
+        xOffset = 780 / pow(2.0f, level + 1.0f);
+    } else if (level == 4) {
+        xOffset = 850 / pow(2.0f, level + 1.7f);
+    } else {
+        xOffset = 950 / pow(2.0f, level + 2.0f);
     }
+
     return {
-        
-        isLeft ? parentPos.x - mul * xOffset : parentPos.x + mul *xOffset,
-        parentPos.y + 3.5f *radius  
+        isLeft ? parentPos.x - 4.2f * xOffset : parentPos.x + 4.2f * xOffset,
+        parentPos.y + 3.5f * radius
     };
 }
+    
 
 
 void AVL::CalculateAllPos(TreeNode* &root, TreeNode* parent, bool isLeft) {

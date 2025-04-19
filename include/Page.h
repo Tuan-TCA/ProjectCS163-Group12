@@ -25,6 +25,7 @@ class Page {
 protected:
 vector<string> OperationOptions;
 public:
+    
     //input
     InputType currentInput;
     vector<string> InputOptions = {"RANDOM", "KEYBOARD", "FILE"};

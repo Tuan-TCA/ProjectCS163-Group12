@@ -17,6 +17,7 @@ void Program::init(){
 void Program::run() {
     init();
     InitAudioDevice();
+    sound = LoadSound("res/music/bubble_pop.wav");
     Music music = LoadMusicStream("res/music/marbleSoda.mp3");
     PlayMusicStream(music);
 
