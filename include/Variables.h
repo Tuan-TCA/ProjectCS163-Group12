@@ -27,6 +27,7 @@ extern const int screenWidth, screenHeight;
 extern float animationSpeed;
 extern bool pause;
 extern float volume;
+extern Sound sound;
 
 extern Color MyColor1;
 extern Color MyColor2;

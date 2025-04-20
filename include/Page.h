@@ -25,6 +25,7 @@ class Page {
 protected:
 vector<string> OperationOptions;
 public:
+    
     //input
     InputType currentInput;
     vector<string> InputOptions = {"RANDOM", "KEYBOARD", "FILE"};
@@ -80,6 +81,7 @@ public:
     Rectangle codeDisplayPLace;
 
     Camera2D camera{};
+    void copyFrom(const Page& src);
     virtual void init();
     virtual void draw();
     virtual void event();

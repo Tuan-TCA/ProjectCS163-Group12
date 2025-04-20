@@ -987,7 +987,6 @@ void AVL::updatePseudocode(Operation op) {
 
 
 void AVL::init() {
-    Page::init();
     root = nullptr;
     
     rootPos= {screenWidth*0.6f, screenHeight*0.2f};           

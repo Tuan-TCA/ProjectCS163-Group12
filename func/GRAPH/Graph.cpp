@@ -8,8 +8,6 @@ float distance(Vector2 pos1, Vector2 pos2){
 }
 
 void Graph::init(){
-    Page::init();
-
     OperationOptions = {"CREATE", "ALGORITHM"};
     selectedAlgorithmIndex = 0;
     currentALgorithm = Algorithm::BFS;

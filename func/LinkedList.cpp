@@ -12,7 +12,6 @@ LinkedList::LinkedList() {
 }
 
 void LinkedList::init(){
-    Page::init();
         while (head){
         Node * tmp = head;
         head = head->next;
@@ -53,8 +52,8 @@ void LinkedList::reset(){
     }
     head = nullptr;
     workplace = {400,300,600,600};
-     headPos = {400,300};
-      camera.target = headPos;
+    headPos = {400,300};
+    camera.target = headPos;
     camera.offset = headPos;
     isClosingCodePlace = false;
     isExpandingCodePlace = true;
@@ -68,7 +67,7 @@ void LinkedList::reset(){
     hasSearch = false;
     hasDelete = false;
     hasCreate = false;
-    hasCreate = false;
+    hasUpdate = false;
 
     cur = -1;
     curCode = -1;

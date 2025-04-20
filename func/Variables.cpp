@@ -16,6 +16,7 @@ const float subHeight = screenHeight*0.63f * 0.15f;
 //Theme 1:
 float animationSpeed = 1.0;
 float volume = 0.3f;
+Sound sound;
 bool pause = false;
 bool switchState = false;
 char filePath[50];

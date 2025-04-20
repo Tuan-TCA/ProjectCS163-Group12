@@ -2,7 +2,6 @@
 
 
 void HashTB::init(){
-    Page::init();
     origin = { screenWidth * 0.416f, screenHeight * 0.22f };
     heads.resize(tableSize, nullptr);
     
