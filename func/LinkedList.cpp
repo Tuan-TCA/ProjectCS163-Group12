@@ -12,7 +12,6 @@ LinkedList::LinkedList() {
 }
 
 void LinkedList::init(){
-    Page::init();
         while (head){
         Node * tmp = head;
         head = head->next;

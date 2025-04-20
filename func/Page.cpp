@@ -63,9 +63,75 @@ void Page::init() {
     theme = SwitchThemeButton(setting_menu.x + 5, setting_menu.y + 5, setting_menu.width*0.43f, 50, "", MyColor1, MyColor1, WHITE);
 
     camera.target = { (float)GetScreenWidth()/2, (float)GetScreenHeight()/2 };
-        camera.offset = { (float)GetScreenWidth()/2, (float)GetScreenHeight()/2 };
-        camera.rotation = 0.0f;
-        camera.zoom = 1.0f;
+    camera.offset = { (float)GetScreenWidth()/2, (float)GetScreenHeight()/2 };
+    camera.rotation = 0.0f;
+    camera.zoom = 1.0f;
+}
+void Page::copyFrom(const Page& src) {
+    selectedInputIndex = src.selectedInputIndex;
+    InputOptionButton = src.InputOptionButton;
+    InputPrevButton = src.InputPrevButton;
+    InputNextButton = src.InputNextButton;
+    currentInput = src.currentInput;
+
+    OperationOptions = src.OperationOptions;
+    selectedOperationIndex = src.selectedOperationIndex;
+    OperationOptionButton = src.OperationOptionButton;
+    OperationPrevButton = src.OperationPrevButton;
+    OperationNextButton = src.OperationNextButton;
+    currentOperation = src.currentOperation;
+
+    Ok = src.Ok;
+    head = src.head;
+    home = src.home;
+    home2 = src.home2;
+
+    isPlaying = src.isPlaying;
+    back1 = src.back1;
+    backward1 = src.backward1;
+    next1 = src.next1;
+    forward1 = src.forward1;
+    play1 = src.play1;
+    pause1 = src.pause1;
+    back2 = src.back2;
+    backward2 = src.backward2;
+    next2 = src.next2;
+    forward2 = src.forward2;
+    pause2 = src.pause2;
+    play2 = src.play2;
+
+    // Code section
+    isClosingCodePlace = src.isClosingCodePlace;
+    isExpandingCodePlace = src.isExpandingCodePlace;
+    showCodeButton = src.showCodeButton;
+    codeDisplayPLace = src.codeDisplayPLace;
+
+    speedSliding = src.speedSliding;
+    background1 = src.background1;
+    background2 = src.background2;
+    bottom = src.bottom;
+
+    pseudocode = src.pseudocode;
+    pseudocodeX = src.pseudocodeX;
+    pseudocodeY = src.pseudocodeY;
+
+    side = src.side;
+    textbox = src.textbox;
+    oldTextBox = src.oldTextBox;
+    newTextBox = src.newTextBox;
+    oldTextBox.resetTextbox();
+    newTextBox.resetTextbox();
+    textbox.resetTextbox();
+    lineHeight = src.lineHeight;
+    setting_menu = src.setting_menu;
+
+    // Slider & Theme
+    musicVolume = src.musicVolume;
+    theme = src.theme;
+
+    // Camera
+    camera = src.camera;
+
 }
 
 void Page::reset(){
@@ -78,10 +144,10 @@ void Page::reset(){
     isClosingSide           = false;
     selectedInputIndex      = 0;
     selectedOperationIndex  = 0;
-     camera.target = { (float)GetScreenWidth()/2, (float)GetScreenHeight()/2 };
-        camera.offset = { (float)GetScreenWidth()/2, (float)GetScreenHeight()/2 };
-        camera.rotation = 0.0f;
-        camera.zoom = 1.0f;
+    camera.target = { (float)GetScreenWidth()/2, (float)GetScreenHeight()/2 };
+    camera.offset = { (float)GetScreenWidth()/2, (float)GetScreenHeight()/2 };
+    camera.rotation = 0.0f;
+    camera.zoom = 1.0f;
     textbox.reset();
 }
 
@@ -183,7 +249,7 @@ void Page::event() {
     
     Rectangle targetPlace = Rectangle{screenWidth * 0.8f, screenHeight * 0.7f, screenWidth * 0.19f, screenHeight * 0.18f};
     Rectangle closedPlace = Rectangle{(float) screenWidth * 0.99f, screenHeight * 0.7f, screenWidth * 0.19f, screenHeight * 0.18f};
-    Rectangle checkPlace = Rectangle{screenWidth * 0.9f, screenHeight * 0.7f, screenWidth * 0.5f, screenHeight * 0.18f};
+    Rectangle checkPlace = Rectangle{screenWidth * 0.85f, screenHeight * 0.7f, screenWidth * 0.5f, screenHeight * 0.18f};
     
     musicVolume.Update();
     float wheel1 = GetMouseWheelMove();

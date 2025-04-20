@@ -8,10 +8,15 @@ Program::Program () {
 
 void Program::init(){
     FONT = LoadFont("res/font/MouldyCheeseRegular-WyMWG.ttf");
+    page.init();
     menu.init();
+    LL.copyFrom(page);
     LL.init();
+    graph.copyFrom(page);
     graph.init();
+    hashtable.copyFrom(page);
     hashtable.init();
+    avl.copyFrom(page);   
     avl.init();
 }
 void Program::run() {
@@ -51,7 +56,7 @@ void Program::run() {
         EndDrawing();
     }
     UnloadMusicStream(music);   
-
+    UnloadSound(sound);
     CloseAudioDevice(); 
     CloseWindow();
 }

@@ -81,6 +81,7 @@ public:
     Rectangle codeDisplayPLace;
 
     Camera2D camera{};
+    void copyFrom(const Page& src);
     virtual void init();
     virtual void draw();
     virtual void event();
