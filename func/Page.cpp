@@ -258,6 +258,7 @@ void Page::event() {
         if(musicVolume.value > 1) musicVolume.value = 1;
         else if(musicVolume.value < 0) musicVolume.value = 0;
     }
+
     volume = musicVolume.value;
         if (CheckCollisionPointRec(mousePos, targetPlace)) {
         if(CheckCollisionPointRec(mousePos, checkPlace)){

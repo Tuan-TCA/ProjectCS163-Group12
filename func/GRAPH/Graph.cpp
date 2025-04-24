@@ -86,6 +86,7 @@ void Graph::draw(){
 
 
 void Graph::event(){
+    musicVolume.value = volume;
     Page::event();
   
 
