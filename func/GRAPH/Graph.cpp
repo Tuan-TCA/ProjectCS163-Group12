@@ -86,6 +86,7 @@ void Graph::draw(){
 
 
 void Graph::event(){
+    musicVolume.value = volume;
     Page::event();
   
 
@@ -279,7 +280,7 @@ void Graph::event(){
     Ok.bounds = Rectangle{side.x * 1.2f + 5, side.y + screenHeight*0.63f * 0.3f + 15, screenWidth*0.24f - 10, screenHeight*0.63f * 0.15f};
     }
     else{
-        Ok.label = "OK";
+        Ok.label = "GO";
         Ok.bounds = Rectangle{ side.x + (side.x  + side.width) * 0.74f, side.y + screenHeight*0.63f * 0.3f + 15, 73, screenHeight*0.63f * 0.15f};
        
     }

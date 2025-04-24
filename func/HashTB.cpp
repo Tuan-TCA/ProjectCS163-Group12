@@ -622,6 +622,7 @@ void HashTB::draw() {
 }
 
 void HashTB::event() {
+    musicVolume.value = volume;
     Page::event();
     
     //Choose Operation
@@ -837,7 +838,7 @@ void HashTB::updatePseudocode() {
                 "   if cur->val == key",                    //3
                 "       return FOUND",             //4
                 "   cur = cur->next",                       //5                          
-                "return FOUND"                              //6 
+                "return NOT_FOUND"                              //6 
             };
             break;
         default:
