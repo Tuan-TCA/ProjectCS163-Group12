@@ -11,7 +11,7 @@ void Page::init() {
     InputNextButton = Button((side.x + side.width) * 0.85f + 5, side.y + screenHeight*0.63f * 0.15f + 10,  screenWidth*0.24f * 0.15f - 10, screenHeight*0.63f * 0.15f, ">", WHITE, LIGHTGRAY, MyColor5);
     currentInput = InputType::Keyboard;
 
-    OperationOptions  = {"CREATE", "INSERT", "DELETE", "SEARCH", "UPDATE"};
+    OperationOptions  = { "INSERT", "CREATE", "DELETE", "SEARCH", "UPDATE"};
     selectedOperationIndex = 0;
     OperationOptionButton = Button((side.x + side.width) * 0.15f, side.y + 5, screenWidth*0.24f * 0.7f, screenHeight*0.63f * 0.15f, OperationOptions[selectedOperationIndex].c_str(), MyColor7, Fade(MyColor7, 0.8f), WHITE);
     OperationPrevButton = Button(side.x + 5, side.y + 5, screenWidth*0.24f * 0.15f - 10, screenHeight*0.63f * 0.15f, "<", MyColor7, Fade(MyColor7, 0.8f), WHITE);
@@ -22,7 +22,7 @@ void Page::init() {
     head = MyRec(0, 10, (float) screenWidth, screenHeight*0.08f, getMODE().c_str(), MyColor2, WHITE);
     home = ButtonFromImage("res/button/back.png", "res/button/back-isOver.png", screenWidth*0.016f, screenHeight*0.016f, screenWidth*0.05f, screenWidth*0.05f); 
     home2 = ButtonFromImage("res/button/homeII_1.png", "res/button/homeII_2.png", screenWidth*0.016f, screenHeight*0.016f, screenWidth*0.05f, screenWidth*0.05f); 
-
+    
     isPlaying = false;
     back1 = ButtonFromImage("res/button/1_backward.png", "res/button/1_backward.png", screenWidth / 2 -   screenWidth * 0.05f * 3 / 2 , screenHeight*0.926f,  screenWidth * 0.04f, screenWidth*0.04f );
     backward1 = ButtonFromImage("res/button/1-prev.png", "res/button/1-prev.png", screenWidth / 2 -   screenWidth * 0.05f * 3 / 2 - 25  - screenWidth * 0.04f, screenHeight*0.926f,  screenWidth * 0.04f, screenWidth*0.04f);
@@ -39,6 +39,7 @@ void Page::init() {
     // timeSlider = Slider({screenWidth * 0.05f , screenHeight*0.936f,  screenWidth * 0.3f ,screenHeight * 0.095f / 3 * 0.9f}, 0.0f, 1.0f);
     isClosingCodePlace = false;
     isExpandingCodePlace = true;
+
     showCodeButton = Button(-screenWidth * 0.02f, screenHeight * 0.5f , screenWidth * 0.15, screenHeight * 0.05f, "HIDE CODE", MyColor7, Fade(MyColor7, 0.8f), WHITE);
     codeDisplayPLace = Rectangle{screenWidth * 0.01f, screenHeight * 0.56f, screenWidth * 0.24f - 12.0f, screenHeight * 0.35f};
     speedSliding = MyRec(screenWidth * 0.712f , screenHeight*0.936f,  screenWidth * 0.182f * 0.38f,screenHeight * 0.095f / 3 * 0.9f, "", MyColor3, WHITE);
@@ -56,11 +57,6 @@ void Page::init() {
     newTextBox.resetTextbox();
     textbox.resetTextbox();
     lineHeight = 20.0f;
-
-    setting_menu = Rectangle{screenWidth * 0.8f, screenHeight * 0.7f, screenWidth * 0.19f, screenHeight * 0.18f};
-    Slider musicVolume  = Slider({setting_menu.x + setting_menu.width * 0.5f, setting_menu.y + setting_menu.width*0.3f * 0.61f + 10, setting_menu.width*0.45f, setting_menu.width*0.3f * 0.61f}, 0.3f, 0, 1);
-
-    theme = SwitchThemeButton(setting_menu.x + 5, setting_menu.y + 5, setting_menu.width*0.43f, 50, "", MyColor1, MyColor1, WHITE);
 
     camera.target = { (float)GetScreenWidth()/2, (float)GetScreenHeight()/2 };
     camera.offset = { (float)GetScreenWidth()/2, (float)GetScreenHeight()/2 };
@@ -85,6 +81,7 @@ void Page::copyFrom(const Page& src) {
     head = src.head;
     home = src.home;
     home2 = src.home2;
+
 
     isPlaying = src.isPlaying;
     back1 = src.back1;
@@ -123,12 +120,10 @@ void Page::copyFrom(const Page& src) {
     newTextBox.resetTextbox();
     textbox.resetTextbox();
     lineHeight = src.lineHeight;
-    setting_menu = src.setting_menu;
+
 
     // Slider & Theme
-    musicVolume = src.musicVolume;
-    theme = src.theme;
-
+    animatingTime = 0;
     // Camera
     camera = src.camera;
 
@@ -155,6 +150,7 @@ void Page::draw() {
     ClearBackground(RAYWHITE);
     DrawTexture(switchState ? background2 : background1, 0, 0, WHITE);
     DrawRectangleRec(head.bounds, MyColor2);
+
      int textWidth = MeasureTextEx(FONT,getMODE().c_str(), 40, 3).x;
     DrawTextEx(FONT, getMODE().c_str(), {head.bounds.x + (head.bounds.width - textWidth) / 2, head.bounds.y + (head.bounds.height - 30) / 2}, 40, 3, WHITE);
     DrawRectangleRounded(bottom, 20, 20, MyColor2);
@@ -170,11 +166,7 @@ void Page::draw() {
     if(currentOperation != Operation::Create && currentOperation != Operation::Update)  showCodeButton.DrawRounded();
 
     //SETTING
-     DrawRectangleRounded(setting_menu, 0.42f, 30, MyColor3);
-     musicVolume.Draw();
-    theme.Draw();
-    DrawTextEx(FONT, "THEME", {setting_menu.x + 15, setting_menu.y + 18}, 25, 2, WHITE);
-    DrawTextEx(FONT, "VOLUME", {setting_menu.x + 15, musicVolume.bounds.y + musicVolume.bounds.height / 3}, 23, 2, WHITE);
+    
 
 
     // timeSlider.Draw();
@@ -245,52 +237,10 @@ void Page::event() {
     }
     float deltaTime = GetFrameTime();
     Vector2 mousePos = GetMousePosition();
+    
     //SETTING
+   
     
-    Rectangle targetPlace = Rectangle{screenWidth * 0.8f, screenHeight * 0.7f, screenWidth * 0.19f, screenHeight * 0.18f};
-    Rectangle closedPlace = Rectangle{(float) screenWidth * 0.99f, screenHeight * 0.7f, screenWidth * 0.19f, screenHeight * 0.18f};
-    Rectangle checkPlace = Rectangle{screenWidth * 0.85f, screenHeight * 0.7f, screenWidth * 0.5f, screenHeight * 0.18f};
-    
-    musicVolume.Update();
-    float wheel1 = GetMouseWheelMove();
-    if(wheel1 && CheckCollisionPointRec(mousePos, targetPlace)) {
-        musicVolume.value += wheel1 * 0.1f;
-        if(musicVolume.value > 1) musicVolume.value = 1;
-        else if(musicVolume.value < 0) musicVolume.value = 0;
-    }
-
-    volume = musicVolume.value;
-        if (CheckCollisionPointRec(mousePos, targetPlace)) {
-        if(CheckCollisionPointRec(mousePos, checkPlace)){
-        setting_IsOpening = true;
-        setting_IsClosing = false;
-        animatingTime = 0;
-        }
-    } else {
-        setting_IsClosing = true;
-        setting_IsOpening = false;
-        animatingTime = 0;
-    }
-
-    if (setting_IsOpening) {
-        animatingTime += deltaTime;
-        float t = animatingTime / 0.1f;
-        if (t > 1.0f) {
-            t = 1.0f;
-            animatingTime = 0.0f;
-            setting_IsOpening = false;
-        }
-        setting_menu.x = Lerp(setting_menu.x, targetPlace.x, t); 
-    } else if (setting_IsClosing) {
-        animatingTime += deltaTime;
-        float t = animatingTime / 0.1f;
-        if (t > 1.0f) {
-            t = 1.0f;
-            animatingTime = 0.0f;
-            setting_IsClosing = false;
-        }
-        setting_menu.x = Lerp(setting_menu.x, closedPlace.x, t);
-    }
 
     //Code state
     pseudocodeX = codeDisplayPLace.x  + 5;
@@ -363,18 +313,19 @@ void Page::event() {
     Rectangle targetPlace2 = Rectangle{0, screenHeight / 2 - screenHeight * 0.64f / 2, screenWidth * 0.3f, screenHeight * 0.54f}; 
     Rectangle closedPlace2 = Rectangle{-side.width, screenHeight / 2 - screenHeight * 0.64f / 2, screenWidth * 0.24f, screenHeight * 0.32f}; 
     Rectangle sidePlace = Rectangle{0,screenHeight / 2 - screenHeight * 0.64f / 2,screenWidth*0.12f,screenHeight*0.32f};
-    if (CheckCollisionPointRec(mousePos, targetPlace2)) {
-        if(CheckCollisionPointRec(mousePos, sidePlace)){
-            isExpandingSide = true;
-            isClosingSide = false;
-            animatingTime = 0;
-        }
-    } else {
-        isClosingSide = true;
-        isExpandingSide = false;
-        animatingTime = 0;
-    }
-
+    // if (CheckCollisionPointRec(mousePos, targetPlace2)) {
+    //     if(CheckCollisionPointRec(mousePos, sidePlace)){
+    //         isExpandingSide = true;
+    //         isClosingSide = false;
+    //         animatingTime = 0;
+    //     }
+    // } else {
+    //     isClosingSide = true;
+    //     isExpandingSide = false;
+    //     animatingTime = 0;
+    // }
+    isExpandingSide = true;
+    isClosingSide = false;
     if (isExpandingSide) {
         animatingTime += deltaTime;
         float t = animatingTime / sideDuration;
@@ -470,7 +421,7 @@ void Page::event() {
 
 
     float wheel = GetMouseWheelMove();
-    if (wheel != 0 && CheckCollisionPointRec(mousePos, workplace) && !CheckCollisionPointRec(mousePos, targetPlace)) {
+    if (wheel != 0 && CheckCollisionPointRec(mousePos, workplace)) {
         // camera.target = GetMousePosition();
         camera.zoom += wheel * 0.1f;
         if (camera.zoom < 0.2f) camera.zoom = 0.2f;
@@ -478,7 +429,7 @@ void Page::event() {
     }
  
     if (IsMouseButtonDown(MOUSE_BUTTON_LEFT)) {
-        if(CheckCollisionPointRec(mousePos, workplace) && !CheckCollisionPointRec(mousePos, targetPlace)){
+        if(CheckCollisionPointRec(mousePos, workplace)){
         Vector2 delta = GetMouseDelta();
         delta = Vector2Scale(delta, -1.0f / camera.zoom);
         camera.target = Vector2Add(camera.target, delta);
@@ -496,8 +447,6 @@ void Page::updateSide(){
     textbox.bounds = Rectangle{side.x + 5, side.y + screenHeight*0.63f * 0.3f + 15, screenWidth*0.25f - 100, screenHeight*0.63f * 0.15f};
     oldTextBox.bounds = Rectangle{side. x + 5, side.y + screenHeight*0.63f * 0.36f, screenWidth*0.08f, screenHeight*0.63f * 0.11f};
     newTextBox.bounds = Rectangle{side.x + screenWidth*0.08f + 10, side.y + screenHeight*0.63f * 0.36f, screenWidth*0.08f, screenHeight*0.63f * 0.11f};
-    theme.bounds = {setting_menu.x + setting_menu.width * 0.5f, setting_menu.y + 5, setting_menu.width*0.3f, setting_menu.width*0.3f * 0.61f};
-    musicVolume.bounds = {setting_menu.x + setting_menu.width * 0.5f, setting_menu.y + setting_menu.width*0.3f * 0.61f + 10, setting_menu.width*0.45f, setting_menu.width*0.3f * 0.61f};
 }
 std::mt19937 rng(std::random_device{}());
 void Page::RANDOM_INPUT(){

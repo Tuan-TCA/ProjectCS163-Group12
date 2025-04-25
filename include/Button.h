@@ -113,7 +113,7 @@ public:
     bool IsClicked() {
         Update();
         if (isHovered && IsMouseButtonPressed(MOUSE_LEFT_BUTTON)){
-            PlaySound(sound);
+            if(volume) PlaySound(sound);
             return true;
         }
         return false;

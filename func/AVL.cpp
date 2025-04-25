@@ -776,7 +776,6 @@ TreeNode* AVL::findNode(TreeNode* root, int val) {
 }
 
 void AVL::event() {
-    musicVolume.value = volume;
     Page::event();
    
     if(currentOperation == Operation::Create) {

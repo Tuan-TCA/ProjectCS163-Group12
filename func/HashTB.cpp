@@ -622,7 +622,6 @@ void HashTB::draw() {
 }
 
 void HashTB::event() {
-    musicVolume.value = volume;
     Page::event();
     
     //Choose Operation
