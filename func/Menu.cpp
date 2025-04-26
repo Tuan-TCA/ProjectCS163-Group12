@@ -2,7 +2,7 @@
 
 
 void Menu::init() {
-    setting_menu = Rectangle{screenWidth * 0.8f, screenHeight * 0.2f, screenWidth * 0.19f, screenHeight * 0.12f};
+    setting_menu = Rectangle{screenWidth * 0.99f, screenHeight * 0.2f, screenWidth * 0.19f, screenHeight * 0.12f};
     Slider musicVolume  = Slider({setting_menu.x + setting_menu.width * 0.5f, setting_menu.y + setting_menu.width*0.3f * 0.61f + 10, setting_menu.width*0.45f, setting_menu.width*0.3f * 0.61f}, 0.3f, 0, 1);
     SwitchTheme = SwitchThemeButton(setting_menu.x + 5, setting_menu.y + 5, setting_menu.width*0.43f, 50, "", MyColor1, MyColor1, WHITE);
     font = LoadFont("res/font/romulus.png");
@@ -87,7 +87,6 @@ void Menu::event(){
             setting_IsOpening = false;
             hasOpened = true;  
         }
-
         setting_menu = Lerp(setting_menu, targetPlace, t); 
     }
     else if (setting_IsClosing && !hasClosed) {

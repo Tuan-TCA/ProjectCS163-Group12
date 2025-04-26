@@ -12,8 +12,8 @@ public:
     Slider musicVolume;
     bool setting_IsOpening = false,
         setting_IsClosing = false,
-        hasOpened = true,
-        hasClosed = false;
+        hasOpened = false,
+        hasClosed = true;
      Rectangle setting_menu;
     vector<AnimatedImageButton> buttons1;
     vector<AnimatedImageButton> buttons2;

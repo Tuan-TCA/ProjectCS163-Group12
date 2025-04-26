@@ -25,7 +25,7 @@ void Graph::init(){
     isAnimating = false;
     clickedV = nullptr;
     textWidth = 20;
-    show_weight = SwitchButton(head.bounds.width * 0.935f, head.bounds.y + head.bounds.height / 2 - screenWidth * 0.025f, screenWidth * 0.35f *0.3f, screenWidth * 0.35f *0.3f * 0.61f, "", MyColor1,MyColor1, WHITE);
+    show_weight = SwitchButton(200 , screenHeight * 0.92f, screenWidth * 0.2f *0.3f, screenWidth * 0.2f *0.3f * 0.61f, "", MyColor1,MyColor1, WHITE);
 }
 
 void Graph::draw(){
@@ -39,8 +39,9 @@ void Graph::draw(){
     }
 
     //setting
+      DrawRectangleRounded({10, show_weight.bounds.y - 10, show_weight.bounds.width + 30 + 175, show_weight.bounds.height + 20}, 0.5, 20, MyColor2);
     show_weight.Draw();
-    DrawTextEx(FONT, "WEIGHT", {head.bounds.width * 0.9f + 15, head.bounds.y + 18 + screenWidth * 0.05f*0.3f * 0.61f * 2 + 15}, 25, 2, WHITE);
+      DrawTextEx(FONT, "Weights On/Off", {show_weight.bounds.x - 175, show_weight.bounds.y + 15 }, 20, 2, WHITE);
     //Algorithm
     if(currentOperation == Operation::Algorithm){
         AlgorithmOptionButton.textColor = AlgorithmNextButton.textColor = AlgorithmPrevButton.textColor = MyColor5;
@@ -58,9 +59,7 @@ void Graph::draw(){
             edge_textbox.Draw(22);
     }
     //code state
-    
     Vector2 maxWidth = {0,0};
-        // Tìm dòng dài nhất để làm kích thước chuẩn
         for(const auto& line : pseudocode) {
             Vector2 lineWidth = MeasureTextEx(FONT, line.c_str(), 15, 3);
             if(lineWidth.x > maxWidth.x) maxWidth = lineWidth;

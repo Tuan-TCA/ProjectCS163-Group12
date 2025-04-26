@@ -11,7 +11,7 @@ void Page::init() {
     InputNextButton = Button((side.x + side.width) * 0.85f + 5, side.y + screenHeight*0.63f * 0.15f + 10,  screenWidth*0.24f * 0.15f - 10, screenHeight*0.63f * 0.15f, ">", WHITE, LIGHTGRAY, MyColor5);
     currentInput = InputType::Keyboard;
 
-    OperationOptions  = { "INSERT", "CREATE", "DELETE", "SEARCH", "UPDATE"};
+    OperationOptions  = { "CREATE", "INSERT",  "DELETE", "SEARCH", "UPDATE"};
     selectedOperationIndex = 0;
     OperationOptionButton = Button((side.x + side.width) * 0.15f, side.y + 5, screenWidth*0.24f * 0.7f, screenHeight*0.63f * 0.15f, OperationOptions[selectedOperationIndex].c_str(), MyColor7, Fade(MyColor7, 0.8f), WHITE);
     OperationPrevButton = Button(side.x + 5, side.y + 5, screenWidth*0.24f * 0.15f - 10, screenHeight*0.63f * 0.15f, "<", MyColor7, Fade(MyColor7, 0.8f), WHITE);
@@ -36,7 +36,6 @@ void Page::init() {
     forward2 = ButtonFromImage("res/button/2-next.png", "res/button/2-next.png", screenWidth / 2 +   screenWidth * 0.05f  + 5 + screenWidth * 0.04f, screenHeight*0.926f,  screenWidth * 0.04f, screenWidth*0.04f);
     pause2 = ButtonFromImage("res/button/2-pause.png", "res/button/2-pause.png", screenWidth / 2 -   screenWidth * 0.05f / 2  , screenHeight*0.92f,  screenWidth * 0.05f, screenWidth*0.05f);
     play2 = ButtonFromImage("res/button/2-play.png", "res/button/2-play.png", screenWidth / 2 -   screenWidth * 0.05f / 2  , screenHeight*0.92f,  screenWidth * 0.05f, screenWidth*0.05f);
-    // timeSlider = Slider({screenWidth * 0.05f , screenHeight*0.936f,  screenWidth * 0.3f ,screenHeight * 0.095f / 3 * 0.9f}, 0.0f, 1.0f);
     isClosingCodePlace = false;
     isExpandingCodePlace = true;
 
@@ -165,10 +164,6 @@ void Page::draw() {
     showCodeButton.hoverColor = Fade(MyColor7, 0.8f);
     if(currentOperation != Operation::Create && currentOperation != Operation::Update)  showCodeButton.DrawRounded();
 
-    //SETTING
-    
-
-
     // timeSlider.Draw();
     stringstream ss;
     ss << fixed << std::setprecision(1) << animationSpeed;
@@ -188,7 +183,7 @@ void Page::draw() {
             textbox.Draw();
         }
 
-        Ok.Draw(Fade(MyColor2, 0.7f), MyColor2);
+        Ok.Draw(MyColor5, MyColor2);
     }
     else{
         DrawRectangle(side.x * 1.2f + 5, side.y + screenHeight*0.63f * 0.3f + 15, screenWidth*0.24f - 10, screenHeight*0.63f * 0.15f, WHITE);
