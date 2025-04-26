@@ -76,7 +76,6 @@ void LinkedList::reset(){
 
 
 void LinkedList::event() {
-    musicVolume.value = volume;
     Page::event();
     //Choose Operation
    
