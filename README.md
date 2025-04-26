@@ -1,10 +1,10 @@
 # **Data Structures Visualization**
 
 **Members**:  
-- Nhi  
-- Viet  
-- Tuan  
-- Thinh  
+- Nguyễn Thị Yến Nhi  
+- Nguyễn Thuận Việt  
+- Trần Cảnh Anh Tuấn
+- Nguyễn Khang Thịnh 
 
 This is our project for **CS163 - Data Structures**, designed to provide an interactive visualization of various data structures. Users can choose from a variety of data structures, including Singly Linked List, Hash Table, AVL Tree, and Graph. The project allows users to easily initialize, add, delete, update, and search data within these structures.
 
